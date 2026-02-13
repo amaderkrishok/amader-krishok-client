@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "amader-krishok-analytics-api",
+  "private_key_id": "fba4f897eee8d534fd3bd7990af54c41a86cbe4d",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQC53HPcrLjklvqx\nNU90KbfrCVLkzJvnI3M/lbfCVD2T6+QzpgyzpXBzHjmPiKhhaXQp1IidmqjnfxTj\nngu3DbzvsmKy1+Q/lmFopvYbcTJh6ZH7WAxBofdp9lEKZ1SfVp9Ncob/4Vc/J0yW\nqqF8L11Nh7L1ztXk2eujUdPaYDwoFrVz5qZci3nQtWJteY2tSlkVCCztbo3EkQNm\nodJv2pfWvZrB48kUzHo4d9ENWa+A02eh9eQxtIDsUh5MLqydmkvorP3czzRepN1P\n8Jw/xwYgTK/jQZXhuk8lJ0BYA/ffrYjg8SSqlUYmr1vKTTZULKO85WFqF5VbhBjw\nL5RWjybhAgMBAAECggEAXCRlUllU3orVJQZragkGs6CvNlwTzH7gM307mT1fO9be\nDxb6xBM4UPICklyrMYPwwY4q3ouewgnYJtIjN7C5YtH6qXRrpXSdvR7M8yTm1/DO\nXR+1D9LG0IL7gV9h7g6pMmGdePzT3qzShP15ypHGvVmRiNhuZSL+dbzq/R/poutq\nvgvCs9DWJ81C5PEfPA6jYe0eG6QkX4B9anJxRlPRuwNXzK7xkugt4UhF9Kaz608M\nDhn0fTng66D/iseiXnoFBwH07RQMjHJ/iGSXBPntiOOnZMVYMF4iA4w3BakuZm2b\nX5quewAn+b29t58zFJFzaFD+m1m9Q7KS6JkcVJ1xKwKBgQDi2d6Z8nAe8CTDUw/Y\nSgKv3LvD+PT6piOV+6VIOieDCsNmwVNpp9yFPkrdWsKhwpViSYN2o/kv0iFbqyfP\njSXybL8jjBY8H/vI0dI6f5Qgu+9KGu092xUsXxFRR6Ik4LDE7a2KwoL3Wc++8eAU\nzPnE+4b36/PIzQwdZPYYK8T+1wKBgQDRvj6NE+RduHPTSCDI8E6ogqGPfYAkU/K7\nlZMnSrVwy8OX/EWUw9/tp2AjMLQlrRrvjehO7vxs9pO20Nw2TLEqUqFZl5WlaRX2\nloEAu7xTUAjyIL6MWqql9iKlfBz5nHwzn/LdtLGmS8RHrAwVuxZM3Yy0APzHvCRS\n9mbNjsppBwKBgGiHJ5EcKxm2Ydo2zdhF0hMizMoyTv+nykHz4Gb1lPtG3F7euga3\nOF+VIn34sjJDLP5LDW5/g/TLCF/q778tNM0N2s0QYbZ2rlgMhqg53RFwR4SH/8U+\ny/TUIXCoZ0hC2HEFa6/CjQJYuecsIKq1AGoJ1FksufpOsURiHxtoH6+lAoGAZFJ9\n8tbn7VgTtqSSYepnhTxucIbT6wxoVwc1Sp72aExecu0MjxqdmjvrxQk/saG594lF\n67Nt8+SBRPljy2kleJvrZ0IVJvg7tCXK8IHbk3H9xWqaGeIoK5eufL7/0Pjjg4Hn\nFdqe+m7VJH8LjL1e7kcuTM8IGbVJHpGTHJFHCbMCgYBWkino/djggHh4cd09HUbq\nrCs6Y8wRlSa56KqRPr6LhwarQJpReX2ygc0zXJpnThzYk6klgOOCp5ERb0AgEaet\nRK2a7lbAPdNFhT3BpyGeAEpKIZm9MMxPw1GTa/6L7358hceEAIt7TPeA5pSB2IHy\nnzZ34mSgTP+sxeECgE5axQ==\n-----END PRIVATE KEY-----\n",
+  "client_email": "amaderkrishok@amader-krishok-analytics-api.iam.gserviceaccount.com",
+  "client_id": "110550673000849680792",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/amaderkrishok%40amader-krishok-analytics-api.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
