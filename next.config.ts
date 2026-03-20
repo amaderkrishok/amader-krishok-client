@@ -7,38 +7,45 @@ const nextConfig: NextConfig = {
 	output: 'standalone',
 
 	images: {
-		remotePatterns: [
-			{
-				protocol: 'https',
-				hostname: 'images.unsplash.com',
-				port: '',
-				pathname: '/**',
-			},
-			{
-				protocol: 'https',
-				hostname: 'openweathermap.org',
-				port: '',
-				pathname: '/**',
-			},
-			{
-				protocol: 'https',
-				hostname: 'img.freepik.com',
-				port: '',
-				pathname: '/**',
-			},
-			{
-				protocol: 'https',
-				hostname: 'example.com',
-				port: '',
-				pathname: '/**',
-			},
-			{
-				protocol: 'https',
-				hostname: 'sgzaxzoba8.ufs.sh',
-				port: '',
-				pathname: '/**',
-			},
-		],
+    
+		// remotePatterns: [
+		// 	{
+		// 		protocol: 'https',
+		// 		hostname: 'images.unsplash.com',
+		// 		port: '',
+		// 		pathname: '/**',
+		// 	},
+		// 	{
+		// 		protocol: 'https',
+		// 		hostname: 'openweathermap.org',
+		// 		port: '',
+		// 		pathname: '/**',
+		// 	},
+		// 	{
+		// 		protocol: 'https',
+		// 		hostname: 'img.freepik.com',
+		// 		port: '',
+		// 		pathname: '/**',
+		// 	},
+		// 	{
+		// 		protocol: 'https',
+		// 		hostname: 'example.com',
+		// 		port: '',
+		// 		pathname: '/**',
+		// 	},
+		// 	{
+		// 		protocol: 'https',
+		// 		hostname: 'sgzaxzoba8.ufs.sh',
+		// 		port: '',
+		// 		pathname: '/**',
+		// 	},
+		// ],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**",
+      },
+    ],
 	},
 	// Add ESLint configuration to ignore errors during build
 	eslint: {
@@ -51,3 +58,19 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
+// import type { NextConfig } from "next";
+
+// const nextConfig: NextConfig = {
+//   /* config options here */
+//   images: {
+//     remotePatterns: [
+//       {
+//         protocol: "https",
+//         hostname: "**",
+//       },
+//     ],
+//   },
+//   reactCompiler: true,
+// };
+
+// export default nextConfig;

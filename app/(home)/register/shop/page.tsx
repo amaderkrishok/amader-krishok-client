@@ -120,7 +120,7 @@ export default function VendorRegistration() {
 	const [nidBackUploadProgress, setNidBackUploadProgress] = useState(0);
 	const [licenseUploadProgress, setLicenseUploadProgress] = useState(0);
 
-	
+
 
 	const [formData, setFormData] = useState({
 		// Store data matching DTO
@@ -158,7 +158,9 @@ export default function VendorRegistration() {
 		const fetchCategories = async () => {
 			try {
 				const response = await api.get('/store-categories');
-				setStoreCategories(response.data.data);
+				// setStoreCategories(response.data.data);
+				setStoreCategories(response.data?.data || response.data || []);
+				console.log('Fetched store categories:', storeCategories);
 			} catch (error) {
 				console.error('Failed to fetch store categories:', error);
 				toast.error('Error', {
@@ -496,13 +498,12 @@ export default function VendorRegistration() {
 					{steps.map((step, index) => (
 						<div key={index} className='flex flex-col items-center'>
 							<div
-								className={`w-8 h-8 rounded-full flex items-center justify-center mb-2 ${
-									index < currentStep
-										? 'bg-accent text-accent-foreground'
-										: index === currentStep
+								className={`w-8 h-8 rounded-full flex items-center justify-center mb-2 ${index < currentStep
+									? 'bg-accent text-accent-foreground'
+									: index === currentStep
 										? 'bg-primary text-primary-foreground'
 										: 'bg-muted text-muted-foreground'
-								}`}
+									}`}
 							>
 								{index < currentStep ? (
 									<Check className='w-4 h-4' />
@@ -511,11 +512,10 @@ export default function VendorRegistration() {
 								)}
 							</div>
 							<span
-								className={`text-xs text-center hidden md:block ${
-									index === currentStep
-										? 'text-primary font-medium'
-										: 'text-muted-foreground'
-								}`}
+								className={`text-xs text-center hidden md:block ${index === currentStep
+									? 'text-primary font-medium'
+									: 'text-muted-foreground'
+									}`}
 							>
 								{step}
 							</span>
@@ -640,9 +640,8 @@ export default function VendorRegistration() {
 									}
 								>
 									<SelectTrigger
-										className={`w-full ${
-											errors.division ? 'border-destructive' : ''
-										}`}
+										className={`w-full ${errors.division ? 'border-destructive' : ''
+											}`}
 									>
 										<SelectValue placeholder='আপনার বিভাগ নির্বাচন করুন' />
 									</SelectTrigger>
@@ -671,9 +670,8 @@ export default function VendorRegistration() {
 									disabled={!formData.division}
 								>
 									<SelectTrigger
-										className={`w-full ${
-											errors.district ? 'border-destructive' : ''
-										}`}
+										className={`w-full ${errors.district ? 'border-destructive' : ''
+											}`}
 									>
 										<SelectValue placeholder='আপনার জেলা নির্বাচন করুন' />
 									</SelectTrigger>
