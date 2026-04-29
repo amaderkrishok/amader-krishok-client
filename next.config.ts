@@ -41,9 +41,20 @@ const nextConfig: NextConfig = {
 		// 	},
 		// ],
     remotePatterns: [
+		 {
+        protocol: "http",
+        hostname: "localhost",
+        port: "8000",
+        pathname: "/uploads/**",
+      },
       {
         protocol: "https",
         hostname: "**",
+      },
+	   {
+        protocol: "https",
+        hostname: "amader-krishok-server.onrender.com",
+        pathname: "/uploads/**",
       },
     ],
 	},
