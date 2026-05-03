@@ -2,10 +2,8 @@ import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
 	/* config options here */
-
 	// Enable standalone output for Docker optimization
 	output: 'standalone',
-
 	images: {
     
 		// remotePatterns: [
@@ -41,7 +39,7 @@ const nextConfig: NextConfig = {
 		// 	},
 		// ],
     remotePatterns: [
-		 {
+		{
         protocol: "http",
         hostname: "localhost",
         port: "8000",
