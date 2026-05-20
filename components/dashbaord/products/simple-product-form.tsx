@@ -77,9 +77,30 @@ export function SimpleProductForm({ value, onChange }: SimpleProductFormProps) {
 
 		// Convert FileList to array and validate each file
 		const fileArray = Array.from(files);
-		const invalidFiles = fileArray.filter(
-			(file) => !UploadService.isValidImage(file, 5)
-		);
+		const oversizedFiles = fileArray.filter(
+  (file) => file.size > 2 * 1024 * 1024
+);
+
+if (oversizedFiles.length > 0) {
+  toast.error('ফাইল অনেক বড়', {
+    description: 'ছবির সাইজ 2MB এর কম হতে হবে',
+  });
+
+  return;
+}
+
+const invalidFiles = fileArray.filter(
+  (file) =>
+    !['image/jpeg', 'image/png', 'image/webp'].includes(file.type)
+);
+
+if (invalidFiles.length > 0) {
+  toast.error('Invalid image format', {
+    description: 'শুধু JPEG, PNG, WebP allowed',
+  });
+
+  return;
+}
 
 		if (invalidFiles.length > 0) {
 			toast.error('Invalid files', {
