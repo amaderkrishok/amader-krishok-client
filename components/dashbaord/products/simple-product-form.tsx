@@ -228,7 +228,7 @@ export function SimpleProductForm({ value, onChange }: SimpleProductFormProps) {
 											অথবা টেনে আনুন
 										</p>
 										<p className='text-xs text-muted-foreground'>
-											JPEG, PNG বা WebP (সর্বোচ্চ 5MB)
+											JPEG, PNG বা WebP (সর্বোচ্চ 2MB)
 										</p>
 									</div>
 									<Input
