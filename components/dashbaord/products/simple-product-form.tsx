@@ -75,7 +75,7 @@ export function SimpleProductForm({ value, onChange }: SimpleProductFormProps) {
 		const files = e.target.files;
 		if (!files || files.length === 0) return;
 
-		// Convert FileList to array and validate each file
+		
 		const fileArray = Array.from(files);
 		const oversizedFiles = fileArray.filter(
   (file) => file.size > 2 * 1024 * 1024
