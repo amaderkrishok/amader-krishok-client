@@ -58,7 +58,7 @@ export function Footer() {
 
 				{/* Copyright and Credits - Center */}
 				<div className='text-center text-sm mb-4 md:mb-0'>
-					<p>&copy; 2025 আমাদের কৃষক. All rights reserved.</p>
+					<p>&copy; 2026 আমাদের কৃষক. All rights reserved.</p>
 					<p className='font-bold'>
 						Made by{' '}
 						<Link
