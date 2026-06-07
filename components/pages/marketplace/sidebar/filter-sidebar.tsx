@@ -147,13 +147,13 @@ export function FilterSidebar({
 						</span>
 					</div>
 					<Slider
-						value={[localPriceRange[0], localPriceRange[1]]}
-						min={0}
-						max={10000}
-						step={100}
-						onValueChange={handleSliderChange}
-						className='my-4'
-					/>
+  value={[localPriceRange[0], localPriceRange[1]]}
+  min={0}
+  max={100000}
+  step={1000}
+  onValueChange={handleSliderChange}
+  className="my-4"
+/>
 				</div>
 			</div>
 		</div>

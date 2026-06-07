@@ -22,7 +22,7 @@ import { useSession } from '@/components/providers/session-provider';
 const defaultFilters: ProductFilters = {
 	categoryId: undefined,
 	minPrice: 0,
-	maxPrice: 10000, // Changed to 10000 BDT
+	maxPrice: 100000, // Changed to 10000 BDT
 	storeId: undefined,
 	productType: undefined,
 	page: 1,
@@ -307,7 +307,7 @@ export function MarketplaceContainer() {
 								onCategoryClick={handleCategoryClick}
 								priceRange={{
 									min: filters.minPrice || 0,
-									max: filters.maxPrice || 10000, // Max 10000 BDT
+									max: filters.maxPrice || 100000, // Max 10000 BDT
 								}}
 								onPriceRangeChange={handlePriceRangeChange}
 								onClose={isMobile ? toggleMobileFilter : undefined}
