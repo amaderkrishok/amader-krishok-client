@@ -14,12 +14,13 @@ import { useSession } from '../providers/session-provider';
 
 const menuItems: { href: string; label: string }[] = [
 	{ href: '/', label: 'হোম' },
-	{ href: '/about', label: 'এবাউট' },
+	{ href: '/marketplace', label: 'কৃষকের বাজার' },
+	
 	{ href: '/crop-cultivation', label: 'ফসল চাষ প্রক্রিয়া' },
 	{ href: '/crop-calculator', label: 'সার ক্যালকুলেটর' },
 	{ href: '/weather', label: 'আবহাওয়া আপডেট' },
 	{ href: '/post', label: 'পোস্ট' },
-	{ href: '/marketplace', label: 'কৃষকের বাজার' },
+	{ href: '/about', label: 'এবাউট' },
 ];
 
 export function NavBar() {
