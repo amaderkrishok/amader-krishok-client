@@ -128,7 +128,7 @@ export default function Product() {
                             whileHover={{ scale: 1.05 }}
                             className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r from-sky-100 to-emerald-100 text-gray-700 text-sm font-medium mb-5"
                         >
-                            <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
+                            
                             <span>আমাদের তৈরি করা টুল সমূহ</span>
                         </motion.div>
                         <motion.h2
