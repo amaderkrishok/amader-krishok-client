@@ -53,15 +53,12 @@ export function Footer() {
     return (
         <>
             <footer ref={footerRef} className="relative bg-gradient-to-b from-emerald-900 to-emerald-950 text-emerald-100 overflow-hidden">
-                {/* Animated Background Pattern */}
                 <div className="absolute inset-0 opacity-5">
                     <div className="absolute inset-0" style={{
                         backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
                         backgroundSize: '30px 30px',
                     }} />
                 </div>
-
-                {/* Animated Gradient Orbs */}
                 <motion.div
                     animate={{ x: [0, 100, 0], y: [0, -50, 0] }}
                     transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
@@ -72,8 +69,6 @@ export function Footer() {
                     transition={{ duration: 18, repeat: Infinity, ease: "easeInOut", delay: 2 }}
                     className="absolute -bottom-40 -left-40 w-80 h-80 bg-teal-500/20 rounded-full blur-3xl"
                 />
-
-                {/* Main Footer Content */}
                 <div className="max-w-7xl mx-auto px-6 lg:px-8 py-12 lg:py-16 relative z-10">
                     <motion.div
                         variants={containerVariants}
@@ -81,7 +76,6 @@ export function Footer() {
                         animate={isInView ? "visible" : "hidden"}
                         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-60"
                     >
-                        {/* Brand Section */}
                         <motion.div variants={itemVariants} className="space-y-4">
                             <div className="flex items-center gap-2">
                                 <Leaf className="w-6 h-6 text-emerald-400" />
@@ -92,8 +86,6 @@ export function Footer() {
                             <p className="text-emerald-200/80 text-sm leading-relaxed">
                                 কৃষকদের প্রযুক্তি এবং টেকসই চর্চার মাধ্যমে ক্ষমতায়ন করা।
                             </p>
-                            
-                            {/* Social Links */}
                             <div className="flex space-x-3 pt-2">
                                 {socialLinks.map((social, idx) => {
                                     const Icon = social.icon;
@@ -116,8 +108,6 @@ export function Footer() {
                                 })}
                             </div>
                         </motion.div>
-
-                        {/* Quick Links */}
                         <motion.div variants={itemVariants} className="space-y-4">
                             <h4 className="text-lg font-semibold text-white relative inline-block">
                                 দ্রুত লিংক
@@ -147,8 +137,6 @@ export function Footer() {
                                 ))}
                             </ul>
                         </motion.div>
-
-                        {/* Contact Section */}
                         <motion.div variants={itemVariants} className="space-y-4">
                             <h4 className="text-lg font-semibold text-white relative inline-block">
                                 যোগাযোগ করুন
@@ -196,40 +184,10 @@ export function Footer() {
                             </div>
                         </motion.div>
 
-                        {/* Newsletter Section */}
-                        {/* <motion.div variants={itemVariants} className="space-y-4">
-                            <h4 className="text-lg font-semibold text-white relative inline-block">
-                                আপডেট থাকুন
-                                <motion.div
-                                    initial={{ width: 0 }}
-                                    animate={isInView ? { width: '100%' } : {}}
-                                    transition={{ delay: 0.3, duration: 0.5 }}
-                                    className="absolute -bottom-1 left-0 h-0.5 bg-emerald-400 rounded-full"
-                                />
-                            </h4>
-                            <p className="text-emerald-200/70 text-sm leading-relaxed">
-                                সর্বশেষ সংবাদ এবং আপডেট পেতে সাবস্ক্রাইব করুন।
-                            </p>
-                            <div className="flex flex-col gap-3">
-                                <motion.input
-                                    type="email"
-                                    placeholder="আপনার ইমেইল"
-                                    whileFocus={{ scale: 1.02 }}
-                                    className="px-4 py-2.5 rounded-lg bg-white/10 border border-white/20 text-white placeholder:text-emerald-200/50 focus:outline-none focus:border-emerald-400 transition-all text-sm"
-                                />
-                                <motion.button
-                                    whileHover={{ scale: 1.02 }}
-                                    whileTap={{ scale: 0.98 }}
-                                    className="px-4 py-2.5 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-white font-medium text-sm transition-all duration-300 flex items-center justify-center gap-2 group"
-                                >
-                                    <span>সাবস্ক্রাইব</span>
-                                    <ArrowUp className="w-3.5 h-3.5 rotate-45 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                                </motion.button>
-                            </div>
-                        </motion.div> */}
+                     
                     </motion.div>
 
-                    {/* Bottom Bar */}
+               
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -237,12 +195,10 @@ export function Footer() {
                         className="mt-12 pt-6 border-t border-emerald-800/50"
                     >
                         <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-center">
-                            {/* Copyright */}
+                          
                             <div className="text-emerald-300/60 text-xs">
                                 <p>&copy; ২০২৬ আমাদের কৃষক. সর্বস্বত্ব সংরক্ষিত।</p>
                             </div>
-
-                            {/* Made with love */}
                             <div className="flex items-center gap-1 text-emerald-300/60 text-xs">
                                 <span>Made with</span>
                                 <motion.div
@@ -259,8 +215,6 @@ export function Footer() {
                                     Consortium Analytics
                                 </Link>
                             </div>
-
-                            {/* Legal Links */}
                             <div className="flex gap-4">
                                 <Link
                                     href="/terms-and-conditions"
@@ -281,7 +235,7 @@ export function Footer() {
                 </div>
             </footer>
 
-            {/* Scroll to Top Button */}
+        
             <motion.button
                 initial={{ opacity: 0, scale: 0 }}
                 animate={{ opacity: showScrollTop ? 1 : 0, scale: showScrollTop ? 1 : 0 }}
