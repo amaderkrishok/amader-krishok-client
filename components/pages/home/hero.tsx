@@ -1,189 +1,3 @@
-// 'use client';
-// import { useState, useEffect, useRef } from 'react';
-
-// export function Hero() {
-//     const messages = [
-//         'আমরা কৃষকদের সবচেয়ে বড় খুচরা চেইনের সাথে সংযুক্ত করি',
-//         'আমরা কৃষকদের জন্য সর্বোত্তম সুযোগ নিশ্চিত করি',
-//         'কৃষিক্ষেত্রে উন্নয়ন আনতে আমরা প্রতিশ্রুতিবদ্ধ',
-//         'টেকসই কৃষির জন্য আমরা কাজ করি',
-//     ];
-
-//     const [currentIndex, setCurrentIndex] = useState(0);
-//     const [fadeIn, setFadeIn] = useState(true);
-//     const [showScrollHint, setShowScrollHint] = useState(true);
-//     const videoRef = useRef<HTMLVideoElement>(null);
-
-//     useEffect(() => {
-//         const interval = setInterval(() => {
-//             setFadeIn(false);
-//             setTimeout(() => {
-//                 setCurrentIndex((prevIndex) => (prevIndex + 1) % messages.length);
-//                 setFadeIn(true);
-//             }, 500);
-//         }, 5000);
-
-//         return () => clearInterval(interval);
-//     }, [messages.length]);
-
-//     // Auto-play video when component mounts
-//     useEffect(() => {
-//         if (videoRef.current) {
-//             videoRef.current.play().catch(error => {
-//                 console.log("Video autoplay failed:", error);
-//             });
-//         }
-//     }, []);
-
-//     // Hide scroll hint after 3 seconds
-//     useEffect(() => {
-//         const timer = setTimeout(() => {
-//             setShowScrollHint(false);
-//         }, 4000);
-//         return () => clearTimeout(timer);
-//     }, []);
-
-//     return (
-//         <div className="relative min-h-screen flex flex-col items-center justify-center text-center px-4 overflow-hidden">
-//             {/* Background Video */}
-//             <div className="absolute inset-0 z-0">
-//                 <video
-//                     ref={videoRef}
-//                     autoPlay
-//                     loop
-//                     muted
-//                     playsInline
-//                     className="w-full h-full object-cover"
-//                     poster="/api/placeholder/1920/1080"
-//                 >
-//                     <source src="https://assets.mixkit.co/videos/preview/mixkit-wheat-field-under-cloudy-sky-40762-large.mp4" type="video/mp4" />
-//                     Your browser does not support the video tag.
-//                 </video>
-//                 {/* Dark overlay to ensure text readability */}
-//                 <div className="absolute inset-0 bg-black/50"></div>
-//             </div>
-
-//             {/* Animated Grain/Texture Overlay */}
-//             <div className="absolute inset-0 z-0 opacity-20 pointer-events-none">
-//                 <div className="absolute inset-0 bg-repeat opacity-10 animate-grain"
-//                     style={{
-//                         backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-//                         backgroundSize: '200px 200px'
-//                     }}
-//                 />
-//             </div>
-
-//             {/* Subtle floating particles */}
-//             <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-//                 {[...Array(12)].map((_, i) => (
-//                     <div
-//                         key={i}
-//                         className="absolute bg-white/10 rounded-full animate-float"
-//                         style={{
-//                             width: `${Math.random() * 8 + 2}px`,
-//                             height: `${Math.random() * 8 + 2}px`,
-//                             left: `${Math.random() * 100}%`,
-//                             top: `${Math.random() * 100}%`,
-//                             animationDelay: `${Math.random() * 10}s`,
-//                             animationDuration: `${Math.random() * 15 + 10}s`
-//                         }}
-//                     />
-//                 ))}
-//             </div>
-
-//             {/* Main Content */}
-//             <div className="relative z-10 max-w-5xl mx-auto">
-//                 {/* Animated Main Title with Glow */}
-//                 <div className="mb-8 animate-slideDown">
-//                     <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-4 tracking-tight">
-//                         <span className="bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent drop-shadow-lg">
-//                             আমাদের কৃষক
-//                         </span>
-//                     </h1>
-//                     <div className="h-1 w-24 bg-amber-500/80 mx-auto rounded-full mt-4 animate-pulse"></div>
-//                 </div>
-
-//                 {/* Rotating Message with Card Design */}
-//                 <div className="relative mt-8 mb-12">
-//                     <div className="absolute inset-0 bg-white/5 blur-3xl rounded-full -z-10"></div>
-//                     <div
-//                         className={`transform transition-all duration-700 ease-in-out ${
-//                             fadeIn ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-//                         }`}
-//                     >
-//                         <div className="backdrop-blur-sm bg-white/10 rounded-2xl px-6 py-4 md:px-10 md:py-6 inline-block shadow-2xl border border-white/20">
-//                             <p className="text-xl md:text-2xl lg:text-3xl font-semibold text-white">
-//                                 {messages[currentIndex]}
-//                             </p>
-//                         </div>
-//                     </div>
-//                 </div>
-
-//                 {/* Decorative Elements */}
-//                 <div className="flex justify-center gap-4 mt-12">
-//                     <div className="w-2 h-2 rounded-full bg-amber-400/60 animate-pulse"></div>
-//                     <div className="w-2 h-2 rounded-full bg-amber-400/40 animate-pulse delay-150"></div>
-//                     <div className="w-2 h-2 rounded-full bg-amber-400/20 animate-pulse delay-300"></div>
-//                 </div>
-
-//                 {/* Scroll Hint with Animation */}
-//                 <div
-//                     className={`absolute bottom-8 left-1/2 transform -translate-x-1/2 transition-all duration-1000 ${
-//                         showScrollHint ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-//                     }`}
-//                 >
-//                     <div className="flex flex-col items-center gap-2 text-white/70">
-//                         <span className="text-sm font-light tracking-wider">SCROLL</span>
-//                         <div className="w-6 h-10 border-2 border-white/40 rounded-full flex justify-center">
-//                             <div className="w-1.5 h-2 bg-white/60 rounded-full mt-2 animate-scrollDot"></div>
-//                         </div>
-//                     </div>
-//                 </div>
-//             </div>
-
-//             <style jsx>{`
-//                 @keyframes float {
-//                     0%, 100% { transform: translateY(0px) translateX(0px); }
-//                     25% { transform: translateY(-20px) translateX(10px); }
-//                     50% { transform: translateY(10px) translateX(-10px); }
-//                     75% { transform: translateY(-5px) translateX(5px); }
-//                 }
-//                 @keyframes slideDown {
-//                     from { opacity: 0; transform: translateY(-30px); }
-//                     to { opacity: 1; transform: translateY(0); }
-//                 }
-//                 @keyframes scrollDot {
-//                     0% { opacity: 1; transform: translateY(0px); }
-//                     100% { opacity: 0; transform: translateY(15px); }
-//                 }
-//                 @keyframes grain {
-//                     0%, 100% { transform: translate(0, 0); }
-//                     10% { transform: translate(-2%, -1%); }
-//                     20% { transform: translate(1%, -2%); }
-//                     30% { transform: translate(-1%, 2%); }
-//                     40% { transform: translate(2%, 1%); }
-//                     50% { transform: translate(-2%, -1%); }
-//                     60% { transform: translate(1%, 2%); }
-//                     70% { transform: translate(-1%, -2%); }
-//                     80% { transform: translate(2%, -1%); }
-//                     90% { transform: translate(-2%, 1%); }
-//                 }
-//                 .animate-float {
-//                     animation: float linear infinite;
-//                 }
-//                 .animate-slideDown {
-//                     animation: slideDown 0.8s ease-out;
-//                 }
-//                 .animate-scrollDot {
-//                     animation: scrollDot 1.5s ease-in-out infinite;
-//                 }
-//                 .animate-grain {
-//                     animation: grain 8s steps(2) infinite;
-//                 }
-//             `}</style>
-//         </div>
-//     );
-// }
 'use client';
 import { useState, useEffect, useRef } from 'react';
 import { 
@@ -242,7 +56,6 @@ export function Hero() {
 
     return (
         <div className="relative min-h-screen flex flex-col items-center justify-center text-center px-4 overflow-hidden">
-            {/* Background Video */}
             <div className="absolute inset-0 z-0">
                 <video
                     ref={videoRef}
@@ -257,7 +70,7 @@ export function Hero() {
                 <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/45 to-black/65"></div>
             </div>
 
-            {/* Subtle floating particles */}
+           
             <div className="absolute inset-0 z-0 pointer-events-none">
                 {[...Array(6)].map((_, i) => (
                     <div
@@ -275,7 +88,7 @@ export function Hero() {
                 ))}
             </div>
 
-            {/* Main Content */}
+     
             <div className="relative z-10 max-w-5xl mx-auto">
                 {/* Decorative Icon */}
                 <div className="mb-4 animate-fadeUp">
@@ -284,7 +97,7 @@ export function Hero() {
                     </div>
                 </div>
 
-                {/* Main Title */}
+          
                 <div className="mb-6 animate-fadeUp" style={{ animationDelay: '0.1s' }}>
                     <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-3 tracking-tight drop-shadow-2xl">
                         আমাদের কৃষক
@@ -296,7 +109,7 @@ export function Hero() {
                     </div>
                 </div>
 
-                {/* Rotating Message with Icon */}
+           
                 <div className="mt-8 mb-12 animate-fadeUp" style={{ animationDelay: '0.2s' }}>
                     <div
                         className={`transition-all duration-500 ease-out ${
@@ -312,7 +125,7 @@ export function Hero() {
                     </div>
                 </div>
 
-                {/* Statistics Cards */}
+            
                 <div className="grid grid-cols-3 gap-5 md:gap-8 max-w-lg mx-auto mt-8">
                     {stats.map((stat, idx) => {
                         const Icon = stat.icon;
