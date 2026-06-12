@@ -39,6 +39,10 @@ const productSchema = z.object({
 	description: z
 		.string()
 		.min(10, { message: 'বিবরণ কমপক্ষে ১০ অক্ষর হতে হবে' }),
+	unit: z.string().trim().min(1, { message: 'পরিমাপের একক লিখুন' }).max(32),
+	deliveryCharge: z.coerce
+		.number()
+		.min(0, { message: 'ডেলিভারি চার্জ ঋণাত্মক হতে পারবে না' }),
 	productType: z.enum([ProductType.SIMPLE, ProductType.VARIABLE]),
 	storeId: z
 		.string()
@@ -77,6 +81,8 @@ export function ProductEditForm({
 			name: '',
 			slug: '',
 			description: '',
+			unit: '',
+			deliveryCharge: 0,
 			productType: ProductType.SIMPLE,
 			storeId: '',
 			categoryIds: [],
@@ -156,6 +162,8 @@ export function ProductEditForm({
 					name: initialProduct.name || '',
 					slug: initialProduct.slug || '',
 					description: initialProduct.description || '',
+					unit: initialProduct.unit || '',
+					deliveryCharge: Number(initialProduct.deliveryCharge || 0),
 					productType: initialProduct.productType,
 					storeId: initialProduct.store.id,
 					categoryIds: (initialProduct.productCategories || []).map(
@@ -531,6 +539,38 @@ export function ProductEditForm({
 													{...field}
 												/>
 											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+							</div>
+
+							<div className='col-span-full grid gap-6 sm:grid-cols-2'>
+								<FormField
+									control={form.control}
+									name='unit'
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>পরিমাপের একক</FormLabel>
+											<FormControl>
+												<Input placeholder='যেমন: কেজি, গ্রাম, পিস' {...field} />
+											</FormControl>
+											<FormDescription>পণ্যটি যে এককে বিক্রি হবে</FormDescription>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+
+								<FormField
+									control={form.control}
+									name='deliveryCharge'
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>ডেলিভারি চার্জ</FormLabel>
+											<FormControl>
+												<Input type='number' min='0' step='0.01' placeholder='০' {...field} />
+											</FormControl>
+											<FormDescription>ডেলিভারি চার্জ না থাকলে ০ লিখুন</FormDescription>
 											<FormMessage />
 										</FormItem>
 									)}

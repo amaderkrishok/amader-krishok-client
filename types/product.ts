@@ -85,6 +85,8 @@ export interface Product {
 	name: string;
 	slug: string;
 	description?: string;
+	unit: string;
+	deliveryCharge: number | string;
 	productType: ProductType;
 	store: Store;
 	productCategories: ProductCategory[];
@@ -101,6 +103,8 @@ export interface CreateSimpleProductDTO {
 	name: string;
 	slug?: string;
 	description: string;
+	unit: string;
+	deliveryCharge?: number;
 	productType: ProductType.SIMPLE;
 	storeId: string;
 	categoryIds: number[];
@@ -122,6 +126,8 @@ export interface CreateVariableProductDTO {
 	name: string;
 	slug?: string;
 	description: string;
+	unit: string;
+	deliveryCharge?: number;
 	productType: ProductType.VARIABLE;
 	storeId: string;
 	categoryIds: number[];
