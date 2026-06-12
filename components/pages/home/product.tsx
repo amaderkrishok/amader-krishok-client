@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import {  useRef, useState } from 'react';
 import { motion, useInView, useScroll, useTransform } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Cloud, Calculator, ShoppingCart, ArrowRight, Sparkles, TrendingUp, Droplets, ThermometerSun } from 'lucide-react';

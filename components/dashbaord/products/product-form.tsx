@@ -50,6 +50,14 @@ const productSchema = z.object({
 	description: z
 		.string()
 		.min(10, { message: 'Description must be at least 10 characters' }),
+	unit: z
+		.string()
+		.trim()
+		.min(1, { message: 'Please enter a unit such as kg, gram, or piece' })
+		.max(32),
+	deliveryCharge: z.coerce
+		.number()
+		.min(0, { message: 'Delivery charge cannot be negative' }),
 	productType: z.enum([ProductType.SIMPLE, ProductType.VARIABLE]),
 	storeId: z.string().min(1, { message: 'Please select a store' }),
 	categoryIds: z
@@ -79,6 +87,8 @@ export function ProductForm() {
 			name: '',
 			slug: '',
 			description: '',
+			unit: '',
+			deliveryCharge: 0,
 			productType: ProductType.SIMPLE,
 			storeId: '',
 			categoryIds: [],
@@ -336,6 +346,38 @@ export function ProductForm() {
 													{...field}
 												/>
 											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+							</div>
+
+							<div className='col-span-full grid gap-6 sm:grid-cols-2'>
+								<FormField
+									control={form.control}
+									name='unit'
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>পরিমাপের একক</FormLabel>
+											<FormControl>
+												<Input placeholder='যেমন: কেজি, গ্রাম, পিস' {...field} />
+											</FormControl>
+											<FormDescription>পণ্যটি যে এককে বিক্রি হবে</FormDescription>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+
+								<FormField
+									control={form.control}
+									name='deliveryCharge'
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>ডেলিভারি চার্জ</FormLabel>
+											<FormControl>
+												<Input type='number' min='0' step='0.01' placeholder='০' {...field} />
+											</FormControl>
+											<FormDescription>ডেলিভারি চার্জ না থাকলে ০ লিখুন</FormDescription>
 											<FormMessage />
 										</FormItem>
 									)}
