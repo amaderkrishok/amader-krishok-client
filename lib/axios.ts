@@ -33,7 +33,7 @@ let isRefreshing = false;
  * Store for requests that are waiting for a token refresh to complete
  * @type {Array<Function>}
  */
-let refreshSubscribers: Array<(token: string) => void> = [];
+let refreshSubscribers: Array<(token: string | null) => void> = [];
 
 /**
  * Cache mechanism for the current session promise
@@ -89,9 +89,9 @@ const clearSessionCache = (): void => {
  * Notifies all subscribers that a new token is available
  *
  * @function onRefreshed
- * @param {string} token - The new access token
+ * @param {string | null} token - The new access token, or null if refresh failed
  */
-const onRefreshed = (token: string): void => {
+const onRefreshed = (token: string | null): void => {
 	refreshSubscribers.forEach((callback) => callback(token));
 	refreshSubscribers = [];
 };
@@ -103,7 +103,7 @@ const onRefreshed = (token: string): void => {
  * @function addSubscriber
  * @param {Function} callback - Function to call after token refresh
  */
-const addSubscriber = (callback: (token: string) => void): void => {
+const addSubscriber = (callback: (token: string | null) => void): void => {
 	refreshSubscribers.push(callback);
 };
 
@@ -130,10 +130,14 @@ api.interceptors.request.use(
 
 					// If refresh already in progress, wait for it to complete
 					if (isRefreshing) {
-						return new Promise<InternalAxiosRequestConfig>((resolve) => {
-							addSubscriber((token: string) => {
-								config.headers['Authorization'] = `Bearer ${token}`;
-								resolve(config);
+						return new Promise<InternalAxiosRequestConfig>((resolve, reject) => {
+							addSubscriber((token: string | null) => {
+								if (token) {
+									config.headers['Authorization'] = `Bearer ${token}`;
+									resolve(config);
+								} else {
+									reject(new Error('Token refresh failed'));
+								}
 							});
 						});
 					}
@@ -152,11 +156,14 @@ api.interceptors.request.use(
 							if (session.accessToken) {
 								onRefreshed(session.accessToken);
 							}
+						} else {
+							onRefreshed(null);
 						}
 					} catch (refreshError) {
 						console.error('Token refresh failed:', refreshError);
 						// Clear session cache on refresh failure
 						clearSessionCache();
+						onRefreshed(null);
 					} finally {
 						isRefreshing = false;
 					}
@@ -205,10 +212,14 @@ api.interceptors.response.use(
 			// If refresh already in progress, wait for it to complete
 			if (isRefreshing) {
 				try {
-					return new Promise((resolve) => {
-						addSubscriber((token: string) => {
-							originalRequest.headers['Authorization'] = `Bearer ${token}`;
-							resolve(api(originalRequest));
+					return new Promise((resolve, reject) => {
+						addSubscriber((token: string | null) => {
+							if (token) {
+								originalRequest.headers['Authorization'] = `Bearer ${token}`;
+								resolve(api(originalRequest));
+							} else {
+								reject(new Error('Token refresh failed'));
+							}
 						});
 					});
 				} catch (refreshError) {
@@ -238,6 +249,7 @@ api.interceptors.response.use(
 				} else {
 					// If refresh fails, redirect to login (only if not already on login page)
 					clearSessionCache();
+					onRefreshed(null);
 
 					if (
 						typeof window !== 'undefined' &&
@@ -255,6 +267,7 @@ api.interceptors.response.use(
 					refreshError
 				);
 				clearSessionCache();
+				onRefreshed(null);
 			} finally {
 				isRefreshing = false;
 			}

@@ -28,12 +28,16 @@ export async function generateMetadata({
 
 		try {
 			const product = await ProductService.getProductById(productId);
+			const title = product?.store?.name 
+				? `${product?.name} - ${product?.store?.name}` 
+				: (product?.name || 'পণ্যের বিবরণ');
+
 			return {
-				title: product?.name || 'পণ্যের বিবরণ',
+				title: title,
 				description:
 					product?.description || 'পণ্যের বিবরণ এবং ক্রয় বিকল্প দেখুন',
 				openGraph: {
-					title: product?.name || 'পণ্যের বিবরণ',
+					title: title,
 					description:
 						product?.description || 'View product details and purchase options',
 					images: product?.simpleProduct?.images?.[0]?.imageUrl
