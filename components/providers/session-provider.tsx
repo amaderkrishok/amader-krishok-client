@@ -91,16 +91,32 @@ export const SessionProvider: React.FC<SessionProviderProps> = ({
 	 * Fetches the current session from the server.
 	 * Updates session data and authentication status based on the response.
 	 * Validates token expiration before considering a session valid.
+	 * 
+	 * On initial mount (no existing session), sets status to 'loading'.
+	 * On subsequent fetches (e.g., refresh), keeps current status to avoid UI flicker.
+	 * Uses AbortController with 10s timeout to prevent indefinite hanging.
 	 *
 	 * @async
 	 * @function fetchSession
 	 * @returns {Promise<void>}
 	 */
-	const fetchSession = useCallback(async () => {
+	const fetchSession = useCallback(async (isInitial = false) => {
 		console.log('SessionProvider: Fetching session...');
-		setStatus('loading');
+		// Only show loading spinner on initial mount, not on subsequent refreshes
+		if (isInitial) {
+			setStatus('loading');
+		}
+
+		// Create abort controller with timeout to prevent hanging requests
+		const controller = new AbortController();
+		const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+
 		try {
-			const response = await fetch('/api/auth/session'); // Call the session API route
+			const response = await fetch('/api/auth/session', {
+				signal: controller.signal,
+			});
+			clearTimeout(timeoutId);
+
 			if (!response.ok) {
 				throw new Error(`Session fetch failed with status: ${response.status}`);
 			}
@@ -116,16 +132,21 @@ export const SessionProvider: React.FC<SessionProviderProps> = ({
 				setStatus('unauthenticated');
 				console.log('SessionProvider: Session loaded - Unauthenticated.');
 			}
-		} catch (error) {
-			console.error('SessionProvider: Error fetching session:', error);
+		} catch (error: any) {
+			clearTimeout(timeoutId);
+			if (error?.name === 'AbortError') {
+				console.warn('SessionProvider: Session fetch timed out after 10s');
+			} else {
+				console.error('SessionProvider: Error fetching session:', error);
+			}
 			setSessionData(null);
-			setStatus('unauthenticated'); // Treat errors as unauthenticated
+			setStatus('unauthenticated'); // Treat errors/timeouts as unauthenticated
 		}
 	}, []);
 
 	// Fetch session on initial mount
 	useEffect(() => {
-		fetchSession();
+		fetchSession(true); // Pass isInitial=true for the first load
 	}, [fetchSession]);
 
 	/**
