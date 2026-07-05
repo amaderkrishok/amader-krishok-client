@@ -129,51 +129,59 @@ export function CropInfo({ cropId }: CropInfoProps) {
 	}
 
 	return (
-		<Card>
-			<CardHeader>
-				<CardTitle>{selectedCrop.name} চাষাবাদ এর সকল তথ্য</CardTitle>
-				<CardDescription>চাষ এবং রোগ সম্পর্কে বিস্তারিত</CardDescription>
+		<Card className='border-transparent shadow-[0_8px_30px_rgb(0,0,0,0.04)] bg-white/80 backdrop-blur-sm rounded-3xl overflow-hidden'>
+			<CardHeader className='bg-gradient-to-r from-green-500/10 to-emerald-500/5 pb-8 border-b border-green-100/50'>
+				<CardTitle className='text-3xl font-extrabold text-gray-900'>{selectedCrop.name} <span className='text-green-600 font-semibold text-2xl'>চাষাবাদ পদ্ধতি</span></CardTitle>
+				<CardDescription className='text-base text-gray-600 mt-2'>চাষ পদ্ধতি এবং রোগ-বালাই সম্পর্কে বিস্তারিত তথ্য</CardDescription>
 			</CardHeader>
-			<CardContent>
-				<Tabs defaultValue='cultivation'>
-					<TabsList>
-						<TabsTrigger value='cultivation'>চাষ প্রক্রিয়া</TabsTrigger>
+			<CardContent className='p-6 md:p-8'>
+				<Tabs defaultValue='cultivation' className='w-full'>
+					<TabsList className='bg-gray-100/80 p-1 rounded-xl mb-8 flex flex-wrap h-auto'>
+						<TabsTrigger value='cultivation' className='rounded-lg px-6 py-2.5 data-[state=active]:bg-white data-[state=active]:text-green-700 data-[state=active]:shadow-sm text-base font-semibold flex-1'>
+							🌱 চাষ প্রক্রিয়া
+						</TabsTrigger>
 						{selectedCrop.diseases && selectedCrop.diseases.length > 0 && (
-							<TabsTrigger value='diseases'>রোগ বালাই ও প্রতিকার</TabsTrigger>
+							<TabsTrigger value='diseases' className='rounded-lg px-6 py-2.5 data-[state=active]:bg-white data-[state=active]:text-rose-600 data-[state=active]:shadow-sm text-base font-semibold flex-1'>
+								🦠 রোগ বালাই ও প্রতিকার
+							</TabsTrigger>
 						)}
 					</TabsList>
-					<TabsContent value='cultivation'>
-						<h3 className='text-lg font-semibold mb-2'>চাষ প্রক্রিয়া</h3>
-						{selectedCrop.cultivations.map((cultivation) => (
-							<div key={cultivation.id} className='mb-4'>
-								<h4 className='text-md font-semibold'>{cultivation.name}</h4>
-								<div
-									className='mt-2 prose max-w-none'
-									dangerouslySetInnerHTML={{
-										__html: cultivationHtml[cultivation.id as string] || '',
-									}}
-								/>
-							</div>
-						))}
-					</TabsContent>
-					{selectedCrop.diseases && selectedCrop.diseases.length > 0 && (
-						<TabsContent value='diseases'>
-							<h3 className='text-lg font-semibold mb-2'>
-								রোগ বালাই ও প্রতিকার
-							</h3>
-							{selectedCrop.diseases.map((disease) => (
-								<div key={disease.id} className='mb-4'>
-									<h4 className='text-md font-semibold'>
-										{disease.diseaseName}
+					<TabsContent value='cultivation' className='animate-in fade-in duration-500'>
+						<div className='space-y-6'>
+							{selectedCrop.cultivations.map((cultivation) => (
+								<div key={cultivation.id} className='bg-green-50/40 border border-green-100 rounded-2xl p-6 md:p-8 shadow-sm hover:shadow-md transition-shadow duration-300'>
+									<h4 className='text-xl font-bold text-green-800 mb-4 pb-2 border-b border-green-200/60 flex items-center gap-2'>
+										<span className='w-2 h-6 bg-green-500 rounded-full inline-block'></span>
+										{cultivation.name}
 									</h4>
 									<div
-										className='mt-2 prose max-w-none'
+										className='mt-4 prose prose-green max-w-none text-gray-700 leading-relaxed prose-headings:text-green-800 prose-a:text-green-600 prose-strong:text-green-900 prose-li:marker:text-green-500'
 										dangerouslySetInnerHTML={{
-											__html: diseaseHtml[disease.id as string] || '',
+											__html: cultivationHtml[cultivation.id as string] || '',
 										}}
 									/>
 								</div>
 							))}
+						</div>
+					</TabsContent>
+					{selectedCrop.diseases && selectedCrop.diseases.length > 0 && (
+						<TabsContent value='diseases' className='animate-in fade-in duration-500'>
+							<div className='space-y-6'>
+								{selectedCrop.diseases.map((disease) => (
+									<div key={disease.id} className='bg-rose-50/40 border border-rose-100 rounded-2xl p-6 md:p-8 shadow-sm hover:shadow-md transition-shadow duration-300'>
+										<h4 className='text-xl font-bold text-rose-800 mb-4 pb-2 border-b border-rose-200/60 flex items-center gap-2'>
+											<span className='w-2 h-6 bg-rose-500 rounded-full inline-block'></span>
+											{disease.diseaseName}
+										</h4>
+										<div
+											className='mt-4 prose prose-rose max-w-none text-gray-700 leading-relaxed prose-headings:text-rose-800 prose-a:text-rose-600 prose-strong:text-rose-900 prose-li:marker:text-rose-500'
+											dangerouslySetInnerHTML={{
+												__html: diseaseHtml[disease.id as string] || '',
+											}}
+										/>
+									</div>
+								))}
+							</div>
 						</TabsContent>
 					)}
 				</Tabs>

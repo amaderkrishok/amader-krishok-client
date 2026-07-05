@@ -264,15 +264,15 @@ export function MarketplaceContainer() {
 	};
 
 	return (
-		<div className='min-h-screen pb-8'>
+		<div className='min-h-screen pb-8 bg-gradient-to-br from-slate-50 via-white to-green-50/40'>
 			<div className='container mx-auto px-4 py-8'>
 				{!isAuthenticated && <VendorBanner />}
 
 				<div className='flex flex-col md:flex-row gap-8 mt-8'>
 					{/* Mobile filter button */}
 					{isMobile && (
-						<div className='flex justify-between items-center mb-4'>
-							<h1 className='text-2xl font-bold'>কৃষকের বাজার</h1>
+						<div className='flex justify-between items-center mb-6'>
+							<h1 className='text-3xl font-extrabold tracking-tight text-gray-900'>কৃষকের বাজার</h1>
 							<FilterButton onClick={toggleMobileFilter} />
 						</div>
 					)}
@@ -320,7 +320,7 @@ export function MarketplaceContainer() {
 					{/* Main content */}
 					<div className='w-full md:w-3/4'>
 						{!isMobile && (
-							<h1 className='text-2xl font-bold mb-6'>কৃষকের বাজার</h1>
+							<h1 className='text-3xl font-extrabold tracking-tight text-gray-900 mb-8'>কৃষকের বাজার</h1>
 						)}
 
 						<div className='flex justify-between items-center mb-6'>
@@ -394,7 +394,6 @@ export function MarketplaceContainer() {
 	);
 }
 
-// Simple button component for the "No products found" section
 function Button({
 	children,
 	variant = 'default',
@@ -406,11 +405,11 @@ function Button({
 	className?: string;
 	onClick?: () => void;
 }) {
-	const baseClasses = 'px-4 py-2 rounded-md font-medium transition-colors';
+	const baseClasses = 'px-5 py-2.5 rounded-xl font-semibold transition-all duration-300 ease-in-out flex items-center justify-center';
 	const variantClasses =
 		variant === 'outline'
-			? 'border border-gray-300 hover:bg-gray-50'
-			: 'bg-green-600 text-white hover:bg-green-700';
+			? 'border-2 border-gray-200 text-gray-700 hover:border-green-500 hover:text-green-600 hover:bg-green-50/50 shadow-sm'
+			: 'bg-gradient-to-r from-green-600 to-emerald-600 text-white hover:from-green-500 hover:to-emerald-500 shadow-md hover:shadow-lg hover:-translate-y-0.5';
 
 	return (
 		<button

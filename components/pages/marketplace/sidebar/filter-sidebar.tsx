@@ -70,42 +70,45 @@ export function FilterSidebar({
 	};
 
 	return (
-		<div className='bg-white p-4 rounded-lg shadow-sm border h-full'>
+		<div className='bg-white/70 backdrop-blur-md p-6 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white/40 h-full flex flex-col gap-6'>
 			{onClose && (
-				<div className='flex justify-between items-center mb-4'>
-					<h2 className='text-lg font-semibold'>ফিল্টার</h2>
-					<Button variant='ghost' size='icon' onClick={onClose}>
-						<X className='h-4 w-4' />
+				<div className='flex justify-between items-center mb-2'>
+					<h2 className='text-xl font-bold text-gray-900'>ফিল্টার</h2>
+					<Button variant='ghost' size='icon' onClick={onClose} className='rounded-full hover:bg-gray-100/80'>
+						<X className='h-5 w-5 text-gray-500' />
 					</Button>
 				</div>
 			)}
 
 			<div className='space-y-6'>
 				{/* Search */}
-				<div>
-					<h3 className='text-lg font-semibold mb-3'>অনুসন্ধান</h3>
-					<div className='relative'>
+				<div className='bg-white/50 p-4 rounded-xl shadow-sm border border-gray-100/50'>
+					<h3 className='text-md font-bold text-gray-800 mb-3 flex items-center gap-2'>
+						<span className='w-1.5 h-4 bg-green-500 rounded-full inline-block'></span>
+						অনুসন্ধান
+					</h3>
+					<div className='relative group'>
 						<Input
 							placeholder='পণ্য খুঁজুন...'
 							value={localSearchTerm}
 							onChange={handleSearchChange}
-							className='w-full pr-9'
+							className='w-full pr-9 bg-white/80 border-gray-200 focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all rounded-xl shadow-inner'
 						/>
 						{localSearchTerm && (
 							<button
 								onClick={clearSearch}
-								className='absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700'
+								className='absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-red-500 transition-colors'
 							>
 								<X className='h-4 w-4' />
 							</button>
 						)}
 					</div>
 
-					{/* Reset Filters Button - Moved under the search box */}
+					{/* Reset Filters Button */}
 					<Button
 						variant='outline'
 						size='sm'
-						className='w-full flex gap-2 mt-2'
+						className='w-full flex gap-2 mt-4 rounded-xl border-gray-200 hover:border-red-200 hover:bg-red-50 hover:text-red-600 transition-all duration-300'
 						onClick={onResetFilters}
 					>
 						<RefreshCw className='h-3.5 w-3.5' />
@@ -114,18 +117,19 @@ export function FilterSidebar({
 				</div>
 
 				{/* Categories */}
-				<div>
-					<h3 className='text-lg font-semibold mb-3'>বিভাগসমূহ</h3>
+				<div className='bg-white/50 p-4 rounded-xl shadow-sm border border-gray-100/50'>
+					<h3 className='text-md font-bold text-gray-800 mb-3 flex items-center gap-2'>
+						<span className='w-1.5 h-4 bg-emerald-500 rounded-full inline-block'></span>
+						বিভাগসমূহ
+					</h3>
 					{isLoading ? (
-						<div className='animate-pulse space-y-2'>
-							<div className='h-4 bg-gray-200 rounded w-3/4'></div>
-							<div className='h-4 bg-gray-200 rounded w-1/2'></div>
-							<div className='h-4 bg-gray-200 rounded w-2/3'></div>
+						<div className='animate-pulse space-y-3 mt-2'>
+							<div className='h-3 bg-gray-200/80 rounded w-3/4'></div>
+							<div className='h-3 bg-gray-200/80 rounded w-1/2'></div>
+							<div className='h-3 bg-gray-200/80 rounded w-2/3'></div>
 						</div>
 					) : (
-						/* Categories section in FilterSidebar */
-						<div className='space-y-1'>
-							{/* Render the category tree for all categories */}
+						<div className='space-y-1 mt-2 max-h-[250px] overflow-y-auto pr-2 custom-scrollbar'>
 							<CategoryTree
 								categories={categories}
 								selectedCategoryId={selectedCategoryId}
@@ -136,24 +140,28 @@ export function FilterSidebar({
 				</div>
 
 				{/* Price Range */}
-				<div>
-					<h3 className='text-lg font-semibold mb-3'>মূল্য সীমা</h3>
-					<div className='flex items-center justify-between mb-2'>
-						<span className='text-sm text-gray-600'>
-							{localPriceRange[0]} টাকা
+				<div className='bg-white/50 p-4 rounded-xl shadow-sm border border-gray-100/50'>
+					<h3 className='text-md font-bold text-gray-800 mb-4 flex items-center gap-2'>
+						<span className='w-1.5 h-4 bg-teal-500 rounded-full inline-block'></span>
+						মূল্য সীমা
+					</h3>
+					<div className='flex items-center justify-between mb-4 bg-white p-2 rounded-lg border border-gray-100'>
+						<span className='text-sm font-semibold text-green-700 bg-green-50 px-2 py-1 rounded'>
+							{localPriceRange[0]} ৳
 						</span>
-						<span className='text-sm text-gray-600'>
-							{localPriceRange[1]} টাকা
+						<span className='text-gray-300'>-</span>
+						<span className='text-sm font-semibold text-green-700 bg-green-50 px-2 py-1 rounded'>
+							{localPriceRange[1]} ৳
 						</span>
 					</div>
 					<Slider
-  value={[localPriceRange[0], localPriceRange[1]]}
-  min={0}
-  max={100000}
-  step={1000}
-  onValueChange={handleSliderChange}
-  className="my-4"
-/>
+						value={[localPriceRange[0], localPriceRange[1]]}
+						min={0}
+						max={100000}
+						step={100}
+						onValueChange={handleSliderChange}
+						className="py-2"
+					/>
 				</div>
 			</div>
 		</div>
@@ -271,9 +279,10 @@ function CategoryTree({
 									type='button'
 									onClick={() => onCategoryClick(category.id)}
 									className={cn(
-										'w-full text-left px-2 py-0.5 rounded text-sm hover:bg-gray-100 transition-colors',
-										selectedCategoryId === category.id &&
-											'font-medium text-green-600 bg-green-50'
+										'w-full text-left px-3 py-1.5 rounded-lg text-sm transition-all duration-200 border border-transparent',
+										selectedCategoryId === category.id
+											? 'font-bold text-green-700 bg-green-50 shadow-[inset_0_0_0_1px_rgba(34,197,94,0.2)]'
+											: 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 hover:border-gray-200/50'
 									)}
 								>
 									{category.name}

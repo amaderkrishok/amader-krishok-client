@@ -74,32 +74,48 @@ export default function WeatherPage() {
 	};
 
 	return (
-		<div className='min-h-screen bg-white text-gray-900 p-4 md:p-6'>
-			<div className='container mx-auto p-4'>
-				<h1 className='text-3xl font-bold mb-6 text-center'>
-					আবহাওয়া অনুসন্ধান
-				</h1>
-				<div className='flex flex-col sm:flex-row gap-4 w-full max-w-3xl mx-auto'>
-					<Input
-						type='text'
-						placeholder='শহরের নাম লিখুন'
-						className='flex-grow'
-						value={location}
-						onChange={handleSearchChange}
-						onKeyDown={(e) => {
-							if (e.key === 'Enter') {
-								handleSearch();
-							}
-						}}
-					/>
-					<Button className='w-full sm:w-auto' onClick={handleSearch}>
-						<Search className='mr-2 h-4 w-4' /> অনুসন্ধান করুন
+		<div className='min-h-screen bg-gradient-to-b from-green-50 via-white to-emerald-50 text-gray-900 p-4 md:p-6'>
+			<div className='container mx-auto p-4 mb-8 mt-4'>
+				<div className='flex flex-col items-center mb-8'>
+					<div className='bg-green-100/60 p-3 rounded-full mb-3 shadow-sm'>
+						<svg className="w-8 h-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+							<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
+						</svg>
+					</div>
+					<h1 className='text-4xl font-extrabold text-gray-900 text-center drop-shadow-sm'>
+						আবহাওয়া অনুসন্ধান
+					</h1>
+				</div>
+				<div className='flex flex-col sm:flex-row gap-3 w-full max-w-2xl mx-auto'>
+					<div className='relative flex-grow group shadow-sm hover:shadow-md transition-shadow duration-300 rounded-full'>
+						<Input
+							type='text'
+							placeholder='শহরের নাম লিখুন'
+							className='w-full pl-6 pr-12 py-6 rounded-full border-gray-200 focus:ring-2 focus:ring-green-400/30 focus:border-green-400 bg-white/80 backdrop-blur-sm text-lg'
+							value={location}
+							onChange={handleSearchChange}
+							onKeyDown={(e) => {
+								if (e.key === 'Enter') {
+									handleSearch();
+								}
+							}}
+						/>
+					</div>
+					<Button 
+						className='w-full sm:w-auto px-8 py-6 rounded-full bg-gradient-to-r from-green-600 to-emerald-500 hover:from-green-500 hover:to-emerald-400 text-white font-bold text-lg shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 active:scale-95 border-0' 
+						onClick={handleSearch}
+					>
+						<Search className='mr-2 h-5 w-5' /> অনুসন্ধান
 					</Button>
 				</div>
 			</div>
 
 			{/* Display error or weather data */}
-			{error && <div className='text-red-500 text-center'>{error}</div>}
+			{error && (
+				<div className='max-w-2xl mx-auto mt-4 bg-red-50 text-red-600 p-4 rounded-2xl text-center border border-red-100 shadow-sm'>
+					{error}
+				</div>
+			)}
 
 			{weatherdata && (
 				<div className='max-w-7xl mx-auto space-y-6'>

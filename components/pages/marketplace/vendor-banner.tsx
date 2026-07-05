@@ -1,16 +1,21 @@
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
 export function VendorBanner() {
 	return (
-		<div className='bg-green-100/50 border border-green-200 rounded-lg p-6 mb-8 mt-10'>
-			<div className='flex flex-col md:flex-row items-start md:items-center justify-between gap-4'>
-				<div>
-					<h2 className='text-xl font-bold text-gray-900 mb-2'>
+		<div className='relative overflow-hidden bg-gradient-to-r from-emerald-900 via-green-800 to-emerald-900 rounded-2xl p-8 mb-10 mt-6 shadow-xl group'>
+			{/* Decorative elements */}
+			<div className='absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 rounded-full bg-white opacity-5 group-hover:scale-110 transition-transform duration-700 ease-in-out'></div>
+			<div className='absolute bottom-0 left-0 -ml-16 -mb-16 w-48 h-48 rounded-full bg-green-400 opacity-10 group-hover:scale-110 transition-transform duration-700 ease-in-out'></div>
+			
+			<div className='relative flex flex-col md:flex-row items-start md:items-center justify-between gap-6 z-10'>
+				<div className='max-w-2xl'>
+					<h2 className='text-2xl md:text-3xl font-extrabold text-white mb-3 flex items-center gap-2'>
+						
 						সেলার হিসেবে আমাদের সাথে যুক্ত হন
 					</h2>
-					<p className='text-gray-600'>
+					<p className='text-green-100/90 text-lg leading-relaxed'>
 						আপনার পৌঁছানোর পরিধি বাড়ান এবং হাজার হাজার গ্রাহকের কাছে আপনার কৃষি
 						পণ্য বিক্রি করুন। আজই নিবন্ধন করুন এবং আমাদের প্ল্যাটফর্মে যাচাইকৃত
 						সেলার হন।
@@ -18,11 +23,11 @@ export function VendorBanner() {
 				</div>
 				<Button
 					asChild
-					className='bg-green-600 hover:bg-green-700 text-white whitespace-nowrap'
+					className='bg-white text-emerald-800 hover:bg-green-50 shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:shadow-[0_0_25px_rgba(255,255,255,0.4)] transition-all duration-300 transform hover:-translate-y-1 rounded-xl px-8 py-6 text-lg font-bold border-none whitespace-nowrap group/btn'
 				>
 					<Link href='/auth/register/vendor'>
 						রেজিষ্ট্রেশন করুন
-						<ArrowRight className='ml-2 h-4 w-4' />
+						<ArrowRight className='ml-2 h-5 w-5 group-hover/btn:translate-x-1 transition-transform' />
 					</Link>
 				</Button>
 			</div>

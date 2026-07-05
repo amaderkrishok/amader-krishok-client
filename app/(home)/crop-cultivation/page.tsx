@@ -49,20 +49,20 @@ export default function CropCultivationPage() {
 
 	if (error) {
 		return (
-			<div className='min-h-screen bg-gray-50 p-6'>
-				<div className='container mx-auto'>
-					<div className='flex items-center justify-center min-h-[60vh]'>
-						<div className='bg-white p-8 rounded-lg shadow-md text-center'>
-							<AlertCircle className='mx-auto h-12 w-12 text-red-500 mb-4' />
-							<h2 className='text-2xl font-bold text-gray-800 mb-2'>Error</h2>
-							<p className='text-gray-600'>{error}</p>
-							<button
-								onClick={() => window.location.reload()}
-								className='mt-6 px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90'
-							>
-								Try Again
-							</button>
+			<div className='min-h-screen bg-gradient-to-br from-red-50 via-white to-red-50/50 p-6 flex items-center justify-center'>
+				<div className='container mx-auto max-w-lg'>
+					<div className='bg-white/80 backdrop-blur-md p-10 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-red-100 text-center'>
+						<div className='bg-red-100/50 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6'>
+							<AlertCircle className='h-10 w-10 text-red-500' />
 						</div>
+						<h2 className='text-3xl font-extrabold text-gray-900 mb-3'>সমস্যা হয়েছে</h2>
+						<p className='text-gray-600 text-lg mb-8'>{error}</p>
+						<button
+							onClick={() => window.location.reload()}
+							className='w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-red-500 to-rose-500 text-white rounded-xl font-semibold shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 active:scale-95'
+						>
+							আবার চেষ্টা করুন
+						</button>
 					</div>
 				</div>
 			</div>
@@ -70,33 +70,42 @@ export default function CropCultivationPage() {
 	}
 
 	return (
-		<div className='min-h-screen bg-gray-50'>
-			<div className='mx-auto p-5'>
-				<div className='flex flex-col lg:flex-row gap-0'>
+		<div className='min-h-screen bg-gradient-to-br from-green-50/60 via-white to-emerald-50/40'>
+			<div className='max-w-[1600px] mx-auto p-4 md:p-6 lg:p-8'>
+				<div className='flex flex-col lg:flex-row gap-6 lg:gap-8'>
 					{/* Sidebar */}
 					{loading ? (
-						<div className='w-64 p-4'>
-							<Skeleton className='h-8 w-full mb-4' />
-							<div className='space-y-2'>
+						<div className='w-full lg:w-72 xl:w-80 p-6 bg-white/70 backdrop-blur-sm rounded-2xl shadow-sm border border-white/50'>
+							<Skeleton className='h-8 w-3/4 mb-6 rounded-lg' />
+							<div className='space-y-3'>
 								{[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-									<Skeleton key={i} className='h-10 w-full' />
+									<Skeleton key={i} className='h-12 w-full rounded-xl' />
 								))}
 							</div>
 						</div>
 					) : (
-						<Sidebar onSelectCrop={handleCropSelect} crops={crops} />
+						<div className='w-full lg:w-72 xl:w-80'>
+							<Sidebar onSelectCrop={handleCropSelect} crops={crops} />
+						</div>
 					)}
 
 					{/* Main content */}
-					<main className='flex-1 px-0 py-0 lg:pl-0 lg:pr-0 lg:ml-64'>
+					<main className='flex-1 lg:min-w-0'>
 						{selectedCropId ? (
 							<CropInfo cropId={selectedCropId} />
 						) : (
-							<div className='text-center py-12'>
-								<p className='text-gray-500'>
-									Select a crop from the sidebar to view cultivation
-									information.
-								</p>
+							<div className='flex items-center justify-center h-full min-h-[400px] bg-white/60 backdrop-blur-sm rounded-3xl border border-white/50 shadow-sm'>
+								<div className='text-center p-8'>
+									<div className='w-24 h-24 bg-green-100/50 rounded-full flex items-center justify-center mx-auto mb-6'>
+										<svg className="w-12 h-12 text-green-500/50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+											<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+										</svg>
+									</div>
+									<h3 className='text-xl font-bold text-gray-800 mb-2'>ফসল নির্বাচন করুন</h3>
+									<p className='text-gray-500 max-w-sm mx-auto'>
+										বিস্তারিত চাষাবাদ তথ্য দেখতে বাম পাশের তালিকা থেকে একটি ফসল নির্বাচন করুন।
+									</p>
+								</div>
 							</div>
 						)}
 					</main>

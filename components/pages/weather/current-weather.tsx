@@ -57,24 +57,24 @@ export function CurrentWeather({ data }: { data: any }) {
 		if (percentage < 30) {
 			details = {
 				...details,
-				color: 'text-blue-400',
-				bgColor: 'bg-blue-50',
-				intensity: 'Light',
+				color: 'text-green-500',
+				bgColor: 'bg-green-50',
+				intensity: 'হালকা (Light)',
 			};
 		} else if (percentage < 70) {
 			details = {
 				...details,
-				color: 'text-blue-600',
-				bgColor: 'bg-blue-100',
-				intensity: 'Moderate',
+				color: 'text-green-600',
+				bgColor: 'bg-green-100',
+				intensity: 'মাঝারি (Moderate)',
 				icon: CloudDrizzle,
 			};
 		} else {
 			details = {
 				...details,
-				color: 'text-blue-800',
-				bgColor: 'bg-blue-200',
-				intensity: 'Heavy',
+				color: 'text-green-800',
+				bgColor: 'bg-green-200',
+				intensity: 'ভারী (Heavy)',
 				icon: CloudRain,
 			};
 		}
@@ -164,12 +164,12 @@ export function CurrentWeather({ data }: { data: any }) {
 											>
 												{getPrecipitationDetails(hourlyForecast[0].pop).text}
 											</span>
-											<span className='text-xs text-gray-600'>
+											<span className='text-xs text-gray-600 font-medium'>
 												{
 													getPrecipitationDetails(hourlyForecast[0].pop)
 														.intensity
 												}{' '}
-												precipitation
+												বৃষ্টির তীব্রতা
 											</span>
 										</div>
 									</div>
@@ -177,17 +177,17 @@ export function CurrentWeather({ data }: { data: any }) {
 							)}
 						</div>
 
-						<div className='grid grid-cols-2 gap-x-6 gap-y-1 text-sm'>
-							<span className='text-gray-500'>আর্দ্রতা</span>
-							<span>{hourlyForecast[0]?.main.humidity || '--'}%</span>
-							<span className='text-gray-500'>বাতাসের গতি</span>
-							<span>{hourlyForecast[0]?.wind.speed || '--'} km/h</span>
-							<span className='text-gray-500'>বায়ুমণ্ডলীয় চাপ</span>
-							<span>{hourlyForecast[0]?.main.pressure || '--'} hPa</span>
-							<span className='text-gray-500'>সূর্যোদয়</span>
-							<span>{formatTime12Hour(sunrise) || '--'}</span>
-							<span className='text-gray-500'>সূর্যাস্ত</span>
-							<span>{formatTime12Hour(sunset) || '--'}</span>
+						<div className='grid grid-cols-2 gap-x-6 gap-y-2 text-sm bg-gray-50/50 p-4 rounded-xl border border-gray-100'>
+							<span className='text-gray-500 flex items-center gap-1'><Droplets className='w-4 h-4' /> আর্দ্রতা (Humidity)</span>
+							<span className='font-medium'>{hourlyForecast[0]?.main.humidity || '--'}%</span>
+							<span className='text-gray-500 flex items-center gap-1'><Wind className='w-4 h-4' /> বাতাসের গতি (Wind)</span>
+							<span className='font-medium'>{hourlyForecast[0]?.wind.speed || '--'} km/h</span>
+							<span className='text-gray-500 flex items-center gap-1'>বায়ুমণ্ডলীয় চাপ (Pressure)</span>
+							<span className='font-medium'>{hourlyForecast[0]?.main.pressure || '--'} hPa</span>
+							<span className='text-gray-500 flex items-center gap-1'><Sun className='w-4 h-4 text-orange-500'/> সূর্যোদয় (Sunrise)</span>
+							<span className='font-medium'>{formatTime12Hour(sunrise) || '--'}</span>
+							<span className='text-gray-500 flex items-center gap-1'><Sun className='w-4 h-4 text-red-500'/> সূর্যাস্ত (Sunset)</span>
+							<span className='font-medium'>{formatTime12Hour(sunset) || '--'}</span>
 						</div>
 					</div>
 				</div>
@@ -215,8 +215,8 @@ export function CurrentWeather({ data }: { data: any }) {
 										{React.createElement(precipDetails.icon, {
 											className: `h-4 w-4 ${precipDetails.color}`,
 										})}
-										<span className={`text-xs ${precipDetails.color}`}>
-											Rain {Math.round(hour.pop * 100)}%
+										<span className={`text-xs font-semibold ${precipDetails.color}`}>
+											বৃষ্টি {Math.round(hour.pop * 100)}%
 										</span>
 									</div>
 									{hour.pop > 0 && (
