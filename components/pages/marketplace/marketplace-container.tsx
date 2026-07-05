@@ -62,9 +62,7 @@ export function MarketplaceContainer() {
 			try {
 				const response = await ProductCategoryService.getProductAllCategories();
 				console.log(response.data);
-
 				if (response && response.data) {
-					// Filter out "All Products" and just use its children
 					if (
 						response.data.length > 0 &&
 						response.data[0]?.name === 'All Products' &&
@@ -83,7 +81,6 @@ export function MarketplaceContainer() {
 				setCategoriesLoading(false);
 			}
 		};
-
 		fetchCategories();
 	}, []);
 

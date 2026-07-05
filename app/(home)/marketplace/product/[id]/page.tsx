@@ -5,15 +5,11 @@ import { ProductService } from '@/services/product-service';
 import Link from 'next/link';
 
 interface ProductPageProps {
-	params: {
-		id: string;
-	};
+	params: {id: string;};
 }
 
 // Generate metadata for the page using real data from API
-export async function generateMetadata({
-	params,
-}: ProductPageProps): Promise<Metadata> {
+export async function generateMetadata({params}: ProductPageProps): Promise<Metadata> {
 	try {
 		// Wait for params to resolve fully
 		const resolvedParams = await params;
@@ -46,12 +42,8 @@ export async function generateMetadata({
 				},
 			};
 		} catch (err: any) {
-			// If product not found (404), return appropriate metadata
 			if (err?.response?.status === 404) {
-				return {
-					title: 'পণ্য খুঁজে পাওয়া যায়নি',
-					description: 'অনুরোধকৃত পণ্য খুঁজে পাওয়া যায়নি',
-				};
+				return {	title: 'পণ্য খুঁজে পাওয়া যায়নি',	description: 'অনুরোধকৃত পণ্য খুঁজে পাওয়া যায়নি',};
 			}
 
 			// For other errors
@@ -84,8 +76,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
 		try {
 			const product = await ProductService.getProductById(productId);
-            
-			// If we somehow get a successful response but no product data
 			if (!product) {
 				return <ProductNotFound />;
 			}
