@@ -105,24 +105,25 @@ export function WeatherOverview({ data }: WeatherOverviewProps) {
 	}, [chartData, timeRange]);
 
 	return (
-		<Card className='w-full max-w-4xl mx-auto p-2 sm:p-6 '>
-			<CardHeader className='flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-4 sm:space-y-0 pb-2'>
+		<Card className='w-full max-w-4xl mx-auto p-2 sm:p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border-transparent rounded-3xl'>
+			<CardHeader className='flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-4 sm:space-y-0 pb-2 border-b border-gray-100 mb-6'>
 				<div className='space-y-1 w-full sm:w-auto'>
-					<CardTitle className='text-lg sm:text-xl break-words'>
+					<CardTitle className='text-lg sm:text-2xl font-bold text-gray-800 break-words flex items-center gap-2'>
+						<span className='w-2 h-6 bg-green-500 rounded-full inline-block'></span>
 						{data.city.name} এর আবহাওয়া পূর্বাভাস
 					</CardTitle>
-					<CardDescription className='text-sm'>
-						Temperature forecast for the next {timeRange.replace('d', ' days')}
+					<CardDescription className='text-sm text-gray-500 font-medium'>
+						আগামী {timeRange.replace('d', ' দিনের')} তাপমাত্রা, আর্দ্রতা এবং বাতাসের গতির গ্রাফ (Temperature, Humidity & Wind)
 					</CardDescription>
 				</div>
 				<Select value={timeRange} onValueChange={setTimeRange}>
-					<SelectTrigger className='w-full sm:w-[180px]'>
+					<SelectTrigger className='w-full sm:w-[180px] bg-green-50/50 border-green-100 rounded-xl focus:ring-green-500'>
 						<SelectValue placeholder='Select time range' />
 					</SelectTrigger>
 					<SelectContent>
-						<SelectItem value='1d'>1 Day</SelectItem>
-						<SelectItem value='3d'>3 Days</SelectItem>
-						<SelectItem value='5d'>5 Days</SelectItem>
+						<SelectItem value='1d'>১ দিন (1 Day)</SelectItem>
+						<SelectItem value='3d'>৩ দিন (3 Days)</SelectItem>
+						<SelectItem value='5d'>৫ দিন (5 Days)</SelectItem>
 					</SelectContent>
 				</Select>
 			</CardHeader>
@@ -131,7 +132,7 @@ export function WeatherOverview({ data }: WeatherOverviewProps) {
 					config={{
 						temp: {
 							label: 'Temperature',
-							color: 'var(--chart-1)',
+							color: '#22c55e',
 						},
 					}}
 					className='aspect-[4/3] w-full'

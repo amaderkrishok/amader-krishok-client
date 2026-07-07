@@ -56,9 +56,12 @@ export function WeatherForecast({ data }: { data: WeatherData }) {
 	};
 
 	return (
-		<div className='bg-white border border-gray-200 rounded-xl p-4 sm:p-6 w-full max-w-lg '>
-			<div className='flex items-center justify-between mb-4 sm:mb-6'>
-				<h2 className='text-lg sm:text-xl font-semibold'>Forecasts</h2>
+		<div className='bg-white border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-300 rounded-2xl p-4 sm:p-6 w-full max-w-lg'>
+			<div className='flex items-center justify-between mb-4 sm:mb-6 border-b border-green-100 pb-3'>
+				<h2 className='text-lg sm:text-xl font-bold text-gray-800 flex items-center gap-2'>
+					<span className='w-2 h-5 bg-green-500 rounded-full inline-block'></span>
+					আগামী ৫ দিনের পূর্বাভাস (Forecast)
+				</h2>
 			</div>
 			<div className='space-y-3 sm:space-y-4'>
 				{forecastEntries.map(([, forecasts], index) => {
@@ -69,7 +72,7 @@ export function WeatherForecast({ data }: { data: WeatherData }) {
 					return (
 						<div
 							key={index}
-							className='flex flex-col sm:flex-row items-center justify-between bg-gray-100 rounded-lg p-3 sm:p-4 text-center sm:text-left'
+							className='flex flex-col sm:flex-row items-center justify-between bg-green-50/50 hover:bg-green-100/50 transition-colors border border-green-50 rounded-xl p-3 sm:p-4 text-center sm:text-left'
 						>
 							<div className='flex items-center gap-2 sm:gap-4'>
 								<div>
@@ -78,9 +81,9 @@ export function WeatherForecast({ data }: { data: WeatherData }) {
 									</p>
 								</div>
 							</div>
-							<div className='flex flex-col items-center '>
-								<span className='text-xl sm:text-2xl font-bold'>{day}</span>
-								<p className='text-xs sm:text-sm text-gray-500'>
+							<div className='flex flex-col items-center bg-white/60 p-2 rounded-lg shadow-sm border border-green-100 min-w-[70px]'>
+								<span className='text-xl sm:text-2xl font-bold text-green-700'>{day}</span>
+								<p className='text-xs sm:text-sm text-gray-600 font-medium'>
 									{formattedDate}
 								</p>
 							</div>

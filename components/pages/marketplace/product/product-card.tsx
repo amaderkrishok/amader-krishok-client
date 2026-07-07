@@ -54,16 +54,17 @@ export function ProductCard({ product }: ProductCardProps) {
 	};
 
 	return (
-		<Card className='overflow-hidden h-full flex flex-col'>
-			<div className='relative aspect-square overflow-hidden'>
+		<Card className='overflow-hidden h-full flex flex-col rounded-2xl border-transparent shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_30px_-4px_rgba(0,0,0,0.15)] transition-all duration-300 group/card bg-white/80 backdrop-blur-sm hover:-translate-y-1'>
+			<div className='relative aspect-square overflow-hidden bg-gray-50/50'>
 				<Link href={`/marketplace/product/${product.id}`}>
 					<Image
 						src={images[currentImageIndex] || '/placeholder.svg'}
 						alt={product.name}
 						fill
-						className='object-cover transition-transform hover:scale-105'
+						className='object-cover transition-transform duration-700 ease-in-out group-hover/card:scale-110'
 						sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
 					/>
+					<div className='absolute inset-0 bg-black/0 group-hover/card:bg-black/10 transition-colors duration-300 z-10'></div>
 				</Link>
 
 				{images.length > 1 && (
@@ -73,20 +74,20 @@ export function ProductCard({ product }: ProductCardProps) {
 								e.preventDefault();
 								prevImage();
 							}}
-							className='absolute left-0 top-1/2 -translate-y-1/2 bg-black/30 text-white p-1 rounded-r-md hover:bg-black/50'
+							className='absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 backdrop-blur text-gray-800 p-1.5 rounded-full hover:bg-white hover:text-green-600 shadow-md opacity-0 group-hover/card:opacity-100 transition-all duration-300 z-20 hover:scale-110'
 							aria-label='আগের ছবি'
 						>
-							<ChevronLeft className='h-4 w-4' />
+							<ChevronLeft className='h-5 w-5' />
 						</button>
 						<button
 							onClick={(e) => {
 								e.preventDefault();
 								nextImage();
 							}}
-							className='absolute right-0 top-1/2 -translate-y-1/2 bg-black/30 text-white p-1 rounded-l-md hover:bg-black/50'
+							className='absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 backdrop-blur text-gray-800 p-1.5 rounded-full hover:bg-white hover:text-green-600 shadow-md opacity-0 group-hover/card:opacity-100 transition-all duration-300 z-20 hover:scale-110'
 							aria-label='পরের ছবি'
 						>
-							<ChevronRight className='h-4 w-4' />
+							<ChevronRight className='h-5 w-5' />
 						</button>
 						<div className='absolute bottom-1 left-0 right-0 flex justify-center gap-1'>
 							{images.map((_, idx) => (
@@ -96,10 +97,10 @@ export function ProductCard({ product }: ProductCardProps) {
 										e.preventDefault();
 										setCurrentImageIndex(idx);
 									}}
-									className={`h-1.5 rounded-full ${
+									className={`h-1.5 rounded-full transition-all duration-300 z-20 ${
 										currentImageIndex === idx
-											? 'w-3 bg-white'
-											: 'w-1.5 bg-white/60'
+											? 'w-4 bg-green-500 shadow-[0_0_5px_rgba(34,197,94,0.5)]'
+											: 'w-1.5 bg-white/80 hover:bg-white'
 									}`}
 									aria-label={`ছবি ${idx + 1} দেখুন`}
 								/>
@@ -109,13 +110,13 @@ export function ProductCard({ product }: ProductCardProps) {
 				)}
 			</div>
 
-			<CardContent className='flex-grow p-4'>
-				<Link href={`/marketplace/product/${product.id}`} className='block'>
-					<h3 className='font-semibold text-lg mb-1 hover:text-green-600 transition-colors'>
+			<CardContent className='flex-grow p-5 pb-3'>
+				<Link href={`/marketplace/product/${product.id}`} className='block group/title'>
+					<h3 className='font-bold text-lg mb-1 text-gray-900 group-hover/title:text-green-600 transition-colors'>
 						{product.name}
 					</h3>
 				</Link>
-				<p className='text-gray-600 text-sm mb-2 line-clamp-2'>
+				<p className='text-gray-500 text-sm mb-3 line-clamp-2 leading-relaxed'>
 					{product.description}
 				</p>
 
@@ -124,7 +125,7 @@ export function ProductCard({ product }: ProductCardProps) {
 						{product.productCategories.map((category) => (
 							<span
 								key={category.id}
-								className='text-xs bg-gray-100 px-2 py-0.5 rounded-full text-gray-600'
+								className='text-[11px] font-medium tracking-wide bg-green-50 px-2.5 py-1 rounded-full text-green-700 border border-green-100/50'
 							>
 								{category.name}
 							</span>
@@ -133,25 +134,30 @@ export function ProductCard({ product }: ProductCardProps) {
 				)}
 			</CardContent>
 
-			<CardFooter className='p-4 pt-0 flex items-center justify-between'>
+			<CardFooter className='p-5 pt-0 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-t border-gray-50/50 mt-2'>
 				<div>
 					{priceInfo.hasDiscount ? (
-						<div className='flex items-center gap-2'>
-							<span className='font-semibold text-lg'>
+						<div className='flex flex-col'>
+							<span className='font-extrabold text-xl text-green-600'>
 								{priceInfo.formattedDiscountPrice}
 							</span>
-							<span className='text-gray-500 line-through text-sm'>
+							<span className='text-gray-400 line-through text-xs font-medium'>
 								{priceInfo.formattedPrice}
 							</span>
 						</div>
 					) : (
-						<span className='font-semibold text-lg'>
+						<span className='font-extrabold text-xl text-gray-900'>
 							{priceInfo.formattedPrice}
 						</span>
 					)}
 				</div>
-				<Button size='sm' onClick={handleAddToCart} disabled={!canPurchase}>
-					<ShoppingCart className='h-4 w-4 mr-1' />
+				<Button 
+					size='sm' 
+					onClick={handleAddToCart} 
+					disabled={!canPurchase}
+					className={`w-full sm:w-auto rounded-xl transition-all duration-300 font-semibold shadow-sm hover:shadow-md active:scale-95 ${!canPurchase ? 'bg-gray-100 text-gray-400' : 'bg-gradient-to-r from-green-600 to-emerald-500 hover:from-green-500 hover:to-emerald-400 text-white border-0'}`}
+				>
+					<ShoppingCart className='h-4 w-4 mr-2' />
 					{!canPurchase
 						? 'ক্রয় করতে পারবেন না'
 						: product.productType === 'VARIABLE'

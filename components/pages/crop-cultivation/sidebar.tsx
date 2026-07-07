@@ -57,7 +57,7 @@ export function Sidebar({ onSelectCrop, crops = [] }: SidebarProps) {
 
 			{/* Sidebar */}
 			<aside
-				className={`fixed top-[88px] left-0 z-20 w-64 h-[calc(100vh-88px)] bg-white border-r border-gray-200 shadow-lg lg:shadow-none transition-transform duration-300 ease-in-out overflow-y-auto ${
+				className={`fixed top-[88px] left-0 z-20 w-64 h-[calc(100vh-88px)] bg-white/70 backdrop-blur-md border-r border-white/50 shadow-[4px_0_24px_rgba(0,0,0,0.02)] lg:shadow-none transition-transform duration-300 ease-in-out overflow-y-auto ${
 					isOpen ? 'translate-x-0' : '-translate-x-full'
 				} lg:translate-x-0 lg:fixed lg:h-[calc(100vh-88px)]`}
 			>
@@ -65,13 +65,13 @@ export function Sidebar({ onSelectCrop, crops = [] }: SidebarProps) {
 					{/* Search bar */}
 					<div className='relative mb-4 mt-5 lg:mt-0'>
 						<Search
-							className='absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400'
-							size={16}
+							className='absolute left-3 top-1/2 transform -translate-y-1/2 text-green-500/70'
+							size={18}
 						/>
 						<Input
 							type='search'
-							placeholder='ফসল অনুসন্ধান করুন...'
-							className='pl-8'
+							placeholder='ফসল খুঁজুন...'
+							className='pl-10 py-5 bg-white border-gray-200 focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all rounded-xl shadow-inner text-base'
 							value={searchTerm}
 							onChange={(e) => setSearchTerm(e.target.value)}
 						/>
@@ -79,14 +79,19 @@ export function Sidebar({ onSelectCrop, crops = [] }: SidebarProps) {
 
 					{/* Crop list */}
 					<ScrollArea className='flex-1 pr-4'>
-						<div className='space-y-1 mb-5'>
+						<div className='space-y-2 mb-5 px-1'>
 							{filteredCrops.map((crop) => (
-								<div className='border-b-2 border-black/10' key={crop.id}>
+								<div key={crop.id}>
 									<Button
 										variant={selectedCropId === crop.id ? 'default' : 'ghost'}
-										className='w-full justify-start'
+										className={`w-full justify-start rounded-xl px-4 py-3 text-base font-medium transition-all duration-300 ${
+											selectedCropId === crop.id
+												? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-md hover:shadow-lg hover:from-green-400 hover:to-emerald-400'
+												: 'text-gray-600 hover:bg-green-50 hover:text-green-700'
+										}`}
 										onClick={() => handleCropSelect(crop.id)}
 									>
+										{selectedCropId === crop.id && <span className='mr-2'>🌿</span>}
 										{crop.name}
 									</Button>
 								</div>

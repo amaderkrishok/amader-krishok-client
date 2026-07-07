@@ -165,10 +165,10 @@ export function Hero() {
                         showScrollHint ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
                     }`}
                 >
-                    <div className="flex flex-col items-center gap-2 text-white/40 hover:text-emerald-400/60 transition-colors cursor-pointer">
+                    {/* <div className="flex flex-col items-center gap-2 text-white/40 hover:text-emerald-400/60 transition-colors cursor-pointer">
                         <span className="text-xs tracking-wider font-light">SCROLL</span>
                         <ChevronDown className="w-4 h-4 animate-bounce" />
-                    </div>
+                    </div> */}
                 </div>
             </div>
 
