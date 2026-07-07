@@ -28,6 +28,13 @@ export async function generateMetadata({params}: ProductPageProps): Promise<Meta
 				? `${product?.name} - ${product?.store?.name}` 
 				: (product?.name || 'পণ্যের বিবরণ');
 
+			let imageUrl = undefined;
+			if (product?.simpleProduct?.images?.[0]?.imageUrl) {
+				imageUrl = product.simpleProduct.images[0].imageUrl;
+			} else if (product?.variableProduct?.variants?.length && product.variableProduct.variants[0].images?.length) {
+				imageUrl = product.variableProduct.variants[0].images[0].imageUrl;
+			}
+
 			return {
 				title: title,
 				description:
@@ -36,9 +43,14 @@ export async function generateMetadata({params}: ProductPageProps): Promise<Meta
 					title: title,
 					description:
 						product?.description || 'View product details and purchase options',
-					images: product?.simpleProduct?.images?.[0]?.imageUrl
-						? [{ url: product.simpleProduct.images[0].imageUrl }]
-						: undefined,
+					images: imageUrl ? [{ url: imageUrl }] : undefined,
+					type: 'website',
+				},
+				twitter: {
+					card: 'summary_large_image',
+					title: title,
+					description: product?.description || 'View product details and purchase options',
+					images: imageUrl ? [imageUrl] : undefined,
 				},
 			};
 		} catch (err: any) {
