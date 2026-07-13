@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useSession } from '@/components/providers/session-provider';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -55,6 +56,7 @@ interface DashboardStats {
 }
 
 export default function AdminDashboardPage() {
+	const { isLoading: isSessionLoading } = useSession();
 	const [loading, setLoading] = useState(true);
 	const [stats, setStats] = useState<DashboardStats>({
 		totalOrders: 0,
@@ -75,6 +77,9 @@ export default function AdminDashboardPage() {
 
 	useEffect(() => {
 		const fetchDashboardData = async () => {
+			// Don't fetch until session is fully loaded
+			if (isSessionLoading) return;
+
 			try {
 				setLoading(true);
 				setError(null);
@@ -182,9 +187,9 @@ export default function AdminDashboardPage() {
 		};
 
 		fetchDashboardData();
-	}, []);
+	}, [isSessionLoading]);
 
-	if (loading) {
+	if (isSessionLoading || loading) {
 		return <DashboardSkeleton />;
 	}
 
