@@ -1,210 +1,370 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
 import { 
-  Users, 
-  Store, 
-  MapPin, 
-  ArrowRight, 
-  ChevronDown,
-  Sprout,
-  TrendingUp,
-  Shield
+  PlayCircle,
+  CheckCircle2,
+  ShieldCheck,
+  Leaf,
+  ShoppingBag,
+  Search,
+  ChevronDown
 } from 'lucide-react';
+import Image from 'next/image';
+import { motion, useSpring, useTransform, useMotionValue } from 'framer-motion';
+import TextType from '@/components/global/TextType';
 import Link from 'next/link';
 
 export function Hero() {
-    const messages = [
-        'আমরা কৃষকদের সবচেয়ে বড় খুচরা চেইনের সাথে সংযুক্ত করি',
-        'আমরা কৃষকদের জন্য সর্বোত্তম সুযোগ নিশ্চিত করি',
-        'কৃষিক্ষেত্রে উন্নয়ন আনতে আমরা প্রতিশ্রুতিবদ্ধ',
-        'টেকসই কৃষির জন্য আমরা কাজ করি',
+    const containerRef = useRef<HTMLDivElement>(null);
+    const mouseX = useMotionValue(0);
+    const mouseY = useMotionValue(0);
+
+    // Smooth mouse parallax values
+    const springConfig = { damping: 25, stiffness: 150 };
+    const mouseXSpring = useSpring(mouseX, springConfig);
+    const mouseYSpring = useSpring(mouseY, springConfig);
+
+    useEffect(() => {
+        const handleMouseMove = (e: MouseEvent) => {
+            if (!containerRef.current) return;
+            const { left, top, width, height } = containerRef.current.getBoundingClientRect();
+            const x = (e.clientX - left - width / 2) / (width / 2);
+            const y = (e.clientY - top - height / 2) / (height / 2);
+            mouseX.set(x);
+            mouseY.set(y);
+        };
+
+        window.addEventListener('mousemove', handleMouseMove);
+        return () => window.removeEventListener('mousemove', handleMouseMove);
+    }, [mouseX, mouseY]);
+
+    const features = [
+        "১০০% Fresh",
+        "Chemical Free",
+        "Fast Delivery",
+        "Trusted Farmers"
     ];
-
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const [isVisible, setIsVisible] = useState(true);
-    const [showScrollHint, setShowScrollHint] = useState(true);
-    const videoRef = useRef<HTMLVideoElement>(null);
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setIsVisible(false);
-            setTimeout(() => {
-                setCurrentIndex((prevIndex) => (prevIndex + 1) % messages.length);
-                setIsVisible(true);
-            }, 400);
-        }, 4500);
-
-        return () => clearInterval(interval);
-    }, [messages.length]);
-
-    useEffect(() => {
-        if (videoRef.current) {
-            videoRef.current.play().catch(() => {});
-        }
-    }, []);
-
-    useEffect(() => {
-        const timer = setTimeout(() => setShowScrollHint(false), 5000);
-        return () => clearTimeout(timer);
-    }, []);
 
     const stats = [
-        { value: '১০০০+', label: 'কৃষক সংযুক্ত', icon: Users, delay: 0 },
-        { value: '৫০+', label: 'খুচরা চেইন', icon: Store, delay: 0.1 },
-        { value: '৪২', label: 'জেলা', icon: MapPin, delay: 0.2 },
+        { value: '১০,০০০+', label: 'সক্রিয় কৃষক' },
+        { value: '৪২', label: 'জেলা কভারেজ' },
+        { value: '৫০+', label: 'রিটেইল পার্টনার' },
+        { value: '৯৮%', label: 'সন্তুষ্ট গ্রাহক' },
     ];
 
-    return (
-        <div className="relative min-h-screen flex flex-col items-center justify-center text-center px-4 overflow-hidden">
-            <div className="absolute inset-0 z-0">
-                <video
-                    ref={videoRef}
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    className="w-full h-full object-cover scale-105"
-                >
-                    <source src="https://assets.mixkit.co/videos/preview/mixkit-wheat-field-under-cloudy-sky-40762-large.mp4" type="video/mp4" />
-                </video>
-                <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/45 to-black/65"></div>
-            </div>
+    const tabs = ['সব পণ্য', 'সবজি', 'ফল', 'শস্য', 'মাছ', 'সার ও উপকরণ'];
+    const [activeTab, setActiveTab] = useState('সব পণ্য');
 
-           
-            <div className="absolute inset-0 z-0 pointer-events-none">
+    // Animation Variants
+    const fadeUp = {
+        hidden: { opacity: 0, y: 30 },
+        visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
+    };
+
+    const staggerContainer = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: { staggerChildren: 0.1, delayChildren: 0.2 }
+        }
+    };
+
+    return (
+        <div ref={containerRef} className="relative min-h-screen flex flex-col items-center bg-[#2D331F] overflow-hidden pt-10 pb-20 selection:bg-[#EAB308] selection:text-[#2D331F]">
+            
+            {/* --- Background Decorations (Parallax) --- */}
+            <motion.div 
+                style={{ x: useTransform(mouseXSpring, [-1, 1], [-50, 50]), y: useTransform(mouseYSpring, [-1, 1], [-50, 50]) }}
+                className="absolute inset-0 z-0 pointer-events-none"
+            >
+                {/* Glows */}
+                <div className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-[#EAB308] blur-[180px] opacity-20"></div>
+                <div className="absolute bottom-[-10%] right-[-10%] w-[40vw] h-[40vw] rounded-full bg-[#4ADE80] blur-[150px] opacity-15"></div>
+                
+                {/* Floating Leaves */}
                 {[...Array(6)].map((_, i) => (
-                    <div
+                    <motion.div
                         key={i}
-                        className="absolute bg-white/10 rounded-full"
+                        className="absolute text-[#4ADE80]/30"
                         style={{
-                            width: `${Math.random() * 4 + 1}px`,
-                            height: `${Math.random() * 4 + 1}px`,
                             left: `${Math.random() * 100}%`,
                             top: `${Math.random() * 100}%`,
-                            animation: `float ${Math.random() * 10 + 6}s ease-in-out infinite`,
-                            animationDelay: `${Math.random() * 5}s`,
+                            transform: `scale(${Math.random() * 1.5 + 0.5})`,
                         }}
-                    />
-                ))}
-            </div>
-
-     
-            <div className="relative z-10 max-w-5xl mx-auto">
-                {/* Decorative Icon */}
-                <div className="mb-4 animate-fadeUp">
-                    <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[#064E3B]/20 backdrop-blur-sm border border-[#064E3B]/30 group hover:bg-[#064E3B]/40 transition-all duration-300">
-                        <Sprout className="w-6 h-6 text-emerald-400 animate-float-slow" />
-                    </div>
-                </div>
-
-          
-                <div className="mb-6 animate-fadeUp" style={{ animationDelay: '0.1s' }}>
-                    <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-3 tracking-tight drop-shadow-2xl">
-                        আমাদের কৃষক
-                    </h1>
-                    <div className="flex justify-center gap-1">
-                        <div className="h-0.5 w-12 bg-[#064E3B]/60 rounded-full animate-pulse"></div>
-                        <div className="h-0.5 w-6 bg-[#064E3B]/40 rounded-full"></div>
-                        <div className="h-0.5 w-3 bg-[#064E3B]/30 rounded-full"></div>
-                    </div>
-                </div>
-
-           
-                <div className="mt-8 mb-12 animate-fadeUp" style={{ animationDelay: '0.2s' }}>
-                    <div
-                        className={`transition-all duration-500 ease-out ${
-                            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-                        }`}
+                        animate={{
+                            y: [0, -40, 0],
+                            rotate: [0, 90, 0],
+                        }}
+                        transition={{
+                            duration: Math.random() * 5 + 10,
+                            repeat: Infinity,
+                            ease: "linear"
+                        }}
                     >
-                        <div className="backdrop-blur-md bg-white/5 rounded-2xl px-8 py-5 md:px-12 md:py-6 inline-flex items-center gap-3 border border-white/15 shadow-xl hover:border-[#064E3B]/30 transition-all duration-300">
-                            <TrendingUp className="w-5 h-5 md:w-6 md:h-6 text-emerald-400 flex-shrink-0" />
-                            <p className="text-xl md:text-2xl lg:text-3xl font-medium text-white leading-relaxed">
-                                {messages[currentIndex]}
-                            </p>
-                        </div>
+                        <Leaf className="w-8 h-8" />
+                    </motion.div>
+                ))}
+            </motion.div>
+
+            <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-8 flex flex-col gap-16">
+                
+                {/* --- HERO TOP SECTION --- */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-8 items-center mt-12">
+                    
+                    {/* --- LEFT SIDE (Content) --- */}
+                    <motion.div 
+                        variants={staggerContainer}
+                        initial="hidden"
+                        animate="visible"
+                        className="flex flex-col items-start max-w-2xl"
+                    >
+                        {/* Small Badge */}
+                        <motion.div variants={fadeUp} className="mb-8">
+                            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md shadow-[0_4px_24px_-8px_rgba(0,0,0,0.5)]">
+                                <span className="text-lg">🌱</span>
+                                <span className="text-[#EAB308] text-sm font-semibold tracking-wide uppercase">Fresh From Farm</span>
+                            </div>
+                        </motion.div>
+
+                        {/* Main Heading with TextType Component */}
+                        <motion.div variants={fadeUp} className="mb-6 min-h-[160px] lg:min-h-[220px]">
+                            <TextType 
+                                as="h1"
+                                text={"আজ সকালের তাজা ফসল,\nআগামীকাল আপনার রান্নাঘরে।"}
+                                typingSpeed={50}
+                                loop={false}
+                                showCursor={true}
+                                textColors={['#FFFFFF']}
+                                className="text-5xl sm:text-6xl lg:text-7xl font-bold leading-[1.2] tracking-tight"
+                            />
+                        </motion.div>
+
+                        {/* Description */}
+                        <motion.p variants={fadeUp} className="text-gray-400 text-lg sm:text-xl leading-relaxed mb-10 max-w-xl">
+                            আমরা বাংলাদেশের বিশ্বস্ত কৃষকদের কাছ থেকে সরাসরি তাজা শাকসবজি, ফলমূল ও কৃষিপণ্য সংগ্রহ করি এবং নিরাপদ প্যাকেজিংয়ের মাধ্যমে দ্রুত আপনার দরজায় পৌঁছে দিই।
+                        </motion.p>
+
+                        {/* Buttons */}
+                        <motion.div variants={fadeUp} className="flex flex-col sm:flex-row gap-5 w-full sm:w-auto mb-12">
+                            <motion.button 
+                                whileHover={{ scale: 1.05, y: -2 }}
+                                whileTap={{ scale: 0.95 }}
+                                className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-[#EAB308] to-[#D97706] hover:from-[#FCD34D] hover:to-[#EAB308] rounded-2xl text-[#2D331F] font-bold text-lg transition-all shadow-[0_8px_30px_rgb(234,179,8,0.3)]"
+                            >
+                                <ShoppingBag className="w-5 h-5" />
+                                <Link href="/marketplace" className="text-[#2D331F] group-hover:text-[#1A1C0B] transition-colors"><span>সবজি কিনুন</span></Link>
+                            </motion.button>
+                            
+                            <motion.button 
+                                whileHover={{ scale: 1.05, y: -2, backgroundColor: "rgba(255,255,255,0.1)" }}
+                                whileTap={{ scale: 0.95 }}
+                                className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-white/5 border border-white/10 rounded-2xl text-white font-semibold text-lg backdrop-blur-md transition-all shadow-[0_8px_30px_rgb(0,0,0,0.1)]"
+                            >
+                                <PlayCircle className="w-5 h-5 text-gray-300 group-hover:text-white transition-colors" />
+                                <span>কিভাবে কাজ করে</span>
+                            </motion.button>
+                        </motion.div>
+
+                        {/* Features */}
+                        <motion.div variants={fadeUp} className="grid grid-cols-2 gap-y-4 gap-x-8">
+                            {features.map((feature, idx) => (
+                                <motion.div 
+                                    key={idx} 
+                                    className="flex items-center gap-3 group cursor-default"
+                                    whileHover={{ x: 5 }}
+                                >
+                                    <div className="flex items-center justify-center w-6 h-6 rounded-full bg-[#4ADE80]/20 group-hover:bg-[#4ADE80]/40 transition-colors">
+                                        <CheckCircle2 className="w-4 h-4 text-[#4ADE80]" />
+                                    </div>
+                                    <span className="text-gray-300 font-medium group-hover:text-white transition-colors">{feature}</span>
+                                </motion.div>
+                            ))}
+                        </motion.div>
+                    </motion.div>
+
+                    {/* --- RIGHT SIDE (Visual Collage) --- */}
+                    <div className="relative w-full h-[500px] lg:h-[600px] flex items-center justify-center mt-10 lg:mt-0">
+                        
+                        {/* Main Central Image */}
+                        <motion.div 
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 1, ease: "easeOut", delay: 0.3 }}
+                            style={{ x: useTransform(mouseXSpring, [-1, 1], [-20, 20]), y: useTransform(mouseYSpring, [-1, 1], [-20, 20]) }}
+                            className="relative w-full max-w-[350px] lg:max-w-[400px] aspect-[4/5] rounded-[32px] overflow-hidden shadow-2xl z-10 ring-1 ring-white/10"
+                        >
+                            <Image
+                                src="/images/main_image.jpeg"
+                                alt="Farmer Harvesting"
+                                fill
+                                className="object-cover"
+                            />
+                        </motion.div>
+
+                        {/* Floating Card: Top Right (Veggie Basket) */}
+                        <motion.div 
+                            initial={{ opacity: 0, x: 50, y: -50 }}
+                            animate={{ opacity: 1, x: 0, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.6 }}
+                            whileHover={{ y: -10, scale: 1.05 }}
+                            style={{ x: useTransform(mouseXSpring, [-1, 1], [-30, 30]), y: useTransform(mouseYSpring, [-1, 1], [-30, 30]) }}
+                            className="absolute top-4 -right-4 lg:-right-8 w-40 lg:w-48 aspect-square rounded-[24px] overflow-hidden p-2 bg-white/10 backdrop-blur-xl border border-white/20 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)] z-20"
+                        >
+                            <div className="relative w-full h-full rounded-[16px] overflow-hidden">
+                                <Image
+                                    src="/images/Delivery.png"
+                                    alt="Delivery"
+                                    fill
+                                    className="object-cover"
+                                />
+                            </div>
+                        </motion.div>
+
+                        {/* Floating Card: Bottom Right (Delivery) */}
+                        <motion.div 
+                            initial={{ opacity: 0, x: 50, y: 50 }}
+                            animate={{ opacity: 1, x: 0, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.8 }}
+                            whileHover={{ y: -10, scale: 1.05 }}
+                            style={{ x: useTransform(mouseXSpring, [-1, 1], [-15, 15]), y: useTransform(mouseYSpring, [-1, 1], [-15, 15]) }}
+                            className="absolute bottom-10 lg:bottom-20 -right-4 lg:-right-0 w-36 lg:w-40 aspect-[4/3] rounded-[20px] overflow-hidden p-1.5 bg-white/10 backdrop-blur-xl border border-white/20 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)] z-20"
+                        >
+                            <div className="relative w-full h-full rounded-[14px] overflow-hidden">
+                                <Image
+                                    src="/images/cooking.png"
+                                    alt="Cooking Family"
+                                    fill
+                                    className="object-cover"
+                                />
+                            </div>
+                        </motion.div>
+
+                        {/* Floating Card: Bottom Left (Family Cooking) */}
+                        <motion.div 
+                            initial={{ opacity: 0, x: -50, y: 50 }}
+                            animate={{ opacity: 1, x: 0, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.7 }}
+                            whileHover={{ y: -10, scale: 1.05 }}
+                            style={{ x: useTransform(mouseXSpring, [-1, 1], [25, -25]), y: useTransform(mouseYSpring, [-1, 1], [25, -25]) }}
+                            className="absolute bottom-4 lg:bottom-10 left-0 lg:-left-6 w-44 lg:w-52 aspect-video rounded-[24px] overflow-hidden p-2 bg-white/10 backdrop-blur-xl border border-white/20 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)] z-20"
+                        >
+                            <div className="relative w-full h-full rounded-[16px] overflow-hidden">
+                                <Image
+                                    src="/images/Farmers.png"
+                                    alt="Family Cooking"
+                                    fill
+                                    className="object-cover"
+                                />
+                            </div>
+                        </motion.div>
+
+                        {/* Floating Card: Top Left (Organic Badge UI) */}
+                        <motion.div 
+                            initial={{ opacity: 0, x: -50, y: -50 }}
+                            animate={{ opacity: 1, x: 0, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.9 }}
+                            whileHover={{ y: -5, scale: 1.05 }}
+                            style={{ x: useTransform(mouseXSpring, [-1, 1], [15, -15]), y: useTransform(mouseYSpring, [-1, 1], [15, -15]) }}
+                            className="absolute top-12 lg:top-20 left-4 lg:-left-4 flex items-center gap-3 lg:gap-4 p-3 lg:p-4 rounded-[20px] bg-white/10 backdrop-blur-2xl border border-white/20 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)] z-20"
+                        >
+                            <div className="flex items-center justify-center w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-gradient-to-br from-[#4ADE80] to-[#16A34A] shadow-inner">
+                                <ShieldCheck className="w-5 h-5 lg:w-6 lg:h-6 text-white" />
+                            </div>
+                            <div>
+                                <p className="text-white font-bold text-xs lg:text-sm">Organic Certified</p>
+                                <p className="text-gray-300 text-[10px] lg:text-xs">100% Safe Foods</p>
+                            </div>
+                        </motion.div>
+
                     </div>
                 </div>
 
-            
-                <div className="grid grid-cols-3 gap-5 md:gap-8 max-w-lg mx-auto mt-8">
-                    {stats.map((stat, idx) => {
-                        const Icon = stat.icon;
-                        return (
-                            <div
-                                key={idx}
-                                className="text-center group animate-fadeUp"
-                                style={{ animationDelay: `${stat.delay}s` }}
-                            >
-                                <div className="flex justify-center mb-2">
-                                    <div className="p-2 rounded-full bg-white/5 group-hover:bg-[#064E3B] transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg">
-                                        <Icon className="w-5 h-5 text-emerald-400/80 group-hover:text-white" />
-                                    </div>
-                                </div>
-                                <div className="text-xl md:text-2xl font-bold text-white group-hover:text-emerald-400 transition-colors duration-300">
-                                    {stat.value}
-                                </div>
-                                <div className="text-xs md:text-sm text-white/60 mt-1 group-hover:text-white/80 transition-colors duration-300">
-                                    {stat.label}
+                {/* --- BOTTOM SECTION: Search & Stats (Preserved Functionality) --- */}
+                {/* <motion.div 
+                    initial={{ opacity: 0, y: 40 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.6, duration: 0.6, ease: "easeOut" }}
+                    className="relative z-40 w-full"
+                >
+                    <div className="bg-[#FDFBF7] rounded-[2rem] shadow-2xl overflow-hidden border border-white/60 backdrop-blur-xl">
+                        
+                    
+                        <div className="flex flex-wrap items-center border-b border-gray-200/80 p-3 gap-2 bg-white/50">
+                            {tabs.map((tab) => (
+                                <button
+                                    key={tab}
+                                    onClick={() => setActiveTab(tab)}
+                                    className={`px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 relative ${
+                                        activeTab === tab 
+                                        ? 'text-[#2D331F]' 
+                                        : 'text-gray-500 hover:text-[#2D331F] hover:bg-gray-100/80'
+                                    }`}
+                                >
+                                    {activeTab === tab && (
+                                        <motion.div
+                                            layoutId="activeTab"
+                                            className="absolute inset-0 bg-[#EAB308]/20 rounded-xl"
+                                            transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                                        />
+                                    )}
+                                    <span className="relative z-10">{tab}</span>
+                                </button>
+                            ))}
+                        </div>
+
+                    
+                        <div className="p-5 md:p-6 flex flex-col md:flex-row items-center gap-4 border-b border-gray-200/80 bg-white">
+                            <div className="flex-1 w-full bg-gray-50 border border-gray-200 rounded-2xl px-5 py-3 md:py-4 flex flex-col justify-center focus-within:ring-2 focus-within:ring-[#EAB308]/50 focus-within:border-[#EAB308]/50 transition-all duration-300 shadow-inner group">
+                                <label className="text-xs text-gray-500 font-semibold mb-1 uppercase tracking-wider group-focus-within:text-[#2D331F] transition-colors">কি খুঁজছেন?</label>
+                                <input 
+                                    type="text" 
+                                    placeholder="যেমন: দেশি টমেটো, কাটারিভোগ চাল..." 
+                                    className="w-full outline-none text-[#2D331F] placeholder-gray-400 font-medium bg-transparent text-lg"
+                                />
+                            </div>
+                            
+                            <div className="w-full md:w-64 bg-gray-50 border border-gray-200 rounded-2xl px-5 py-3 md:py-4 flex flex-col justify-center cursor-pointer relative group transition-all duration-300 hover:border-[#EAB308]/50 shadow-inner">
+                                <label className="text-xs text-gray-500 font-semibold mb-1 uppercase tracking-wider">জেলা</label>
+                                <div className="flex items-center justify-between">
+                                    <span className="text-[#2D331F] font-medium text-lg">ঢাকা</span>
+                                    <ChevronDown className="w-5 h-5 text-gray-400 group-hover:text-[#EAB308] transition-colors" />
                                 </div>
                             </div>
-                        );
-                    })}
-                </div>
-                <div className="mt-10 animate-fadeUp" style={{ animationDelay: '0.3s' }}>
-                   <Link href="/about"> <button className="group inline-flex items-center gap-2 px-8 py-3 bg-[#064E3B] hover:bg-[#065F4B] rounded-full text-white font-medium text-base transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
-                        <span>আরও জানুন</span>
-                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                    </button></Link>
-                </div>
-                <div className="mt-8 flex items-center justify-center gap-2 animate-fadeUp" style={{ animationDelay: '0.4s' }}>
-                    <Shield className="w-3 h-3 text-emerald-400/60" />
-                    <span className="text-white/40 text-xs tracking-wide hover:text-emerald-400/60 transition-colors duration-300 cursor-default">বিশ্বস্ত কৃষি নেটওয়ার্ক</span>
-                </div>
-                <div
-                    className={`absolute bottom-8 left-1/2 transform -translate-x-1/2 transition-all duration-700 ${
-                        showScrollHint ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-                    }`}
-                >
-                    {/* <div className="flex flex-col items-center gap-2 text-white/40 hover:text-emerald-400/60 transition-colors cursor-pointer">
-                        <span className="text-xs tracking-wider font-light">SCROLL</span>
-                        <ChevronDown className="w-4 h-4 animate-bounce" />
-                    </div> */}
-                </div>
-            </div>
 
-            <style jsx>{`
-                @keyframes float {
-                    0%, 100% { transform: translateY(0px) translateX(0px); opacity: 0.2; }
-                    25% { transform: translateY(-12px) translateX(6px); opacity: 0.5; }
-                    50% { transform: translateY(6px) translateX(-4px); opacity: 0.3; }
-                    75% { transform: translateY(-4px) translateX(2px); opacity: 0.4; }
-                }
-                @keyframes fadeUp {
-                    from { opacity: 0; transform: translateY(16px); }
-                    to { opacity: 1; transform: translateY(0); }
-                }
-                @keyframes float-slow {
-                    0%, 100% { transform: translateY(0px); }
-                    50% { transform: translateY(-6px); }
-                }
-                .animate-float {
-                    animation: float linear infinite;
-                }
-                .animate-float-slow {
-                    animation: float-slow 3s ease-in-out infinite;
-                }
-                .animate-fadeUp {
-                    animation: fadeUp 0.5s ease-out forwards;
-                    opacity: 0;
-                }
-                .animate-bounce {
-                    animation: bounce 1.5s ease-in-out infinite;
-                }
-                @keyframes bounce {
-                    0%, 100% { transform: translateY(0); }
-                    50% { transform: translateY(4px); }
-                }
-            `}</style>
+                            <motion.button 
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
+                                className="w-full md:w-auto h-full min-h-[76px] px-10 bg-gradient-to-r from-[#2D331F] to-[#40492F] hover:from-[#40492F] hover:to-[#2D331F] text-white rounded-2xl font-bold flex items-center justify-center gap-2 transition-all duration-300 shadow-xl shadow-[#2D331F]/20"
+                            >
+                                <Search className="w-5 h-5" />
+                                <span className="text-lg">খুঁজুন</span>
+                            </motion.button>
+                        </div>
+                        <div className="p-6 md:p-8 grid grid-cols-2 md:grid-cols-4 gap-6 bg-gradient-to-b from-[#FDFBF7] to-[#F3EFE0]">
+                            {stats.map((stat, idx) => (
+                                <motion.div 
+                                    key={idx} 
+                                    initial={{ opacity: 0, y: 20 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ delay: idx * 0.1 + 0.8 }}
+                                    className={`text-center flex flex-col justify-center relative group ${idx !== stats.length - 1 ? 'md:after:content-[""] md:after:absolute md:after:right-0 md:after:top-1/4 md:after:h-1/2 md:after:w-px md:after:bg-gray-300' : ''}`}
+                                >
+                                    <motion.div 
+                                        className="text-4xl md:text-5xl font-black text-[#2D331F] mb-2 tracking-tighter"
+                                        whileHover={{ scale: 1.1, color: "#EAB308" }}
+                                    >
+                                        {stat.value}
+                                    </motion.div>
+                                    <div className="text-sm font-bold text-gray-500 uppercase tracking-wide group-hover:text-[#2D331F] transition-colors">
+                                        {stat.label}
+                                    </div>
+                                </motion.div>
+                            ))}
+                        </div>
+                    </div>
+                </motion.div> */}
+            </div>
         </div>
     );
 }

@@ -7,6 +7,9 @@ import Mission from '@/components/pages/home/mission';
 import Product from '@/components/pages/home/product';
 import { Stats } from '@/components/pages/home/stats';
 
+export const dynamic = 'force-static';
+export const revalidate = 3600; // Cache for 1 hour
+
 export default function Home() {
 	return (
 		<div>
