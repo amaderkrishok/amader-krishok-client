@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import { 
   PlayCircle,
   CheckCircle2,
@@ -10,33 +10,14 @@ import {
   ChevronDown
 } from 'lucide-react';
 import Image from 'next/image';
-import { motion, useSpring, useTransform, useMotionValue } from 'framer-motion';
+import { motion } from 'framer-motion';
 import TextType from '@/components/global/TextType';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export function Hero() {
-    const containerRef = useRef<HTMLDivElement>(null);
-    const mouseX = useMotionValue(0);
-    const mouseY = useMotionValue(0);
-
-    // Smooth mouse parallax values
-    const springConfig = { damping: 25, stiffness: 150 };
-    const mouseXSpring = useSpring(mouseX, springConfig);
-    const mouseYSpring = useSpring(mouseY, springConfig);
-
-    useEffect(() => {
-        const handleMouseMove = (e: MouseEvent) => {
-            if (!containerRef.current) return;
-            const { left, top, width, height } = containerRef.current.getBoundingClientRect();
-            const x = (e.clientX - left - width / 2) / (width / 2);
-            const y = (e.clientY - top - height / 2) / (height / 2);
-            mouseX.set(x);
-            mouseY.set(y);
-        };
-
-        window.addEventListener('mousemove', handleMouseMove);
-        return () => window.removeEventListener('mousemove', handleMouseMove);
-    }, [mouseX, mouseY]);
+    const router = useRouter();
+    const [searchInput, setSearchInput] = useState('');
 
     const features = [
         "১০০% Fresh",
@@ -53,7 +34,14 @@ export function Hero() {
     ];
 
     const tabs = ['সব পণ্য', 'সবজি', 'ফল', 'শস্য', 'মাছ', 'সার ও উপকরণ'];
-    const [activeTab, setActiveTab] = useState('সব পণ্য');
+
+    const handleSearch = () => {
+        if (searchInput.trim()) {
+            router.push(`/marketplace?term=${encodeURIComponent(searchInput.trim())}`);
+        } else {
+            router.push('/marketplace');
+        }
+    };
 
     // Animation Variants
     const fadeUp = {
@@ -70,41 +58,29 @@ export function Hero() {
     };
 
     return (
-        <div ref={containerRef} className="relative min-h-screen flex flex-col items-center bg-[#2D331F] overflow-hidden pt-10 pb-20 selection:bg-[#EAB308] selection:text-[#2D331F]">
+        <div className="relative min-h-screen flex flex-col items-center bg-[#2D331F] overflow-hidden pt-10 pb-20 selection:bg-[#EAB308] selection:text-[#2D331F]">
             
-            {/* --- Background Decorations (Parallax) --- */}
-            <motion.div 
-                style={{ x: useTransform(mouseXSpring, [-1, 1], [-50, 50]), y: useTransform(mouseYSpring, [-1, 1], [-50, 50]) }}
-                className="absolute inset-0 z-0 pointer-events-none"
-            >
-                {/* Glows */}
-                <div className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-[#EAB308] blur-[180px] opacity-20"></div>
-                <div className="absolute bottom-[-10%] right-[-10%] w-[40vw] h-[40vw] rounded-full bg-[#4ADE80] blur-[150px] opacity-15"></div>
+            {/* --- Background Decorations (Optimized) --- */}
+            <div className="absolute inset-0 z-0 pointer-events-none">
+                {/* Glows (Using radial gradients instead of heavy blurs) */}
+                <div className="absolute top-[-20%] left-[-10%] w-[60vw] h-[60vw] rounded-full bg-[radial-gradient(circle,rgba(234,179,8,0.15)_0%,transparent_60%)]"></div>
+                <div className="absolute bottom-[-20%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-[radial-gradient(circle,rgba(74,222,128,0.1)_0%,transparent_60%)]"></div>
                 
-                {/* Floating Leaves */}
+                {/* Floating Leaves (Optimized: Static position, simple pulse) */}
                 {[...Array(6)].map((_, i) => (
-                    <motion.div
+                    <div
                         key={i}
-                        className="absolute text-[#4ADE80]/30"
+                        className="absolute text-[#4ADE80]/20 animate-pulse"
                         style={{
-                            left: `${Math.random() * 100}%`,
-                            top: `${Math.random() * 100}%`,
-                            transform: `scale(${Math.random() * 1.5 + 0.5})`,
-                        }}
-                        animate={{
-                            y: [0, -40, 0],
-                            rotate: [0, 90, 0],
-                        }}
-                        transition={{
-                            duration: Math.random() * 5 + 10,
-                            repeat: Infinity,
-                            ease: "linear"
+                            left: `${20 + (i * 15)}%`,
+                            top: `${15 + (i * 12 + (i % 2) * 20)}%`,
+                            transform: `scale(${0.8 + (i % 3) * 0.2}) rotate(${i * 45}deg)`,
                         }}
                     >
                         <Leaf className="w-8 h-8" />
-                    </motion.div>
+                    </div>
                 ))}
-            </motion.div>
+            </div>
 
             <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-8 flex flex-col gap-16">
                 
@@ -120,7 +96,7 @@ export function Hero() {
                     >
                         {/* Small Badge */}
                         <motion.div variants={fadeUp} className="mb-8">
-                            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md shadow-[0_4px_24px_-8px_rgba(0,0,0,0.5)]">
+                            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#3f472f]/80 border border-white/10 shadow-lg">
                                 <span className="text-lg">🌱</span>
                                 <span className="text-[#EAB308] text-sm font-semibold tracking-wide uppercase">Fresh From Farm</span>
                             </div>
@@ -130,7 +106,7 @@ export function Hero() {
                         <motion.div variants={fadeUp} className="mb-6 min-h-[160px] lg:min-h-[220px]">
                             <TextType 
                                 as="h1"
-                                text={"আজ সকালের তাজা ফসল,\nআগামীকাল আপনার রান্নাঘরে।"}
+                                text={"আজ সকালের তাজা ফসল,\nআগামীকাল আপনার রান্না ঘরে।"}
                                 typingSpeed={50}
                                 loop={false}
                                 showCursor={true}
@@ -138,7 +114,6 @@ export function Hero() {
                                 className="text-5xl sm:text-6xl lg:text-7xl font-bold leading-[1.2] tracking-tight"
                             />
                         </motion.div>
-
                         {/* Description */}
                         <motion.p variants={fadeUp} className="text-gray-400 text-lg sm:text-xl leading-relaxed mb-10 max-w-xl">
                             আমরা বাংলাদেশের বিশ্বস্ত কৃষকদের কাছ থেকে সরাসরি তাজা শাকসবজি, ফলমূল ও কৃষিপণ্য সংগ্রহ করি এবং নিরাপদ প্যাকেজিংয়ের মাধ্যমে দ্রুত আপনার দরজায় পৌঁছে দিই।
@@ -158,7 +133,7 @@ export function Hero() {
                             <motion.button 
                                 whileHover={{ scale: 1.05, y: -2, backgroundColor: "rgba(255,255,255,0.1)" }}
                                 whileTap={{ scale: 0.95 }}
-                                className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-white/5 border border-white/10 rounded-2xl text-white font-semibold text-lg backdrop-blur-md transition-all shadow-[0_8px_30px_rgb(0,0,0,0.1)]"
+                                className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-[#3f472f]/80 border border-white/10 rounded-2xl text-white font-semibold text-lg transition-all shadow-lg"
                             >
                                 <PlayCircle className="w-5 h-5 text-gray-300 group-hover:text-white transition-colors" />
                                 <span>কিভাবে কাজ করে</span>
@@ -190,7 +165,6 @@ export function Hero() {
                             initial={{ opacity: 0, scale: 0.8 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ duration: 1, ease: "easeOut", delay: 0.3 }}
-                            style={{ x: useTransform(mouseXSpring, [-1, 1], [-20, 20]), y: useTransform(mouseYSpring, [-1, 1], [-20, 20]) }}
                             className="relative w-full max-w-[350px] lg:max-w-[400px] aspect-[4/5] rounded-[32px] overflow-hidden shadow-2xl z-10 ring-1 ring-white/10"
                         >
                             <Image
@@ -206,9 +180,8 @@ export function Hero() {
                             initial={{ opacity: 0, x: 50, y: -50 }}
                             animate={{ opacity: 1, x: 0, y: 0 }}
                             transition={{ duration: 0.8, delay: 0.6 }}
-                            whileHover={{ y: -10, scale: 1.05 }}
-                            style={{ x: useTransform(mouseXSpring, [-1, 1], [-30, 30]), y: useTransform(mouseYSpring, [-1, 1], [-30, 30]) }}
-                            className="absolute top-4 -right-4 lg:-right-8 w-40 lg:w-48 aspect-square rounded-[24px] overflow-hidden p-2 bg-white/10 backdrop-blur-xl border border-white/20 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)] z-20"
+                            whileHover={{ y: -5, scale: 1.02 }}
+                            className="absolute top-4 -right-4 lg:-right-8 w-40 lg:w-48 aspect-square rounded-[24px] overflow-hidden p-2 bg-[#3f472f]/90 border border-white/10 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)] z-20"
                         >
                             <div className="relative w-full h-full rounded-[16px] overflow-hidden">
                                 <Image
@@ -225,9 +198,8 @@ export function Hero() {
                             initial={{ opacity: 0, x: 50, y: 50 }}
                             animate={{ opacity: 1, x: 0, y: 0 }}
                             transition={{ duration: 0.8, delay: 0.8 }}
-                            whileHover={{ y: -10, scale: 1.05 }}
-                            style={{ x: useTransform(mouseXSpring, [-1, 1], [-15, 15]), y: useTransform(mouseYSpring, [-1, 1], [-15, 15]) }}
-                            className="absolute bottom-10 lg:bottom-20 -right-4 lg:-right-0 w-36 lg:w-40 aspect-[4/3] rounded-[20px] overflow-hidden p-1.5 bg-white/10 backdrop-blur-xl border border-white/20 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)] z-20"
+                            whileHover={{ y: -5, scale: 1.02 }}
+                            className="absolute bottom-10 lg:bottom-20 -right-4 lg:-right-0 w-36 lg:w-40 aspect-[4/3] rounded-[20px] overflow-hidden p-1.5 bg-[#3f472f]/90 border border-white/10 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)] z-20"
                         >
                             <div className="relative w-full h-full rounded-[14px] overflow-hidden">
                                 <Image
@@ -244,9 +216,8 @@ export function Hero() {
                             initial={{ opacity: 0, x: -50, y: 50 }}
                             animate={{ opacity: 1, x: 0, y: 0 }}
                             transition={{ duration: 0.8, delay: 0.7 }}
-                            whileHover={{ y: -10, scale: 1.05 }}
-                            style={{ x: useTransform(mouseXSpring, [-1, 1], [25, -25]), y: useTransform(mouseYSpring, [-1, 1], [25, -25]) }}
-                            className="absolute bottom-4 lg:bottom-10 left-0 lg:-left-6 w-44 lg:w-52 aspect-video rounded-[24px] overflow-hidden p-2 bg-white/10 backdrop-blur-xl border border-white/20 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)] z-20"
+                            whileHover={{ y: -5, scale: 1.02 }}
+                            className="absolute bottom-4 lg:bottom-10 left-0 lg:-left-6 w-44 lg:w-52 aspect-video rounded-[24px] overflow-hidden p-2 bg-[#3f472f]/90 border border-white/10 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)] z-20"
                         >
                             <div className="relative w-full h-full rounded-[16px] overflow-hidden">
                                 <Image
@@ -263,9 +234,8 @@ export function Hero() {
                             initial={{ opacity: 0, x: -50, y: -50 }}
                             animate={{ opacity: 1, x: 0, y: 0 }}
                             transition={{ duration: 0.8, delay: 0.9 }}
-                            whileHover={{ y: -5, scale: 1.05 }}
-                            style={{ x: useTransform(mouseXSpring, [-1, 1], [15, -15]), y: useTransform(mouseYSpring, [-1, 1], [15, -15]) }}
-                            className="absolute top-12 lg:top-20 left-4 lg:-left-4 flex items-center gap-3 lg:gap-4 p-3 lg:p-4 rounded-[20px] bg-white/10 backdrop-blur-2xl border border-white/20 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)] z-20"
+                            whileHover={{ y: -5, scale: 1.02 }}
+                            className="absolute top-12 lg:top-20 left-4 lg:-left-4 flex items-center gap-3 lg:gap-4 p-3 lg:p-4 rounded-[20px] bg-[#3f472f]/90 border border-white/10 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)] z-20"
                         >
                             <div className="flex items-center justify-center w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-gradient-to-br from-[#4ADE80] to-[#16A34A] shadow-inner">
                                 <ShieldCheck className="w-5 h-5 lg:w-6 lg:h-6 text-white" />
@@ -280,33 +250,28 @@ export function Hero() {
                 </div>
 
                 {/* --- BOTTOM SECTION: Search & Stats (Preserved Functionality) --- */}
-                {/* <motion.div 
+                <motion.div 
                     initial={{ opacity: 0, y: 40 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.6, duration: 0.6, ease: "easeOut" }}
                     className="relative z-40 w-full"
                 >
-                    <div className="bg-[#FDFBF7] rounded-[2rem] shadow-2xl overflow-hidden border border-white/60 backdrop-blur-xl">
+                    <div className="bg-[#FDFBF7] rounded-[2rem] shadow-2xl overflow-hidden border border-white/60">
                         
                     
                         <div className="flex flex-wrap items-center border-b border-gray-200/80 p-3 gap-2 bg-white/50">
                             {tabs.map((tab) => (
                                 <button
                                     key={tab}
-                                    onClick={() => setActiveTab(tab)}
-                                    className={`px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 relative ${
-                                        activeTab === tab 
-                                        ? 'text-[#2D331F]' 
-                                        : 'text-gray-500 hover:text-[#2D331F] hover:bg-gray-100/80'
-                                    }`}
+                                    onClick={() => {
+                                        if (tab === 'সব পণ্য') {
+                                            router.push('/marketplace');
+                                        } else {
+                                            router.push(`/marketplace?category=${encodeURIComponent(tab)}`);
+                                        }
+                                    }}
+                                    className="px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 relative text-gray-500 hover:text-[#2D331F] hover:bg-[#EAB308]/20"
                                 >
-                                    {activeTab === tab && (
-                                        <motion.div
-                                            layoutId="activeTab"
-                                            className="absolute inset-0 bg-[#EAB308]/20 rounded-xl"
-                                            transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                                        />
-                                    )}
                                     <span className="relative z-10">{tab}</span>
                                 </button>
                             ))}
@@ -318,20 +283,28 @@ export function Hero() {
                                 <label className="text-xs text-gray-500 font-semibold mb-1 uppercase tracking-wider group-focus-within:text-[#2D331F] transition-colors">কি খুঁজছেন?</label>
                                 <input 
                                     type="text" 
+                                    value={searchInput}
+                                    onChange={(e) => setSearchInput(e.target.value)}
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter') {
+                                            handleSearch();
+                                        }
+                                    }}
                                     placeholder="যেমন: দেশি টমেটো, কাটারিভোগ চাল..." 
                                     className="w-full outline-none text-[#2D331F] placeholder-gray-400 font-medium bg-transparent text-lg"
                                 />
                             </div>
                             
-                            <div className="w-full md:w-64 bg-gray-50 border border-gray-200 rounded-2xl px-5 py-3 md:py-4 flex flex-col justify-center cursor-pointer relative group transition-all duration-300 hover:border-[#EAB308]/50 shadow-inner">
+                            {/* <div className="w-full md:w-64 bg-gray-50 border border-gray-200 rounded-2xl px-5 py-3 md:py-4 flex flex-col justify-center cursor-pointer relative group transition-all duration-300 hover:border-[#EAB308]/50 shadow-inner">
                                 <label className="text-xs text-gray-500 font-semibold mb-1 uppercase tracking-wider">জেলা</label>
                                 <div className="flex items-center justify-between">
                                     <span className="text-[#2D331F] font-medium text-lg">ঢাকা</span>
                                     <ChevronDown className="w-5 h-5 text-gray-400 group-hover:text-[#EAB308] transition-colors" />
                                 </div>
-                            </div>
+                            </div> */}
 
                             <motion.button 
+                                onClick={handleSearch}
                                 whileHover={{ scale: 1.02 }}
                                 whileTap={{ scale: 0.98 }}
                                 className="w-full md:w-auto h-full min-h-[76px] px-10 bg-gradient-to-r from-[#2D331F] to-[#40492F] hover:from-[#40492F] hover:to-[#2D331F] text-white rounded-2xl font-bold flex items-center justify-center gap-2 transition-all duration-300 shadow-xl shadow-[#2D331F]/20"
@@ -363,7 +336,7 @@ export function Hero() {
                             ))}
                         </div>
                     </div>
-                </motion.div> */}
+                </motion.div>
             </div>
         </div>
     );

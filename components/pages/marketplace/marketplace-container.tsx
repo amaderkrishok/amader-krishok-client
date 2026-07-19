@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { VendorBanner } from './vendor-banner';
 import { useMediaQuery } from '@/hooks/use-media-query';
 import type { Product, ProductFilters, PaginationMeta } from '@/types/product';
@@ -38,7 +39,8 @@ export function MarketplaceContainer() {
 	const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
 	const [filters, setFilters] = useState<ProductFilters>({ ...defaultFilters });
 	const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
-	const [searchTerm, setSearchTerm] = useState('');
+	const searchParams = useSearchParams();
+	const [searchTerm, setSearchTerm] = useState(searchParams?.get('term') || '');
 	const isMobile = useMediaQuery('(max-width: 768px)');
 	const { isAuthenticated } = useSession();
 
@@ -61,16 +63,39 @@ export function MarketplaceContainer() {
 			setCategoriesLoading(true);
 			try {
 				const response = await ProductCategoryService.getProductAllCategories();
-				console.log(response.data);
+				let loadedCategories: ProductCategoryType[] = [];
 				if (response && response.data) {
 					if (
 						response.data.length > 0 &&
 						response.data[0]?.name === 'All Products' &&
 						response.data[0]?.children
 					) {
-						setCategories(response.data[0].children);
+						loadedCategories = response.data[0].children;
 					} else {
-						setCategories(response.data);
+						loadedCategories = response.data;
+					}
+					setCategories(loadedCategories);
+					
+					// Check if a category name was passed in URL and set it
+					const categoryParam = searchParams?.get('category');
+					if (categoryParam) {
+						const findCategoryByName = (cats: ProductCategoryType[], name: string): number | undefined => {
+							for (const cat of cats) {
+								if (cat.name.toLowerCase().includes(name.toLowerCase())) {
+									return cat.id;
+								}
+								if (cat.children && cat.children.length > 0) {
+									const childResult = findCategoryByName(cat.children, name);
+									if (childResult) return childResult;
+								}
+							}
+							return undefined;
+						};
+						
+						const matchedId = findCategoryByName(loadedCategories, categoryParam);
+						if (matchedId) {
+							setFilters(prev => ({ ...prev, categoryId: matchedId }));
+						}
 					}
 				}
 			} catch (error) {
@@ -82,6 +107,7 @@ export function MarketplaceContainer() {
 			}
 		};
 		fetchCategories();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	// Function to find category name by ID
