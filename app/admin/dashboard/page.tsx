@@ -301,7 +301,7 @@ export default function AdminDashboardPage() {
 						</div>
 						<div className='h-12 w-12 bg-purple-100 dark:bg-purple-900 rounded-full flex items-center justify-center'>
 							<Store className='h-6 w-6 text-purple-600 dark:text-purple-400' />
-						</div>
+						 </div>
 					</div>
 					<p className='text-xs mt-2 text-gray-500 dark:text-gray-400'>
 						<Link
