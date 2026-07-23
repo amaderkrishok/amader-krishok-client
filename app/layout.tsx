@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
 import { SessionProvider } from '@/components/providers/session-provider'; // Import the provider
+import { SavedProductsProvider } from '@/context/saved-products-context';
+import { CartProvider } from '@/context/cart-context';
 import { Toaster } from 'sonner';
 import TopLoadingBar from '@/components/global/top-loading-bar';
 import { Suspense } from 'react';
@@ -36,7 +38,11 @@ export default function RootLayout({
 			>
 				<TopLoadingBar />
 				<SessionProvider>
-					<Suspense>{children}</Suspense>
+					<CartProvider>
+						<SavedProductsProvider>
+							<Suspense>{children}</Suspense>
+						</SavedProductsProvider>
+					</CartProvider>
 				</SessionProvider>
 				<Toaster
 					richColors

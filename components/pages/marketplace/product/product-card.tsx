@@ -7,11 +7,14 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
-import { ChevronLeft, ChevronRight, ShoppingCart } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ShoppingCart, Clock } from 'lucide-react';
 import type { Product } from '@/types/product';
 import { useCart } from '@/context/cart-context';
 import { formatPrice } from '../cart/cart-drawer';
 import { useSession } from '@/components/providers/session-provider';
+import { useSavedProducts } from '@/context/saved-products-context';
+import { Bookmark } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 interface ProductCardProps {
 	product: Product;
@@ -19,10 +22,14 @@ interface ProductCardProps {
 
 export function ProductCard({ product }: ProductCardProps) {
 	const { addItem } = useCart();
+	const { toggleSaveProduct, isProductSaved } = useSavedProducts();
 	const images = getAllProductImages(product);
 	const [currentImageIndex, setCurrentImageIndex] = useState(0);
 	const priceInfo = getProductPrice(product);
-	const { user, hasRole } = useSession();
+	const { user, hasRole, status } = useSession();
+	const router = useRouter();
+	
+	const isSaved = isProductSaved(product.id);
 
 	// Check if user is admin, moderator, or vendor - these roles cannot purchase
 	const canPurchase = !hasRole(['admin', 'moderator', 'vendor']);
@@ -54,8 +61,8 @@ export function ProductCard({ product }: ProductCardProps) {
 	};
 
 	return (
-		<Card className='overflow-hidden h-full flex flex-col rounded-2xl border-transparent shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_30px_-4px_rgba(0,0,0,0.15)] transition-all duration-300 group/card bg-white/80 backdrop-blur-sm hover:-translate-y-1'>
-			<div className='relative aspect-square overflow-hidden bg-gray-50/50'>
+		<Card className='p-0 gap-0 overflow-hidden h-full flex flex-col rounded-xl border border-gray-100 shadow-sm hover:shadow-[0_10px_40px_-10px_rgba(34,197,94,0.2)] transition-all duration-500 group/card bg-white hover:-translate-y-1.5'>
+			<div className='relative aspect-[4/3] w-full overflow-hidden bg-gray-50/50'>
 				<Link href={`/marketplace/product/${product.id}`}>
 					<Image
 						src={images[currentImageIndex] || '/placeholder.svg'}
@@ -66,6 +73,35 @@ export function ProductCard({ product }: ProductCardProps) {
 					/>
 					<div className='absolute inset-0 bg-black/0 group-hover/card:bg-black/10 transition-colors duration-300 z-10'></div>
 				</Link>
+
+				{priceInfo.hasDiscount && (
+					<div className='absolute top-2 right-12 z-10'>
+						<span className='inline-flex items-center gap-1 px-2.5 py-1.5 bg-red-50/90 backdrop-blur-sm text-red-600 text-[10px] font-bold rounded-full border border-red-100/50 shadow-sm'>
+							<Clock className='h-3 w-3' />
+							{Math.round(((priceInfo.price - (priceInfo.discountPrice || 0)) / priceInfo.price) * 100)}% OFF
+						</span>
+					</div>
+				)}
+
+				<button
+					onClick={(e) => {
+						e.preventDefault();
+						e.stopPropagation();
+						if (status === 'unauthenticated' || !user) {
+							router.push('/auth/login');
+							return;
+						}
+						toggleSaveProduct(product);
+					}}
+					className={`absolute top-2 right-2 p-2 rounded-full backdrop-blur-md transition-all duration-300 z-20 hover:scale-110 shadow-sm ${
+						isSaved 
+							? 'bg-green-50 text-green-600 border border-green-200' 
+							: 'bg-white/80 text-gray-500 hover:text-green-600 hover:bg-white border border-gray-200/50'
+					}`}
+					aria-label={isSaved ? 'Remove from saved' : 'Save product'}
+				>
+					<Bookmark className={`h-4 w-4 ${isSaved ? 'fill-current' : ''}`} />
+				</button>
 
 				{images.length > 1 && (
 					<>
@@ -110,22 +146,22 @@ export function ProductCard({ product }: ProductCardProps) {
 				)}
 			</div>
 
-			<CardContent className='flex-grow p-5 pb-3'>
+			<CardContent className='flex-grow p-3 pb-1'>
 				<Link href={`/marketplace/product/${product.id}`} className='block group/title'>
-					<h3 className='font-bold text-lg mb-1 text-gray-900 group-hover/title:text-green-600 transition-colors'>
+					<h3 className='font-semibold text-sm mb-0.5 text-gray-900 group-hover/title:text-green-600 transition-colors line-clamp-1'>
 						{product.name}
 					</h3>
 				</Link>
-				<p className='text-gray-500 text-sm mb-3 line-clamp-2 leading-relaxed'>
+				<p className='text-gray-500 text-[11px] mb-2 line-clamp-1'>
 					{product.description}
 				</p>
 
 				{product.productCategories && product.productCategories.length > 0 && (
-					<div className='flex flex-wrap gap-1 mt-1'>
-						{product.productCategories.map((category) => (
+					<div className='flex flex-wrap gap-1 mt-auto'>
+						{product.productCategories.slice(0, 2).map((category) => (
 							<span
 								key={category.id}
-								className='text-[11px] font-medium tracking-wide bg-green-50 px-2.5 py-1 rounded-full text-green-700 border border-green-100/50'
+								className='text-[9px] font-medium tracking-wide bg-green-50/80 px-1.5 py-0.5 rounded text-green-700 border border-green-100/50'
 							>
 								{category.name}
 							</span>
@@ -134,19 +170,19 @@ export function ProductCard({ product }: ProductCardProps) {
 				)}
 			</CardContent>
 
-			<CardFooter className='p-5 pt-0 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-t border-gray-50/50 mt-2'>
+			<CardFooter className='p-3 pt-2 flex items-center justify-between gap-2 border-t border-gray-50/80 mt-auto bg-gray-50/30'>
 				<div>
 					{priceInfo.hasDiscount ? (
 						<div className='flex flex-col'>
-							<span className='font-extrabold text-xl text-green-600'>
+							<span className='font-bold text-base text-green-600 leading-none mb-0.5'>
 								{priceInfo.formattedDiscountPrice}
 							</span>
-							<span className='text-gray-400 line-through text-xs font-medium'>
+							<span className='text-gray-400 line-through text-[10px] font-medium leading-none'>
 								{priceInfo.formattedPrice}
 							</span>
 						</div>
 					) : (
-						<span className='font-extrabold text-xl text-gray-900'>
+						<span className='font-bold text-base text-gray-900 leading-none'>
 							{priceInfo.formattedPrice}
 						</span>
 					)}
@@ -155,14 +191,14 @@ export function ProductCard({ product }: ProductCardProps) {
 					size='sm' 
 					onClick={handleAddToCart} 
 					disabled={!canPurchase}
-					className={`w-full sm:w-auto rounded-xl transition-all duration-300 font-semibold shadow-sm hover:shadow-md active:scale-95 ${!canPurchase ? 'bg-gray-100 text-gray-400' : 'bg-gradient-to-r from-green-600 to-emerald-500 hover:from-green-500 hover:to-emerald-400 text-white border-0'}`}
+					className={`h-8 px-2.5 rounded-lg transition-all duration-300 font-medium text-[11px] shadow-sm hover:shadow-md active:scale-95 group/btn ${!canPurchase ? 'bg-gray-100 text-gray-400' : 'bg-gradient-to-r from-green-600 to-emerald-500 hover:from-green-500 hover:to-emerald-400 text-white border-0'}`}
 				>
-					<ShoppingCart className='h-4 w-4 mr-2' />
+					<ShoppingCart className='h-3.5 w-3.5 mr-1 group-hover/btn:rotate-12 transition-transform' />
 					{!canPurchase
-						? 'ক্রয় করতে পারবেন না'
+						? 'অননুমোদিত'
 						: product.productType === 'VARIABLE'
-						? 'বিকল্প দেখুন'
-						: 'কার্টে যোগ করুন'}
+						? 'বিকল্প'
+						: 'যোগ করুন'}
 				</Button>
 			</CardFooter>
 		</Card>

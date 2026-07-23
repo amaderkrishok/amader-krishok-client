@@ -762,12 +762,12 @@ export function SingleProductView({ product }: SingleProductViewProps) {
                                             <h3 className='text-lg font-semibold'>
                                                 {product.store.name}
                                             </h3>
-                                            <Link
+                                            {/* <Link
                                                 href={`/store/${product.store.id}`}
                                                 className='text-sm text-emerald-600 hover:underline font-medium'
                                             >
                                                 দোকান দেখুন →
-                                            </Link>
+                                            </Link> */}
                                         </div>
                                     </div>
 
@@ -799,11 +799,11 @@ export function SingleProductView({ product }: SingleProductViewProps) {
                                         )}
                                     </div>
 
-                                    <Button asChild className='bg-emerald-600 hover:bg-emerald-700'>
+                                    {/* <Button asChild className='bg-emerald-600 hover:bg-emerald-700'>
                                         <Link href={`/store/${product.store.id}`}>
                                             এই বিক্রেতার অন্যান্য পণ্য দেখুন
                                         </Link>
-                                    </Button>
+                                    </Button> */}
                                 </div>
                             ) : (
                                 <p className='text-gray-500'>বিক্রেতার তথ্য পাওয়া যায়নি।</p>
