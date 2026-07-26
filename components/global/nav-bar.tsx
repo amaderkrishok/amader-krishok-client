@@ -7,15 +7,15 @@ import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 
 import { Button } from '@/components/ui/button';
-import { User, LogIn, UserCircle, LayoutDashboard, LogOut } from 'lucide-react';
+import { User, LogIn, UserCircle, LayoutDashboard, LogOut, ShoppingCart } from 'lucide-react';
 
 import { getRedirectPathByRole } from '@/routes';
 import { useSession } from '../providers/session-provider';
+import { useCart } from '@/context/cart-context';
 
 const menuItems: { href: string; label: string }[] = [
 	{ href: '/', label: 'হোম' },
 	{ href: '/marketplace', label: 'কৃষকের বাজার' },
-	
 	{ href: '/crop-cultivation', label: 'ফসল চাষ প্রক্রিয়া' },
 	{ href: '/crop-calculator', label: 'সার ক্যালকুলেটর' },
 	{ href: '/weather', label: 'আবহাওয়া আপডেট' },
@@ -27,6 +27,7 @@ export function NavBar() {
 	const pathname = usePathname();
 	const [isOpen, setIsOpen] = useState(false);
 	const { user, isAuthenticated, logout } = useSession();
+	const { toggleCart, itemCount } = useCart();
 	const router = useRouter();
 
 	const [showUserMenu, setShowUserMenu] = useState(false);
@@ -52,9 +53,9 @@ export function NavBar() {
 					/>
 				</Link>
 
-				{/* Right side container for navigation and auth button */}
+				{/* Right side container for navigation, cart, and auth button */}
 				<div className='hidden md:flex items-center gap-6'>
-					{/* Navigation Items (moved to right) */}
+					{/* Navigation Items */}
 					<div className='flex items-center space-x-1'>
 						{menuItems.map((item) => (
 							<Link
@@ -74,6 +75,20 @@ export function NavBar() {
 							</Link>
 						))}
 					</div>
+
+					{/* Cart Icon Button */}
+					<button
+						onClick={toggleCart}
+						className='relative text-white hover:text-[#EAB308] p-2 rounded-full hover:bg-white/10 transition-all focus:outline-none'
+						aria-label='কার্ট দেখুন'
+					>
+						<ShoppingCart className='h-6 w-6' />
+						{itemCount > 0 && (
+							<span className='absolute -top-1 -right-1 bg-rose-500 text-white text-[11px] font-black rounded-full h-5 w-5 flex items-center justify-center border-2 border-[#2D331F]'>
+								{itemCount}
+							</span>
+						)}
+					</button>
 
 					{/* Auth Button */}
 					<Button
@@ -103,10 +118,7 @@ export function NavBar() {
 							size='sm'
 							className='bg-red-600/80 hover:bg-red-700 text-white'
 							onClick={async () => {
-								// First, navigate to home page to avoid race conditions
 								router.push('/');
-
-								// Then perform logout after a small delay
 								setTimeout(async () => {
 									await logout();
 									console.log('Logout completed after navigation');
@@ -121,6 +133,20 @@ export function NavBar() {
 
 				{/* Mobile Actions */}
 				<div className='flex items-center gap-4 md:hidden'>
+					{/* Mobile Cart Icon Button */}
+					<button
+						onClick={toggleCart}
+						className='relative text-white p-1 focus:outline-none'
+						aria-label='কার্ট দেখুন'
+					>
+						<ShoppingCart className='h-6 w-6' />
+						{itemCount > 0 && (
+							<span className='absolute -top-1.5 -right-1.5 bg-rose-500 text-white text-[10px] font-black rounded-full h-4 h-4 w-4 flex items-center justify-center'>
+								{itemCount}
+							</span>
+						)}
+					</button>
+
 					{/* User Icon with Dropdown (only when authenticated) */}
 					{isAuthenticated && (
 						<div className='relative'>
@@ -160,11 +186,7 @@ export function NavBar() {
 										<button
 											onClick={async () => {
 												setShowUserMenu(false);
-
-												// First, navigate to home page to avoid race conditions
 												router.push('/');
-
-												// Then perform logout after a small delay
 												setTimeout(async () => {
 													await logout();
 													console.log('Logout completed after navigation');
