@@ -29,6 +29,7 @@ import {
 	MessageSquare,
 	TicketIcon,
 	X,
+	Bookmark,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -72,6 +73,7 @@ function DashboardContent({ children }: { children: React.ReactNode }) {
 	const menuItems = [
 		{ icon: Home, label: 'Dashboard', href: '/user' },
 		{ icon: Package, label: 'My Orders', href: '/user/orders' },
+		{ icon: Bookmark, label: 'Saved Products', href: '/user/saved-products' },
 		{ icon: MessageSquare, label: 'Chat with Vendor', href: '/user/chat' },
 		// { icon: TicketIcon, label: 'Support Tickets', href: '/user/support' },
 		{ icon: User, label: 'Profile', href: '/user/profile' },
