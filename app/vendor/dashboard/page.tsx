@@ -41,7 +41,7 @@ const formatCurrency = (amount: number): string => {
 };
 
 export default function VendorDashboardPage() {
-	const { user } = useSession();
+	const { user, isLoading: isSessionLoading } = useSession();
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
 	const [stats, setStats] = useState({
@@ -62,6 +62,9 @@ export default function VendorDashboardPage() {
 
 	useEffect(() => {
 		const fetchDashboardData = async () => {
+			// Don't fetch until session is fully loaded
+			if (isSessionLoading) return;
+
 			if (!user?.storeId) {
 				setError(
 					'স্টোর আইডি পাওয়া যায়নি। আপনার অনুগ্রহ করে স্টোর তৈরি করুন।'
@@ -187,9 +190,9 @@ export default function VendorDashboardPage() {
 		};
 
 		fetchDashboardData();
-	}, [user?.storeId]);
+	}, [user?.storeId, isSessionLoading]);
 
-	if (loading) {
+	if (isSessionLoading || loading) {
 		return <DashboardSkeleton />;
 	}
     console.log(stats);

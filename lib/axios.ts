@@ -43,18 +43,37 @@ let refreshSubscribers: Array<(token: string | null) => void> = [];
 let sessionPromise: Promise<Session | null> | null = null;
 
 /**
+ * Timestamp of when the session promise was last set
+ * Used together with SESSION_CACHE_TTL to expire stale cache entries
+ * @type {number}
+ */
+let sessionPromiseTimestamp: number = 0;
+
+/**
+ * Time-to-live for the session cache in milliseconds
+ * After this duration, the cached session promise is considered stale
+ * and a fresh fetch will be triggered on the next request
+ */
+const SESSION_CACHE_TTL = 5000; // 5 seconds
+
+/**
  * Fetches the current session data from the API
- * Uses request caching to avoid redundant calls
+ * Uses request caching with TTL to avoid redundant calls
+ * while ensuring stale sessions are re-fetched
  *
  * @function getClientSession
  * @returns {Promise<Session | null>} Promise resolving to session data or null
  */
 const getClientSession = (): Promise<Session | null> => {
-	if (!sessionPromise) {
+	const now = Date.now();
+	// Re-fetch if no cached promise or cache has expired
+	if (!sessionPromise || (now - sessionPromiseTimestamp > SESSION_CACHE_TTL)) {
+		sessionPromiseTimestamp = now;
 		sessionPromise = fetch('/api/auth/session')
 			.then((res) => {
 				if (!res.ok) {
 					sessionPromise = null;
+					sessionPromiseTimestamp = 0;
 					return null;
 				}
 				return res.json();
@@ -62,6 +81,7 @@ const getClientSession = (): Promise<Session | null> => {
 			.then((data: Session | null) => {
 				if (!data?.accessToken) {
 					sessionPromise = null;
+					sessionPromiseTimestamp = 0;
 					return null;
 				}
 				return data;
@@ -69,6 +89,7 @@ const getClientSession = (): Promise<Session | null> => {
 			.catch((err) => {
 				console.error('Error fetching client session:', err);
 				sessionPromise = null;
+				sessionPromiseTimestamp = 0;
 				return null;
 			});
 	}
@@ -77,12 +98,13 @@ const getClientSession = (): Promise<Session | null> => {
 
 /**
  * Clears the session promise cache
- * Should be called when the session is invalidated
+ * Should be called when the session is invalidated (e.g., after login/logout)
  *
  * @function clearSessionCache
  */
-const clearSessionCache = (): void => {
+export const clearSessionCache = (): void => {
 	sessionPromise = null;
+	sessionPromiseTimestamp = 0;
 };
 
 /**

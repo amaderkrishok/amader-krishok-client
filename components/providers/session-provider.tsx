@@ -144,9 +144,21 @@ export const SessionProvider: React.FC<SessionProviderProps> = ({
 		}
 	}, []);
 
-	// Fetch session on initial mount
+	// Fetch session on initial mount and re-fetch when page becomes visible
+	// (handles login redirect where cookies may not be propagated in time)
 	useEffect(() => {
 		fetchSession(true); // Pass isInitial=true for the first load
+
+		const handleVisibilityChange = () => {
+			if (document.visibilityState === 'visible') {
+				fetchSession(false); // Non-initial fetch (no loading spinner)
+			}
+		};
+		document.addEventListener('visibilitychange', handleVisibilityChange);
+
+		return () => {
+			document.removeEventListener('visibilitychange', handleVisibilityChange);
+		};
 	}, [fetchSession]);
 
 	/**

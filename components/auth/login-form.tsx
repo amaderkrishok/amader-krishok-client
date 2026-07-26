@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { LoginSchema } from '@/schemas';
+import { clearSessionCache } from '@/lib/axios';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -96,6 +97,8 @@ function LoginFormContent({
                 }
                 if (response.ok) {
                     const responseData = await response.json();
+                    // Clear stale session cache so dashboard gets fresh session
+                    clearSessionCache();
                     setSuccess(
                         responseData.message || 'Login successful! Redirecting...'
                     );
