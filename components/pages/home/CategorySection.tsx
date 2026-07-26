@@ -1,13 +1,12 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRight, Sparkles, Leaf, Layers, ChevronRight, Compass } from 'lucide-react';
+import { ArrowRight, Leaf, Compass, Sparkles } from 'lucide-react';
 import { ProductCategoryService } from '@/services/product-category-service';
 import type { ProductCategoryType } from '@/types/product-category';
-import { Skeleton } from '@/components/ui/skeleton';
 
 interface CategoryVisual {
   name: string;
@@ -67,19 +66,9 @@ const defaultCategoryVisuals: Record<string, CategoryVisual> = {
   },
 };
 
-const subcategoryPills = [
-  'সব বিভাগ',
-  'তাজা সবজি',
-  'মৌসুমি ফল',
-  'অর্গানিক চাল',
-  'নদীর তাজা মাছ',
-  'জৈব সার ও কিট',
-];
-
 export function CategorySection() {
   const [categories, setCategories] = useState<ProductCategoryType[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [activePill, setActivePill] = useState<string>('সব বিভাগ');
 
   useEffect(() => {
     async function fetchCategories() {
@@ -101,20 +90,20 @@ export function CategorySection() {
   const heroCategory = defaultCategoryVisuals['সবজি'];
 
   return (
-    <section className="py-28 bg-[#FDFBF7] relative overflow-hidden">
-      {/* Organic Floating Orbs */}
+    <section className="py-24 bg-[#FDFBF7] relative overflow-hidden">
+      {/* Organic Ambient Illumination */}
       <div className="absolute top-10 left-10 w-96 h-96 bg-[#EAB308]/5 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-10 right-10 w-[30rem] h-[30rem] bg-[#2D331F]/5 rounded-full blur-3xl pointer-events-none" />
 
-      {/* Decorative Organic Leaf Icon Floating */}
-      <div className="absolute top-16 right-16 text-[#2D331F]/10 pointer-events-none animate-pulse">
-        <Leaf className="w-24 h-24" />
+      {/* Subtle Floating Organic Leaf Backdrop */}
+      <div className="absolute top-16 right-16 text-[#2D331F]/5 pointer-events-none animate-pulse">
+        <Leaf className="w-32 h-32" />
       </div>
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
         
-        {/* Editorial Section Header */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-12 gap-8">
+        {/* Section Header */}
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-14 gap-8">
           <div>
             <motion.div
               initial={{ opacity: 0, y: 15 }}
@@ -156,30 +145,13 @@ export function CategorySection() {
           </motion.div>
         </div>
 
-        {/* Horizontal Subcategory Carousel Pills */}
-        <div className="flex items-center gap-2.5 overflow-x-auto pb-4 mb-12 scrollbar-none">
-          {subcategoryPills.map((pill) => (
-            <button
-              key={pill}
-              onClick={() => setActivePill(pill)}
-              className={`px-5 py-2.5 rounded-full text-xs font-extrabold whitespace-nowrap transition-all duration-300 ${
-                activePill === pill
-                  ? 'bg-[#EAB308] text-[#2D331F] shadow-md scale-105'
-                  : 'bg-white border border-gray-200 text-gray-700 hover:border-[#2D331F] hover:text-[#2D331F]'
-              }`}
-            >
-              {pill}
-            </button>
-          ))}
-        </div>
-
         {/* Asymmetric Editorial Category Layout */}
         {isLoading ? (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            <div className="lg:col-span-6 h-[460px] rounded-3xl bg-gray-200 animate-pulse" />
+            <div className="lg:col-span-6 h-[480px] rounded-3xl bg-gray-200 animate-pulse" />
             <div className="lg:col-span-6 grid grid-cols-2 gap-6">
               {[...Array(4)].map((_, i) => (
-                <div key={i} className="h-[215px] rounded-3xl bg-gray-200 animate-pulse" />
+                <div key={i} className="h-[228px] rounded-3xl bg-gray-200 animate-pulse" />
               ))}
             </div>
           </div>
@@ -213,10 +185,11 @@ export function CategorySection() {
                 {/* Content Overlay */}
                 <div className="absolute inset-0 p-8 md:p-10 flex flex-col justify-between z-10">
                   <div className="flex items-center justify-between">
-                    <span className="px-4 py-1.5 rounded-full text-xs font-extrabold bg-[#EAB308] text-[#2D331F] shadow-lg">
-                      ⭐ বিশেষ আকর্ষণ
+                    <span className="px-4 py-1.5 rounded-full text-xs font-extrabold bg-[#EAB308] text-[#2D331F] shadow-lg flex items-center gap-1">
+                      <Sparkles className="w-3.5 h-3.5 fill-[#2D331F]" />
+                      <span>বিশেষ স্থান</span>
                     </span>
-                    <span className={`text-xs font-extrabold px-3 py-1 rounded-full border backdrop-blur-md ${heroCategory.badgeBg}`}>
+                    <span className={`text-xs font-extrabold px-3.5 py-1 rounded-full border backdrop-blur-md ${heroCategory.badgeBg}`}>
                       {heroCategory.count}
                     </span>
                   </div>
