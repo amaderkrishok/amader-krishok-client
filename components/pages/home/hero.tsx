@@ -107,8 +107,8 @@ export function Hero() {
                             <TextType 
                                 as="h1"
                                 text={"আজ সকালের তাজা ফসল,\nআগামীকাল আপনার রান্না ঘরে।"}
-                                typingSpeed={50}
-                                loop={false}
+                                typingSpeed={80}
+                                loop={true}
                                 showCursor={true}
                                 textColors={['#FFFFFF']}
                                 className="text-5xl sm:text-6xl lg:text-6xl xl:text-7xl font-bold leading-[1.2] tracking-tight"
