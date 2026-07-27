@@ -290,15 +290,20 @@ export function MarketplaceContainer() {
 	};
 
 	return (
-		<div className='min-h-screen pb-8 bg-gradient-to-br from-slate-50 via-white to-green-50/40'>
+		<div className='min-h-screen pb-8 bg-gradient-to-br from-slate-50 via-white to-[#2D331F]/5'>
 			<div className='container mx-auto px-4 py-8'>
 				{!isAuthenticated && <VendorBanner />}
 
 				<div className='flex flex-col md:flex-row gap-8 mt-8'>
 					{/* Mobile filter button */}
 					{isMobile && (
-						<div className='flex justify-between items-center mb-6'>
-							<h1 className='text-3xl font-extrabold tracking-tight text-gray-900'>কৃষকের বাজার</h1>
+						<div className='flex justify-between items-center mb-6 pb-2 border-b border-gray-200/50'>
+							<div>
+								<h1 className='text-2xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[#2D331F] to-gray-600'>
+									কৃষকের বাজার
+								</h1>
+								<div className="h-1 w-12 bg-[#EAB308] rounded-full mt-1.5"></div>
+							</div>
 							<FilterButton onClick={toggleMobileFilter} />
 						</div>
 					)}
@@ -346,7 +351,12 @@ export function MarketplaceContainer() {
 					{/* Main content */}
 					<div className='w-full md:w-3/4'>
 						{!isMobile && (
-							<h1 className='text-3xl font-extrabold tracking-tight text-gray-900 mb-8'>কৃষকের বাজার</h1>
+							<div className="relative mb-8 group">
+								<h1 className='text-4xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[#2D331F] to-gray-500 hover:to-[#EAB308] transition-all duration-500'>
+									কৃষকের বাজার
+								</h1>
+								<div className="h-1.5 w-16 bg-[#EAB308] rounded-full mt-3 transition-all duration-500 group-hover:w-32 shadow-sm"></div>
+							</div>
 						)}
 
 						<div className='flex justify-between items-center mb-6'>
@@ -434,8 +444,8 @@ function Button({
 	const baseClasses = 'px-5 py-2.5 rounded-xl font-semibold transition-all duration-300 ease-in-out flex items-center justify-center';
 	const variantClasses =
 		variant === 'outline'
-			? 'border-2 border-gray-200 text-gray-700 hover:border-green-500 hover:text-green-600 hover:bg-green-50/50 shadow-sm'
-			: 'bg-gradient-to-r from-green-600 to-emerald-600 text-white hover:from-green-500 hover:to-emerald-500 shadow-md hover:shadow-lg hover:-translate-y-0.5';
+			? 'border-2 border-gray-200 text-gray-700 hover:border-[#2D331F] hover:text-[#2D331F] hover:bg-[#2D331F]/5 shadow-sm'
+			: 'bg-[#2D331F] text-[#EAB308] font-bold hover:bg-[#2D331F]/90 shadow-md hover:shadow-lg hover:-translate-y-0.5';
 
 	return (
 		<button

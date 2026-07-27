@@ -137,14 +137,14 @@ export function Pagination({
 					return (
 						<Button
 							key={pageNum}
-							variant={sanitizedCurrentPage === pageNum ? 'default' : 'outline'}
+							variant='outline'
 							size='icon'
 							onClick={() => onPageChange(pageNum)}
 							aria-label={`Go to page ${pageNum}`}
 							aria-current={
 								sanitizedCurrentPage === pageNum ? 'page' : undefined
 							}
-							className='w-9 h-9'
+							className={`w-9 h-9 ${sanitizedCurrentPage === pageNum ? 'bg-[#2D331F] text-[#EAB308] border-[#2D331F] hover:bg-[#2D331F]/90 hover:text-[#EAB308]' : 'hover:border-[#2D331F] hover:text-[#2D331F] hover:bg-[#2D331F]/5'}`}
 						>
 							{pageNum}
 						</Button>

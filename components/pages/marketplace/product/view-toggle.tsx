@@ -15,10 +15,10 @@ export function ViewToggle({ currentView, onViewChange }: ViewToggleProps) {
       value={currentView}
       onValueChange={(value) => value && onViewChange(value as "grid" | "list")}
     >
-      <ToggleGroupItem value="grid" aria-label="Grid view">
+      <ToggleGroupItem value="grid" aria-label="Grid view" className="data-[state=on]:bg-[#2D331F] data-[state=on]:text-[#EAB308]">
         <Grid className="h-4 w-4" />
       </ToggleGroupItem>
-      <ToggleGroupItem value="list" aria-label="List view">
+      <ToggleGroupItem value="list" aria-label="List view" className="data-[state=on]:bg-[#2D331F] data-[state=on]:text-[#EAB308]">
         <List className="h-4 w-4" />
       </ToggleGroupItem>
     </ToggleGroup>

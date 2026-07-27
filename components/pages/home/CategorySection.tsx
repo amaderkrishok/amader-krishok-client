@@ -100,7 +100,7 @@ export function CategorySection() {
         <Leaf className="w-32 h-32" />
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+      <div className="max-w-7xl mx-auto px-6 lg:px-24 xl:px-40 2xl:px-12 relative z-10">
         
         {/* Section Header */}
         <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-14 gap-8">

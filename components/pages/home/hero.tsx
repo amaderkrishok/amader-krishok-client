@@ -82,7 +82,7 @@ export function Hero() {
                 ))}
             </div>
 
-            <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-8 flex flex-col gap-16">
+            <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-24 xl:px-40 2xl:px-12 flex flex-col gap-16">
                 
                 {/* --- HERO TOP SECTION --- */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-8 items-center mt-12">
@@ -111,7 +111,7 @@ export function Hero() {
                                 loop={false}
                                 showCursor={true}
                                 textColors={['#FFFFFF']}
-                                className="text-5xl sm:text-6xl lg:text-7xl font-bold leading-[1.2] tracking-tight"
+                                className="text-5xl sm:text-6xl lg:text-6xl xl:text-7xl font-bold leading-[1.2] tracking-tight"
                             />
                         </motion.div>
                         {/* Description */}
@@ -164,8 +164,7 @@ export function Hero() {
                         <motion.div 
                             initial={{ opacity: 0, scale: 0.8 }}
                             animate={{ opacity: 1, scale: 1 }}
-                            transition={{ duration: 1, ease: "easeOut", delay: 0.3 }}
-                            className="relative w-full max-w-[350px] lg:max-w-[400px] aspect-[4/5] rounded-[32px] overflow-hidden shadow-2xl z-10 ring-1 ring-white/10"
+                            className="relative w-full max-w-[320px] lg:max-w-[350px] xl:max-w-[400px] aspect-[4/5] rounded-[32px] overflow-hidden shadow-2xl z-10 ring-1 ring-white/10"
                         >
                             <Image
                                 src="/images/main_image.jpeg"
@@ -181,7 +180,7 @@ export function Hero() {
                             animate={{ opacity: 1, x: 0, y: 0 }}
                             transition={{ duration: 0.8, delay: 0.6 }}
                             whileHover={{ y: -5, scale: 1.02 }}
-                            className="absolute top-4 -right-4 lg:-right-8 w-40 lg:w-48 aspect-square rounded-[24px] overflow-hidden p-2 bg-[#3f472f]/90 border border-white/10 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)] z-20"
+                            className="absolute top-4 -right-2 lg:-right-4 xl:-right-8 w-36 lg:w-40 xl:w-48 aspect-square rounded-[24px] overflow-hidden p-2 bg-[#3f472f]/90 border border-white/10 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)] z-20"
                         >
                             <div className="relative w-full h-full rounded-[16px] overflow-hidden">
                                 <Image
@@ -199,7 +198,7 @@ export function Hero() {
                             animate={{ opacity: 1, x: 0, y: 0 }}
                             transition={{ duration: 0.8, delay: 0.8 }}
                             whileHover={{ y: -5, scale: 1.02 }}
-                            className="absolute bottom-10 lg:bottom-20 -right-4 lg:-right-0 w-36 lg:w-40 aspect-[4/3] rounded-[20px] overflow-hidden p-1.5 bg-[#3f472f]/90 border border-white/10 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)] z-20"
+                            className="absolute bottom-10 lg:bottom-16 xl:bottom-20 -right-2 lg:-right-2 xl:-right-0 w-32 lg:w-36 xl:w-40 aspect-[4/3] rounded-[20px] overflow-hidden p-1.5 bg-[#3f472f]/90 border border-white/10 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)] z-20"
                         >
                             <div className="relative w-full h-full rounded-[14px] overflow-hidden">
                                 <Image
@@ -217,7 +216,7 @@ export function Hero() {
                             animate={{ opacity: 1, x: 0, y: 0 }}
                             transition={{ duration: 0.8, delay: 0.7 }}
                             whileHover={{ y: -5, scale: 1.02 }}
-                            className="absolute bottom-4 lg:bottom-10 left-0 lg:-left-6 w-44 lg:w-52 aspect-video rounded-[24px] overflow-hidden p-2 bg-[#3f472f]/90 border border-white/10 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)] z-20"
+                            className="absolute bottom-4 lg:bottom-10 left-2 lg:-left-2 xl:-left-6 w-40 lg:w-48 xl:w-52 aspect-video rounded-[24px] overflow-hidden p-2 bg-[#3f472f]/90 border border-white/10 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)] z-20"
                         >
                             <div className="relative w-full h-full rounded-[16px] overflow-hidden">
                                 <Image
@@ -235,7 +234,7 @@ export function Hero() {
                             animate={{ opacity: 1, x: 0, y: 0 }}
                             transition={{ duration: 0.8, delay: 0.9 }}
                             whileHover={{ y: -5, scale: 1.02 }}
-                            className="absolute top-12 lg:top-20 left-4 lg:-left-4 flex items-center gap-3 lg:gap-4 p-3 lg:p-4 rounded-[20px] bg-[#3f472f]/90 border border-white/10 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)] z-20"
+                            className="absolute top-12 lg:top-16 xl:top-20 left-4 lg:left-0 xl:-left-4 flex items-center gap-2 lg:gap-3 xl:gap-4 p-2 lg:p-3 xl:p-4 rounded-[20px] bg-[#3f472f]/90 border border-white/10 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)] z-20"
                         >
                             <div className="flex items-center justify-center w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-gradient-to-br from-[#4ADE80] to-[#16A34A] shadow-inner">
                                 <ShieldCheck className="w-5 h-5 lg:w-6 lg:h-6 text-white" />

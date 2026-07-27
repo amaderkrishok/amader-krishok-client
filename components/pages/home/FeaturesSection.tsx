@@ -107,7 +107,7 @@ export default function FeaturesSection() {
     };
 
     return (
-        <section ref={sectionRef} className="py-24 px-4 md:px-8 bg-gradient-to-b from-white via-emerald-50/30 to-white relative overflow-hidden">
+        <section ref={sectionRef} className="py-24 px-4 md:px-8 lg:px-24 xl:px-40 2xl:px-12 bg-gradient-to-b from-white via-emerald-50/30 to-white relative overflow-hidden">
            
             <div className="absolute inset-0 pointer-events-none">
                 <div className="absolute top-20 left-10 w-72 h-72 bg-emerald-200/20 rounded-full blur-3xl"></div>

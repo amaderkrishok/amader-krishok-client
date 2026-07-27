@@ -61,7 +61,7 @@ export function ProductCard({ product }: ProductCardProps) {
 	};
 
 	return (
-		<Card className='p-0 gap-0 overflow-hidden h-full flex flex-col rounded-xl border border-gray-100 shadow-sm hover:shadow-[0_10px_40px_-10px_rgba(34,197,94,0.2)] transition-all duration-500 group/card bg-white hover:-translate-y-1.5'>
+		<Card className='p-0 gap-0 overflow-hidden h-full flex flex-col rounded-xl border border-gray-100 shadow-sm hover:shadow-[0_10px_40px_-10px_rgba(45,51,31,0.2)] transition-all duration-500 group/card bg-white hover:-translate-y-1.5'>
 			<div className='relative aspect-[4/3] w-full overflow-hidden bg-gray-50/50'>
 				<Link href={`/marketplace/product/${product.id}`}>
 					<Image
@@ -95,8 +95,8 @@ export function ProductCard({ product }: ProductCardProps) {
 					}}
 					className={`absolute top-2 right-2 p-2 rounded-full backdrop-blur-md transition-all duration-300 z-20 hover:scale-110 shadow-sm ${
 						isSaved 
-							? 'bg-green-50 text-green-600 border border-green-200' 
-							: 'bg-white/80 text-gray-500 hover:text-green-600 hover:bg-white border border-gray-200/50'
+							? 'bg-[#2D331F]/10 text-[#2D331F] border border-[#2D331F]/20' 
+							: 'bg-white/80 text-gray-500 hover:text-[#2D331F] hover:bg-white border border-gray-200/50'
 					}`}
 					aria-label={isSaved ? 'Remove from saved' : 'Save product'}
 				>
@@ -110,7 +110,7 @@ export function ProductCard({ product }: ProductCardProps) {
 								e.preventDefault();
 								prevImage();
 							}}
-							className='absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 backdrop-blur text-gray-800 p-1.5 rounded-full hover:bg-white hover:text-green-600 shadow-md opacity-0 group-hover/card:opacity-100 transition-all duration-300 z-20 hover:scale-110'
+							className='absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 backdrop-blur text-gray-800 p-1.5 rounded-full hover:bg-white hover:text-[#EAB308] shadow-md opacity-0 group-hover/card:opacity-100 transition-all duration-300 z-20 hover:scale-110'
 							aria-label='আগের ছবি'
 						>
 							<ChevronLeft className='h-5 w-5' />
@@ -120,7 +120,7 @@ export function ProductCard({ product }: ProductCardProps) {
 								e.preventDefault();
 								nextImage();
 							}}
-							className='absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 backdrop-blur text-gray-800 p-1.5 rounded-full hover:bg-white hover:text-green-600 shadow-md opacity-0 group-hover/card:opacity-100 transition-all duration-300 z-20 hover:scale-110'
+							className='absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 backdrop-blur text-gray-800 p-1.5 rounded-full hover:bg-white hover:text-[#EAB308] shadow-md opacity-0 group-hover/card:opacity-100 transition-all duration-300 z-20 hover:scale-110'
 							aria-label='পরের ছবি'
 						>
 							<ChevronRight className='h-5 w-5' />
@@ -135,7 +135,7 @@ export function ProductCard({ product }: ProductCardProps) {
 									}}
 									className={`h-1.5 rounded-full transition-all duration-300 z-20 ${
 										currentImageIndex === idx
-											? 'w-4 bg-green-500 shadow-[0_0_5px_rgba(34,197,94,0.5)]'
+											? 'w-4 bg-[#EAB308] shadow-[0_0_5px_rgba(234,179,8,0.5)]'
 											: 'w-1.5 bg-white/80 hover:bg-white'
 									}`}
 									aria-label={`ছবি ${idx + 1} দেখুন`}
@@ -148,7 +148,7 @@ export function ProductCard({ product }: ProductCardProps) {
 
 			<CardContent className='flex-grow p-3 pb-1'>
 				<Link href={`/marketplace/product/${product.id}`} className='block group/title'>
-					<h3 className='font-semibold text-sm mb-0.5 text-gray-900 group-hover/title:text-green-600 transition-colors line-clamp-1'>
+					<h3 className='font-semibold text-sm mb-0.5 text-gray-900 group-hover/title:text-[#2D331F] transition-colors line-clamp-1'>
 						{product.name}
 					</h3>
 				</Link>
@@ -161,7 +161,7 @@ export function ProductCard({ product }: ProductCardProps) {
 						{product.productCategories.slice(0, 2).map((category) => (
 							<span
 								key={category.id}
-								className='text-[9px] font-medium tracking-wide bg-green-50/80 px-1.5 py-0.5 rounded text-green-700 border border-green-100/50'
+								className='text-[9px] font-medium tracking-wide bg-[#2D331F]/10 px-1.5 py-0.5 rounded text-[#2D331F] border border-[#2D331F]/20'
 							>
 								{category.name}
 							</span>
@@ -174,7 +174,7 @@ export function ProductCard({ product }: ProductCardProps) {
 				<div>
 					{priceInfo.hasDiscount ? (
 						<div className='flex flex-col'>
-							<span className='font-bold text-base text-green-600 leading-none mb-0.5'>
+							<span className='font-bold text-base text-[#2D331F] leading-none mb-0.5'>
 								{priceInfo.formattedDiscountPrice}
 							</span>
 							<span className='text-gray-400 line-through text-[10px] font-medium leading-none'>
@@ -191,9 +191,9 @@ export function ProductCard({ product }: ProductCardProps) {
 					size='sm' 
 					onClick={handleAddToCart} 
 					disabled={!canPurchase}
-					className={`h-8 px-2.5 rounded-lg transition-all duration-300 font-medium text-[11px] shadow-sm hover:shadow-md active:scale-95 group/btn ${!canPurchase ? 'bg-gray-100 text-gray-400' : 'bg-gradient-to-r from-green-600 to-emerald-500 hover:from-green-500 hover:to-emerald-400 text-white border-0'}`}
+					className={`h-8 px-2.5 rounded-lg transition-all duration-300 font-medium text-[11px] shadow-sm hover:shadow-md active:scale-95 group/btn ${!canPurchase ? 'bg-gray-100 text-gray-400' : 'bg-gradient-to-r from-[#2D331F] to-[#2D331F]/90 hover:from-[#2D331F]/90 hover:to-[#2D331F] text-[#EAB308] border-0'}`}
 				>
-					<ShoppingCart className='h-3.5 w-3.5 mr-1 group-hover/btn:rotate-12 transition-transform' />
+					<ShoppingCart className='h-3.5 w-3.5 mr-1 group-hover/btn:rotate-12 transition-transform text-[#EAB308]' />
 					{!canPurchase
 						? 'অননুমোদিত'
 						: product.productType === 'VARIABLE'

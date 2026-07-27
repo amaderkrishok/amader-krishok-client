@@ -69,12 +69,12 @@ export function Footer() {
                     transition={{ duration: 18, repeat: Infinity, ease: "easeInOut", delay: 2 }}
                     className="absolute -bottom-40 -left-40 w-80 h-80 bg-teal-500/20 rounded-full blur-3xl"
                 />
-                <div className="max-w-7xl mx-auto px-6 lg:px-8 py-12 lg:py-16 relative z-10">
+                <div className="max-w-7xl mx-auto px-6 lg:px-24 xl:px-40 2xl:px-12 py-12 lg:py-16 relative z-10">
                     <motion.div
                         variants={containerVariants}
                         initial="hidden"
                         animate={isInView ? "visible" : "hidden"}
-                        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-60"
+                        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12 xl:gap-32"
                     >
                         <motion.div variants={itemVariants} className="space-y-4">
                             <div className="flex items-center gap-2">

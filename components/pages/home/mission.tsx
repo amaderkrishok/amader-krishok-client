@@ -58,7 +58,7 @@ export default function Mission() {
     ];
 
     return (
-        <section ref={sectionRef} className="bg-gradient-to-br from-emerald-900 via-emerald-800 to-teal-900 text-white py-20 px-4 md:px-8 lg:px-12 relative overflow-hidden">
+        <section ref={sectionRef} className="bg-gradient-to-br from-emerald-900 via-emerald-800 to-teal-900 text-white py-20 px-4 md:px-8 lg:px-24 xl:px-40 2xl:px-12 lg:px-12 relative overflow-hidden">
          
             <div className="absolute inset-0 opacity-5">
                 <div className="absolute inset-0" style={{
