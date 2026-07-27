@@ -1,9 +1,11 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
-import { SessionProvider } from '@/components/providers/session-provider'; // Import the provider
+import { SessionProvider } from '@/components/providers/session-provider';
 import { SavedProductsProvider } from '@/context/saved-products-context';
 import { CartProvider } from '@/context/cart-context';
+import { CartDrawer } from '@/components/pages/marketplace/cart/cart-drawer';
+import { FloatingCartButton } from '@/components/pages/marketplace/cart/floating-cart-button';
 import { Toaster } from 'sonner';
 import TopLoadingBar from '@/components/global/top-loading-bar';
 import { Suspense } from 'react';
@@ -23,9 +25,10 @@ const geistMono = localFont({
 export const metadata: Metadata = {
 	title: 'আমাদের কৃষক',
 	icons: {
-		icon: '/static/favicon.ico', // /public path
+		icon: '/static/favicon.ico',
 	},
 };
+
 export default function RootLayout({
 	children,
 }: Readonly<{
@@ -41,6 +44,8 @@ export default function RootLayout({
 					<CartProvider>
 						<SavedProductsProvider>
 							<Suspense>{children}</Suspense>
+							<FloatingCartButton />
+							<CartDrawer />
 						</SavedProductsProvider>
 					</CartProvider>
 				</SessionProvider>

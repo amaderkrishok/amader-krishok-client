@@ -24,14 +24,14 @@ export function FloatingCartButton() {
 	}, [itemCount, prevItemCount]);
 
 	return (
-		<div className='fixed bottom-4 right-4 z-40'>
+		<div className='fixed bottom-[84px] right-6 z-40'>
 			<button
 				onClick={toggleCart}
-				className='flex items-center shadow-lg bg-green-600 text-white rounded-full p-3 hover:bg-green-700 transition-all focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50'
+				className='flex items-center gap-2.5 shadow-2xl bg-[#2D331F] hover:bg-[#1F2516] text-white border border-white/20 rounded-full px-4 py-3 transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#EAB308]'
 				aria-label='Open cart'
 			>
-				<div className='relative'>
-					<ShoppingCart className='h-6 w-6' />
+				<div className='relative flex items-center justify-center'>
+					<ShoppingCart className='h-5 w-5 text-[#EAB308]' />
 					<AnimatePresence>
 						{itemCount > 0 && (
 							<motion.span
@@ -42,13 +42,14 @@ export function FloatingCartButton() {
 								}}
 								exit={{ scale: 0.5, opacity: 0 }}
 								transition={{ duration: 0.3 }}
-								className='absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold'
+								className='absolute -top-3 -right-3 bg-rose-500 text-white text-[10px] font-black rounded-full h-5 w-5 flex items-center justify-center shadow-md border-2 border-[#2D331F]'
 							>
 								{itemCount}
 							</motion.span>
 						)}
 					</AnimatePresence>
 				</div>
+
 				<AnimatePresence>
 					{itemCount > 0 && (
 						<motion.div
@@ -56,7 +57,7 @@ export function FloatingCartButton() {
 							animate={{ width: 'auto', opacity: 1 }}
 							exit={{ width: 0, opacity: 0 }}
 							transition={{ duration: 0.3 }}
-							className='overflow-hidden ml-2'
+							className='overflow-hidden text-xs font-black tracking-wide text-amber-300'
 						>
 							<span className='whitespace-nowrap'>
 								{formatPrice(subtotal).replace('$', '৳')}
