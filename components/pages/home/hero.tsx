@@ -97,7 +97,6 @@ export function Hero() {
           {/* Top Pill Badge */}
           <motion.div variants={fadeInUp} className="mb-6">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#3f472f]/90 border border-white/10 shadow-lg">
-              <Sparkles className="w-4 h-4 text-[#EAB308]" />
               <span className="text-[#EAB308] text-xs sm:text-sm font-semibold tracking-wide uppercase">
                 সরাসরি কৃষকের হাত থেকে
               </span>
