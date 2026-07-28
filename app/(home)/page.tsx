@@ -13,12 +13,8 @@ export const revalidate = 3600; // Cache for 1 hour
 export default function Home() {
 	return (
 		<div>
-			<section className='min-h-screen relative'>
-				<div className='absolute inset-0 bg-black/10 z-10'></div>
-				<div className='relative z-20'>
-					<Hero />
-				</div>
-			</section>
+			{/* Premium Hero Banner */}
+			<Hero />
 
 			{/* Category Showcase Section */}
 			<CategorySection />
