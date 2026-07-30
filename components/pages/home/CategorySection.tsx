@@ -26,7 +26,7 @@ const defaultCategoryVisuals: Record<string, CategoryVisual> = {
     image: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&q=80&w=800',
     gradient: 'from-emerald-950/90 via-emerald-900/50 to-transparent',
     badgeBg: 'bg-emerald-500/25 text-emerald-300 border-emerald-500/40',
-    subcategories: ['টমেটো', 'আলু', 'বেগুন', 'গাজর', 'পুইশাক'],
+    subcategories: ['টমেটো', 'বেগুন', 'শসা', 'লাউ'],
   },
   'ফল': {
     name: 'মৌসুমি মিষ্টি ফল',
@@ -203,13 +203,13 @@ export function CategorySection() {
                     </p>
 
                     {/* Subcategory Tags */}
-                    <div className="flex flex-wrap gap-2 mb-6">
+                    {/* <div className="flex flex-wrap gap-2 mb-6">
                       {heroCategory.subcategories.map((sub, sIdx) => (
                         <span key={sIdx} className="text-xs px-3 py-1 rounded-lg bg-white/15 backdrop-blur-md text-white font-semibold">
                           #{sub}
                         </span>
                       ))}
-                    </div>
+                    </div> */}
 
                     <div className="inline-flex items-center gap-2 text-sm font-extrabold text-[#EAB308] group-hover:underline">
                       <span>তাজা সবজি সংগ্রহ দেখুন</span>
