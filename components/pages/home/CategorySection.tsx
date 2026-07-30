@@ -125,7 +125,7 @@ export function CategorySection() {
               মৌসুমি সেরা বিভাগ ও খাঁটি ফসল
             </motion.h2>
             <p className="text-gray-600 text-base md:text-lg mt-3 max-w-2xl leading-relaxed">
-              মাঠ থেকে সরাসরি আপনার খাবার টেবিলে — ১০০% বিশুদ্ধ, ক্ষতিকারক কেমিক্যাল মুক্ত তাজা ফসল ও অর্গানিক কৃষিপণ্য।
+              মাঠ থেকে সরাসরি আপনার খাবার টেবিলে
             </p>
           </div>
 

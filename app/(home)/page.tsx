@@ -26,10 +26,10 @@ export default function Home() {
 			<VendorsSection />
 
 			{/* Platform Core Features & Tools */}
-			<Mission />
+			{/* <Mission /> */}
 			<FeaturesSection />
-			<Goal />
-			<Product />
+			{/* <Goal />
+			<Product /> */}
 		</div>
 	);
 }
