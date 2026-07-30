@@ -100,7 +100,7 @@ export function VendorsSection() {
       <div className="absolute top-1/3 left-0 w-96 h-96 bg-[#2D331F]/5 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-10 right-0 w-96 h-96 bg-[#EAB308]/5 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-6 lg:px-24 xl:px-40 2xl:px-12 relative z-10">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
         
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
@@ -169,7 +169,7 @@ export function VendorsSection() {
                 ('storeImage' in vendor && vendor.storeImage) ||
                 (vendor as any).profileImage ||
                 'https://images.unsplash.com/photo-1595152772835-219674b2a8a6?auto=format&fit=crop&q=80&w=200';
-              const specialty = vendor.description || (vendor as any).specialty || 'উচ্চমানের তাজা কৃষি ও খামার পণ্য সরবরাহকারী';
+              const specialty = vendor?.description || (vendor as any).specialty || 'উচ্চমানের তাজা কৃষি ও খামার পণ্য সরবরাহকারী';
               const rating = (vendor as any).rating || 4.9;
 
               return (
