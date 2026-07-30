@@ -84,7 +84,7 @@ function ProductListItem({ product }: ProductListItemProps) {
   return (
     <div className="group relative flex flex-col sm:flex-row bg-white rounded-2xl border border-gray-100/80 shadow-[0_2px_12px_-4px_rgba(0,0,0,0.06)] hover:shadow-[0_8px_30px_-8px_rgba(0,0,0,0.12)] transition-all duration-400 ease-out hover:-translate-y-1.5 overflow-hidden">
       {/* Premium accent gradient bar */}
-      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-400 via-green-500 to-emerald-400 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#2D331F] via-[#EAB308] to-[#2D331F] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
       {/* Image Section */}
       <div className="relative w-full sm:w-44 lg:w-52 h-52 sm:h-auto min-h-[180px] flex-shrink-0 bg-gradient-to-br from-gray-50 to-gray-100/30">
@@ -131,8 +131,8 @@ function ProductListItem({ product }: ProductListItemProps) {
           }}
           className={`absolute top-2 right-2 p-2 rounded-full backdrop-blur-md transition-all duration-300 z-20 hover:scale-110 shadow-sm ${
             isSaved 
-              ? 'bg-green-50 text-green-600 border border-green-200' 
-              : 'bg-white/80 text-gray-500 hover:text-green-600 hover:bg-white border border-gray-200/50'
+              ? 'bg-[#2D331F]/10 text-[#2D331F] border border-[#2D331F]/20' 
+              : 'bg-white/80 text-gray-500 hover:text-[#2D331F] hover:bg-white border border-gray-200/50'
           }`}
           aria-label={isSaved ? 'Remove from saved' : 'Save product'}
         >
@@ -146,7 +146,7 @@ function ProductListItem({ product }: ProductListItemProps) {
                 e.preventDefault()
                 prevImage()
               }}
-              className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/90 backdrop-blur-sm text-gray-700 p-2 rounded-full hover:bg-white hover:text-emerald-600 shadow-lg hover:shadow-xl opacity-0 group-hover:opacity-100 transition-all duration-300 z-20 hover:scale-110 border border-white/20"
+              className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/90 backdrop-blur-sm text-gray-700 p-2 rounded-full hover:bg-white hover:text-[#EAB308] shadow-lg hover:shadow-xl opacity-0 group-hover:opacity-100 transition-all duration-300 z-20 hover:scale-110 border border-white/20"
               aria-label="Previous image"
             >
               <ChevronLeft className="h-4 w-4" />
@@ -156,7 +156,7 @@ function ProductListItem({ product }: ProductListItemProps) {
                 e.preventDefault()
                 nextImage()
               }}
-              className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/90 backdrop-blur-sm text-gray-700 p-2 rounded-full hover:bg-white hover:text-emerald-600 shadow-lg hover:shadow-xl opacity-0 group-hover:opacity-100 transition-all duration-300 z-20 hover:scale-110 border border-white/20"
+              className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/90 backdrop-blur-sm text-gray-700 p-2 rounded-full hover:bg-white hover:text-[#EAB308] shadow-lg hover:shadow-xl opacity-0 group-hover:opacity-100 transition-all duration-300 z-20 hover:scale-110 border border-white/20"
               aria-label="Next image"
             >
               <ChevronRight className="h-4 w-4" />
@@ -188,7 +188,7 @@ function ProductListItem({ product }: ProductListItemProps) {
       <div className="flex-grow p-5 lg:p-6 flex flex-col justify-between">
         <div className="flex-grow">
           <Link href={`/marketplace/${product.id}`} className="block">
-            <h3 className="font-bold text-lg lg:text-xl text-gray-900 group-hover:text-emerald-600 transition-colors duration-300 line-clamp-1">
+            <h3 className="font-bold text-lg lg:text-xl text-gray-900 group-hover:text-[#2D331F] transition-colors duration-300 line-clamp-1">
               {product.name}
             </h3>
           </Link>
@@ -203,7 +203,7 @@ function ProductListItem({ product }: ProductListItemProps) {
               {product.productCategories.slice(0, 3).map((category) => (
                 <span
                   key={category.id}
-                  className="text-[10px] font-medium px-2.5 py-1 rounded-full bg-gray-50 text-gray-600 border border-gray-100/80 hover:bg-emerald-50 hover:text-emerald-700 hover:border-emerald-100 transition-colors duration-200"
+                  className="text-[10px] font-medium px-2.5 py-1 rounded-full bg-gray-50 text-gray-600 border border-gray-100/80 hover:bg-[#2D331F]/10 hover:text-[#2D331F] hover:border-[#2D331F]/20 transition-colors duration-200"
                 >
                   {category.name}
                 </span>
@@ -228,7 +228,7 @@ function ProductListItem({ product }: ProductListItemProps) {
             ) : priceInfo.hasDiscount ? (
               <div className="flex flex-col">
                 <div className="flex items-baseline gap-2">
-                  <span className="font-bold text-xl text-emerald-600">{priceInfo.formattedDiscountPrice}</span>
+                  <span className="font-bold text-xl text-[#2D331F]">{priceInfo.formattedDiscountPrice}</span>
                   <span className="text-sm text-gray-400 line-through font-medium">{priceInfo.formattedPrice}</span>
                 </div>
               </div>
@@ -240,7 +240,7 @@ function ProductListItem({ product }: ProductListItemProps) {
           <Button
             size="default"
             onClick={handleAddToCart}
-            className="w-full sm:w-auto min-w-[140px] rounded-xl font-semibold shadow-sm hover:shadow-md active:scale-95 transition-all duration-300 bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 text-white border-0 group/btn"
+            className="w-full sm:w-auto min-w-[140px] rounded-xl font-semibold shadow-sm hover:shadow-md active:scale-95 transition-all duration-300 bg-gradient-to-r from-[#2D331F] to-[#2D331F]/90 hover:from-[#2D331F]/90 hover:to-[#2D331F] text-[#EAB308] border-0 group/btn"
           >
             <ShoppingCart className="h-4 w-4 mr-2 transition-transform group-hover/btn:scale-110" />
             {product.productType === "VARIABLE" ? "View Options" : "Add to Cart"}

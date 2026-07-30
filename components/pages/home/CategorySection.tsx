@@ -26,7 +26,7 @@ const defaultCategoryVisuals: Record<string, CategoryVisual> = {
     image: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&q=80&w=800',
     gradient: 'from-emerald-950/90 via-emerald-900/50 to-transparent',
     badgeBg: 'bg-emerald-500/25 text-emerald-300 border-emerald-500/40',
-    subcategories: ['টমেটো', 'আলু', 'বেগুন', 'গাজর', 'পুইশাক'],
+    subcategories: ['টমেটো', 'বেগুন', 'শসা', 'লাউ'],
   },
   'ফল': {
     name: 'মৌসুমি মিষ্টি ফল',
@@ -100,7 +100,7 @@ export function CategorySection() {
         <Leaf className="w-32 h-32" />
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+      <div className="max-w-7xl mx-auto px-6 lg:px-24 xl:px-40 2xl:px-12 relative z-10">
         
         {/* Section Header */}
         <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-14 gap-8">
@@ -125,7 +125,7 @@ export function CategorySection() {
               মৌসুমি সেরা বিভাগ ও খাঁটি ফসল
             </motion.h2>
             <p className="text-gray-600 text-base md:text-lg mt-3 max-w-2xl leading-relaxed">
-              মাঠ থেকে সরাসরি আপনার খাবার টেবিলে — ১০০% বিশুদ্ধ, ক্ষতিকারক কেমিক্যাল মুক্ত তাজা ফসল ও অর্গানিক কৃষিপণ্য।
+              মাঠ থেকে সরাসরি আপনার খাবার টেবিলে
             </p>
           </div>
 
@@ -203,13 +203,13 @@ export function CategorySection() {
                     </p>
 
                     {/* Subcategory Tags */}
-                    <div className="flex flex-wrap gap-2 mb-6">
+                    {/* <div className="flex flex-wrap gap-2 mb-6">
                       {heroCategory.subcategories.map((sub, sIdx) => (
                         <span key={sIdx} className="text-xs px-3 py-1 rounded-lg bg-white/15 backdrop-blur-md text-white font-semibold">
                           #{sub}
                         </span>
                       ))}
-                    </div>
+                    </div> */}
 
                     <div className="inline-flex items-center gap-2 text-sm font-extrabold text-[#EAB308] group-hover:underline">
                       <span>তাজা সবজি সংগ্রহ দেখুন</span>

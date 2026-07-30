@@ -116,7 +116,7 @@ export default function Product() {
                 </motion.div>
             ))}
 
-            <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
+            <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-24 xl:px-40 2xl:px-12 relative z-10">
                 {/* Header Section */}
                 <div className="text-center max-w-3xl mx-auto mb-16 md:mb-20">
                     <motion.div

@@ -160,7 +160,7 @@ export function FeaturedProductsSection() {
       <div className="absolute top-1/4 left-0 w-[30rem] h-[30rem] bg-[#EAB308]/5 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-10 right-0 w-[30rem] h-[30rem] bg-[#2D331F]/5 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+      <div className="max-w-7xl mx-auto px-6 lg:px-24 xl:px-40 2xl:px-12 relative z-10">
         
         {/* Section Header & Category Filter Tabs */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-8">

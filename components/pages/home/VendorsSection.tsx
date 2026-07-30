@@ -169,7 +169,7 @@ export function VendorsSection() {
                 ('storeImage' in vendor && vendor.storeImage) ||
                 (vendor as any).profileImage ||
                 'https://images.unsplash.com/photo-1595152772835-219674b2a8a6?auto=format&fit=crop&q=80&w=200';
-              const specialty = vendor.description || (vendor as any).specialty || 'উচ্চমানের তাজা কৃষি ও খামার পণ্য সরবরাহকারী';
+              const specialty = vendor?.description || (vendor as any).specialty || 'উচ্চমানের তাজা কৃষি ও খামার পণ্য সরবরাহকারী';
               const rating = (vendor as any).rating || 4.9;
 
               return (

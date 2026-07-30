@@ -1,36 +1,18 @@
 'use client';
-import { useState } from 'react';
-import { 
-  PlayCircle,
-  CheckCircle2,
-  ShieldCheck,
-  Leaf,
-  ShoppingBag,
-  Search,
-  ChevronDown
-} from 'lucide-react';
-import Image from 'next/image';
-import { motion } from 'framer-motion';
-import TextType from '@/components/global/TextType';
-import Link from 'next/link';
+import { useState, useEffect, useRef } from 'react';
+import { Search, Leaf } from 'lucide-react';
+import { motion, useInView } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 
 export function Hero() {
     const router = useRouter();
     const [searchInput, setSearchInput] = useState('');
 
-    const features = [
-        "১০০% Fresh",
-        "Chemical Free",
-        "Fast Delivery",
-        "Trusted Farmers"
-    ];
-
-    const stats = [
-        { value: '১০,০০০+', label: 'সক্রিয় কৃষক' },
-        { value: '৪২', label: 'জেলা কভারেজ' },
-        { value: '৫০+', label: 'রিটেইল পার্টনার' },
-        { value: '৯৮%', label: 'সন্তুষ্ট গ্রাহক' },
+    const statsData = [
+        { target: 10000, suffix: '+', label: 'সক্রিয় কৃষক', isComma: true },
+        { target: 42, suffix: '', label: 'জেলা কভারেজ', isComma: false },
+        { target: 50, suffix: '+', label: 'রিটেইল পার্টনার', isComma: false },
+        { target: 98, suffix: '%', label: 'সন্তুষ্ট গ্রাহক', isComma: false },
     ];
 
     const tabs = ['সব পণ্য', 'সবজি', 'ফল', 'শস্য', 'মাছ', 'সার ও উপকরণ'];
@@ -43,9 +25,44 @@ export function Hero() {
         }
     };
 
+    // Count-up animation state
+    const statsRef = useRef<HTMLDivElement>(null);
+    const isStatsInView = useInView(statsRef, { once: true, amount: 0.3 });
+    const [counts, setCounts] = useState<number[]>([0, 0, 0, 0]);
+
+    useEffect(() => {
+        if (isStatsInView) {
+            const duration = 1800; // ms
+            const steps = 40;
+            const stepTime = duration / steps;
+            let currentStep = 0;
+
+            const timer = setInterval(() => {
+                currentStep++;
+                const progress = Math.min(currentStep / steps, 1);
+                // Ease out quad
+                const easeProgress = 1 - Math.pow(1 - progress, 3);
+
+                setCounts(statsData.map(stat => Math.floor(stat.target * easeProgress)));
+
+                if (currentStep >= steps) {
+                    clearInterval(timer);
+                }
+            }, stepTime);
+
+            return () => clearInterval(timer);
+        }
+    }, [isStatsInView]);
+
+    const toBengaliNumber = (num: number, isComma: boolean): string => {
+        const bengaliDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+        let str = isComma ? num.toLocaleString('en-US') : num.toString();
+        return str.replace(/\d/g, (digit) => bengaliDigits[parseInt(digit, 10)]);
+    };
+
     // Animation Variants
     const fadeUp = {
-        hidden: { opacity: 0, y: 30 },
+        hidden: { opacity: 0, y: 35 },
         visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
     };
 
@@ -53,213 +70,106 @@ export function Hero() {
         hidden: { opacity: 0 },
         visible: {
             opacity: 1,
-            transition: { staggerChildren: 0.1, delayChildren: 0.2 }
+            transition: { staggerChildren: 0.12, delayChildren: 0.15 }
         }
     };
 
     return (
-        <div className="relative min-h-screen flex flex-col items-center bg-[#2D331F] overflow-hidden pt-10 pb-20 selection:bg-[#EAB308] selection:text-[#2D331F]">
+        <div className="relative min-h-screen flex flex-col items-center justify-center bg-[#2D331F] overflow-hidden pt-12 pb-20 selection:bg-[#EAB308] selection:text-[#2D331F]">
             
-            {/* --- Background Decorations (Optimized) --- */}
+            {/* --- Background Layers (Depth & Vignette) --- */}
             <div className="absolute inset-0 z-0 pointer-events-none">
-                {/* Glows (Using radial gradients instead of heavy blurs) */}
-                <div className="absolute top-[-20%] left-[-10%] w-[60vw] h-[60vw] rounded-full bg-[radial-gradient(circle,rgba(234,179,8,0.15)_0%,transparent_60%)]"></div>
-                <div className="absolute bottom-[-20%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-[radial-gradient(circle,rgba(74,222,128,0.1)_0%,transparent_60%)]"></div>
+                {/* Radial Gradient for depth */}
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#3f472f]/80 via-[#2D331F] to-[#181c11]"></div>
                 
-                {/* Floating Leaves (Optimized: Static position, simple pulse) */}
-                {[...Array(6)].map((_, i) => (
-                    <div
+                {/* Soft Vignette Effect */}
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_20%,rgba(0,0,0,0.5)_100%)]"></div>
+
+                {/* Subtle Organic Pattern Overlays */}
+                <div 
+                    className="absolute inset-0 opacity-[0.035]"
+                    style={{
+                        backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+                        backgroundSize: '36px 36px',
+                    }}
+                />
+
+                {/* Glow Spheres */}
+                <div className="absolute top-[-15%] left-[20%] w-[50vw] h-[50vw] rounded-full bg-[radial-gradient(circle,rgba(234,179,8,0.18)_0%,transparent_65%)] blur-2xl"></div>
+                <div className="absolute bottom-[-15%] right-[15%] w-[45vw] h-[45vw] rounded-full bg-[radial-gradient(circle,rgba(74,222,128,0.14)_0%,transparent_65%)] blur-2xl"></div>
+                
+                {/* Floating Leaves (Micro Animations) */}
+                {[
+                    { left: '12%', top: '22%', scale: 1.1, duration: 7, delay: 0 },
+                    { left: '84%', top: '18%', scale: 0.9, duration: 9, delay: 1 },
+                    { left: '22%', top: '72%', scale: 0.8, duration: 8, delay: 0.5 },
+                    { left: '78%', top: '68%', scale: 1.2, duration: 10, delay: 1.5 },
+                    { left: '48%', top: '12%', scale: 0.75, duration: 6, delay: 0.8 },
+                ].map((leaf, i) => (
+                    <motion.div
                         key={i}
-                        className="absolute text-[#4ADE80]/20 animate-pulse"
-                        style={{
-                            left: `${20 + (i * 15)}%`,
-                            top: `${15 + (i * 12 + (i % 2) * 20)}%`,
-                            transform: `scale(${0.8 + (i % 3) * 0.2}) rotate(${i * 45}deg)`,
+                        className="absolute text-[#4ADE80]/20"
+                        style={{ left: leaf.left, top: leaf.top }}
+                        animate={{
+                            y: [-12, 12, -12],
+                            rotate: [0, 15, -15, 0],
+                            scale: [leaf.scale, leaf.scale * 1.08, leaf.scale],
+                        }}
+                        transition={{
+                            duration: leaf.duration,
+                            repeat: Infinity,
+                            ease: "easeInOut",
+                            delay: leaf.delay,
                         }}
                     >
-                        <Leaf className="w-8 h-8" />
-                    </div>
+                        <Leaf className="w-9 h-9" />
+                    </motion.div>
                 ))}
             </div>
 
-            <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-8 flex flex-col gap-16">
+            <div className="relative z-10 w-full max-w-5xl mx-auto px-6 lg:px-8 flex flex-col items-center text-center gap-12">
                 
-                {/* --- HERO TOP SECTION --- */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-8 items-center mt-12">
-                    
-                    {/* --- LEFT SIDE (Content) --- */}
-                    <motion.div 
-                        variants={staggerContainer}
-                        initial="hidden"
-                        animate="visible"
-                        className="flex flex-col items-start max-w-2xl"
-                    >
-                        {/* Small Badge */}
-                        <motion.div variants={fadeUp} className="mb-8">
-                            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#3f472f]/80 border border-white/10 shadow-lg">
-                                <span className="text-lg">🌱</span>
-                                <span className="text-[#EAB308] text-sm font-semibold tracking-wide uppercase">Fresh From Farm</span>
-                            </div>
-                        </motion.div>
+                {/* --- HERO TITLE & SUBTITLE SECTION --- */}
+                <motion.div 
+                    variants={staggerContainer}
+                    initial="hidden"
+                    animate="visible"
+                    className="flex flex-col items-center max-w-3xl text-center pt-6 relative"
+                >
+                    {/* Soft Yellow Glow Behind Title */}
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-24 bg-[#EAB308]/20 blur-3xl rounded-full pointer-events-none"></div>
 
-                        {/* Main Heading with TextType Component */}
-                        <motion.div variants={fadeUp} className="mb-6 min-h-[160px] lg:min-h-[220px]">
-                            <TextType 
-                                as="h1"
-                                text={"আজ সকালের তাজা ফসল,\nআগামীকাল আপনার রান্না ঘরে।"}
-                                typingSpeed={50}
-                                loop={false}
-                                showCursor={true}
-                                textColors={['#FFFFFF']}
-                                className="text-5xl sm:text-6xl lg:text-7xl font-bold leading-[1.2] tracking-tight"
-                            />
-                        </motion.div>
-                        {/* Description */}
-                        <motion.p variants={fadeUp} className="text-gray-400 text-lg sm:text-xl leading-relaxed mb-10 max-w-xl">
-                            আমরা বাংলাদেশের বিশ্বস্ত কৃষকদের কাছ থেকে সরাসরি তাজা শাকসবজি, ফলমূল ও কৃষিপণ্য সংগ্রহ করি এবং নিরাপদ প্যাকেজিংয়ের মাধ্যমে দ্রুত আপনার দরজায় পৌঁছে দিই।
-                        </motion.p>
-
-                        {/* Buttons */}
-                        <motion.div variants={fadeUp} className="flex flex-col sm:flex-row gap-5 w-full sm:w-auto mb-12">
-                            <motion.button 
-                                whileHover={{ scale: 1.05, y: -2 }}
-                                whileTap={{ scale: 0.95 }}
-                                className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-[#EAB308] to-[#D97706] hover:from-[#FCD34D] hover:to-[#EAB308] rounded-2xl text-[#2D331F] font-bold text-lg transition-all shadow-[0_8px_30px_rgb(234,179,8,0.3)]"
-                            >
-                                <ShoppingBag className="w-5 h-5" />
-                                <Link href="/marketplace" className="text-[#2D331F] group-hover:text-[#1A1C0B] transition-colors"><span>সবজি কিনুন</span></Link>
-                            </motion.button>
-                            
-                            <motion.button 
-                                whileHover={{ scale: 1.05, y: -2, backgroundColor: "rgba(255,255,255,0.1)" }}
-                                whileTap={{ scale: 0.95 }}
-                                className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-[#3f472f]/80 border border-white/10 rounded-2xl text-white font-semibold text-lg transition-all shadow-lg"
-                            >
-                                <PlayCircle className="w-5 h-5 text-gray-300 group-hover:text-white transition-colors" />
-                                <span>কিভাবে কাজ করে</span>
-                            </motion.button>
-                        </motion.div>
-
-                        {/* Features */}
-                        <motion.div variants={fadeUp} className="grid grid-cols-2 gap-y-4 gap-x-8">
-                            {features.map((feature, idx) => (
-                                <motion.div 
-                                    key={idx} 
-                                    className="flex items-center gap-3 group cursor-default"
-                                    whileHover={{ x: 5 }}
-                                >
-                                    <div className="flex items-center justify-center w-6 h-6 rounded-full bg-[#4ADE80]/20 group-hover:bg-[#4ADE80]/40 transition-colors">
-                                        <CheckCircle2 className="w-4 h-4 text-[#4ADE80]" />
-                                    </div>
-                                    <span className="text-gray-300 font-medium group-hover:text-white transition-colors">{feature}</span>
-                                </motion.div>
-                            ))}
-                        </motion.div>
+                    {/* Main Impactful Headline */}
+                    <motion.div variants={fadeUp} className="mb-5 relative">
+                        <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold leading-[1.15] tracking-tight text-[#EAB308] drop-shadow-[0_0_35px_rgba(234,179,8,0.35)]">
+                            কোনো মধ্যস্বত্বভোগী নেই।
+                        </h1>
                     </motion.div>
 
-                    {/* --- RIGHT SIDE (Visual Collage) --- */}
-                    <div className="relative w-full h-[500px] lg:h-[600px] flex items-center justify-center mt-10 lg:mt-0">
-                        
-                        {/* Main Central Image */}
-                        <motion.div 
-                            initial={{ opacity: 0, scale: 0.8 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ duration: 1, ease: "easeOut", delay: 0.3 }}
-                            className="relative w-full max-w-[350px] lg:max-w-[400px] aspect-[4/5] rounded-[32px] overflow-hidden shadow-2xl z-10 ring-1 ring-white/10"
-                        >
-                            <Image
-                                src="/images/main_image.jpeg"
-                                alt="Farmer Harvesting"
-                                fill
-                                className="object-cover"
-                            />
-                        </motion.div>
+                    {/* Subtitle Description */}
+                    <motion.p 
+                        variants={fadeUp} 
+                        className="text-amber-50/90 text-lg sm:text-xl lg:text-2xl leading-relaxed max-w-2xl font-medium tracking-wide"
+                    >
+                        বাংলাদেশের ৪২টি জেলার যাচাইকৃত কৃষকদের প্রোফাইল ঘুরে দেখুন, সরাসরি কথা বলুন এবং নিজেই দরদাম করে কিনুন।
+                    </motion.p>
+                </motion.div>
 
-                        {/* Floating Card: Top Right (Veggie Basket) */}
-                        <motion.div 
-                            initial={{ opacity: 0, x: 50, y: -50 }}
-                            animate={{ opacity: 1, x: 0, y: 0 }}
-                            transition={{ duration: 0.8, delay: 0.6 }}
-                            whileHover={{ y: -5, scale: 1.02 }}
-                            className="absolute top-4 -right-4 lg:-right-8 w-40 lg:w-48 aspect-square rounded-[24px] overflow-hidden p-2 bg-[#3f472f]/90 border border-white/10 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)] z-20"
-                        >
-                            <div className="relative w-full h-full rounded-[16px] overflow-hidden">
-                                <Image
-                                    src="/images/Delivery.png"
-                                    alt="Delivery"
-                                    fill
-                                    className="object-cover"
-                                />
-                            </div>
-                        </motion.div>
-
-                        {/* Floating Card: Bottom Right (Delivery) */}
-                        <motion.div 
-                            initial={{ opacity: 0, x: 50, y: 50 }}
-                            animate={{ opacity: 1, x: 0, y: 0 }}
-                            transition={{ duration: 0.8, delay: 0.8 }}
-                            whileHover={{ y: -5, scale: 1.02 }}
-                            className="absolute bottom-10 lg:bottom-20 -right-4 lg:-right-0 w-36 lg:w-40 aspect-[4/3] rounded-[20px] overflow-hidden p-1.5 bg-[#3f472f]/90 border border-white/10 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)] z-20"
-                        >
-                            <div className="relative w-full h-full rounded-[14px] overflow-hidden">
-                                <Image
-                                    src="/images/cooking.png"
-                                    alt="Cooking Family"
-                                    fill
-                                    className="object-cover"
-                                />
-                            </div>
-                        </motion.div>
-
-                        {/* Floating Card: Bottom Left (Family Cooking) */}
-                        <motion.div 
-                            initial={{ opacity: 0, x: -50, y: 50 }}
-                            animate={{ opacity: 1, x: 0, y: 0 }}
-                            transition={{ duration: 0.8, delay: 0.7 }}
-                            whileHover={{ y: -5, scale: 1.02 }}
-                            className="absolute bottom-4 lg:bottom-10 left-0 lg:-left-6 w-44 lg:w-52 aspect-video rounded-[24px] overflow-hidden p-2 bg-[#3f472f]/90 border border-white/10 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)] z-20"
-                        >
-                            <div className="relative w-full h-full rounded-[16px] overflow-hidden">
-                                <Image
-                                    src="/images/Farmers.png"
-                                    alt="Family Cooking"
-                                    fill
-                                    className="object-cover"
-                                />
-                            </div>
-                        </motion.div>
-
-                        {/* Floating Card: Top Left (Organic Badge UI) */}
-                        <motion.div 
-                            initial={{ opacity: 0, x: -50, y: -50 }}
-                            animate={{ opacity: 1, x: 0, y: 0 }}
-                            transition={{ duration: 0.8, delay: 0.9 }}
-                            whileHover={{ y: -5, scale: 1.02 }}
-                            className="absolute top-12 lg:top-20 left-4 lg:-left-4 flex items-center gap-3 lg:gap-4 p-3 lg:p-4 rounded-[20px] bg-[#3f472f]/90 border border-white/10 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)] z-20"
-                        >
-                            <div className="flex items-center justify-center w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-gradient-to-br from-[#4ADE80] to-[#16A34A] shadow-inner">
-                                <ShieldCheck className="w-5 h-5 lg:w-6 lg:h-6 text-white" />
-                            </div>
-                            <div>
-                                <p className="text-white font-bold text-xs lg:text-sm">Organic Certified</p>
-                                <p className="text-gray-300 text-[10px] lg:text-xs">100% Safe Foods</p>
-                            </div>
-                        </motion.div>
-
-                    </div>
-                </div>
-
-                {/* --- BOTTOM SECTION: Search & Stats (Preserved Functionality) --- */}
+                {/* --- SEARCH CARD & STATS SECTION --- */}
                 <motion.div 
-                    initial={{ opacity: 0, y: 40 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.6, duration: 0.6, ease: "easeOut" }}
-                    className="relative z-40 w-full"
+                    initial={{ opacity: 0, y: 40, scale: 0.98 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    transition={{ delay: 0.35, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                    className="relative z-40 w-full max-w-4xl group"
                 >
-                    <div className="bg-[#FDFBF7] rounded-[2rem] shadow-2xl overflow-hidden border border-white/60">
+                    {/* Soft Spotlight Glow Behind Search Card */}
+                    <div className="absolute -inset-2 bg-gradient-to-r from-[#EAB308]/25 via-[#4ADE80]/15 to-[#EAB308]/25 rounded-[2.5rem] blur-2xl opacity-60 group-hover:opacity-80 transition-opacity duration-500 pointer-events-none"></div>
+
+                    {/* Main Glassmorphic Search Card */}
+                    <div className="relative bg-[#FDFBF7]/95 backdrop-blur-md rounded-[2.25rem] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.5)] overflow-hidden border border-white/80 transition-all duration-500 hover:shadow-[0_35px_70px_-15px_rgba(0,0,0,0.6)]">
                         
-                    
-                        <div className="flex flex-wrap items-center border-b border-gray-200/80 p-3 gap-2 bg-white/50">
+                        {/* Category Tabs */}
+                        <div className="flex flex-wrap items-center justify-center border-b border-gray-200/80 p-3.5 gap-2 bg-white/60 backdrop-blur-sm">
                             {tabs.map((tab) => (
                                 <button
                                     key={tab}
@@ -270,17 +180,17 @@ export function Hero() {
                                             router.push(`/marketplace?category=${encodeURIComponent(tab)}`);
                                         }
                                     }}
-                                    className="px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 relative text-gray-500 hover:text-[#2D331F] hover:bg-[#EAB308]/20"
+                                    className="px-5 py-2.5 rounded-xl text-sm sm:text-base font-semibold transition-all duration-300 relative text-gray-600 hover:text-[#2D331F] hover:bg-[#EAB308]/15 hover:shadow-sm"
                                 >
                                     <span className="relative z-10">{tab}</span>
                                 </button>
                             ))}
                         </div>
 
-                    
-                        <div className="p-5 md:p-6 flex flex-col md:flex-row items-center gap-4 border-b border-gray-200/80 bg-white">
-                            <div className="flex-1 w-full bg-gray-50 border border-gray-200 rounded-2xl px-5 py-3 md:py-4 flex flex-col justify-center focus-within:ring-2 focus-within:ring-[#EAB308]/50 focus-within:border-[#EAB308]/50 transition-all duration-300 shadow-inner group">
-                                <label className="text-xs text-gray-500 font-semibold mb-1 uppercase tracking-wider group-focus-within:text-[#2D331F] transition-colors">কি খুঁজছেন?</label>
+                        {/* Search Input Box */}
+                        <div className="p-5 sm:p-7 flex flex-col sm:flex-row items-center gap-4 border-b border-gray-200/80 bg-white">
+                            <div className="flex-1 w-full bg-gray-50/90 border border-gray-200/90 rounded-2xl px-6 py-3.5 sm:py-4.5 flex flex-col items-start text-left justify-center focus-within:ring-2 focus-within:ring-[#EAB308]/60 focus-within:border-[#EAB308]/60 focus-within:bg-white transition-all duration-300 shadow-inner group/input">
+                                <label className="text-xs text-gray-500 font-bold mb-1 uppercase tracking-wider group-focus-within/input:text-[#2D331F] transition-colors text-left w-full">কি খুঁজছেন?</label>
                                 <input 
                                     type="text" 
                                     value={searchInput}
@@ -291,45 +201,41 @@ export function Hero() {
                                         }
                                     }}
                                     placeholder="যেমন: দেশি টমেটো, কাটারিভোগ চাল..." 
-                                    className="w-full outline-none text-[#2D331F] placeholder-gray-400 font-medium bg-transparent text-lg"
+                                    className="w-full outline-none text-[#2D331F] placeholder-gray-400 font-semibold bg-transparent text-lg sm:text-xl text-left"
                                 />
                             </div>
-                            
-                            {/* <div className="w-full md:w-64 bg-gray-50 border border-gray-200 rounded-2xl px-5 py-3 md:py-4 flex flex-col justify-center cursor-pointer relative group transition-all duration-300 hover:border-[#EAB308]/50 shadow-inner">
-                                <label className="text-xs text-gray-500 font-semibold mb-1 uppercase tracking-wider">জেলা</label>
-                                <div className="flex items-center justify-between">
-                                    <span className="text-[#2D331F] font-medium text-lg">ঢাকা</span>
-                                    <ChevronDown className="w-5 h-5 text-gray-400 group-hover:text-[#EAB308] transition-colors" />
-                                </div>
-                            </div> */}
 
+                            {/* Search Button with Premium Gradient */}
                             <motion.button 
                                 onClick={handleSearch}
-                                whileHover={{ scale: 1.02 }}
+                                whileHover={{ scale: 1.025, y: -1 }}
                                 whileTap={{ scale: 0.98 }}
-                                className="w-full md:w-auto h-full min-h-[76px] px-10 bg-gradient-to-r from-[#2D331F] to-[#40492F] hover:from-[#40492F] hover:to-[#2D331F] text-white rounded-2xl font-bold flex items-center justify-center gap-2 transition-all duration-300 shadow-xl shadow-[#2D331F]/20"
+                                className="w-full sm:w-auto h-full min-h-[68px] sm:min-h-[76px] px-10 bg-gradient-to-r from-[#2D331F] via-[#3d452a] to-[#2D331F] hover:from-[#3d452a] hover:to-[#2D331F] text-white rounded-2xl font-bold flex items-center justify-center gap-2.5 transition-all duration-300 shadow-xl shadow-[#2D331F]/30 hover:shadow-[#EAB308]/20 ring-1 ring-white/10"
                             >
-                                <Search className="w-5 h-5" />
-                                <span className="text-lg">খুঁজুন</span>
+                                <Search className="w-5 h-5 text-[#EAB308]" />
+                                <span className="text-lg tracking-wide">খুঁজুন</span>
                             </motion.button>
                         </div>
-                        <div className="p-6 md:p-8 grid grid-cols-2 md:grid-cols-4 gap-6 bg-gradient-to-b from-[#FDFBF7] to-[#F3EFE0]">
-                            {stats.map((stat, idx) => (
+
+                        {/* Stats Counter Bar with Count-Up Animation */}
+                        <div ref={statsRef} className="p-6 sm:p-8 grid grid-cols-2 md:grid-cols-4 gap-6 bg-gradient-to-b from-[#FDFBF7] to-[#F5F1E5]">
+                            {statsData.map((stat, idx) => (
                                 <motion.div 
                                     key={idx} 
                                     initial={{ opacity: 0, y: 20 }}
                                     whileInView={{ opacity: 1, y: 0 }}
                                     viewport={{ once: true }}
-                                    transition={{ delay: idx * 0.1 + 0.8 }}
-                                    className={`text-center flex flex-col justify-center relative group ${idx !== stats.length - 1 ? 'md:after:content-[""] md:after:absolute md:after:right-0 md:after:top-1/4 md:after:h-1/2 md:after:w-px md:after:bg-gray-300' : ''}`}
+                                    transition={{ delay: idx * 0.1 + 0.5 }}
+                                    className={`text-center flex flex-col justify-center relative group ${idx !== statsData.length - 1 ? 'md:after:content-[""] md:after:absolute md:after:right-0 md:after:top-1/4 md:after:h-1/2 md:after:w-px md:after:bg-gray-300/80' : ''}`}
                                 >
                                     <motion.div 
-                                        className="text-4xl md:text-5xl font-black text-[#2D331F] mb-2 tracking-tighter"
-                                        whileHover={{ scale: 1.1, color: "#EAB308" }}
+                                        className="text-4xl sm:text-5xl md:text-5xl font-black text-[#2D331F] mb-1 tracking-tighter"
+                                        whileHover={{ scale: 1.08, color: "#EAB308" }}
+                                        transition={{ type: "spring", stiffness: 400 }}
                                     >
-                                        {stat.value}
+                                        {toBengaliNumber(counts[idx], stat.isComma)}{stat.suffix}
                                     </motion.div>
-                                    <div className="text-sm font-bold text-gray-500 uppercase tracking-wide group-hover:text-[#2D331F] transition-colors">
+                                    <div className="text-xs sm:text-sm font-bold text-gray-500 uppercase tracking-wide group-hover:text-[#2D331F] transition-colors">
                                         {stat.label}
                                     </div>
                                 </motion.div>
