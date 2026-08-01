@@ -1,10 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Search, Menu, X } from 'lucide-react';
+import { Search, Menu, X, Sprout, ChevronRight } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 interface Crop {
 	id: string;
@@ -14,14 +13,15 @@ interface Crop {
 interface SidebarProps {
 	onSelectCrop: (cropId: string) => void;
 	crops: Crop[];
+	selectedCropId?: string | null;
 }
 
-export function Sidebar({ onSelectCrop, crops = [] }: SidebarProps) {
+export function Sidebar({ onSelectCrop, crops = [], selectedCropId: propSelectedId }: SidebarProps) {
 	const [searchTerm, setSearchTerm] = useState('');
-	const [selectedCropId, setSelectedCropId] = useState<string | null>(null);
+	const [internalSelectedId, setInternalSelectedId] = useState<string | null>(null);
 	const [isOpen, setIsOpen] = useState(false);
 
-	// Ensure crops is always an array before filtering
+	const selectedId = propSelectedId !== undefined ? propSelectedId : internalSelectedId;
 	const cropArray = Array.isArray(crops) ? crops : [];
 
 	const filteredCrops = cropArray.filter((crop) =>
@@ -29,82 +29,137 @@ export function Sidebar({ onSelectCrop, crops = [] }: SidebarProps) {
 	);
 
 	const handleCropSelect = (cropId: string) => {
-		setSelectedCropId(cropId);
+		setInternalSelectedId(cropId);
 		onSelectCrop(cropId);
 		setIsOpen(false);
 	};
 
+	const getCropEmoji = (name: string) => {
+		if (name.includes('ধান') || name.includes('চাল') || name.includes('গম')) return '🌾';
+		if (name.includes('টমেটো') || name.includes('বেগুন') || name.includes('শাক')) return '🍅';
+		if (name.includes('আলু')) return '🥔';
+		if (name.includes('ভুট্টা')) return '🌽';
+		if (name.includes('আম') || name.includes('লিচু') || name.includes('কলা')) return '🥭';
+		if (name.includes('সরিষা') || name.includes('তেল')) return '🌻';
+		return '🌱';
+	};
+
 	return (
 		<div className='relative'>
-			{/* Hamburger button */}
-			{isOpen ? (
-				<button
-					className='fixed top-[100px] left-4 z-30 p-2 bg-white rounded-full shadow-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 lg:hidden'
-					onClick={() => setIsOpen(false)}
-					aria-label='Close sidebar'
-				>
-					<X size={24} />
-				</button>
-			) : (
-				<button
-					className='fixed top-[100px] left-4 z-30 p-2 bg-white rounded-full shadow-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 lg:hidden'
-					onClick={() => setIsOpen(true)}
-					aria-label='Open sidebar'
-				>
-					<Menu size={24} />
-				</button>
-			)}
-
-			{/* Sidebar */}
-			<aside
-				className={`fixed top-[88px] left-0 z-20 w-64 h-[calc(100vh-88px)] bg-white/70 backdrop-blur-md border-r border-white/50 shadow-[4px_0_24px_rgba(0,0,0,0.02)] lg:shadow-none transition-transform duration-300 ease-in-out overflow-y-auto ${
-					isOpen ? 'translate-x-0' : '-translate-x-full'
-				} lg:translate-x-0 lg:fixed lg:h-[calc(100vh-88px)]`}
+			{/* Mobile Trigger Button */}
+			<button
+				className='fixed bottom-6 left-6 z-40 p-3.5 bg-[#2D331F] text-[#EAB308] rounded-full shadow-2xl border border-white/20 hover:scale-105 transition-all lg:hidden flex items-center gap-2 font-semibold text-sm'
+				onClick={() => setIsOpen(!isOpen)}
+				aria-label='Toggle crop menu'
 			>
-				<div className='flex flex-col h-full p-4 pt-12 lg:pt-4'>
-					{/* Search bar */}
-					<div className='relative mb-4 mt-5 lg:mt-0'>
+				{isOpen ? <X size={20} /> : <Menu size={20} />}
+				<span className='pr-1'>ফসল তালিকা ({cropArray.length})</span>
+			</button>
+
+			{/* Sidebar Container */}
+			<aside
+				className={`fixed lg:sticky top-[88px] left-0 z-30 w-72 sm:w-80 h-[calc(100vh-104px)] bg-[#FDFBF7]/95 backdrop-blur-md rounded-3xl border border-gray-200/80 shadow-[0_15px_35px_rgba(0,0,0,0.06)] transition-all duration-300 ease-in-out flex flex-col overflow-hidden ${
+					isOpen ? 'translate-x-0 inset-y-0 left-4 top-24 bottom-6' : '-translate-x-full lg:translate-x-0'
+				}`}
+			>
+				{/* Sidebar Header */}
+				<div className='p-5 pb-3 border-b border-gray-200/80 bg-gradient-to-r from-emerald-50/60 via-white to-amber-50/40'>
+					<div className='flex items-center justify-between mb-3'>
+						<div className='flex items-center gap-2'>
+							<div className='p-1.5 rounded-xl bg-[#2D331F] text-[#EAB308]'>
+								<Sprout className='w-4 h-4' />
+							</div>
+							<h3 className='font-extrabold text-gray-900 text-lg tracking-tight'>ফসল ক্যাটালগ</h3>
+						</div>
+						<span className='px-2.5 py-1 rounded-full bg-[#2D331F]/10 text-[#2D331F] text-xs font-bold'>
+							{filteredCrops.length}টি ফসল
+						</span>
+					</div>
+
+					{/* Search Input */}
+					<div className='relative group'>
 						<Search
-							className='absolute left-3 top-1/2 transform -translate-y-1/2 text-green-500/70'
-							size={18}
+							className='absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#2D331F] transition-colors'
+							size={16}
 						/>
-						<Input
-							type='search'
-							placeholder='ফসল খুঁজুন...'
-							className='pl-10 py-5 bg-white border-gray-200 focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all rounded-xl shadow-inner text-base'
+						<input
+							type='text'
+							placeholder='ফসল খুঁজুন (যেমন: ধান, টমেটো)...'
+							className='w-full pl-9 pr-8 py-2.5 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#EAB308]/60 focus:border-[#EAB308] text-sm text-gray-800 placeholder-gray-400 font-medium transition-all shadow-inner'
 							value={searchTerm}
 							onChange={(e) => setSearchTerm(e.target.value)}
 						/>
+						{searchTerm && (
+							<button
+								onClick={() => setSearchTerm('')}
+								className='absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-xs'
+							>
+								✕
+							</button>
+						)}
 					</div>
-
-					{/* Crop list */}
-					<ScrollArea className='flex-1 pr-4'>
-						<div className='space-y-2 mb-5 px-1'>
-							{filteredCrops.map((crop) => (
-								<div key={crop.id}>
-									<Button
-										variant={selectedCropId === crop.id ? 'default' : 'ghost'}
-										className={`w-full justify-start rounded-xl px-4 py-3 text-base font-medium transition-all duration-300 ${
-											selectedCropId === crop.id
-												? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-md hover:shadow-lg hover:from-green-400 hover:to-emerald-400'
-												: 'text-gray-600 hover:bg-green-50 hover:text-green-700'
-										}`}
-										onClick={() => handleCropSelect(crop.id)}
-									>
-										{selectedCropId === crop.id && <span className='mr-2'>🌿</span>}
-										{crop.name}
-									</Button>
-								</div>
-							))}
-						</div>
-					</ScrollArea>
 				</div>
+
+				{/* Crops List */}
+				<ScrollArea className='flex-1 p-3'>
+					<div className='space-y-2 pr-2'>
+						{filteredCrops.length === 0 ? (
+							<div className='p-8 text-center text-gray-500'>
+								<p className='text-sm font-medium'>কোনো ফসল পাওয়া যায়নি</p>
+							</div>
+						) : (
+							filteredCrops.map((crop) => {
+								const isSelected = selectedId === crop.id;
+								return (
+									<motion.button
+										key={crop.id}
+										whileHover={{ x: 3, scale: 1.01 }}
+										whileTap={{ scale: 0.98 }}
+										onClick={() => handleCropSelect(crop.id)}
+										className={`w-full text-left p-3 rounded-2xl transition-all duration-200 flex items-center justify-between group ${
+											isSelected
+												? 'bg-gradient-to-r from-[#2D331F] to-[#3f472f] text-white shadow-md shadow-[#2D331F]/20 ring-1 ring-white/10'
+												: 'bg-white hover:bg-emerald-50/60 border border-gray-100 text-gray-700 hover:text-[#2D331F] shadow-sm'
+										}`}
+									>
+										<div className='flex items-center gap-3 min-w-0'>
+											<div className={`w-9 h-9 rounded-xl flex items-center justify-center text-lg flex-shrink-0 ${
+												isSelected ? 'bg-[#EAB308]/20 border border-[#EAB308]/30' : 'bg-gray-100 group-hover:bg-emerald-100/50'
+											}`}>
+												{getCropEmoji(crop.name)}
+											</div>
+											<div className='truncate'>
+												<p className={`font-bold text-sm truncate ${isSelected ? 'text-white' : 'text-gray-800'}`}>
+													{crop.name}
+												</p>
+												<p className={`text-[11px] truncate ${isSelected ? 'text-emerald-200/80' : 'text-gray-400'}`}>
+													চাষাবাদ নির্দেশিকা
+												</p>
+											</div>
+										</div>
+
+										<div className='flex items-center gap-1'>
+											{isSelected && (
+												<span className='px-2 py-0.5 rounded-full bg-[#EAB308] text-[#2D331F] text-[10px] font-extrabold'>
+													নির্বাচিত
+												</span>
+											)}
+											<ChevronRight className={`w-4 h-4 transition-transform group-hover:translate-x-0.5 ${
+												isSelected ? 'text-[#EAB308]' : 'text-gray-300'
+											}`} />
+										</div>
+									</motion.button>
+								);
+							})
+						)}
+					</div>
+				</ScrollArea>
 			</aside>
 
-			{/* Overlay for mobile */}
+			{/* Mobile Backdrop */}
 			{isOpen && (
 				<div
-					className='fixed inset-0 bg-black/20 z-10 lg:hidden'
+					className='fixed inset-0 bg-black/40 backdrop-blur-xs z-20 lg:hidden'
 					onClick={() => setIsOpen(false)}
 					aria-hidden='true'
 				/>
