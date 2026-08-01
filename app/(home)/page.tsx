@@ -21,13 +21,13 @@ export default function Home() {
 
 			{/* Today's Krishok er Bazar Showcase Section */}
 			<OffersSection />
-<FeaturesSection />
+
 			{/* Top Verified Vendors & Farms Section */}
 			<VendorsSection />
 
 			{/* Platform Core Features & Tools */}
 			{/* <Mission /> */}
-			
+			<FeaturesSection />
 			{/* <Goal />
 			<Product /> */}
 		</div>

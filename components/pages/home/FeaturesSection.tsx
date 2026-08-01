@@ -107,28 +107,11 @@ export default function FeaturesSection() {
     };
 
     return (
-        <section ref={sectionRef} className="py-24 px-4 md:px-8 lg:px-24 xl:px-40 2xl:px-12 bg-[#2D331F] text-white relative overflow-hidden selection:bg-[#EAB308] selection:text-[#2D331F]">
+        <section ref={sectionRef} className="py-24 px-4 md:px-8 lg:px-24 xl:px-40 2xl:px-12 bg-[#FDFBF7] text-[#2D331F] relative overflow-hidden selection:bg-[#EAB308] selection:text-[#2D331F] border-t border-gray-200/60">
             
-            {/* Background Decorations (Matching Banner Pattern) */}
-            <div className="absolute inset-0 pointer-events-none">
-                <div className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-[radial-gradient(circle,rgba(234,179,8,0.12)_0%,transparent_60%)]"></div>
-                <div className="absolute bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-[radial-gradient(circle,rgba(74,222,128,0.1)_0%,transparent_60%)]"></div>
-                
-                {/* Floating Leaves */}
-                {[...Array(4)].map((_, i) => (
-                    <div
-                        key={i}
-                        className="absolute text-[#4ADE80]/20 animate-pulse"
-                        style={{
-                            left: `${15 + (i * 25)}%`,
-                            top: `${20 + (i * 18 + (i % 2) * 15)}%`,
-                            transform: `scale(${0.8 + (i % 3) * 0.2}) rotate(${i * 45}deg)`,
-                        }}
-                    >
-                        <Leaf className="w-8 h-8" />
-                    </div>
-                ))}
-            </div>
+            {/* Background Lighting Elements */}
+            <div className="absolute top-1/3 left-0 w-96 h-96 bg-[#2D331F]/5 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute bottom-10 right-0 w-96 h-96 bg-[#EAB308]/5 rounded-full blur-3xl pointer-events-none" />
 
             <div className="max-w-7xl mx-auto relative z-10">
                 {/* Section Header */}
@@ -138,15 +121,15 @@ export default function FeaturesSection() {
                     transition={{ duration: 0.6 }}
                     className="text-center mb-16"
                 >
-                    <div className="inline-flex items-center gap-2 bg-[#3f472f]/80 border border-white/10 backdrop-blur-sm px-4 py-2 rounded-full mb-4 shadow-lg">
+                    <div className="inline-flex items-center gap-2 bg-[#2D331F]/10 border border-[#2D331F]/15 backdrop-blur-sm px-4 py-2 rounded-full mb-4 shadow-sm">
                         <span className="text-lg">🌱</span>
-                        <span className="text-sm font-semibold text-[#EAB308] tracking-wide uppercase">আমাদের বিশ্বাস</span>
+                        <span className="text-sm font-bold text-[#2D331F] tracking-wide uppercase">আমাদের বিশ্বাস</span>
                     </div>
-                    <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-[#EAB308] mb-4 tracking-tight">
+                    <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-[#2D331F] mb-4 tracking-tight">
                         আমাদের কাজের ক্ষেত্র
                     </h2>
-                    <div className="h-1 w-20 bg-gradient-to-r from-[#EAB308] to-[#4ADE80] mx-auto rounded-full mb-6"></div>
-                    <p className="text-gray-300 max-w-2xl mx-auto text-lg leading-relaxed font-medium">
+                    <div className="h-1 w-20 bg-gradient-to-r from-[#2D331F] to-[#EAB308] mx-auto rounded-full mb-6"></div>
+                    <p className="text-gray-600 max-w-2xl mx-auto text-lg leading-relaxed font-medium">
                         আমরা বিশ্বাস করি যে একটি ছোট কিন্তু প্রতিজ্ঞাবদ্ধ ও লক্ষ্যনিষ্ঠ দল
                         টেকসই কৃষিতে দীর্ঘস্থায়ী প্রভাব রাখতে পারে।
                     </p>
@@ -160,7 +143,7 @@ export default function FeaturesSection() {
                         initial={{ opacity: 0, y: 30 }}
                         animate={isVisible ? { opacity: 1, y: 0 } : {}}
                         transition={{ duration: 0.6, delay: 0.1 }}
-                        className="relative overflow-hidden rounded-3xl lg:col-span-2 row-span-2 group border border-white/10 shadow-2xl"
+                        className="relative overflow-hidden rounded-3xl lg:col-span-2 row-span-2 group border border-gray-200 shadow-2xl"
                         onMouseEnter={() => setIsAutoPlaying(false)}
                         onMouseLeave={() => setIsAutoPlaying(true)}
                     >
@@ -194,13 +177,13 @@ export default function FeaturesSection() {
                                 <div className="flex gap-2">
                                     <button
                                         onClick={prevSlide}
-                                        className="w-9 h-9 rounded-full bg-[#3f472f]/80 border border-white/10 backdrop-blur-sm flex items-center justify-center hover:bg-[#EAB308] hover:text-[#2D331F] text-white transition-all shadow-md"
+                                        className="w-9 h-9 rounded-full bg-black/40 border border-white/20 backdrop-blur-sm flex items-center justify-center hover:bg-[#EAB308] hover:text-[#2D331F] text-white transition-all shadow-md"
                                     >
                                         <ChevronLeft className="w-5 h-5" />
                                     </button>
                                     <button
                                         onClick={nextSlide}
-                                        className="w-9 h-9 rounded-full bg-[#3f472f]/80 border border-white/10 backdrop-blur-sm flex items-center justify-center hover:bg-[#EAB308] hover:text-[#2D331F] text-white transition-all shadow-md"
+                                        className="w-9 h-9 rounded-full bg-black/40 border border-white/20 backdrop-blur-sm flex items-center justify-center hover:bg-[#EAB308] hover:text-[#2D331F] text-white transition-all shadow-md"
                                     >
                                         <ChevronRight className="w-5 h-5" />
                                     </button>
@@ -254,7 +237,7 @@ export default function FeaturesSection() {
                             animate={isVisible ? { opacity: 1, y: 0 } : {}}
                             transition={{ duration: 0.6, delay: 0.2 }}
                             whileHover={{ scale: 1.02 }}
-                            className="relative rounded-3xl overflow-hidden group cursor-pointer h-full border border-white/10 shadow-xl"
+                            className="relative rounded-3xl overflow-hidden group cursor-pointer h-full border border-gray-200 shadow-xl"
                         >
                             <Image
                                 src="https://images.unsplash.com/photo-1632776350300-11016768b521"
@@ -280,48 +263,48 @@ export default function FeaturesSection() {
                         </motion.div>
                     </Link>
 
-                    {/* Feature 3 - Sustainable Impact Card (Banner Color Pattern) */}
+                    {/* Feature 3 - Sustainable Impact Card (Light Background Theme) */}
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
                         animate={isVisible ? { opacity: 1, y: 0 } : {}}
                         transition={{ duration: 0.6, delay: 0.3 }}
                         whileHover={{ y: -5 }}
-                        className="bg-[#3f472f]/90 border border-white/10 rounded-3xl p-6 flex flex-col justify-between shadow-2xl relative overflow-hidden"
+                        className="bg-white border border-gray-200/90 rounded-3xl p-6 flex flex-col justify-between shadow-xl relative overflow-hidden text-[#2D331F]"
                     >
                         <div className="flex justify-between items-start">
-                            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-3 py-1">
-                                <Leaf className="w-3.5 h-3.5 text-[#4ADE80]" />
-                                <span className="text-xs text-[#EAB308] font-semibold">Sustainable Impact</span>
+                            <div className="inline-flex items-center gap-2 bg-[#2D331F]/10 backdrop-blur-sm rounded-full px-3 py-1 border border-[#2D331F]/10">
+                                <Leaf className="w-3.5 h-3.5 text-[#2D331F]" />
+                                <span className="text-xs text-[#2D331F] font-bold">Sustainable Impact</span>
                             </div>
-                            <div className="w-10 h-10 rounded-full bg-[#EAB308]/20 flex items-center justify-center border border-[#EAB308]/30">
-                                <Shield className="w-5 h-5 text-[#EAB308]" />
+                            <div className="w-10 h-10 rounded-full bg-[#2D331F]/10 flex items-center justify-center border border-[#2D331F]/15">
+                                <Shield className="w-5 h-5 text-[#2D331F]" />
                             </div>
                         </div>
 
                         <div className="grid grid-cols-2 gap-6 mt-8">
                             <div>
-                                <p className="text-3xl md:text-4xl font-black text-[#EAB308]">40%</p>
-                                <p className="text-sm text-gray-300 mt-1 font-medium">পানি সাশ্রয়</p>
-                                <div className="w-full h-1.5 bg-black/30 rounded-full mt-2 overflow-hidden">
-                                    <div className="w-[40%] h-full bg-[#4ADE80] rounded-full"></div>
+                                <p className="text-3xl md:text-4xl font-black text-[#2D331F]">40%</p>
+                                <p className="text-sm text-gray-600 mt-1 font-semibold">পানি সাশ্রয়</p>
+                                <div className="w-full h-1.5 bg-gray-200 rounded-full mt-2 overflow-hidden">
+                                    <div className="w-[40%] h-full bg-[#2D331F] rounded-full"></div>
                                 </div>
                             </div>
                             <div>
-                                <p className="text-3xl md:text-4xl font-black text-[#EAB308]">2.5M</p>
-                                <p className="text-sm text-gray-300 mt-1 font-medium">গাছ রোপণ</p>
-                                <div className="w-full h-1.5 bg-black/30 rounded-full mt-2 overflow-hidden">
-                                    <div className="w-[75%] h-full bg-[#4ADE80] rounded-full"></div>
+                                <p className="text-3xl md:text-4xl font-black text-[#2D331F]">2.5M</p>
+                                <p className="text-sm text-gray-600 mt-1 font-semibold">গাছ রোপণ</p>
+                                <div className="w-full h-1.5 bg-gray-200 rounded-full mt-2 overflow-hidden">
+                                    <div className="w-[75%] h-full bg-[#2D331F] rounded-full"></div>
                                 </div>
                             </div>
                         </div>
 
-                        <div className="mt-6 pt-4 border-t border-white/10">
-                            <div className="flex justify-between text-sm text-gray-200 font-medium">
+                        <div className="mt-6 pt-4 border-t border-gray-200/80">
+                            <div className="flex justify-between text-sm text-gray-700 font-semibold">
                                 <span>CO₂ হ্রাস</span>
-                                <span className="font-bold text-[#4ADE80]">+32%</span>
+                                <span className="font-bold text-emerald-700">+32%</span>
                             </div>
-                            <div className="w-full h-1.5 bg-black/30 rounded-full mt-1.5 overflow-hidden">
-                                <div className="w-[32%] h-full bg-[#4ADE80] rounded-full"></div>
+                            <div className="w-full h-1.5 bg-gray-200 rounded-full mt-1.5 overflow-hidden">
+                                <div className="w-[32%] h-full bg-[#2D331F] rounded-full"></div>
                             </div>
                         </div>
                     </motion.div>
@@ -338,7 +321,7 @@ export default function FeaturesSection() {
                                 whileHover={{ y: -5 }}
                                 onMouseEnter={() => setHoveredCard(idx)}
                                 onMouseLeave={() => setHoveredCard(null)}
-                                className="relative overflow-hidden rounded-3xl group cursor-pointer border border-white/10 shadow-xl"
+                                className="relative overflow-hidden rounded-3xl group cursor-pointer border border-gray-200 shadow-xl"
                                 style={{ minHeight: '280px' }}
                             >
                                 <Image
@@ -353,7 +336,7 @@ export default function FeaturesSection() {
 
                                 <div className="relative h-full p-6 flex flex-col justify-end">
                                     <div className="mb-3 transform transition-transform duration-300 group-hover:scale-110">
-                                        <div className="w-10 h-10 rounded-full bg-[#3f472f]/80 border border-white/10 backdrop-blur-sm flex items-center justify-center">
+                                        <div className="w-10 h-10 rounded-full bg-black/40 border border-white/20 backdrop-blur-sm flex items-center justify-center">
                                             <Icon className="w-5 h-5 text-[#EAB308]" />
                                         </div>
                                     </div>

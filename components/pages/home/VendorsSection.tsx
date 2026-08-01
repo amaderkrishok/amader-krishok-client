@@ -95,10 +95,10 @@ export function VendorsSection() {
   const activeVendorList = stores.length > 0 ? stores : fallbackVendors;
 
   return (
-    <section className="py-24 bg-[#FDFBF7] relative overflow-hidden border-t border-gray-200/60">
+    <section className="py-24 bg-[#2D331F] text-white relative overflow-hidden selection:bg-[#EAB308] selection:text-[#2D331F] border-t border-white/10">
       {/* Background Lighting Elements */}
-      <div className="absolute top-1/3 left-0 w-96 h-96 bg-[#2D331F]/5 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-10 right-0 w-96 h-96 bg-[#EAB308]/5 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/3 left-0 w-96 h-96 bg-[radial-gradient(circle,rgba(234,179,8,0.15)_0%,transparent_60%)] rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-10 right-0 w-96 h-96 bg-[radial-gradient(circle,rgba(74,222,128,0.12)_0%,transparent_60%)] rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
         
@@ -109,7 +109,7 @@ export function VendorsSection() {
               initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#2D331F]/10 border border-[#2D331F]/15 mb-4 text-[#2D331F] text-xs font-black uppercase tracking-wider"
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#3f472f]/80 border border-white/10 mb-4 text-[#EAB308] text-xs font-black uppercase tracking-wider shadow-lg"
             >
               <Award className="w-4 h-4 text-[#EAB308]" />
               <span>যাচাইকৃত খামারি ও মার্চেন্ট</span>
@@ -120,11 +120,11 @@ export function VendorsSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="text-4xl md:text-5xl lg:text-6xl font-black text-[#2D331F] tracking-tight leading-tight"
+              className="text-4xl md:text-5xl lg:text-6xl font-black text-[#EAB308] tracking-tight leading-tight"
             >
               আমাদের শীর্ষ খামার ও বিক্রেতাবৃন্দ
             </motion.h2>
-            <p className="text-gray-600 text-base md:text-lg mt-3 max-w-xl">
+            <p className="text-gray-300 text-base md:text-lg mt-3 max-w-xl font-medium">
               সরাসরি মাঠ পর্যায়ের ভেরিফাইড কৃষক ও অর্গানিক খামারিদের সাথে যুক্ত হয়ে নিরাপদে কেনাকাটা করুন।
             </p>
           </div>
@@ -137,7 +137,7 @@ export function VendorsSection() {
           >
             <Link
               href="/marketplace/stores"
-              className="group inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full bg-[#2D331F] hover:bg-[#3F472F] text-white font-black text-sm transition-all shadow-xl hover:shadow-2xl hover:scale-105"
+              className="group inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full bg-[#EAB308] hover:bg-[#FCD34D] text-[#2D331F] font-black text-sm transition-all shadow-xl hover:shadow-2xl hover:scale-105"
             >
               <span>সকল দোকান দেখুন</span>
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -149,7 +149,7 @@ export function VendorsSection() {
         {isLoading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[...Array(4)].map((_, i) => (
-              <div key={i} className="h-[400px] rounded-[32px] bg-gray-200 animate-pulse" />
+              <div key={i} className="h-[400px] rounded-[32px] bg-[#3f472f]/60 animate-pulse border border-white/10" />
             ))}
           </div>
         ) : (
@@ -180,11 +180,11 @@ export function VendorsSection() {
                   viewport={{ once: true }}
                   transition={{ delay: idx * 0.1, duration: 0.5 }}
                   whileHover={{ y: -8 }}
-                  className="group bg-white rounded-[32px] border border-gray-100 shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden flex flex-col justify-between"
+                  className="group bg-[#3f472f]/90 rounded-[32px] border border-white/10 shadow-2xl transition-all duration-300 overflow-hidden flex flex-col justify-between"
                 >
                   <div>
                     {/* Cover Banner Image */}
-                    <div className="relative aspect-[16/9] w-full bg-gray-100 overflow-hidden">
+                    <div className="relative aspect-[16/9] w-full bg-gray-900 overflow-hidden">
                       <Image
                         src={coverImg}
                         alt={storeName}
@@ -192,7 +192,7 @@ export function VendorsSection() {
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                         className="object-cover transition-transform duration-700 group-hover:scale-110"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#2D331F]/80 via-transparent to-transparent" />
                       
                       {/* Location Badge on Cover */}
                       <div className="absolute top-3 left-3">
@@ -206,7 +206,7 @@ export function VendorsSection() {
                     {/* Profile Avatar Overlay & Store Header */}
                     <div className="px-5 pt-0 pb-4 relative">
                       <div className="flex justify-between items-end -mt-10 mb-3">
-                        <div className="relative w-16 h-16 rounded-2xl overflow-hidden border-4 border-white shadow-xl bg-white">
+                        <div className="relative w-16 h-16 rounded-2xl overflow-hidden border-4 border-[#3f472f] shadow-xl bg-gray-800">
                           <Image
                             src={profileImg}
                             alt={storeName}
@@ -217,28 +217,28 @@ export function VendorsSection() {
                         </div>
 
                         {/* Verified Shield Badge */}
-                        <div className="inline-flex items-center gap-1 bg-[#2D331F] text-[#4ADE80] text-[10px] font-black px-2.5 py-1 rounded-full shadow-md">
-                          <ShieldCheck className="w-3.5 h-3.5" />
+                        <div className="inline-flex items-center gap-1 bg-[#2D331F] text-[#4ADE80] text-[10px] font-black px-2.5 py-1 rounded-full border border-white/10 shadow-md">
+                          <ShieldCheck className="w-3.5 h-3.5 text-[#4ADE80]" />
                           <span>ভেরিফাইড খামার</span>
                         </div>
                       </div>
 
                       {/* Store Name */}
                       <Link href={`/marketplace/stores/${storeId}`}>
-                        <h3 className="text-lg font-black text-[#2D331F] mb-1 leading-snug group-hover:text-[#D97706] transition-colors line-clamp-1">
+                        <h3 className="text-lg font-black text-[#EAB308] mb-1 leading-snug group-hover:text-amber-200 transition-colors line-clamp-1">
                           {storeName}
                         </h3>
                       </Link>
 
                       {/* Rating & Review */}
-                      <div className="flex items-center gap-1 text-amber-500 font-extrabold text-xs mb-3">
-                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                      <div className="flex items-center gap-1 text-[#EAB308] font-extrabold text-xs mb-3">
+                        <Star className="w-3.5 h-3.5 fill-[#EAB308] text-[#EAB308]" />
                         <span>{rating}</span>
-                        <span className="text-gray-400 font-medium ml-1">(৩০০+ হ্যাপি কাস্টমার)</span>
+                        <span className="text-gray-300 font-medium ml-1">(৩০০+ হ্যাপি কাস্টমার)</span>
                       </div>
 
                       {/* Specialty / Description */}
-                      <p className="text-xs text-gray-500 leading-relaxed line-clamp-2 mb-4">
+                      <p className="text-xs text-gray-300 leading-relaxed line-clamp-2 mb-4 font-medium">
                         {specialty}
                       </p>
                     </div>
@@ -247,7 +247,7 @@ export function VendorsSection() {
                   {/* Visit Store Action Button */}
                   <div className="p-5 pt-0">
                     <Link href={`/marketplace/stores/${storeId}`} className="block w-full">
-                      <button className="w-full py-3 rounded-2xl bg-[#2D331F]/5 hover:bg-[#2D331F] text-[#2D331F] hover:text-white font-black text-xs flex items-center justify-center gap-2 transition-all duration-300 group-hover:bg-[#2D331F] group-hover:text-white">
+                      <button className="w-full py-3 rounded-2xl bg-[#2D331F] hover:bg-[#EAB308] text-[#EAB308] hover:text-[#2D331F] font-black text-xs flex items-center justify-center gap-2 transition-all duration-300 border border-white/10 group-hover:bg-[#EAB308] group-hover:text-[#2D331F]">
                         <Store className="w-3.5 h-3.5" />
                         <span>দোকান পরিদর্শন করুন</span>
                         <ChevronRight className="w-3.5 h-3.5" />
