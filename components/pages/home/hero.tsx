@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
-import { Search } from 'lucide-react';
+import { Search, Leaf } from 'lucide-react';
 import { motion, useInView } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 
@@ -77,10 +77,38 @@ export function Hero() {
     return (
         <div className="relative min-h-screen flex flex-col items-center justify-center bg-[#2D331F] overflow-hidden pt-16 pb-32 lg:pb-40 selection:bg-[#EAB308] selection:text-[#2D331F]">
             
-            {/* --- Clean Static Background Gradient Pattern (No Floating Animations) --- */}
+            {/* --- Background Pattern & Floating Animated Leaves --- */}
             <div className="absolute inset-0 z-0 pointer-events-none">
                 <div className="absolute top-[-20%] left-[-10%] w-[60vw] h-[60vw] rounded-full bg-[radial-gradient(circle,rgba(234,179,8,0.15)_0%,transparent_60%)]"></div>
                 <div className="absolute bottom-[-20%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-[radial-gradient(circle,rgba(74,222,128,0.1)_0%,transparent_60%)]"></div>
+
+                {/* Floating Leaf Micro-Animations */}
+                {[
+                    { left: '8%', top: '22%', scale: 1.1, duration: 8, delay: 0 },
+                    { left: '88%', top: '18%', scale: 0.9, duration: 9, delay: 1 },
+                    { left: '80%', top: '72%', scale: 1.2, duration: 10, delay: 1.5 },
+                    { left: '12%', top: '75%', scale: 0.85, duration: 7, delay: 0.5 },
+                    { left: '48%', top: '10%', scale: 0.75, duration: 6, delay: 0.8 },
+                ].map((leaf, i) => (
+                    <motion.div
+                        key={i}
+                        className="absolute text-[#4ADE80]/20"
+                        style={{ left: leaf.left, top: leaf.top }}
+                        animate={{
+                            y: [-10, 10, -10],
+                            rotate: [0, 15, -15, 0],
+                            scale: [leaf.scale, leaf.scale * 1.08, leaf.scale],
+                        }}
+                        transition={{
+                            duration: leaf.duration,
+                            repeat: Infinity,
+                            ease: "easeInOut",
+                            delay: leaf.delay,
+                        }}
+                    >
+                        <Leaf className="w-8 h-8" />
+                    </motion.div>
+                ))}
             </div>
 
             <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center gap-10">
@@ -95,7 +123,7 @@ export function Hero() {
                     {/* Main Impactful Headline (Single Line & Slightly Smaller Text) */}
                     <motion.div variants={fadeUp} className="mb-4 w-full">
                         <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-5xl font-extrabold leading-tight tracking-tight text-[#EAB308] whitespace-nowrap">
-                            কোনো মধ্যস্বত্বভোগী নেই।
+                            কোনো মধ্যস্বত্বভোগী নেই
                         </h1>
                     </motion.div>
 
@@ -178,7 +206,7 @@ export function Hero() {
                                     className={`text-center flex flex-col justify-center relative group ${idx !== statsData.length - 1 ? 'md:after:content-[""] md:after:absolute md:after:right-0 md:after:top-1/4 md:after:h-1/2 md:after:w-px md:after:bg-gray-300' : ''}`}
                                 >
                                     <motion.div 
-                                        className="text-3xl sm:text-4xl md:text-5xl font-black text-[#2D331F] mb-1 tracking-tighter"
+                                        className="text-3xl sm:text-4xl md:text-4xl font-black text-[#2D331F] mb-1 tracking-tighter"
                                         whileHover={{ scale: 1.08, color: "#EAB308" }}
                                     >
                                         {toBengaliNumber(counts[idx], stat.isComma)}{stat.suffix}

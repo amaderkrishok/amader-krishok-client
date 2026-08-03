@@ -23,9 +23,53 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-	title: 'আমাদের কৃষক',
+	metadataBase: new URL('https://www.amaderkrishok.com'),
+	title: {
+		default: 'Amader Krishok - আমাদের কৃষক | বাংলাদেশের অনলাইন কৃষি বাজার',
+		template: '%s | Amader Krishok',
+	},
+	description: 'কোনো মধ্যস্বত্বভোগী নেই। বাংলাদেশের ৪২টি জেলার যাচাইকৃত কৃষকদের সরাসরি প্রোফাইল ঘুরে দেখুন, কথা বলুন এবং খাঁটি কৃষিপণ্য কিনুন।',
+	keywords: [
+		'Amader Krishok',
+		'আমাদের কৃষক',
+		'কৃষক',
+		'কৃষি বাজার',
+		'অর্গানিক সবজি',
+		'Bangladesh Farmers',
+		'Fresh Vegetables Bangladesh',
+		'Direct Farmers Marketplace',
+	],
+	authors: [{ name: 'Amader Krishok' }],
+	creator: 'Amader Krishok',
+	publisher: 'Amader Krishok',
 	icons: {
 		icon: '/static/favicon.ico',
+		shortcut: '/static/favicon.ico',
+		apple: '/static/favicon.ico',
+	},
+	openGraph: {
+		title: 'Amader Krishok - আমাদের কৃষক',
+		description: 'কোনো মধ্যস্বত্বভোগী নেই। সরাসরি যাচাইকৃত কৃষকদের কাছ থেকে তাজা ও অর্গানিক কৃষিপণ্য কিনুন।',
+		url: 'https://www.amaderkrishok.com',
+		siteName: 'Amader Krishok',
+		locale: 'bn_BD',
+		type: 'website',
+	},
+	twitter: {
+		card: 'summary_large_image',
+		title: 'Amader Krishok - আমাদের কৃষক',
+		description: 'কোনো মধ্যস্বত্বভোগী নেই। সরাসরি যাচাইকৃত কৃষকদের কাছ থেকে তাজা ও অর্গানিক কৃষিপণ্য কিনুন।',
+	},
+	robots: {
+		index: true,
+		follow: true,
+		googleBot: {
+			index: true,
+			follow: true,
+			'max-video-preview': -1,
+			'max-image-preview': 'large',
+			'max-snippet': -1,
+		},
 	},
 };
 
@@ -57,8 +101,8 @@ export default function RootLayout({
 						duration: 3000,
 					}}
 				/>
+				<GoogleAnalytics gaId='G-Q6DFRBRWX3' />
 			</body>
-			<GoogleAnalytics gaId='G-Q6DFRBRWX3' />
 		</html>
 	);
 }
