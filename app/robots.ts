@@ -5,7 +5,7 @@ export default function robots(): MetadataRoute.Robots {
 		rules: {
 			userAgent: '*',
 			allow: '/',
-			disallow: ['/admin/', '/api/','/user/', '/vendor/', '/session/'],
+			disallow: ['/admin/', '/api/'],
 		},
 		sitemap: 'https://www.amaderkrishok.com/sitemap.xml',
 	};
