@@ -1,9 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Calculator, RefreshCw } from 'lucide-react';
+import { Calculator, RotateCcw } from 'lucide-react';
 import { CropTypeSelect } from './crop-type-select';
 import { LandSizeInput } from './land-size-input';
 import { FertilizerOutput } from './fertilizer-output';
@@ -27,7 +25,6 @@ interface Crop {
 	fertilizers: Fertilizer[];
 }
 
-// API response format
 interface ApiCropData {
 	id: number;
 	name: string;
@@ -56,32 +53,26 @@ export function FertilizerCalculator({ language }: FertilizerCalculatorProps) {
 			setIsLoading(true);
 			try {
 				const response = await FertilizerService.getAllCalculators();
-				console.log(response.data);
 
 				if (Array.isArray(response.data)) {
-					// Transform API data to match our component's expected format
 					const transformedData = response.data.map((crop: ApiCropData) => {
-						// Convert fertilizerAmounts object to fertilizers array
 						const fertilizers: Fertilizer[] = Object.entries(
 							crop.fertilizerAmounts
 						).map(([name, amount]) => ({
 							name,
 							amount,
-							// Assign units based on fertilizer name or use default
 							unit: name === 'গোবর' ? 'কেজি' : 'গ্রাম',
 						}));
 
 						return {
-							value: crop.id.toString(), // Convert ID to string for select component
-							labelEn: crop.name, // Use name for both labels if English not provided
+							value: crop.id.toString(),
+							labelEn: crop.name,
 							labelBn: crop.name,
 							fertilizers,
 						};
 					});
 
 					setCropData(transformedData);
-				} else {
-					console.error('Unexpected data format:', response.data);
 				}
 			} catch (error) {
 				console.error('Error fetching crop data:', error);
@@ -127,17 +118,14 @@ export function FertilizerCalculator({ language }: FertilizerCalculatorProps) {
 
 		const results = crop.fertilizers.reduce(
 			(acc: Record<string, string>, fertilizer) => {
-				// Calculate the raw amount based on the land size
 				const rawAmount = fertilizer.amount * sizeInShatak;
-
-				// Simple conversion: if any amount exceeds 1000 grams, show in kg
 				let displayValue: string;
 
 				if (rawAmount >= 1000) {
 					const kgAmount = (rawAmount / 1000).toFixed(2);
-					displayValue = `${kgAmount} কেজি`;
+					displayValue = `${kgAmount} kg`;
 				} else {
-					displayValue = `${Math.round(rawAmount)} গ্রাম`;
+					displayValue = `${Math.round(rawAmount)} g`;
 				}
 
 				acc[fertilizer.name] = displayValue;
@@ -156,13 +144,11 @@ export function FertilizerCalculator({ language }: FertilizerCalculatorProps) {
 		setErrors({});
 	};
 
-	// Clear crop type error when user selects a valid crop type
 	const handleCropTypeChange = (value: string) => {
 		setCropType(value);
 		setErrors((prev) => ({ ...prev, cropType: undefined }));
 	};
 
-	// Clear land size error when user enters a valid value
 	const handleLandSizeChange = (value: string, unit: 'shatak' | 'bigha') => {
 		setLandSize({ value, unit });
 
@@ -172,55 +158,74 @@ export function FertilizerCalculator({ language }: FertilizerCalculatorProps) {
 	};
 
 	return (
-		<Card>
-			<CardContent className='p-6'>
-				<form
-					onSubmit={(e) => {
-						e.preventDefault();
-						handleCalculate();
-					}}
-					className='space-y-6'
-				>
-					<CropTypeSelect
-						value={cropType}
-						onChange={handleCropTypeChange}
-						language={language}
-						cropData={cropData}
-					/>
-					{errors.cropType && (
-						<p className='text-red-500 text-sm'>{errors.cropType}</p>
-					)}
+		<div className='w-full'>
+			{/* Card Header */}
+			<div className='flex items-start gap-4 mb-8 pb-6 border-b border-gray-100'>
+				<div className='w-14 h-14 rounded-2xl bg-[#4CAF50]/10 border border-[#4CAF50]/20 flex items-center justify-center shrink-0 shadow-xs'>
+					<Calculator className='w-7 h-7 text-[#2E7D32]' />
+				</div>
+				<div>
+					<h2 className='text-2xl md:text-3xl font-extrabold text-[#2A351F] tracking-tight'>
+						{language === 'bn' ? 'সারের হিসাব করুন' : 'Calculate Fertilizer'}
+					</h2>
+					<p className='text-gray-500 font-medium text-sm md:text-base mt-1'>
+						{language === 'bn'
+							? 'প্রয়োজনীয় তথ্য দিন এবং ফলাফল দেখুন।'
+							: 'Provide details to get accurate fertilizer recommendations.'}
+					</p>
+				</div>
+			</div>
 
-					<LandSizeInput
-						value={landSize.value}
-						unit={landSize.unit}
-						onChange={handleLandSizeChange}
-						language={language}
-					/>
-					{errors.landSize && (
-						<p className='text-red-500 text-sm'>{errors.landSize}</p>
-					)}
+			<form
+				onSubmit={(e) => {
+					e.preventDefault();
+					handleCalculate();
+				}}
+				className='space-y-6'
+			>
+				<CropTypeSelect
+					value={cropType}
+					onChange={handleCropTypeChange}
+					language={language}
+					cropData={cropData}
+					error={errors.cropType}
+				/>
 
-					<div className='flex space-x-4'>
-						<Button type='submit' className='flex-1' disabled={isLoading}>
-							<Calculator className='w-4 h-4 mr-2' />
-							{language === 'bn' ? 'হিসাব করুন' : 'Calculate'}
-						</Button>
-						<Button
-							type='button'
-							variant='outline'
-							onClick={handleReset}
-							disabled={isLoading}
-						>
-							<RefreshCw className='w-4 h-4 mr-2' />
-							{language === 'bn' ? 'রিসেট' : 'Reset'}
-						</Button>
-					</div>
-				</form>
-				{calculatedResults && (
-					<FertilizerOutput results={calculatedResults} language={language} />
-				)}
-			</CardContent>
-		</Card>
+				<LandSizeInput
+					value={landSize.value}
+					unit={landSize.unit}
+					onChange={handleLandSizeChange}
+					language={language}
+					error={errors.landSize}
+				/>
+
+				<div className='flex flex-col sm:flex-row items-center gap-4 pt-4'>
+					{/* Primary Button */}
+					<button
+						type='submit'
+						disabled={isLoading}
+						className='w-full sm:flex-1 h-[58px] rounded-[18px] bg-[#2E3B20] hover:bg-[#384A2C] text-white font-extrabold text-base md:text-lg flex items-center justify-center shadow-[0_10px_25px_rgba(46,59,32,0.25)] hover:shadow-[0_15px_30px_rgba(46,59,32,0.35)] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed group cursor-pointer'
+					>
+						<Calculator className='w-5 h-5 mr-2.5 text-[#FBBF24] group-hover:rotate-12 transition-transform' />
+						<span>{language === 'bn' ? 'হিসাব করুন' : 'Calculate'}</span>
+					</button>
+
+					{/* Secondary Button */}
+					<button
+						type='button'
+						onClick={handleReset}
+						disabled={isLoading}
+						className='w-full sm:w-auto h-[58px] px-8 rounded-[18px] bg-white border-2 border-[#4CAF50] hover:border-[#2E7D32] hover:bg-[#F0FDF4] text-[#2E7D32] font-bold text-base flex items-center justify-center hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer shadow-xs'
+					>
+						<RotateCcw className='w-5 h-5 mr-2 text-[#4CAF50]' />
+						<span>{language === 'bn' ? 'রিসেট' : 'Reset'}</span>
+					</button>
+				</div>
+			</form>
+
+			{calculatedResults && (
+				<FertilizerOutput results={calculatedResults} language={language} />
+			)}
+		</div>
 	);
 }
