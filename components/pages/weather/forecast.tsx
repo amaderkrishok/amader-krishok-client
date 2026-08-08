@@ -1,11 +1,20 @@
+'use client';
+
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Calendar, Droplets, Sun, Cloud, CloudRain } from 'lucide-react';
+
 interface WeatherData {
-	list: WeatherForecast[];
+	list: WeatherForecastItem[];
 }
 
-interface WeatherForecast {
+interface WeatherForecastItem {
 	dt_txt: string;
+	pop?: number;
 	main: {
 		temp: number;
+		temp_min?: number;
+		temp_max?: number;
 	};
 	weather: Array<{
 		icon: string;
@@ -14,15 +23,18 @@ interface WeatherForecast {
 }
 
 interface DailyForecasts {
-	[key: string]: WeatherForecast[];
+	[key: string]: WeatherForecastItem[];
 }
 
 interface DateInfo {
 	day: number;
 	date: string;
+	fullDayName: string;
 }
 
 export function WeatherForecast({ data }: { data: WeatherData }) {
+	if (!data?.list) return null;
+
 	const dailyForecasts: DailyForecasts = data.list.reduce(
 		(acc: DailyForecasts, curr) => {
 			const date = new Date(curr.dt_txt).toDateString();
@@ -38,59 +50,123 @@ export function WeatherForecast({ data }: { data: WeatherData }) {
 	const formatTemperature = (temp: number): string =>
 		`${Math.round(temp - 273.15)}°C`;
 
-	const getAverageTemp = (forecasts: WeatherForecast[]): string =>
+	const getAverageTemp = (forecasts: WeatherForecastItem[]): string =>
 		formatTemperature(
 			forecasts.reduce((sum, curr) => sum + curr.main.temp, 0) /
 				forecasts.length
 		);
 
+	const getMaxPop = (forecasts: WeatherForecastItem[]): number => {
+		return Math.max(...forecasts.map((f) => f.pop || 0));
+	};
+
 	const getDayAndDate = (dtTxt: string): DateInfo => {
 		const date = new Date(dtTxt);
 		return {
 			day: date.getDate(),
-			date: date.toLocaleDateString('en-US', {
+			date: date.toLocaleDateString('bn-BD', {
 				month: 'short',
-				weekday: 'short',
+			}),
+			fullDayName: date.toLocaleDateString('bn-BD', {
+				weekday: 'long',
 			}),
 		};
 	};
 
 	return (
-		<div className='bg-white border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-300 rounded-2xl p-4 sm:p-6 w-full max-w-lg'>
-			<div className='flex items-center justify-between mb-4 sm:mb-6 border-b border-green-100 pb-3'>
-				<h2 className='text-lg sm:text-xl font-bold text-gray-800 flex items-center gap-2'>
-					<span className='w-2 h-5 bg-green-500 rounded-full inline-block'></span>
-					আগামী ৫ দিনের পূর্বাভাস (Forecast)
-				</h2>
+		<motion.div
+			initial={{ opacity: 0, y: 20 }}
+			animate={{ opacity: 1, y: 0 }}
+			transition={{ duration: 0.5, delay: 0.2 }}
+			className='bg-white border border-gray-100 rounded-[28px] p-6 md:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.06)] w-full'
+		>
+			{/* Section Header */}
+			<div className='flex items-center justify-between mb-6 pb-4 border-b border-gray-100'>
+				<div className='flex items-center gap-3'>
+					<div className='w-10 h-10 rounded-xl bg-[#4CAF50]/15 text-[#2E7D32] flex items-center justify-center'>
+						<Calendar className='w-5 h-5' />
+					</div>
+					<div>
+						<h3 className='text-xl font-extrabold text-[#2A351F] tracking-tight'>
+							৭ দিনের পূর্বাভাস
+						</h3>
+						<p className='text-xs text-gray-500 font-medium'>
+							পরবর্তী দিনগুলোর আবহাওয়া অনুমান
+						</p>
+					</div>
+				</div>
+				<span className='px-3 py-1 rounded-full bg-[#2A351F]/10 text-[#2A351F] text-xs font-bold'>
+					{forecastEntries.length} দিন
+				</span>
 			</div>
-			<div className='space-y-3 sm:space-y-4'>
+
+			{/* Forecast Cards List */}
+			<div className='space-y-3.5'>
 				{forecastEntries.map(([, forecasts], index) => {
-					const { day, date: formattedDate } = getDayAndDate(
+					const { day, date: monthName, fullDayName } = getDayAndDate(
 						forecasts[0].dt_txt
 					);
+					const avgTemp = getAverageTemp(forecasts);
+					const maxPop = Math.round(getMaxPop(forecasts) * 100);
 
 					return (
-						<div
+						<motion.div
 							key={index}
-							className='flex flex-col sm:flex-row items-center justify-between bg-green-50/50 hover:bg-green-100/50 transition-colors border border-green-50 rounded-xl p-3 sm:p-4 text-center sm:text-left'
+							whileHover={{ y: -2 }}
+							className='flex items-center justify-between bg-[#F8F8F8] hover:bg-emerald-50/40 border border-gray-200/60 hover:border-[#4CAF50]/40 rounded-[20px] p-4 transition-all duration-200 shadow-2xs hover:shadow-md group'
 						>
-							<div className='flex items-center gap-2 sm:gap-4'>
+							{/* Date & Day Badge */}
+							<div className='flex items-center gap-3.5'>
+								<div className='w-12 h-12 rounded-xl bg-white border border-gray-200/80 shadow-2xs flex flex-col items-center justify-center shrink-0 group-hover:border-[#4CAF50] transition-colors'>
+									<span className='text-xs font-bold text-gray-500 leading-none'>
+										{monthName}
+									</span>
+									<span className='text-lg font-black text-[#2E7D32] leading-tight'>
+										{day}
+									</span>
+								</div>
+
 								<div>
-									<p className='text-sm sm:text-base font-medium'>
-										{getAverageTemp(forecasts)}
-									</p>
+									<h4 className='text-base font-bold text-[#2A351F] capitalize'>
+										{fullDayName}
+									</h4>
+									<div className='flex items-center gap-2 mt-0.5'>
+										<Droplets className='w-3.5 h-3.5 text-[#4CAF50]' />
+										<span className='text-xs font-semibold text-gray-600'>
+											বৃষ্টি {maxPop}%
+										</span>
+									</div>
 								</div>
 							</div>
-							<div className='flex flex-col items-center bg-white/60 p-2 rounded-lg shadow-sm border border-green-100 min-w-[70px]'>
-								<span className='text-xl sm:text-2xl font-bold text-green-700'>{day}</span>
-								<p className='text-xs sm:text-sm text-gray-600 font-medium'>
-									{formattedDate}
-								</p>
+
+							{/* Temperature Progress Indicator & Value */}
+							<div className='flex items-center gap-4'>
+								<div className='hidden sm:block w-24'>
+									<div className='flex justify-between text-[10px] font-bold text-gray-400 mb-1'>
+										<span>কম</span>
+										<span>বেশি</span>
+									</div>
+									<div className='w-full bg-gray-200 h-2 rounded-full overflow-hidden p-0.5'>
+										<div
+											className='h-full rounded-full bg-gradient-to-r from-[#4CAF50] to-[#FBBF24]'
+											style={{
+												width: `${Math.min(
+													Math.max((parseInt(avgTemp) / 40) * 100, 20),
+													100
+												)}%`,
+											}}
+										/>
+									</div>
+								</div>
+
+								<div className='bg-white px-3.5 py-2 rounded-xl border border-gray-200/80 shadow-2xs font-black text-[#2A351F] text-base md:text-lg min-w-[70px] text-center'>
+									{avgTemp}
+								</div>
 							</div>
-						</div>
+						</motion.div>
 					);
 				})}
 			</div>
-		</div>
+		</motion.div>
 	);
 }
