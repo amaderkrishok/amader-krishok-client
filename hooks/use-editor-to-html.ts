@@ -106,7 +106,7 @@ import { InlineEquationElementStatic } from '@/components/plate-ui/inline-equati
 import { EditorStatic } from '@/components/plate-ui/editor-static';
 
 export const useEditorToHtml = () => {
-	const convertToHtml = useCallback(async (editorContent: []) => {
+	const convertToHtml = useCallback(async (editorContent: any[]) => {
 		const components = {
 			[BaseAudioPlugin.key]: MediaAudioElementStatic,
 			[BaseBlockquotePlugin.key]: BlockquoteElementStatic,
