@@ -164,7 +164,7 @@ export function PostHeroCarousel({
 							</p>
 							<div className='flex items-center gap-3 text-xs sm:text-sm text-gray-300 font-medium pt-2'>
 								<span className='inline-flex items-center gap-1.5 bg-[#2A351F]/80 px-2.5 py-1 rounded-md border border-white/10'>
-									<Sparkles className='w-3.5 h-3.5 text-[#FBBF24]' />
+									
 									নতুন পোস্ট
 								</span>
 								<span>•</span>
@@ -255,7 +255,7 @@ export function PostHeroCarousel({
 									transition={{ duration: 0.4, delay: 0.4 }}
 								>
 									<span className='inline-flex items-center gap-1.5 bg-[#2A351F]/80 px-2.5 py-1 rounded-md border border-white/10 text-white'>
-										<Sparkles className='w-3.5 h-3.5 text-[#FBBF24]' />
+										
 										নতুন পোস্ট
 									</span>
 									<span>•</span>

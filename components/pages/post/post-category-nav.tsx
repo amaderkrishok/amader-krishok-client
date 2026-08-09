@@ -35,11 +35,7 @@ export function CategoryNav({
 							: 'bg-white text-[#172018] border-[#E5E7EB] hover:bg-gray-50 hover:border-gray-300'
 					}`}
 				>
-					<Sparkles
-						className={`w-4 h-4 ${
-							isAllActive ? 'text-[#FBBF24]' : 'text-gray-400'
-						}`}
-					/>
+					
 					<span>সব পোস্ট</span>
 				</button>
 

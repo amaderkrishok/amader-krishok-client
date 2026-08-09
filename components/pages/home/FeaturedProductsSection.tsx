@@ -171,7 +171,7 @@ export function FeaturedProductsSection() {
               viewport={{ once: true }}
               className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#2D331F]/10 border border-[#2D331F]/15 mb-4 text-[#2D331F] text-xs font-black uppercase tracking-wider"
             >
-              <Sparkles className="w-3.5 h-3.5 text-[#EAB308]" />
+             
               <span>জনপ্রিয় পণ্য কালেকশন</span>
             </motion.div>
 

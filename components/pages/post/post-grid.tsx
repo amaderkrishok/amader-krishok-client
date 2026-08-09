@@ -84,7 +84,7 @@ export function PostsGrid({
 							{/* Badge */}
 							<div className='absolute left-4 top-4 z-10'>
 								<span className='inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 bg-[#1E2817] text-[#FBBF24] rounded-full shadow-lg border border-white/20'>
-									<Sparkles className='w-3.5 h-3.5 text-[#FBBF24]' />
+									
 									<span>🌾 Featured</span>
 								</span>
 							</div>
