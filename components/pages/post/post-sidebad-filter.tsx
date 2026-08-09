@@ -76,11 +76,16 @@ export function FilterSidebar({
 												: 'border-transparent hover:bg-gray-50 text-gray-700'
 										}`}
 									>
-										<div className='flex items-center space-x-3 pointer-events-none'>
-											<Checkbox
-												checked={isSelected}
-												className='rounded-md border-gray-300 data-[state=checked]:bg-[#1E2817] data-[state=checked]:border-[#1E2817]'
-											/>
+										<div className='flex items-center space-x-3'>
+											<div
+												className={`w-4 h-4 rounded-[4px] border flex items-center justify-center transition-colors shrink-0 ${
+													isSelected
+														? 'bg-[#1E2817] border-[#1E2817] text-white'
+														: 'border-gray-300 bg-white'
+												}`}
+											>
+												{isSelected && <Check className='w-3 h-3 stroke-[3]' />}
+											</div>
 											<span className='text-sm select-none'>
 												{category.name}
 											</span>
