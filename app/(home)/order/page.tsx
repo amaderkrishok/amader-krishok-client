@@ -31,7 +31,7 @@ type OrderFormValues = z.infer<typeof orderFormSchema>;
 // Main Order Page component
 export default function OrderPage() {
 	const router = useRouter();
-	const { items, subtotal, clearCart } = useCart();
+	const { items, subtotal, deliveryCharge, total, clearCart } = useCart();
 	const { user } = useSession();
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
@@ -150,7 +150,11 @@ export default function OrderPage() {
 							<CartItemsSummary items={items} />
 						</div>
 
-						<OrderSummary subtotal={subtotal} />
+						<OrderSummary
+							subtotal={subtotal}
+							deliveryCharge={deliveryCharge}
+							total={total}
+						/>
 					</div>
 				</div>
 			</div>

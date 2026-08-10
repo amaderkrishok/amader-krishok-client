@@ -34,6 +34,8 @@ interface CartContextType {
 	toggleCart: () => void;
 	itemCount: number;
 	subtotal: number;
+	deliveryCharge: number;
+	total: number;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -183,6 +185,15 @@ export function CartProvider({ children }: { children: ReactNode }) {
 		return total + price * item.quantity;
 	}, 0);
 
+	// Calculate total delivery charge
+	const deliveryCharge = items.reduce((sum, item) => {
+		const charge = Number(item.product?.deliveryCharge || 0);
+		return sum + charge;
+	}, 0);
+
+	// Calculate grand total
+	const total = subtotal + deliveryCharge;
+
 	const value = {
 		items,
 		addItem,
@@ -195,6 +206,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
 		toggleCart,
 		itemCount,
 		subtotal,
+		deliveryCharge,
+		total,
 	};
 
 	return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
