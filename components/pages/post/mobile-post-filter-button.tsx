@@ -37,25 +37,32 @@ export function MobileFilterButton({
 		<div className='md:hidden mb-6'>
 			<Sheet>
 				<SheetTrigger asChild>
-					<Button variant='outline' className='w-full flex justify-between'>
-						<div className='flex items-center'>
-							<SlidersHorizontal className='mr-2 h-4 w-4' />
-							Filters
+					<Button
+						variant='outline'
+						className='w-full h-12 flex items-center justify-between bg-white border-[#E5E7EB] rounded-2xl shadow-sm text-[#172018] font-bold px-4'
+					>
+						<div className='flex items-center gap-2'>
+							<SlidersHorizontal className='h-4 w-4 text-[#2E7D32]' />
+							<span>ফিল্টার পোস্ট</span>
 						</div>
 						<div className='flex items-center gap-2'>
 							{activeFiltersCount > 0 && (
-								<Badge variant='secondary'>{activeFiltersCount}</Badge>
+								<Badge className='bg-[#1E2817] text-[#FBBF24] font-bold px-2 py-0.5 rounded-full'>
+									{activeFiltersCount}
+								</Badge>
 							)}
-							<ChevronDown className='h-4 w-4' />
+							<ChevronDown className='h-4 w-4 text-gray-400' />
 						</div>
 					</Button>
 				</SheetTrigger>
 				<SheetContent
 					side='left'
-					className='w-[300px] sm:w-[400px] overflow-y-auto'
+					className='w-[320px] sm:w-[400px] overflow-y-auto bg-[#F8FAF7] p-4'
 				>
-					<div className='py-6 pr-6'>
-						<h2 className='text-2xl font-bold mb-6'>Filters</h2>
+					<div className='py-4'>
+						<h2 className='text-xl font-extrabold text-[#172018] mb-4 pb-2 border-b border-gray-200'>
+							ফিল্টার ও অন্বেষণ
+						</h2>
 						<FilterSidebar
 							searchTerm={searchTerm}
 							setSearchTerm={setSearchTerm}
@@ -73,3 +80,4 @@ export function MobileFilterButton({
 		</div>
 	);
 }
+

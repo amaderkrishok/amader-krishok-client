@@ -7,6 +7,13 @@ import {
 	Clock,
 	ArrowLeft,
 	ChevronRight,
+	User,
+	Calendar,
+	Sparkles,
+	BookOpen,
+	Flame,
+	ArrowRight,
+	Sprout,
 } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
 import { PostService } from '@/services/post-service';
@@ -34,16 +41,31 @@ export default function PostPageClient({
 	const [error, setError] = useState('');
 	const [htmlContent, setHtmlContent] = useState('');
 	const [activeSection, setActiveSection] = useState<string>('');
+	const [readingProgress, setReadingProgress] = useState(0);
 	const slug = params?.slug as string;
 	const convertToHtml = useEditorToHtml();
 	const contentRef = useRef<HTMLDivElement>(null);
 
-	// Process editor data and generate HTML content
+	// Reading Progress Bar Effect
+	useEffect(() => {
+		const handleScroll = () => {
+			const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+			if (totalHeight > 0) {
+				const currentProgress = (window.scrollY / totalHeight) * 100;
+				setReadingProgress(Math.min(100, Math.max(0, currentProgress)));
+			}
+		};
+
+		window.addEventListener('scroll', handleScroll, { passive: true });
+		return () => window.removeEventListener('scroll', handleScroll);
+	}, []);
+
+	// Process editor content to HTML
 	useEffect(() => {
 		const processEditorContent = async () => {
 			if (post?.description?.value && Array.isArray(post.description.value)) {
 				try {
-					const html = await convertToHtml(post.description.value);
+					const html = await convertToHtml(post.description.value as any[]);
 					setHtmlContent(html);
 				} catch (err) {
 					console.error('Error converting editor content to HTML:', err);
@@ -57,10 +79,9 @@ export default function PostPageClient({
 		}
 	}, [post, convertToHtml]);
 
-	// Fetch post data if not provided via initialPost
+	// Fetch post data if not provided
 	useEffect(() => {
 		const fetchPost = async () => {
-			// If we have initialPost or no slug, don't fetch
 			if (!slug || initialPost) return;
 
 			try {
@@ -68,21 +89,19 @@ export default function PostPageClient({
 				const response = await PostService.getPostBySlug(slug);
 				setPost(response.data);
 
-				// Fetch related posts from the same category
 				if (response.data.categories?.length > 0) {
 					const categoryId = response.data.categories[0].id;
 					const relatedResponse = await PostService.getPosts({
 						categoryId,
-						limit: 3,
+						limit: 4,
 						published: true,
 					});
 
-					// Filter out the current post from related posts
 					const filteredRelated = relatedResponse.data.filter(
 						(relatedPost) => relatedPost.id !== response.data.id
 					);
 
-					setRelatedPosts(filteredRelated);
+					setRelatedPosts(filteredRelated.slice(0, 3));
 				}
 			} catch (err) {
 				console.error('Error fetching post:', err);
@@ -95,7 +114,7 @@ export default function PostPageClient({
 		fetchPost();
 	}, [slug, initialPost]);
 
-	// Fetch related posts even when initialPost is provided
+	// Fetch related posts when initialPost is provided
 	useEffect(() => {
 		const fetchRelatedPosts = async () => {
 			if (!post || !post.categories?.length) return;
@@ -104,16 +123,15 @@ export default function PostPageClient({
 				const categoryId = post.categories[0].id;
 				const relatedResponse = await PostService.getPosts({
 					categoryId,
-					limit: 3,
+					limit: 4,
 					published: true,
 				});
 
-				// Filter out the current post from related posts
 				const filteredRelated = relatedResponse.data.filter(
 					(relatedPost) => relatedPost.id !== post.id
 				);
 
-				setRelatedPosts(filteredRelated);
+				setRelatedPosts(filteredRelated.slice(0, 3));
 			} catch (err) {
 				console.error('Error fetching related posts:', err);
 			}
@@ -124,40 +142,33 @@ export default function PostPageClient({
 		}
 	}, [initialPost, post, relatedPosts.length]);
 
-	// SINGLE, CONSOLIDATED TABLE OF CONTENTS EFFECT
+	// Table of contents effect
 	useEffect(() => {
 		if (!htmlContent || !contentRef.current || !post?.tableOfContent?.length) {
 			return;
 		}
 
-		// 1. Create a mapping of TOC titles to IDs
 		const tocMapping = new Map(
 			post.tableOfContent.map((item) => [item.title.trim(), item.id])
 		);
 
-		// 2. Find and prepare all heading elements
 		const prepareHeadings = () => {
 			const headingElements = Array.from(
 				contentRef.current?.querySelectorAll('h1, h2, h3, h4, h5, h6') || []
 			) as HTMLElement[];
 
-			// Ensure all headings have proper IDs matching the TOC
 			headingElements.forEach((heading) => {
 				const headingText = heading.textContent?.trim() || '';
 				const tocId = tocMapping.get(headingText);
 
-				if (tocId) {
-					// If this heading matches a TOC entry, ensure it has the right ID
-					if (!heading.id) {
-						heading.id = tocId;
-					}
+				if (tocId && !heading.id) {
+					heading.id = tocId;
 				}
 			});
 
 			return headingElements;
 		};
 
-		// 3. Scroll event handler for manual scrolling
 		const handleScroll = () => {
 			if (!contentRef.current) return;
 
@@ -169,86 +180,30 @@ export default function PostPageClient({
 
 			if (!headings.length) return;
 
-			// Find the heading that's currently at the top of the viewport (with offset)
 			let currentHeading: HTMLElement | null = null;
 			const scrollPosition = window.scrollY;
-			const headerOffset = 150; // Adjust based on your layout
+			const headerOffset = 150;
 
-			// Check each heading's position
 			for (let i = 0; i < headings.length; i++) {
 				const heading = headings[i];
 				const headingTop = heading.getBoundingClientRect().top + window.scrollY;
 
-				// If this heading is above our scroll position (including offset)
 				if (headingTop - headerOffset <= scrollPosition) {
 					currentHeading = heading;
 				} else {
-					// Once we find a heading below our scroll position, we can stop
 					break;
 				}
 			}
 
 			if (currentHeading && currentHeading.id !== activeSection) {
 				setActiveSection(currentHeading.id);
-			} else if (
-				!currentHeading &&
-				headings.length > 0 &&
-				scrollPosition <= headings[0].getBoundingClientRect().top
-			) {
-				// If we're above the first heading, highlight it
-				setActiveSection(headings[0].id);
 			}
 		};
 
-		// 4. Intersection Observer for smoother updates
-		const setupObserver = (headingElements: HTMLElement[]) => {
-			const observer = new IntersectionObserver(
-				(entries) => {
-					const visibleHeadings = entries
-						.filter((entry) => entry.isIntersecting)
-						.sort((a, b) => {
-							const aTop = a.boundingClientRect.top;
-							const bTop = b.boundingClientRect.top;
-							return Math.abs(aTop) - Math.abs(bTop);
-						});
-
-					if (visibleHeadings.length > 0) {
-						const activeElement = visibleHeadings[0].target as HTMLElement;
-						if (activeElement.id) {
-							setActiveSection(activeElement.id);
-						}
-					}
-				},
-				{
-					rootMargin: '-100px 0px -80% 0px',
-					threshold: [0, 0.25, 0.5, 0.75, 1],
-				}
-			);
-
-			headingElements
-				.filter((heading) => heading.id)
-				.forEach((heading) => {
-					observer.observe(heading);
-				});
-
-			return observer;
-		};
-
-		// 5. Set everything up with a delay to ensure content is rendered
 		const timeoutId = setTimeout(() => {
-			const headings = prepareHeadings();
-			const observer = setupObserver(headings);
-
-			// Initial scroll check
+			prepareHeadings();
 			handleScroll();
-
-			// Set up scroll listener
 			window.addEventListener('scroll', handleScroll, { passive: true });
-
-			return () => {
-				observer.disconnect();
-				window.removeEventListener('scroll', handleScroll);
-			};
 		}, 500);
 
 		return () => {
@@ -257,27 +212,15 @@ export default function PostPageClient({
 		};
 	}, [htmlContent, post?.tableOfContent, activeSection]);
 
-	// Scroll to section function
 	const scrollToSection = (id: string) => {
 		if (!contentRef.current) return;
-
-		// Find the element by ID
 		const element = contentRef.current.querySelector(`#${id}`);
 
 		if (element) {
-			// Set the active section immediately for better UX feedback
 			setActiveSection(id);
-
-			// Calculate position with offset
 			const yOffset = -100;
-			const y =
-				element.getBoundingClientRect().top + window.pageYOffset + yOffset;
-
-			// Scroll to the element
-			window.scrollTo({
-				top: y,
-				behavior: 'smooth',
-			});
+			const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+			window.scrollTo({ top: y, behavior: 'smooth' });
 		}
 	};
 
@@ -287,249 +230,434 @@ export default function PostPageClient({
 
 	if (error || !post) {
 		return (
-			<div className='container mx-auto py-20 px-4 text-center'>
-				<h1 className='text-3xl font-bold mb-6'>Post not found</h1>
-				<p className='text-gray-600 mb-8'>
-					{error ||
-						"The post you're looking for doesn't exist or has been removed."}
-				</p>
-				<Button onClick={() => router.push('/post')}>
-					<ArrowLeft className='w-4 h-4 mr-2' />
-					Back to All Posts
-				</Button>
+			<div className='min-h-screen bg-[#F8FAF7] flex items-center justify-center py-20 px-4 text-center'>
+				<div className='bg-white p-8 sm:p-12 rounded-3xl border border-[#E5E7EB] shadow-md max-w-md w-full space-y-4'>
+					<div className='w-16 h-16 bg-[#1E2817]/5 rounded-full flex items-center justify-center mx-auto text-[#2E7D32]'>
+						<Sprout className='w-8 h-8' />
+					</div>
+					<h1 className='text-2xl font-bold text-[#172018]'>পোস্টটি পাওয়া যায়নি</h1>
+					<p className='text-sm text-[#667085] leading-relaxed'>
+						{error || 'আপনি যে পোস্টটি খুঁজছেন তা মুছে ফেলা হয়েছে বা উপলব্ধ নেই।'}
+					</p>
+					<Button
+						onClick={() => router.push('/post')}
+						className='bg-[#1E2817] hover:bg-[#2A351F] text-white rounded-2xl px-6 py-3 font-bold gap-2'
+					>
+						<ArrowLeft className='w-4 h-4' />
+						<span>সব পোস্টে ফিরে যান</span>
+					</Button>
+				</div>
 			</div>
 		);
 	}
 
-	const formatDate = (dateString: string) => {
-		return new Date(dateString).toLocaleDateString('en-US', {
-			year: 'numeric',
-			month: 'long',
-			day: 'numeric',
-		});
+	const formatDateInBengali = (dateString: string) => {
+		try {
+			return new Date(dateString).toLocaleDateString('bn-BD', {
+				year: 'numeric',
+				month: 'long',
+				day: 'numeric',
+			});
+		} catch (e) {
+			return dateString;
+		}
 	};
 
-	return (
-		<div className='flex flex-col min-h-screen bg-white'>
-			{/* Blog Content */}
-			<main className='flex-grow bg-white'>
-				<div className='container mx-auto px-4 py-10'>
-					{/* Breadcrumb */}
-					<div className='text-sm text-gray-500 mb-8'>
-						<Link href='/' className='hover:text-black transition-colors'>
-							Home
-						</Link>
-						<ChevronRight className='inline w-4 h-4 mx-1' />
-						<Link href='/post' className='hover:text-black transition-colors'>
-							Blog
-						</Link>
-						{post.categories?.length > 0 && (
-							<>
-								<ChevronRight className='inline w-4 h-4 mx-1' />
-								<Link
-									href={`/post/categories/${post.categories[0].slug}`}
-									className='hover:text-black transition-colors'
-								>
-									{post.categories[0].name}
-								</Link>
-							</>
-						)}
-						<ChevronRight className='inline w-4 h-4 mx-1' />
-						<span className='text-gray-700'>{post.title}</span>
-					</div>
+	// Clean category name fallback (Rule 24: remove 'Test' placeholders)
+	const rawCategoryName = post.categories && post.categories[0] ? post.categories[0].name : '';
+	const categoryName = (!rawCategoryName || rawCategoryName.toLowerCase() === 'test')
+		? 'কৃষি প্রযুক্তি'
+		: rawCategoryName;
 
-					<div className='flex flex-col lg:flex-row gap-10'>
-						{/* Table of Contents - Sticky Sidebar */}
-						{post.tableOfContent?.length > 0 && (
-							<aside className='lg:w-1/4 order-2 lg:order-1'>
-								<div className='sticky top-8 p-6 bg-gray-50 rounded-xl border border-gray-100 shadow-sm'>
-									<h3 className='text-xl font-bold mb-6'>Table of Contents</h3>
-									<nav className='space-y-2 text-base'>
-										{post.tableOfContent.map((item) => (
+	return (
+		<div className='min-h-screen bg-[#F8FAF7] text-[#172018] font-sans antialiased relative selection:bg-[#FBBF24] selection:text-[#1E2817]'>
+			{/* READING PROGRESS BAR AT TOP */}
+			<div
+				className='fixed top-0 left-0 z-50 h-[3px] bg-[#4CAF50] transition-all duration-150 ease-out'
+				style={{ width: `${readingProgress}%` }}
+			/>
+
+			{/* BREADCRUMB SECTION */}
+			<div className='max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-4'>
+				<nav className='flex items-center flex-wrap gap-1.5 text-xs sm:text-sm text-[#667085]'>
+					<Link href='/' className='hover:text-[#1E2817] transition-colors font-medium'>
+						হোম
+					</Link>
+					<ChevronRight className='w-3.5 h-3.5 text-gray-400' />
+					<Link href='/post' className='hover:text-[#1E2817] transition-colors font-medium'>
+						ব্লগ
+					</Link>
+					<ChevronRight className='w-3.5 h-3.5 text-gray-400' />
+					<span className='font-semibold text-[#2E7D32]'>{categoryName}</span>
+					<ChevronRight className='w-3.5 h-3.5 text-gray-400 hidden sm:inline' />
+					<span className='text-[#172018] font-medium line-clamp-1 max-w-[200px] sm:max-w-[300px] hidden sm:inline'>
+						{post.title}
+					</span>
+				</nav>
+			</div>
+
+			{/* ARTICLE HEADER SECTION (CENTERED EDITORIAL LAYOUT) */}
+			<header className='max-w-[900px] mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-8 text-center space-y-4'>
+				{/* Category Badge */}
+				<div className='inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-[#4CAF50]/15 border border-[#4CAF50]/30 text-[#2E7D32] text-xs sm:text-sm font-bold shadow-sm'>
+					<Sprout className='w-4 h-4 text-[#2E7D32]' />
+					<span>🌱 {categoryName}</span>
+				</div>
+
+				{/* Title */}
+				<h1 className='text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#172018] tracking-tight leading-[1.25] max-w-[880px] mx-auto'>
+					{post.title}
+				</h1>
+
+				{/* Metadata Row */}
+				<div className='flex items-center justify-center flex-wrap gap-2 text-xs sm:text-sm text-[#667085] font-medium pt-2'>
+					<span className='inline-flex items-center gap-1.5 text-[#172018] font-semibold'>
+						<User className='w-4 h-4 text-[#2E7D32]' />
+						<span>Amader Krishok</span>
+					</span>
+					<span>•</span>
+					<span className='inline-flex items-center gap-1.5'>
+						<Calendar className='w-4 h-4 text-gray-400' />
+						<span>{formatDateInBengali(post.createdAt)}</span>
+					</span>
+					<span>•</span>
+					<span className='inline-flex items-center gap-1.5'>
+						<Clock className='w-4 h-4 text-gray-400' />
+						<span>৫ মিনিট পড়ুন</span>
+					</span>
+				</div>
+			</header>
+			{post.featuredImage && (
+				<div className='max-w-[1100px] mx-auto px-4 sm:px-6 lg:px-8 mb-10'>
+					<div className='relative w-full aspect-[16/7] md:aspect-[16/7] rounded-3xl overflow-hidden shadow-md border border-[#E5E7EB] group bg-gray-100'>
+						<Image
+							src={post.featuredImage}
+							alt={post.title}
+							fill
+							className='object-cover transform group-hover:scale-[1.02] transition-transform duration-500 ease-out'
+							priority
+						/>
+					</div>
+					{post.excerpt && (
+						<p className='text-center text-xs sm:text-sm italic text-[#667085] mt-3 max-w-2xl mx-auto'>
+							{post.excerpt}
+						</p>
+					)}
+				</div>
+			)}
+
+			{/* MAIN ARTICLE LAYOUT (DESKTOP: GRID 1FR ARTICLE + 320PX SIDEBAR, GAP 32-40PX) */}
+			<div className='max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pb-16'>
+				<div className='grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-8 lg:gap-10 items-start'>
+					
+					{/* MAIN ARTICLE CONTENT COLUMN */}
+					<article className='w-full space-y-8 min-w-0'>
+						
+						{/* HIGHLIGHTED INTRO / EXCERPT BLOCK */}
+						{post.excerpt && (
+							<div className='bg-[#F3F7EF] border-l-4 border-[#FBBF24] p-6 sm:p-7 rounded-2xl shadow-sm space-y-2'>
+								<p className='text-base sm:text-lg text-[#1E2817] font-semibold leading-relaxed'>
+									{post.excerpt}
+								</p>
+							</div>
+						)}
+
+						{/* ARTICLE BODY & TYPOGRAPHY CARD */}
+						<div
+							className='editor-content bg-white p-5 sm:p-8 md:p-10 rounded-[20px] border border-[#E5E7EB] shadow-sm space-y-6 text-base md:text-lg text-[#374151] leading-[1.8]'
+							ref={contentRef}
+						>
+							<style jsx global>{`
+								.editor-content h1, .editor-content h2, .editor-content h3 {
+									font-size: 1.625rem;
+									font-weight: 800;
+									color: #1E2817;
+									margin-top: 2rem;
+									margin-bottom: 1rem;
+									display: flex;
+									align-items: center;
+									gap: 0.5rem;
+									line-height: 1.3;
+								}
+								.editor-content h2::before, .editor-content h3::before {
+									content: '🌱';
+									font-size: 1.2rem;
+								}
+								.editor-content p {
+									font-size: 1.125rem;
+									line-height: 1.85;
+									color: #374151;
+									margin-bottom: 1.5rem;
+								}
+								.editor-content ul, .editor-content ol {
+									margin-bottom: 1.5rem;
+									padding-left: 1.5rem;
+								}
+								.editor-content li {
+									font-size: 1.125rem;
+									line-height: 1.8;
+									color: #374151;
+									margin-bottom: 0.5rem;
+								}
+								.editor-content blockquote {
+									border-left: 4px solid #2E7D32;
+									background-color: #F8FAF7;
+									padding: 1rem 1.5rem;
+									border-radius: 0.75rem;
+									font-style: italic;
+									margin-bottom: 1.5rem;
+								}
+							`}</style>
+
+							{htmlContent ? (
+								<div
+									dangerouslySetInnerHTML={{ __html: htmlContent }}
+								/>
+							) : (
+								<p className='text-gray-500 italic'>কোনো বিষয়বস্তু পাওয়া যায়নি।</p>
+							)}
+						</div>
+
+						{/* SHARE ARTICLE SECTION */}
+						<ShareArticle
+							url={`/post/${post.slug}`}
+							title={post.title}
+							summary={post.excerpt}
+						/>
+
+						{/* AUTHOR CARD */}
+						<div className='bg-white border border-[#E5E7EB] rounded-[20px] p-6 sm:p-8 shadow-sm flex flex-col sm:flex-row items-center sm:items-start gap-5 text-center sm:text-left'>
+							<div className='w-16 h-16 rounded-full bg-[#1E2817] text-[#FBBF24] flex items-center justify-center font-extrabold text-xl shadow-md shrink-0 border-2 border-white'>
+								🌱
+							</div>
+							<div className='space-y-1.5 flex-1'>
+								<div className='flex items-center justify-center sm:justify-start gap-2'>
+									<h4 className='text-lg font-bold text-[#172018]'>Amader Krishok</h4>
+									<Badge className='bg-[#2E7D32]/10 text-[#2E7D32] text-xs font-bold px-2.5 py-0.5 rounded-full border border-[#2E7D32]/20'>
+										অফিশিয়াল লেখক
+									</Badge>
+								</div>
+								<p className='text-sm text-[#667085] leading-relaxed font-normal'>
+									কৃষি বিষয়ক তথ্য, পরামর্শ ও আধুনিক কৃষি প্রযুক্তি নিয়ে নির্ভরযোগ্য কনটেন্ট প্রকাশ করা আমাদের মূল লক্ষ্য।
+								</p>
+							</div>
+						</div>
+
+						{/* BACK TO POSTS BUTTON */}
+						<div className='pt-2 flex items-center justify-start'>
+							<Button
+								onClick={() => router.push('/post')}
+								className='border-2 border-[#1E2817] bg-white hover:bg-[#1E2817] text-[#1E2817] hover:text-white rounded-2xl px-6 py-3 font-extrabold text-sm transition-all shadow-sm flex items-center gap-2'
+							>
+								<ArrowLeft className='w-4 h-4' />
+								<span>← সব পোস্টে ফিরে যান</span>
+							</Button>
+						</div>
+
+					</article>
+
+					{/* RIGHT STICKY SIDEBAR COLUMN (320PX WIDE - DESKTOP STICKY TOP 100PX) */}
+					<aside className='w-full lg:w-[320px] shrink-0 space-y-5 lg:sticky lg:top-[100px]'>
+						
+						{/* CARD 1: TABLE OF CONTENTS CARD */}
+						{post.tableOfContent && post.tableOfContent.length > 0 && (
+							<div className='bg-white border border-[#E5E7EB] rounded-[20px] p-6 shadow-sm space-y-4'>
+								<h3 className='text-base font-extrabold text-[#172018] flex items-center gap-2 border-b border-gray-100 pb-3'>
+									<BookOpen className='w-4.5 h-4.5 text-[#2E7D32]' />
+									<span>📌 এই পোস্টে যা থাকছে</span>
+								</h3>
+								<nav className='space-y-2 text-xs sm:text-sm font-medium'>
+									{post.tableOfContent.map((item, index) => {
+										const isActive = activeSection === item.id;
+										const itemNum = String(index + 1).padStart(2, '0');
+										return (
 											<button
 												key={item.id}
 												onClick={() => scrollToSection(item.id)}
 												className={cn(
-													'block w-full text-left transition-all',
-													'hover:text-black focus-visible:outline-none',
-													activeSection === item.id
-														? 'text-black font-bold'
-														: 'text-gray-600'
+													'w-full text-left p-2.5 rounded-xl transition-all flex items-start gap-3 group',
+													isActive
+														? 'bg-[#1E2817] text-white font-bold shadow-sm'
+														: 'text-[#667085] hover:bg-[#F8FAF7] hover:text-[#172018]'
 												)}
 											>
-												<div
-													className='flex items-start'
-													style={{
-														paddingLeft: `${(item.level - 1) * 12}px`,
-													}}
+												<span
+													className={cn(
+														'text-xs font-mono font-bold px-2 py-0.5 rounded-md shrink-0 transition-colors',
+														isActive
+															? 'bg-[#FBBF24] text-[#1E2817]'
+															: 'bg-gray-100 text-gray-500 group-hover:bg-[#2E7D32]/10 group-hover:text-[#2E7D32]'
+													)}
 												>
-													<div
-														className={cn(
-															'relative pr-2',
-															activeSection === item.id &&
-																'before:content-[""] before:absolute before:left-[-12px] before:top-1/2 before:-translate-y-1/2 before:w-1 before:h-full before:bg-black before:rounded-full'
-														)}
-													>
-														{item.title}
-													</div>
-												</div>
+													{itemNum}
+												</span>
+												<span className='line-clamp-2 leading-snug pt-0.5'>{item.title}</span>
 											</button>
-										))}
-									</nav>
-								</div>
-							</aside>
+										);
+									})}
+								</nav>
+							</div>
 						)}
 
-						{/* Main Article Content */}
-						<article
-							className={`${
-								post.tableOfContent?.length > 0 ? 'lg:w-3/4' : 'w-full'
-							} order-1 lg:order-2`}
-						>
-							{/* Article Header */}
-							<div className='mb-10'>
-								{/* Categories */}
-								{post.categories && post.categories.length > 0 && (
-									<div className='flex flex-wrap gap-2 mb-6'>
-										{post.categories.map((category) => (
-											<Badge
-												key={category.id}
-												variant='outline'
-												className='px-4 py-1 bg-gray-100'
+						{/* CARD 2: POPULAR POSTS SIDEBAR CARD */}
+						{relatedPosts.length > 0 && (
+							<div className='bg-white border border-[#E5E7EB] rounded-[20px] p-6 shadow-sm space-y-4'>
+								<h3 className='text-base font-extrabold text-[#172018] flex items-center gap-2 border-b border-gray-100 pb-3'>
+									<Flame className='w-4.5 h-4.5 text-[#FF9800]' />
+									<span>🔥 জনপ্রিয় পোস্ট</span>
+								</h3>
+								<div className='space-y-4'>
+									{relatedPosts.map((rPost) => {
+										const rCatName = rPost.categories && rPost.categories[0] ? rPost.categories[0].name : '';
+										const displayCat = (!rCatName || rCatName.toLowerCase() === 'test') ? 'কৃষি' : rCatName;
+										return (
+											<Link
+												key={rPost.id}
+												href={`/post/${rPost.slug}`}
+												className='flex gap-3.5 items-center group pb-3.5 border-b border-gray-100 last:border-0 last:pb-0'
 											>
-												<Link href={`/post/categories/${category.slug}`}>
-													{category.name}
-												</Link>
-											</Badge>
-										))}
-									</div>
-								)}
-
-								<h1 className='text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight'>
-									{post.title}
-								</h1>
-
-								<div className='flex flex-wrap items-center gap-6 mb-8 text-gray-600'>
-									<div className='flex items-center text-gray-500 text-base'>
-										<Clock className='w-5 h-5 mr-2' />
-										<span>{formatDate(post.createdAt)}</span>
-									</div>
-								</div>
-
-								{/* Featured Image */}
-								{post.featuredImage && (
-									<div className='relative h-[300px] md:h-[500px] mb-10 rounded-xl overflow-hidden shadow-md'>
-										<Image
-											src={post.featuredImage}
-											alt={post.title}
-											fill
-											className='object-cover'
-											priority
-										/>
-									</div>
-								)}
-
-								{/* Excerpt */}
-								{post.excerpt && (
-									<div className='border-l-4 border-black pl-6 italic text-xl text-gray-700 mb-10'>
-										{post.excerpt}
-									</div>
-								)}
-							</div>
-
-							{/* Article Content */}
-							<div className='prose prose-lg max-w-none' ref={contentRef}>
-								{/* Render the HTML content from the editor */}
-								{htmlContent ? (
-									<div
-										className='editor-content'
-										dangerouslySetInnerHTML={{ __html: htmlContent }}
-									/>
-								) : (
-									<div className='text-gray-500'>No content available</div>
-								)}
-							</div>
-
-							{/* Article Footer */}
-							<div className='mt-16 pt-8 border-t border-gray-100'>
-								<div className='flex flex-wrap justify-between items-center'>
-									<div className='mb-6 md:mb-0'>
-										<h4 className='font-bold text-xl mb-4'>
-											এই পোস্টটি শেয়ার করুন
-										</h4>
-										<ShareArticle
-											url={`/post/${post.slug}`}
-											title={post.title}
-											summary={post.excerpt}
-										/>
-									</div>
-									<div>
-										<Button
-											variant='outline'
-											onClick={() => router.push('/post')}
-										>
-											<ArrowLeft className='mr-2 h-4 w-4' />
-											সমস্ত পোস্ট পেজ এ ফিরে যান
-										</Button>
-									</div>
-								</div>
-							</div>
-
-							{/* Related Articles Section */}
-							{relatedPosts.length > 0 && (
-								<div className='mt-16 pt-8 border-t border-gray-100'>
-									<h3 className='text-2xl font-bold mb-8'>
-										সম্পর্কিত আরো পোস্ট
-									</h3>
-									<div className='grid md:grid-cols-2 lg:grid-cols-3 gap-6'>
-										{relatedPosts.map((relatedPost) => (
-											<Card
-												key={relatedPost.id}
-												className='overflow-hidden border border-gray-100 transition-shadow hover:shadow-md'
-											>
-												<Link href={`/post/${relatedPost.slug}`}>
-													<div className='relative h-48 w-full'>
+												<div className='relative w-16 h-16 rounded-2xl overflow-hidden bg-gray-100 shrink-0 border border-gray-100 shadow-sm'>
+													{rPost.featuredImage ? (
 														<Image
-															src={
-																relatedPost.featuredImage ||
-																'/images/placeholder.jpg'
-															}
-															alt={relatedPost.title}
+															src={rPost.featuredImage}
+															alt={rPost.title}
 															fill
-															className='object-cover'
+															className='object-cover group-hover:scale-105 transition-transform duration-300'
 														/>
-													</div>
-												</Link>
-												<div className='p-5'>
-													{relatedPost.categories &&
-														relatedPost.categories[0] && (
-															<Badge variant='outline' className='mb-2'>
-																{relatedPost.categories[0].name}
-															</Badge>
-														)}
-													<Link href={`/post/${relatedPost.slug}`}>
-														<h4 className='text-xl font-bold mb-2 hover:text-gray-700 transition-colors'>
-															{relatedPost.title}
-														</h4>
-													</Link>
-													<p className='text-gray-600 text-sm mb-4 line-clamp-2'>
-														{relatedPost.excerpt ||
-															'Read more about this topic...'}
-													</p>
-													<div className='flex items-center text-gray-500 text-xs'>
-														<Clock className='w-3 h-3 mr-1' />
-														<span>{formatDate(relatedPost.createdAt)}</span>
+													) : (
+														<div className='w-full h-full flex items-center justify-center text-gray-400 text-xs font-bold bg-[#1E2817]/5 text-[#2E7D32]'>
+															🌱
+														</div>
+													)}
+												</div>
+												<div className='space-y-1 min-w-0 flex-1'>
+													<span className='text-[11px] font-bold text-[#2E7D32] block'>
+														{displayCat}
+													</span>
+													<h4 className='text-xs font-bold text-[#172018] line-clamp-2 leading-snug group-hover:text-[#2E7D32] transition-colors'>
+														{rPost.title}
+													</h4>
+													<div className='flex items-center gap-1 text-[11px] text-[#667085]'>
+														<Clock className='w-3 h-3 text-gray-400' />
+														<span>৫ মিনিট পড়ুন</span>
 													</div>
 												</div>
-											</Card>
-										))}
+											</Link>
+										);
+									})}
+								</div>
+							</div>
+						)}
+
+						{/* CARD 3: AGRICULTURAL HELP & MARKETPLACE CTA CARD */}
+						<div className='bg-[#1E2817] text-white rounded-[20px] p-6 shadow-md space-y-3 relative overflow-hidden group border border-[#2A351F]'>
+							<div className='absolute -right-4 -bottom-4 w-24 h-24 bg-[#FBBF24]/10 rounded-full blur-xl pointer-events-none' />
+							<div className='inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FBBF24]/20 text-[#FBBF24] text-xs font-bold'>
+								🌾 কৃষি সহায়তা
+							</div>
+							<h4 className='text-sm font-bold leading-snug text-white'>
+								উন্নত বীজ, সার ও আধুনিক কৃষি সরঞ্জাম খুঁজছেন?
+							</h4>
+							<p className='text-xs text-gray-300 leading-relaxed font-normal'>
+								আমাদের এগ্রিকালচার মার্কেটপ্লেসে পাচ্ছেন যাচাইকৃত মানসম্মত কৃষি পণ্য ও সেবা।
+							</p>
+							<Link
+								href='/marketplace'
+								className='inline-flex items-center gap-1.5 text-xs font-bold text-[#FBBF24] hover:underline pt-1 group-hover:translate-x-1 transition-transform'
+							>
+								<span>মার্কেটপ্লেস দেখুন</span>
+								<ArrowRight className='w-3.5 h-3.5' />
+							</Link>
+						</div>
+
+					</aside>
+
+				</div>
+
+				{/* RELATED POSTS BOTTOM SECTION */}
+				{relatedPosts.length > 0 && (
+					<section className='mt-16 pt-10 border-t border-gray-200/80 space-y-8'>
+						<div className='space-y-1 text-center sm:text-left'>
+							<h3 className='text-2xl sm:text-3xl font-extrabold text-[#172018] tracking-tight'>
+								আরও পড়ুন
+							</h3>
+							<p className='text-sm sm:text-base text-[#667085] font-normal'>
+								আপনার জন্য আরও কিছু কৃষি বিষয়ক পোস্ট
+							</p>
+						</div>
+
+						<div className={cn(
+							'grid gap-6',
+							relatedPosts.length === 1 && 'grid-cols-1 max-w-md',
+							relatedPosts.length === 2 && 'grid-cols-1 sm:grid-cols-2 max-w-3xl',
+							relatedPosts.length >= 3 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
+						)}>
+							{relatedPosts.map((relatedPost) => (
+								<div
+									key={relatedPost.id}
+									className='group bg-[#FFFFFF] border border-[#E5E7EB] rounded-3xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col h-full'
+								>
+									<Link
+										href={`/post/${relatedPost.slug}`}
+										className='block relative aspect-video w-full overflow-hidden bg-gray-100'
+									>
+										{relatedPost.featuredImage ? (
+											<Image
+												src={relatedPost.featuredImage}
+												alt={relatedPost.title}
+												fill
+												className='object-cover transform group-hover:scale-105 transition-transform duration-500 ease-out'
+											/>
+										) : (
+											<div className='w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center'>
+												<span className='text-gray-400 font-medium text-xs'>আমাদের কৃষক</span>
+											</div>
+										)}
+										<div className='absolute left-3.5 top-3.5 z-10'>
+											<span className='text-xs font-semibold px-3 py-1 bg-[#1E2817]/90 text-[#FBBF24] backdrop-blur-md rounded-full shadow-md border border-white/10 inline-block'>
+												{relatedPost.categories && relatedPost.categories[0]
+													? relatedPost.categories[0].name
+													: 'কৃষি'}
+											</span>
+										</div>
+									</Link>
+
+									<div className='p-5 flex flex-col flex-1 justify-between space-y-4'>
+										<div className='space-y-2'>
+											<Link href={`/post/${relatedPost.slug}`} className='block'>
+												<h4 className='text-base font-bold text-[#172018] line-clamp-2 leading-snug group-hover:text-[#2E7D32] transition-colors'>
+													{relatedPost.title}
+												</h4>
+											</Link>
+											{relatedPost.excerpt && (
+												<p className='text-[#667085] text-xs leading-relaxed line-clamp-2 font-normal'>
+													{relatedPost.excerpt}
+												</p>
+											)}
+										</div>
+
+										<div className='pt-3 border-t border-gray-100 flex items-center justify-between text-xs text-[#667085] font-medium'>
+											<span className='inline-flex items-center gap-1 text-gray-500'>
+												<Clock className='w-3.5 h-3.5 text-gray-400' />
+												<span>৫ মিনিট পড়ুন</span>
+											</span>
+											<Link
+												href={`/post/${relatedPost.slug}`}
+												className='inline-flex items-center gap-1 font-bold text-[#1E2817] group-hover:text-[#2E7D32] transition-colors'
+											>
+												<span>পড়ুন</span>
+												<ArrowRight className='w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform duration-300' />
+											</Link>
+										</div>
 									</div>
 								</div>
-							)}
-						</article>
-					</div>
-				</div>
-			</main>
+							))}
+						</div>
+					</section>
+				)}
+
+			</div>
 		</div>
 	);
 }
+

@@ -7,7 +7,8 @@ import {
   Linkedin, 
   Copy,
   Check,
-  MessageCircle
+  MessageCircle,
+  Share2
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -27,18 +28,16 @@ export function ShareArticle({
   title,
   summary = '',
   className,
-  showLabel = false,
+  showLabel = true,
   showCopy = true,
   showWhatsapp = true
 }: ShareArticleProps) {
   const [copied, setCopied] = useState(false);
   
-  // Ensure we have the full URL (will work in both client and SSR contexts)
   const fullUrl = url.startsWith('http') 
     ? url 
     : `${process.env.NEXT_PUBLIC_APP_URL || 'https://amaderkrishok.com'}${url}`;
 
-  // Share handlers
   const handleFacebookShare = () => {
     const fbShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(fullUrl)}`;
     window.open(fbShareUrl, 'facebook-share', 'width=580,height=520');
@@ -58,7 +57,6 @@ export function ShareArticle({
     const whatsappText = encodeURIComponent(`${title}\n${fullUrl}`);
     const whatsappUrl = `https://api.whatsapp.com/send?text=${whatsappText}`;
     
-    // On mobile, open in the WhatsApp app; on desktop, open in a new tab
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
       window.location.href = whatsappUrl;
     } else {
@@ -77,71 +75,68 @@ export function ShareArticle({
   };
 
   return (
-    <div className={cn('flex flex-col', className)}>
+    <div className={cn('bg-white border border-[#E5E7EB] rounded-3xl p-6 sm:p-8 shadow-sm space-y-4', className)}>
       {showLabel && (
-        <h4 className='font-bold text-xl mb-4'>
-          Share this article
-        </h4>
+        <div className='space-y-1 border-b border-gray-100 pb-4'>
+          <h4 className='font-extrabold text-xl text-[#172018] flex items-center gap-2'>
+            <Share2 className='w-5 h-5 text-[#2E7D32]' />
+            <span>📤 পোস্টটি শেয়ার করুন</span>
+          </h4>
+          <p className='text-sm text-[#667085] font-normal'>
+            এই তথ্যটি অন্য কৃষক বা কৃষিপ্রেমীদের সাথে শেয়ার করুন।
+          </p>
+        </div>
       )}
-      <div className='flex flex-wrap gap-3'>
+      <div className='flex flex-wrap gap-3 pt-1'>
         <Button
-          size='icon'
           variant='outline'
-          className='rounded-full hover:bg-blue-50 hover:border-blue-200'
+          className='rounded-2xl border-[#E5E7EB] bg-[#F8FAF7] hover:bg-[#1E2817] hover:text-white text-[#172018] font-semibold gap-2 transition-all shadow-sm'
           onClick={handleFacebookShare}
-          aria-label="Share on Facebook"
         >
-          <Facebook className='w-5 h-5 text-blue-600' />
-        </Button>
-        
-        <Button
-          size='icon'
-          variant='outline'
-          className='rounded-full hover:bg-sky-50 hover:border-sky-200'
-          onClick={handleTwitterShare}
-          aria-label="Share on Twitter/X"
-        >
-          <Twitter className='w-5 h-5 text-sky-500' />
-        </Button>
-        
-        <Button
-          size='icon'
-          variant='outline'
-          className='rounded-full hover:bg-blue-50 hover:border-blue-200'
-          onClick={handleLinkedInShare}
-          aria-label="Share on LinkedIn"
-        >
-          <Linkedin className='w-5 h-5 text-blue-700' />
+          <Facebook className='w-4 h-4 text-blue-600' />
+          <span>Facebook</span>
         </Button>
         
         {showWhatsapp && (
           <Button
-            size='icon'
             variant='outline'
-            className='rounded-full hover:bg-green-50 hover:border-green-200'
+            className='rounded-2xl border-[#E5E7EB] bg-[#F8FAF7] hover:bg-[#1E2817] hover:text-white text-[#172018] font-semibold gap-2 transition-all shadow-sm'
             onClick={handleWhatsAppShare}
-            aria-label="Share on WhatsApp"
           >
-            <MessageCircle className='w-5 h-5 text-green-600' />
+            <MessageCircle className='w-4 h-4 text-green-600' />
+            <span>WhatsApp</span>
           </Button>
         )}
+
+        <Button
+          variant='outline'
+          className='rounded-2xl border-[#E5E7EB] bg-[#F8FAF7] hover:bg-[#1E2817] hover:text-white text-[#172018] font-semibold gap-2 transition-all shadow-sm'
+          onClick={handleTwitterShare}
+        >
+          <Twitter className='w-4 h-4 text-sky-500' />
+          <span>Twitter / X</span>
+        </Button>
         
         {showCopy && (
           <Button
-            size='icon'
             variant='outline'
-            className='rounded-full hover:bg-gray-100'
+            className='rounded-2xl border-[#E5E7EB] bg-[#F8FAF7] hover:bg-[#1E2817] hover:text-white text-[#172018] font-semibold gap-2 transition-all shadow-sm'
             onClick={handleCopyLink}
-            aria-label={copied ? "Link copied" : "Copy link"}
           >
             {copied ? (
-              <Check className='w-5 h-5 text-green-600' />
+              <>
+                <Check className='w-4 h-4 text-green-600' />
+                <span className='text-green-700 font-bold'>কপি করা হয়েছে</span>
+              </>
             ) : (
-              <Copy className='w-5 h-5' />
+              <>
+                <Copy className='w-4 h-4 text-gray-500' />
+                <span>লিঙ্ক কপি করুন</span>
+              </>
             )}
           </Button>
         )}
       </div>
     </div>
   );
-}
+}

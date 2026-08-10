@@ -77,7 +77,7 @@ export function TextRotatorSection() {
           >
             মাঠ থেকে সোজা আপনার ঘরে, <br className="hidden sm:block" />
             <span className="bg-gradient-to-r from-[#2D331F] via-[#4F5938] to-[#EAB308] bg-clip-text text-transparent">
-              ন্যায্য মূল্যে শতভাগ খাঁটি ফসল
+              ন্যায্য মূল্যে  খাঁটি ফসল
             </span>
           </motion.h2>
 

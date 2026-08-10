@@ -32,7 +32,8 @@ export interface TableOfContentItem {
 }
 
 export interface PostDescription {
-	content: string;
+	content?: string;
+	value?: any;
 }
 
 export interface PostType {

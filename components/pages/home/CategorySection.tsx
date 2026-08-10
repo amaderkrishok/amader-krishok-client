@@ -186,7 +186,7 @@ export function CategorySection() {
                 <div className="absolute inset-0 p-8 md:p-10 flex flex-col justify-between z-10">
                   <div className="flex items-center justify-between">
                     <span className="px-4 py-1.5 rounded-full text-xs font-extrabold bg-[#EAB308] text-[#2D331F] shadow-lg flex items-center gap-1">
-                      <Sparkles className="w-3.5 h-3.5 fill-[#2D331F]" />
+                      
                       <span>বিশেষ স্থান</span>
                     </span>
                     <span className={`text-xs font-extrabold px-3.5 py-1 rounded-full border backdrop-blur-md ${heroCategory.badgeBg}`}>
