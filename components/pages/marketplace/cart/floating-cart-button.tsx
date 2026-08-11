@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export function FloatingCartButton() {
-	const { toggleCart, itemCount, subtotal } = useCart();
+	const { toggleCart, itemCount, total } = useCart();
 	const [isAnimating, setIsAnimating] = useState(false);
 	const [prevItemCount, setPrevItemCount] = useState(itemCount);
 
@@ -60,7 +60,7 @@ export function FloatingCartButton() {
 							className='overflow-hidden text-xs font-black tracking-wide text-amber-300'
 						>
 							<span className='whitespace-nowrap'>
-								{formatPrice(subtotal).replace('$', '৳')}
+								{formatPrice(total).replace('$', '৳')}
 							</span>
 						</motion.div>
 					)}
