@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect } from "react"
-import { X, ShoppingCart, Trash2, Plus, Minus, Truck } from "lucide-react"
+import { X, ShoppingCart, Trash2, Plus, Minus, Truck, ArrowRight } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -58,55 +58,70 @@ export function CartDrawer() {
 
   return (
 		<div
-			className='fixed inset-0 z-50 bg-black/50 backdrop-blur-sm'
+			className='fixed inset-0 z-50 bg-black/40 backdrop-blur-xs transition-opacity duration-300'
 			onClick={closeCart}
 		>
 			<div
-				className='fixed right-0 top-0 h-full w-full max-w-md bg-white shadow-xl overflow-hidden flex flex-col'
+				className='fixed right-0 top-0 h-full w-full sm:max-w-[460px] bg-white shadow-2xl overflow-hidden flex flex-col z-50'
 				onClick={(e) => e.stopPropagation()}
 			>
 				{/* Header */}
-				<div className='p-4 border-b sticky top-0 bg-white z-10'>
-					<div className='flex items-center justify-between'>
-						<div className='flex items-center gap-2'>
-							<ShoppingCart className='h-5 w-5 text-green-600' />
-							<h2 className='text-xl font-semibold'>
-								আপনার কার্ট{' '}
+				<div className='h-[72px] px-6 border-b border-[#E2E8F0] sticky top-0 bg-white/95 backdrop-blur-md z-20 flex items-center justify-between'>
+					<div className='flex items-center gap-3'>
+						<div className='w-9 h-9 rounded-full bg-[#2D331F]/10 flex items-center justify-center text-[#2D331F] border border-[#2D331F]/20'>
+							<ShoppingCart className='h-5 w-5' />
+						</div>
+						<div>
+							<h2 className='text-lg font-bold text-[#172033] flex items-center gap-2 leading-tight'>
+								আপনার কার্ট
 								{itemCount > 0 && (
-									<span className='text-green-600'>({itemCount})</span>
+									<span className='text-xs font-semibold px-2.5 py-0.5 rounded-full bg-[#2D331F]/10 text-[#2D331F] border border-[#2D331F]/20'>
+										{itemCount} টি পণ্য
+									</span>
 								)}
 							</h2>
 						</div>
-						<Button
-							variant='ghost'
-							size='icon'
-							onClick={closeCart}
-							aria-label='কার্ট বন্ধ করুন'
-						>
-							<X className='h-5 w-5' />
-						</Button>
 					</div>
+					<button
+						onClick={closeCart}
+						className='w-9 h-9 rounded-full flex items-center justify-center text-[#64748B] hover:text-[#172033] hover:bg-gray-100 transition-colors'
+						aria-label='কার্ট বন্ধ করুন'
+					>
+						<X className='h-5 w-5' />
+					</button>
 				</div>
 
 				{/* Cart Content */}
-				<div className='flex-grow overflow-y-auto p-4'>
+				<div className='flex-grow overflow-y-auto p-4 sm:p-5 space-y-3'>
 					{items.length === 0 ? (
-						<div className='flex flex-col items-center justify-center h-full py-12 text-center'>
-							<div className='bg-gray-50 rounded-full p-6 mb-4'>
-								<ShoppingCart className='h-12 w-12 text-gray-400' />
+						<div className='flex flex-col items-center justify-center h-full py-16 px-6 text-center space-y-4'>
+							<div className='w-20 h-20 bg-[#2D331F]/10 rounded-full flex items-center justify-center text-[#2D331F] border border-[#2D331F]/20 shadow-xs mb-2'>
+								<ShoppingCart className='h-10 w-10' />
 							</div>
-							<h3 className='text-lg font-medium mb-2'>আপনার কার্ট খালি</h3>
-							<p className='text-gray-500 mb-6'>
-								আপনি এখনও কোন পণ্য আপনার কার্টে যোগ করেননি।
+							<h3 className='text-xl font-bold text-[#172033]'>
+								আপনার কার্ট এখনো খালি
+							</h3>
+							<p className='text-sm text-[#64748B] max-w-xs leading-relaxed'>
+								কৃষকের বাজার থেকে আপনার পছন্দের তাজা ও পুষ্টিকর পণ্য যোগ করুন।
 							</p>
-							<Button onClick={closeCart}>কেনাকাটা চালিয়ে যান</Button>
+							<Button
+								onClick={() => {
+									closeCart();
+									router.push('/marketplace');
+								}}
+								className='bg-[#2D331F] hover:bg-[#1F2516] text-[#EAB308] font-semibold px-6 py-2.5 rounded-xl shadow-xs transition-all flex items-center gap-2 mt-2'
+							>
+								কেনাকাটা শুরু করুন <ArrowRight className='h-4 w-4' />
+							</Button>
 						</div>
 					) : (
-						<div className='space-y-1'>
+						<div className='space-y-3'>
 							{items.map((item) => {
 								const isVariable = item.product.productType === 'VARIABLE';
 								const variantName = item.selectedVariant?.variantName;
-								const itemDeliveryCharge = Number(item.product.deliveryCharge || 0);
+								const itemDeliveryCharge = Number(
+									item.product.deliveryCharge || 0
+								);
 
 								// Get the appropriate image
 								let imageUrl = '/placeholder.svg';
@@ -140,64 +155,64 @@ export function CartDrawer() {
 								return (
 									<div
 										key={`${item.productId}-${item.variantId || 'simple'}`}
-										className='p-4 rounded-lg border border-gray-100 bg-white mb-3 hover:border-gray-200 transition-colors'
+										className='p-3.5 rounded-[14px] border border-[#E2E8F0] bg-white mb-3 hover:border-[#2D331F]/40 transition-all shadow-2xs group relative'
 									>
-										<div className='flex gap-3'>
-											<div className='relative h-20 w-20 flex-shrink-0 rounded-md overflow-hidden bg-gray-50'>
+										<div className='flex gap-3.5'>
+											<div className='relative h-[80px] w-[80px] flex-shrink-0 rounded-[12px] overflow-hidden bg-gray-50 border border-gray-100'>
 												<Image
 													src={imageUrl || '/placeholder.svg'}
 													alt={item.product.name}
 													fill
-													className='object-cover'
+													className='object-cover group-hover:scale-105 transition-transform duration-300'
 												/>
 											</div>
 
-											<div className='flex-1'>
-												<div className='flex justify-between'>
-													<Link
-														href={`/marketplace/product/${item.productId}`}
-														className='font-medium hover:text-green-600 transition-colors line-clamp-1'
-														onClick={closeCart}
-													>
-														{item.product.name}
-													</Link>
+											<div className='flex-1 flex flex-col justify-between min-w-0'>
+												<div>
+													<div className='flex items-start justify-between gap-2'>
+														<Link
+															href={`/marketplace/product/${item.productId}`}
+															className='font-bold text-sm text-[#172033] hover:text-[#2D331F] transition-colors line-clamp-1'
+															onClick={closeCart}
+														>
+															{item.product.name}
+														</Link>
 
-													<Button
-														variant='ghost'
-														size='icon'
-														className='h-7 w-7 text-gray-400 hover:text-red-500 hover:bg-red-50 -mr-1.5 -mt-1'
-														onClick={() =>
-															removeItem(item.productId, item.variantId)
-														}
-														aria-label={`${item.product.name} কার্ট থেকে সরান`}
-													>
-														<Trash2 className='h-4 w-4' />
-													</Button>
+														<button
+															onClick={() =>
+																removeItem(item.productId, item.variantId)
+															}
+															className='w-7 h-7 rounded-full flex items-center justify-center text-[#64748B] hover:text-[#EF4444] hover:bg-red-50 transition-colors -mr-1 -mt-1 flex-shrink-0'
+															aria-label={`${item.product.name} কার্ট থেকে সরান`}
+														>
+															<Trash2 className='h-4 w-4' />
+														</button>
+													</div>
+
+													{variantName ? (
+														<p className='text-xs text-[#64748B] mt-0.5'>
+															ধরণ: {variantName}
+														</p>
+													) : (
+														<p className='text-[11px] text-[#64748B] mt-0.5 line-clamp-1'>
+															তাজা ফল ও কৃষিপণ্য
+														</p>
+													)}
+
+													<div className='inline-flex items-center gap-1 bg-[#2D331F]/10 text-[#2D331F] border border-[#2D331F]/20 text-[11px] px-2 py-0.5 rounded-full font-medium mt-1.5'>
+														<Truck className='w-3 h-3 text-[#2D331F]' />
+														<span>
+															{itemDeliveryCharge > 0
+																? `ডেলিভারি চার্জ: ${formatPrice(itemDeliveryCharge)}`
+																: 'ফ্রি ডেলিভারি'}
+														</span>
+													</div>
 												</div>
 
-												{variantName && (
-													<p className='text-xs text-gray-500 mt-1'>
-														ধরণ: {variantName}
-													</p>
-												)}
-
-												{/* Delivery charge badge matching banner theme */}
-												<div className='inline-flex items-center gap-1.5 bg-orange-50 border border-orange-200/80 rounded-md px-2 py-0.5 mt-1.5 text-[11px] font-medium text-orange-700'>
-													<Truck className='w-3 h-3 text-orange-500' />
-													<span>
-														ডেলিভারি চার্জ:{' '}
-														{itemDeliveryCharge > 0
-															? formatPrice(itemDeliveryCharge)
-															: 'ফ্রি'}
-													</span>
-												</div>
-
-												<div className='flex items-center justify-between mt-3'>
-													<div className='flex items-center bg-gray-50 rounded-md'>
-														<Button
-															variant='ghost'
-															size='icon'
-															className='h-7 w-7 rounded-l-md'
+												<div className='flex items-center justify-between mt-3 pt-2 border-t border-dashed border-gray-100'>
+													<div className='flex items-center bg-gray-50 border border-gray-200/80 rounded-lg p-0.5'>
+														<button
+															className='w-7 h-7 rounded-md flex items-center justify-center text-gray-600 hover:bg-white hover:shadow-2xs transition-all disabled:opacity-40'
 															onClick={() =>
 																updateQuantity(
 																	item.productId,
@@ -208,14 +223,12 @@ export function CartDrawer() {
 															aria-label='পরিমাণ কমান'
 														>
 															<Minus className='h-3 w-3' />
-														</Button>
-														<span className='w-8 text-center text-sm'>
+														</button>
+														<span className='w-7 text-center text-xs font-bold text-[#172033]'>
 															{item.quantity}
 														</span>
-														<Button
-															variant='ghost'
-															size='icon'
-															className='h-7 w-7 rounded-r-md'
+														<button
+															className='w-7 h-7 rounded-md flex items-center justify-center text-gray-600 hover:bg-white hover:shadow-2xs transition-all'
 															onClick={() =>
 																updateQuantity(
 																	item.productId,
@@ -226,14 +239,16 @@ export function CartDrawer() {
 															aria-label='পরিমাণ বাড়ান'
 														>
 															<Plus className='h-3 w-3' />
-														</Button>
+														</button>
 													</div>
 
-													<div className='font-medium text-right'>
-														<div className='text-sm text-gray-500'>
+													<div className='text-right'>
+														<div className='text-[11px] text-[#64748B]'>
 															{formattedPrice} × {item.quantity}
 														</div>
-														<div>{itemTotal}</div>
+														<div className='font-bold text-sm text-[#2D331F]'>
+															{itemTotal}
+														</div>
 													</div>
 												</div>
 											</div>
@@ -241,83 +256,98 @@ export function CartDrawer() {
 									</div>
 								);
 							})}
+
+							{/* Compact Recommendation Section */}
+							{items.length > 0 && items.length <= 3 && (
+								<div className='bg-[#2D331F]/5 border border-[#2D331F]/15 rounded-xl p-3.5 mt-4 text-center space-y-1.5'>
+									<p className='text-xs font-bold text-[#2D331F]'>
+										আরও কিছু যোগ করুন
+									</p>
+									<p className='text-[11px] text-[#64748B]'>
+										তাজা কৃষিপণ্য দিয়ে আপনার বাজারের তালিকা পূরণ করুন।
+									</p>
+									<button
+										onClick={() => {
+											closeCart();
+											router.push('/marketplace');
+										}}
+										className='inline-flex items-center gap-1 text-xs font-semibold text-[#2D331F] hover:underline pt-0.5'
+									>
+										কৃষকের বাজার দেখুন <ArrowRight className='h-3.5 w-3.5' />
+									</button>
+								</div>
+							)}
 						</div>
 					)}
 				</div>
 
-				{/* Footer */}
+				{/* Sticky Footer / Summary */}
 				{items.length > 0 && (
-					<div className='border-t p-4 bg-white sticky bottom-0 shadow-lg'>
+					<div className='border-t border-[#E2E8F0] p-4 sm:p-5 bg-white sticky bottom-0 z-20 shadow-[0_-6px_20px_rgba(0,0,0,0.06)]'>
 						<div className='space-y-3'>
-							{/* Delivery Charge Banner (following single-product-view banner color pattern) */}
-							<div className='flex items-center justify-between bg-orange-50 border border-orange-200 rounded-xl p-3'>
+							{/* Delivery Charge Card */}
+							<div className='flex items-center justify-between bg-[#2D331F]/10 border border-[#2D331F]/20 rounded-xl p-3'>
 								<div className='flex items-center gap-2.5'>
-									<div className='w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center flex-shrink-0'>
-										<Truck className='w-4 h-4 text-orange-600' />
+									<div className='w-8 h-8 rounded-full bg-[#2D331F] flex items-center justify-center flex-shrink-0 text-[#EAB308]'>
+										<Truck className='w-4 h-4' />
 									</div>
 									<div>
-										<p className='text-[11px] font-medium text-orange-500 uppercase tracking-wide'>
+										<p className='text-[11px] font-bold text-[#2D331F] uppercase tracking-wide'>
 											ডেলিভারি চার্জ
 										</p>
-										<p className='text-xs font-bold text-orange-700'>
-											{deliveryCharge > 0 ? 'শিপিং ফি যুক্ত' : 'ফ্রি ডেলিভারি'}
+										<p className='text-xs text-[#64748B]'>
+											আপনার অর্ডারের জন্য প্রযোজ্য
 										</p>
 									</div>
 								</div>
-								<span className='font-bold text-sm text-orange-700 bg-white/90 px-2.5 py-1 rounded-lg border border-orange-200 shadow-xs'>
+								<span className='font-bold text-sm text-[#2D331F] bg-white px-2.5 py-1 rounded-lg border border-[#2D331F]/20 shadow-2xs'>
 									{deliveryCharge > 0 ? formatPrice(deliveryCharge) : 'ফ্রি'}
 								</span>
 							</div>
 
-							{/* Summary Breakdown */}
-							<div className='space-y-2 text-sm pt-1'>
-								<div className='flex justify-between items-center text-gray-600'>
-									<span>পণ্যমূল্য</span>
-									<span className='font-medium'>{formatPrice(subtotal)}</span>
-								</div>
-								<div className='flex justify-between items-center text-gray-600'>
-									<span className='flex items-center gap-1.5'>
-										<Truck className='h-3.5 w-3.5 text-orange-500' />
-										ডেলিভারি চার্জ
+							{/* Order Summary Rows */}
+							<div className='space-y-2 text-xs text-[#64748B]'>
+								<div className='flex justify-between items-center'>
+									<span>পণ্যের মূল্য</span>
+									<span className='font-medium text-[#172033]'>
+										{formatPrice(subtotal)}
 									</span>
-									<span className='font-medium text-orange-600'>
+								</div>
+								<div className='flex justify-between items-center'>
+									<span>ডেলিভারি চার্জ</span>
+									<span className='font-medium text-[#2D331F]'>
 										{deliveryCharge > 0 ? formatPrice(deliveryCharge) : 'ফ্রি'}
 									</span>
 								</div>
 
-								<div className='h-px bg-gray-200 my-1.5'></div>
+								<div className='h-px bg-[#E2E8F0] my-2'></div>
 
-								<div className='flex justify-between items-center pt-0.5'>
-									<span className='font-semibold text-gray-800 text-base'>
-										মোট মূল্য
-									</span>
-									<span className='font-bold text-xl text-green-700'>
+								<div className='flex justify-between items-center text-sm pt-0.5'>
+									<span className='font-bold text-[#172033]'>মোট মূল্য</span>
+									<span className='font-extrabold text-lg text-[#2D331F]'>
 										{formatPrice(total)}
 									</span>
 								</div>
 							</div>
 
-							<p className='text-xs text-gray-500 text-center'>
-								ট্যাক্স চেকআউটে গণনা করা হবে
-							</p>
-
-							<div className='grid gap-2 pt-1'>
+							{/* Buttons */}
+							<div className='space-y-2 pt-1'>
 								<Button
-									className='w-full bg-green-600 hover:bg-green-700 font-medium'
-									size='lg'
+									className='w-full bg-[#2D331F] hover:bg-[#1F2516] text-[#EAB308] font-bold h-12 rounded-xl shadow-xs transition-all flex items-center justify-center gap-2 text-sm'
 									onClick={() => {
-										closeCart(); // Close the cart drawer
-										router.push('/order'); // Redirect to order page
+										closeCart();
+										router.push('/order');
 									}}
 								>
-									চেকআউট করুন ({formatPrice(total)})
+									<span>চেকআউট করুন ({formatPrice(total)})</span>
+									<ArrowRight className='h-4 w-4' />
 								</Button>
 								<Button
 									variant='outline'
-									className='w-full border-gray-200'
+									className='w-full border-[#E2E8F0] text-[#172033] hover:bg-gray-50 font-medium h-11 rounded-xl text-xs'
 									onClick={closeCart}
 								>
-									কেনাকাটা চালিয়ে যান
+									কেনাকাটা চালিয়ে যান
 								</Button>
 							</div>
 						</div>
