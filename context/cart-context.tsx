@@ -5,6 +5,7 @@ import {
 	useContext,
 	useState,
 	useEffect,
+	useCallback,
 	type ReactNode,
 } from 'react';
 import type { Product, ProductVariant } from '@/types/product';
@@ -150,9 +151,15 @@ export function CartProvider({ children }: { children: ReactNode }) {
 		});
 	};
 
-	const clearCart = () => {
-		setItems([]);
-	};
+	const clearCart = useCallback(() => {
+		setItems((prevItems) => {
+			if (prevItems.length === 0) return prevItems;
+			if (typeof window !== 'undefined') {
+				localStorage.removeItem('cart');
+			}
+			return [];
+		});
+	}, []);
 
 	const openCart = () => setIsOpen(true);
 	const closeCart = () => setIsOpen(false);

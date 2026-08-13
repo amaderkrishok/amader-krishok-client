@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { OrderService } from '@/services/order-service';
 import { Order } from '@/types/order';
+import { useCart } from '@/context/cart-context';
 import { OrderLoadingState } from '@/components/pages/order/order-loading-state';
 import { OrderErrorState } from '@/components/pages/order/order-error-state';
 import { OrderHeader } from '@/components/pages/order/order-header';
@@ -15,9 +16,16 @@ import { OrderNextSteps } from '@/components/pages/order/order-next-steps';
 export default function OrderConfirmationPage() {
   const params = useParams();
   const orderId = params?.id as string;
+  const { clearCart } = useCart();
   const [order, setOrder] = useState<Order | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Clear cart upon reaching confirmation page (runs once on mount)
+  useEffect(() => {
+    clearCart();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (!orderId) return;
@@ -41,8 +49,10 @@ export default function OrderConfirmationPage() {
   // Loading state
   if (loading) {
     return (
-      <div className='container mx-auto px-4 py-8 max-w-4xl'>
-        <OrderLoadingState />
+      <div className='min-h-screen bg-[#F7F9F5] py-12 px-4'>
+        <div className='container mx-auto max-w-5xl'>
+          <OrderLoadingState />
+        </div>
       </div>
     );
   }
@@ -50,22 +60,20 @@ export default function OrderConfirmationPage() {
   // Error state
   if (error || !order) {
     return (
-      <div className='container mx-auto px-4 py-12 max-w-4xl'>
-        <OrderErrorState error={error} />
+      <div className='min-h-screen bg-[#F7F9F5] py-12 px-4'>
+        <div className='container mx-auto max-w-4xl'>
+          <OrderErrorState error={error} />
+        </div>
       </div>
     );
   }
 
   return (
-    <div className='container mx-auto px-4 py-8 max-w-4xl'>
-      <div className='bg-white rounded-lg shadow-sm border overflow-hidden'>
+    <div className='min-h-screen bg-[#F7F9F5] py-8 sm:py-14'>
+      <div className='container mx-auto px-4 max-w-6xl space-y-2'>
         <OrderHeader orderId={order.id} />
-        
-        <div className='p-6'>
-          <OrderMetadata order={order} />
-          <OrderItemsTable items={order.orderItems} totalAmount={order.totalAmount} />
-        </div>
-        
+        <OrderMetadata order={order} />
+        <OrderItemsTable items={order.orderItems} totalAmount={order.totalAmount} />
         <OrderNextSteps orderId={order.id} />
       </div>
     </div>
