@@ -6,6 +6,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { useCart } from "@/context/cart-context"
+import { useSession } from "@/components/providers/session-provider"
 import { useRouter } from "next/navigation"
 
 export function formatPrice(price: number): string {
@@ -34,6 +35,7 @@ export function CartDrawer() {
     total,
   } = useCart()
 
+  const { user, status } = useSession();
   const router = useRouter();
 
   // Close cart when pressing escape key
@@ -336,7 +338,11 @@ export function CartDrawer() {
 									className='w-full bg-[#2D331F] hover:bg-[#1F2516] text-[#EAB308] font-bold h-12 rounded-xl shadow-xs transition-all flex items-center justify-center gap-2 text-sm'
 									onClick={() => {
 										closeCart();
-										router.push('/order');
+										if (status === 'unauthenticated' || !user) {
+											router.push('/auth/login?callbackUrl=/order');
+										} else {
+											router.push('/order');
+										}
 									}}
 								>
 									<span>চেকআউট করুন ({formatPrice(total)})</span>

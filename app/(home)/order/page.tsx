@@ -32,9 +32,16 @@ type OrderFormValues = z.infer<typeof orderFormSchema>;
 export default function OrderPage() {
 	const router = useRouter();
 	const { items, subtotal, deliveryCharge, total, clearCart } = useCart();
-	const { user } = useSession();
+	const { user, status } = useSession();
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
+
+	// Redirect if not logged in
+	useEffect(() => {
+		if (status === 'unauthenticated') {
+			router.push('/auth/login?callbackUrl=/order');
+		}
+	}, [status, router]);
 
 	// Initialize form with user data if authenticated
 	const form = useForm<OrderFormValues>({
@@ -67,11 +74,10 @@ export default function OrderPage() {
 				variantName: isVariable
 					? item.selectedVariant?.variantName || null
 					: null,
-				productDetails: isVariable
-					? {
-							description: item.selectedVariant?.variantName || '',
-					  }
-					: undefined,
+				productDetails: {
+					description: isVariable ? item.selectedVariant?.variantName || '' : '',
+					deliveryCharge: Number(item.product?.deliveryCharge || 0),
+				},
 			};
 		});
 	};
