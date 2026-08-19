@@ -481,7 +481,6 @@ export function SingleProductView({ product }: SingleProductViewProps) {
                             <motion.button
                                 whileHover={{ scale: 1.1 }}
                                 whileTap={{ scale: 0.9 }}
-                                variant='outline'
                                 className='w-9 h-9 rounded-full border-2 border-gray-200 hover:border-[#2D331F] flex items-center justify-center bg-white transition-all disabled:opacity-50'
                                 onClick={() => handleQuantityChange(quantity - 1)}
                                 disabled={quantity <= 1}
@@ -492,7 +491,6 @@ export function SingleProductView({ product }: SingleProductViewProps) {
                             <motion.button
                                 whileHover={{ scale: 1.1 }}
                                 whileTap={{ scale: 0.9 }}
-                                variant='outline'
                                 className='w-9 h-9 rounded-full border-2 border-gray-200 hover:border-[#2D331F] flex items-center justify-center bg-white transition-all'
                                 onClick={() => handleQuantityChange(quantity + 1)}
                             >
