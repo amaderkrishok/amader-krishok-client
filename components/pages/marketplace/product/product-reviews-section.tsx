@@ -109,9 +109,9 @@ export function ProductReviewsSection({ productId }: ProductReviewsSectionProps)
   return (
     <div className="space-y-8 py-4">
       {/* Header Summary */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-gradient-to-br from-emerald-50 via-teal-50 to-white p-6 rounded-2xl border border-emerald-100 shadow-sm">
-        <div className="flex flex-col items-center justify-center p-4 bg-white rounded-xl border border-emerald-100 shadow-sm text-center">
-          <span className="text-5xl font-extrabold text-emerald-700">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-gradient-to-br from-[#2D331F]/5 via-[#2D331F]/10 to-white p-6 rounded-2xl border border-[#2D331F]/15 shadow-sm">
+        <div className="flex flex-col items-center justify-center p-4 bg-white rounded-xl border border-[#2D331F]/15 shadow-sm text-center">
+          <span className="text-5xl font-extrabold text-[#2D331F]">
             {summary.averageRating > 0 ? summary.averageRating : '০.০'}
           </span>
           <div className="flex items-center gap-1 my-2">
@@ -133,7 +133,7 @@ export function ProductReviewsSection({ productId }: ProductReviewsSectionProps)
 
         <div className="md:col-span-2 flex flex-col justify-center space-y-3">
           <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-            <MessageSquare className="w-5 h-5 text-emerald-600" />
+            <MessageSquare className="w-5 h-5 text-[#2D331F]" />
             গ্রাহকদের মতামত ও রেটিং
           </h3>
           <p className="text-sm text-gray-600 leading-relaxed">
@@ -176,7 +176,7 @@ export function ProductReviewsSection({ productId }: ProductReviewsSectionProps)
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
             {eligibility.hasReviewed && (
-              <Badge className="bg-emerald-100 text-emerald-800 border-emerald-200 mb-2">
+              <Badge className="bg-[#2D331F]/10 text-[#2D331F] border-[#2D331F]/20 mb-2">
                 আপনি পূর্বে এই পণ্যটির রিভিউ দিয়েছেন। নিচের ফর্ম থেকে তা সংশোধন বা আপডেট করতে পারেন।
               </Badge>
             )}
@@ -221,14 +221,14 @@ export function ProductReviewsSection({ productId }: ProductReviewsSectionProps)
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
                 placeholder="পণ্যটি আপনার কেমন লেগেছে? গুণগত মান ও সুবিধা সম্পর্কে আপনার মন্তব্য শেয়ার করুন..."
-                className="w-full rounded-xl border-gray-300 focus:border-emerald-500 focus:ring-emerald-500 text-sm"
+                className="w-full rounded-xl border-gray-300 focus:border-[#2D331F] focus:ring-[#2D331F] text-sm"
               />
             </div>
 
             <Button
               type="submit"
               disabled={submitting}
-              className="bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-6 rounded-xl shadow-md hover:shadow-lg transition-all"
+              className="bg-[#2D331F] hover:bg-[#3F472F] text-white font-medium px-6 rounded-xl shadow-md hover:shadow-lg transition-all"
             >
               <Send className="w-4 h-4 mr-2" />
               {submitting
@@ -262,7 +262,7 @@ export function ProductReviewsSection({ productId }: ProductReviewsSectionProps)
                 <CardContent className="p-4 space-y-2">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="w-9 h-9 rounded-full bg-emerald-100 text-emerald-800 font-bold flex items-center justify-center text-sm">
+                      <div className="w-9 h-9 rounded-full bg-[#2D331F]/10 text-[#2D331F] font-bold flex items-center justify-center text-sm">
                         {rev.user?.name ? rev.user.name.charAt(0).toUpperCase() : <UserIcon className="w-4 h-4" />}
                       </div>
                       <div>

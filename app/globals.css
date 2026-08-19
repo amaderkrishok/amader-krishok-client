@@ -48,6 +48,17 @@
   --color-highlight: var(----highlight);
   --color-brand: var(----brand);
   --color-destructive-foreground: var(--destructive-foreground);
+  --color-olive-50: #F4F6F0;
+  --color-olive-100: #E5EAD9;
+  --color-olive-200: #CAD5B5;
+  --color-olive-300: #ABB98E;
+  --color-olive-400: #8C9D6B;
+  --color-olive-500: #6C7E4C;
+  --color-olive-600: #526038;
+  --color-olive-700: #40492F;
+  --color-olive-800: #343B26;
+  --color-olive-900: #2D331F;
+  --color-olive-950: #1C2013;
 
   @keyframes accordion-down {
     from {
