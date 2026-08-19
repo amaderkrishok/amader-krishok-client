@@ -2,12 +2,12 @@
 
 import type React from 'react';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
-import { ChevronLeft, ChevronRight, ShoppingCart, Clock } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ShoppingCart, Clock, Star } from 'lucide-react';
 import type { Product } from '@/types/product';
 import { useCart } from '@/context/cart-context';
 import { formatPrice } from '../cart/cart-drawer';
@@ -15,6 +15,7 @@ import { useSession } from '@/components/providers/session-provider';
 import { useSavedProducts } from '@/context/saved-products-context';
 import { Bookmark } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { ProductReviewService } from '@/services/product-review-service';
 
 interface ProductCardProps {
 	product: Product;
@@ -31,8 +32,24 @@ export function ProductCard({ product }: ProductCardProps) {
 	
 	const isSaved = isProductSaved(product.id);
 
+	const [ratingSummary, setRatingSummary] = useState<{ averageRating: number; totalReviews: number } | null>(null);
+
 	// Check if user is admin, moderator, or vendor - these roles cannot purchase
 	const canPurchase = !hasRole(['admin', 'moderator', 'vendor']);
+
+	useEffect(() => {
+		let isMounted = true;
+		if (product.id) {
+			ProductReviewService.getByProduct(product.id)
+				.then((res) => {
+					if (isMounted) {
+						setRatingSummary({ averageRating: res.averageRating, totalReviews: res.totalReviews });
+					}
+				})
+				.catch(() => {});
+		}
+		return () => { isMounted = false; };
+	}, [product.id]);
 
 	const nextImage = () => {
 		setCurrentImageIndex((prev) => (prev + 1) % images.length);
@@ -152,6 +169,20 @@ export function ProductCard({ product }: ProductCardProps) {
 						{product.name}
 					</h3>
 				</Link>
+
+				{/* Product Rating Stars */}
+				<div className='flex items-center gap-1.5 mb-1.5'>
+					<div className='flex items-center text-amber-500'>
+						<Star className={`h-3.5 w-3.5 ${ratingSummary && ratingSummary.averageRating > 0 ? 'fill-amber-400 text-amber-400' : 'text-gray-300'}`} />
+					</div>
+					<span className='text-[11px] font-bold text-gray-800'>
+						{ratingSummary && ratingSummary.averageRating > 0 ? ratingSummary.averageRating : '০.০'}
+					</span>
+					<span className='text-[10px] text-gray-400'>
+						({ratingSummary?.totalReviews || 0} রিভিউ)
+					</span>
+				</div>
+
 				<p className='text-gray-500 text-[11px] mb-2 line-clamp-1'>
 					{product.description}
 				</p>

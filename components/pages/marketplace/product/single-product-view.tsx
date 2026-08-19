@@ -37,6 +37,7 @@ import { useSession } from '@/components/providers/session-provider';
 import React from 'react';
 import { MagnifiableImage } from './magnifiable-image';
 import { motion, AnimatePresence } from 'framer-motion';
+import { ProductReviewsSection } from './product-reviews-section';
 
 interface SingleProductViewProps {
     product: Product;
@@ -725,6 +726,9 @@ export function SingleProductView({ product }: SingleProductViewProps) {
                             <TabsTrigger value='description' className='flex-1 rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm'>
                                 বিবরণ
                             </TabsTrigger>
+                            <TabsTrigger value='reviews' className='flex-1 rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm'>
+                                রিভিউ ও রেটিং
+                            </TabsTrigger>
                             <TabsTrigger value='store' className='flex-1 rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm'>
                                 বিক্রেতা
                             </TabsTrigger>
@@ -738,6 +742,10 @@ export function SingleProductView({ product }: SingleProductViewProps) {
                             <div className='prose max-w-none text-gray-700 leading-relaxed'>
                                 <p>{product.description || 'No description available.'}</p>
                             </div>
+                        </TabsContent>
+
+                        <TabsContent value='reviews' className='mt-4'>
+                            <ProductReviewsSection productId={product.id} />
                         </TabsContent>
 
                         <TabsContent value='store' className='mt-4'>
