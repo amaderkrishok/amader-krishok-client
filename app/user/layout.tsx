@@ -7,7 +7,7 @@ export default function DashboardPage({
 	children: React.ReactNode;
 }) {
 	return (
-		<div className='h-screen overflow-hidden'>
+		<div className='min-h-screen bg-[#F7F6F0]'>
 			<UserOnly>
 				<DashboardShell>{children}</DashboardShell>
 			</UserOnly>
