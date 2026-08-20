@@ -15,7 +15,7 @@ import {
 	FormMessage,
 } from '@/components/ui/form';
 import { toast } from 'sonner';
-import { Eye, EyeOff, Loader2, ShieldAlert } from 'lucide-react';
+import { Eye, EyeOff, Loader2, ShieldCheck, Lock, KeyRound } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { useSession } from '@/components/providers/session-provider';
 import api from '@/lib/axios';
@@ -24,17 +24,17 @@ const passwordFormSchema = z
 	.object({
 		currentPassword: z
 			.string()
-			.min(1, { message: 'Current password is required.' }),
+			.min(1, { message: 'বর্তমান পাসওয়ার্ড প্রদান আবশ্যক।' }),
 		newPassword: z
 			.string()
-			.min(8, { message: 'Password must be at least 8 characters.' })
+			.min(8, { message: 'পাসওয়ার্ড অন্তত ৮ অক্ষরের হতে হবে।' })
 			.regex(/[0-9]/, {
-				message: 'Password must contain at least one number.',
+				message: 'পাসওয়ার্ডে অন্তত একটি সংখ্যা থাকতে হবে।',
 			}),
 		confirmPassword: z.string(),
 	})
 	.refine((data) => data.newPassword === data.confirmPassword, {
-		message: 'Passwords do not match.',
+		message: 'নতুন পাসওয়ার্ড দুটি মিলছে না।',
 		path: ['confirmPassword'],
 	});
 
@@ -44,7 +44,6 @@ export function PasswordForm() {
 	const [isLoading, setIsLoading] = useState(false);
 	const { data: session } = useSession();
 
-	// State for password visibility toggles
 	const [showCurrentPassword, setShowCurrentPassword] = useState(false);
 	const [showNewPassword, setShowNewPassword] = useState(false);
 	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -60,44 +59,40 @@ export function PasswordForm() {
 
 	async function onSubmit(data: PasswordFormValues) {
 		if (!session?.user?.id) {
-			toast.error('You must be logged in to change your password');
+			toast.error('পাসওয়ার্ড পরিবর্তন করতে আপনাকে লগইন করতে হবে');
 			return;
 		}
 
 		setIsLoading(true);
 
 		try {
-			// Send request to change password API endpoint
-			const response = await api.post('/users/change-password', {
+			await api.post('/users/change-password', {
 				currentPassword: data.currentPassword,
 				newPassword: data.newPassword,
 			});
 
-			// Handle successful password change
-			toast.success('Password changed successfully', {
-				description: 'Your account is now secured with your new password.',
+			toast.success('পাসওয়ার্ড সফলভাবে পরিবর্তন হয়েছে', {
+				description: 'আপনার অ্যাকাউন্ট এখন নতুন পাসওয়ার্ড দিয়ে সুরক্ষিত।',
 			});
 			form.reset();
 
-			// Reset visibility states
 			setShowCurrentPassword(false);
 			setShowNewPassword(false);
 			setShowConfirmPassword(false);
 		} catch (error: any) {
 			console.error('Password change error:', error);
 
-			// Display error from API response
 			const errorMessage =
 				error.response?.data?.error ||
 				error.response?.data?.message ||
 				error.response?.data?.details?.message ||
-				'Failed to change password. Please try again.';
+				'পাসওয়ার্ড পরিবর্তন করতে ব্যর্থ হয়েছে। পুনরায় চেষ্টা করুন।';
 
 			toast.error(errorMessage, {
 				description:
 					error.response?.status === 401
-						? 'Your current password appears to be incorrect.'
-						: 'Please ensure your new password meets all requirements.',
+						? 'আপনার বর্তমান পাসওয়ার্ডটি সঠিক নয়।'
+						: 'অনুগ্রহ করে সমস্ত শর্তাবলী মেনে নতুন পাসওয়ার্ড তৈরি করুন।',
 			});
 		} finally {
 			setIsLoading(false);
@@ -106,34 +101,49 @@ export function PasswordForm() {
 
 	return (
 		<div className='space-y-6'>
-			<Alert>
-				<ShieldAlert className='h-4 w-4' />
-				<AlertTitle>Password Security</AlertTitle>
-				<AlertDescription>
-					Your password must be at least 6 characters and include at least one
-					number. For maximum security, consider using a password manager.
+			{/* Header */}
+			<div className='border-b border-[#E5E7EB] pb-4'>
+				<h3 className='text-lg font-extrabold text-[#111827] flex items-center gap-2'>
+					<Lock className='w-5 h-5 text-[#28321A]' />
+					পাসওয়ার্ড পরিবর্তন
+				</h3>
+				<p className='text-xs text-[#64748B] font-medium mt-0.5'>
+					আপনার অ্যাকাউন্ট নিরাপদ রাখতে নিয়মিত পাসওয়ার্ড আপডেট করুন।
+				</p>
+			</div>
+
+			<Alert className='bg-[#FFF9E8] border-[#F4B400]/40 rounded-2xl p-4'>
+				<ShieldCheck className='h-5 w-5 text-[#28321A]' />
+				<AlertTitle className='font-bold text-[#111827] text-sm ml-2'>নিরাপত্তা বিষয়ক তথ্য</AlertTitle>
+				<AlertDescription className='text-xs text-[#64748B] font-medium ml-2 mt-1'>
+					পাসওয়ার্ড অন্তত ৮ অক্ষরের হতে হবে এবং তাতে অন্তত একটি সংখ্যা থাকতে হবে।
 				</AlertDescription>
 			</Alert>
 
 			<Form {...form}>
-				<form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
+				<form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4 max-w-lg'>
 					<FormField
 						control={form.control}
 						name='currentPassword'
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel>Current Password</FormLabel>
+								<FormLabel className='text-xs font-bold text-[#111827] flex items-center gap-1.5 mb-1'>
+									<KeyRound className='w-3.5 h-3.5 text-[#F4B400]' />
+									বর্তমান পাসওয়ার্ড
+								</FormLabel>
 								<div className='relative'>
 									<FormControl>
 										<Input
 											type={showCurrentPassword ? 'text' : 'password'}
 											{...field}
 											disabled={isLoading}
+											placeholder='••••••••'
+											className='rounded-xl border-[#E5E7EB] focus:border-[#28321A] text-sm font-medium h-11 pr-10 bg-white'
 										/>
 									</FormControl>
 									<button
 										type='button'
-										className='absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700'
+										className='absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#28321A]'
 										onClick={() => setShowCurrentPassword(!showCurrentPassword)}
 										tabIndex={-1}
 									>
@@ -144,7 +154,7 @@ export function PasswordForm() {
 										)}
 									</button>
 								</div>
-								<FormMessage />
+								<FormMessage className='text-xs text-red-600' />
 							</FormItem>
 						)}
 					/>
@@ -154,18 +164,23 @@ export function PasswordForm() {
 						name='newPassword'
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel>New Password</FormLabel>
+								<FormLabel className='text-xs font-bold text-[#111827] flex items-center gap-1.5 mb-1'>
+									<KeyRound className='w-3.5 h-3.5 text-[#F4B400]' />
+									নতুন পাসওয়ার্ড
+								</FormLabel>
 								<div className='relative'>
 									<FormControl>
 										<Input
 											type={showNewPassword ? 'text' : 'password'}
 											{...field}
 											disabled={isLoading}
+											placeholder='••••••••'
+											className='rounded-xl border-[#E5E7EB] focus:border-[#28321A] text-sm font-medium h-11 pr-10 bg-white'
 										/>
 									</FormControl>
 									<button
 										type='button'
-										className='absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700'
+										className='absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#28321A]'
 										onClick={() => setShowNewPassword(!showNewPassword)}
 										tabIndex={-1}
 									>
@@ -176,7 +191,7 @@ export function PasswordForm() {
 										)}
 									</button>
 								</div>
-								<FormMessage />
+								<FormMessage className='text-xs text-red-600' />
 							</FormItem>
 						)}
 					/>
@@ -186,18 +201,23 @@ export function PasswordForm() {
 						name='confirmPassword'
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel>Confirm New Password</FormLabel>
+								<FormLabel className='text-xs font-bold text-[#111827] flex items-center gap-1.5 mb-1'>
+									<KeyRound className='w-3.5 h-3.5 text-[#F4B400]' />
+									নতুন পাসওয়ার্ড নিশ্চিত করুন
+								</FormLabel>
 								<div className='relative'>
 									<FormControl>
 										<Input
 											type={showConfirmPassword ? 'text' : 'password'}
 											{...field}
 											disabled={isLoading}
+											placeholder='••••••••'
+											className='rounded-xl border-[#E5E7EB] focus:border-[#28321A] text-sm font-medium h-11 pr-10 bg-white'
 										/>
 									</FormControl>
 									<button
 										type='button'
-										className='absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700'
+										className='absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#28321A]'
 										onClick={() => setShowConfirmPassword(!showConfirmPassword)}
 										tabIndex={-1}
 									>
@@ -208,15 +228,19 @@ export function PasswordForm() {
 										)}
 									</button>
 								</div>
-								<FormMessage />
+								<FormMessage className='text-xs text-red-600' />
 							</FormItem>
 						)}
 					/>
 
-					<div className='flex justify-end'>
-						<Button type='submit' disabled={isLoading}>
+					<div className='flex justify-start pt-2'>
+						<Button
+							type='submit'
+							disabled={isLoading}
+							className='bg-[#F4B400] hover:bg-[#E5A700] text-[#28321A] font-extrabold rounded-xl px-6 py-2.5 shadow-xs border-0 transition-all hover:-translate-y-0.5'
+						>
 							{isLoading && <Loader2 className='mr-2 h-4 w-4 animate-spin' />}
-							Update Password
+							পাসওয়ার্ড পরিবর্তন করুন
 						</Button>
 					</div>
 				</form>
