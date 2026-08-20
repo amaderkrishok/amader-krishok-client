@@ -75,14 +75,13 @@ export default async function StorePage({
 
       return (
         <ChatProviderWrapper>
-          <div className='container mx-auto px-4 py-8'>
-            <StoreHeader store={store} />
-
-            <div className='mt-8'>
-              <h2 className='text-2xl font-bold mb-6'>{store.name} এর পণ্যসমূহ</h2>
+          <div className='min-h-screen bg-[#F7F6F0] pt-20 pb-16 selection:bg-[#F4B400] selection:text-[#172033]'>
+            <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8'>
+              <StoreHeader store={store} productsCount={meta.totalItems || products.length} />
 
               <StoreProducts
                 storeId={store.id}
+                storeName={store.name}
                 initialProducts={products}
                 initialMeta={meta}
               />
@@ -95,15 +94,13 @@ export default async function StorePage({
       
       return (
         <ChatProviderWrapper>
-          <div className='container mx-auto px-4 py-8'>
-            <StoreHeader store={store} />
+          <div className='min-h-screen bg-[#F7F6F0] pt-20 pb-16 selection:bg-[#F4B400] selection:text-[#172033]'>
+            <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8'>
+              <StoreHeader store={store} productsCount={0} />
 
-            <div className='mt-8'>
-              <h2 className='text-2xl font-bold mb-6'>{store.name} এর পণ্যসমূহ</h2>
-
-              <div className='text-center py-12 bg-gray-50 rounded-lg'>
-                <p className='text-lg text-gray-600'>পণ্য লোড করতে সমস্যা হয়েছে</p>
-                <p className='mt-2 text-gray-500'>পরে আবার চেষ্টা করুন</p>
+              <div className='text-center py-16 px-6 bg-white rounded-2xl border border-[#E5E7EB] shadow-xs max-w-lg mx-auto'>
+                <p className='text-lg font-bold text-[#172033]'>পণ্য লোড করতে সমস্যা হয়েছে</p>
+                <p className='mt-1 text-sm text-[#667085]'>পরে আবার চেষ্টা করুন</p>
               </div>
             </div>
           </div>
