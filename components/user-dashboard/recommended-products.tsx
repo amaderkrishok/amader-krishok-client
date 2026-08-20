@@ -15,7 +15,7 @@ export function RecommendedProducts() {
 		const fetchRecommended = async () => {
 			try {
 				setLoading(true);
-				const res = await ProductService.getProducts(1, 4);
+				const res = await ProductService.getProducts({ page: 1, limit: 4 });
 				if (res && res.data) {
 					setProducts(res.data.slice(0, 4));
 				}
