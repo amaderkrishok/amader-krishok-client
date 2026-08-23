@@ -10,9 +10,9 @@ const ChatInterface = dynamic(
 	{
 		ssr: false,
 		loading: () => (
-			<div className='w-full h-[calc(100vh-140px)] min-h-[550px] bg-white rounded-3xl border border-[#E5E7EB] p-6 flex items-center justify-center'>
+			<div className='w-full h-[calc(100vh-100px)] min-h-[600px] bg-white rounded-3xl border border-[#E5E7EB] p-8 flex items-center justify-center shadow-xs'>
 				<div className='space-y-4 text-center max-w-sm'>
-					<Skeleton className='h-12 w-12 rounded-full mx-auto' />
+					<Skeleton className='h-12 w-12 rounded-full mx-auto bg-[#F5B800]/20' />
 					<Skeleton className='h-4 w-48 mx-auto' />
 					<Skeleton className='h-3 w-32 mx-auto' />
 				</div>
@@ -24,7 +24,7 @@ const ChatInterface = dynamic(
 export default function MessagesPage() {
 	return (
 		<ChatProviderWrapper>
-			<div className='w-full h-[calc(100vh-140px)] min-h-[580px] max-w-[1350px] mx-auto'>
+			<div className='w-full h-[calc(100vh-100px)] min-h-[600px] max-w-[1450px] mx-auto'>
 				<ChatInterface />
 			</div>
 		</ChatProviderWrapper>

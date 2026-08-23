@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { formatDistanceToNow } from 'date-fns';
 import Image from 'next/image';
 import type { MessageEvent } from '@/services/chat/socket-service';
 import { CheckCheck, Check } from 'lucide-react';
@@ -27,7 +26,6 @@ export function ChatMessageItem({
 	const isOwn = isOwnMessage ?? message.senderId === currentUserId;
 	const isRead = message.isRead;
 
-	// Format timestamp (e.g. 12:15 AM)
 	const messageTime = message.createdAt
 		? new Date(message.createdAt).toLocaleTimeString([], {
 				hour: '2-digit',
@@ -36,12 +34,12 @@ export function ChatMessageItem({
 		: '';
 
 	return (
-		<div className={`flex w-full mb-3.5 ${isOwn ? 'justify-end' : 'justify-start'}`}>
-			<div className={`flex items-end gap-2.5 max-w-[85%] sm:max-w-[70%] ${isOwn ? 'flex-row-reverse' : 'flex-row'}`}>
+		<div className={`flex w-full mb-3 ${isOwn ? 'justify-end' : 'justify-start'}`}>
+			<div className={`flex items-end gap-2.5 max-w-[70%] ${isOwn ? 'flex-row-reverse' : 'flex-row'}`}>
 				{!isOwn && showAvatar && (
-					<Avatar className='h-8 w-8 flex-shrink-0 border border-[#E5E7EB] shadow-xs mb-1'>
+					<Avatar className='h-7 w-7 flex-shrink-0 border border-[#E5E7EB] shadow-xs mb-1'>
 						<AvatarImage src={senderImage} alt={senderName} />
-						<AvatarFallback className='text-xs font-bold bg-[#FFF9E8] text-[#28321A]'>
+						<AvatarFallback className='text-[10px] font-bold bg-[#FFF9E8] text-[#26351B]'>
 							{senderName.charAt(0).toUpperCase()}
 						</AvatarFallback>
 					</Avatar>
@@ -49,29 +47,29 @@ export function ChatMessageItem({
 
 				<div className={`flex flex-col ${isOwn ? 'items-end' : 'items-start'}`}>
 					{!isOwn && showAvatar && (
-						<span className='text-[11px] font-extrabold text-[#667085] ml-1 mb-1'>
+						<span className='text-[10px] font-extrabold text-[#64748B] ml-1 mb-1'>
 							{senderName}
 						</span>
 					)}
 
-					{/* 5. MESSAGE BUBBLES */}
+					{/* Modern Message Bubble (65-70% max-width, rounded 16px) */}
 					<div
-						className={`px-4 py-3 rounded-2xl break-words text-sm font-medium shadow-xs ${
+						className={`px-4 py-2.5 rounded-2xl break-words text-sm font-medium shadow-xs leading-relaxed ${
 							isOwn
-								? 'bg-[#28321A] text-white rounded-br-xs'
-								: 'bg-[#FFF9E8] text-[#172033] border border-[#F4B400]/30 rounded-bl-xs'
+								? 'bg-[#26351B] text-white rounded-br-xs'
+								: 'bg-white text-[#172033] border border-[#E5E7EB] rounded-bl-xs'
 						}`}
 					>
 						{message.type === 'text' && (
-							<p className='whitespace-pre-wrap leading-relaxed'>{message.content}</p>
+							<p className='whitespace-pre-wrap'>{message.content}</p>
 						)}
 						{message.type === 'image' && (
 							<div className='space-y-2'>
 								{message.content && (
-									<p className='whitespace-pre-wrap leading-relaxed'>{message.content}</p>
+									<p className='whitespace-pre-wrap'>{message.content}</p>
 								)}
 								{message.imageUrl && (
-									<div className='relative w-52 h-36 rounded-xl overflow-hidden border border-white/20'>
+									<div className='relative w-52 h-36 rounded-xl overflow-hidden border border-black/10'>
 										<Image
 											src={message.imageUrl}
 											alt='Shared image'
@@ -85,9 +83,9 @@ export function ChatMessageItem({
 						{message.type === 'file' && (
 							<div className='space-y-2'>
 								{message.content && (
-									<p className='whitespace-pre-wrap leading-relaxed'>{message.content}</p>
+									<p className='whitespace-pre-wrap'>{message.content}</p>
 								)}
-								<div className='bg-black/10 p-2 rounded-xl flex items-center gap-2 text-xs'>
+								<div className='bg-black/5 p-2 rounded-xl flex items-center gap-2 text-xs'>
 									<span>📎</span>
 									<span className='truncate max-w-[180px]'>
 										{message.content || 'সংযুক্ত ফাইল'}
@@ -97,17 +95,17 @@ export function ChatMessageItem({
 						)}
 					</div>
 
-					{/* Timestamp & Read Indicator */}
+					{/* Muted Timestamp & Read/Sent Status */}
 					<div
-						className={`flex items-center gap-1.5 text-[10px] font-semibold text-[#667085] mt-1 px-1 ${
+						className={`flex items-center gap-1.5 text-[10px] font-semibold text-[#64748B] mt-1 px-1 ${
 							isOwn ? 'justify-end' : 'justify-start'
 						}`}
 					>
 						<span>{messageTime}</span>
 						{isOwn && (
-							<span className='flex items-center gap-0.5 text-[#F4B400]'>
+							<span className='flex items-center gap-0.5'>
 								{isRead ? (
-									<CheckCheck className='w-3.5 h-3.5 text-[#F4B400]' />
+									<CheckCheck className='w-3.5 h-3.5 text-[#F5B800]' />
 								) : (
 									<Check className='w-3.5 h-3.5 text-gray-400' />
 								)}

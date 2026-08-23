@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { Send, Loader2 } from 'lucide-react';
+import { Send, Plus, Loader2, Smile } from 'lucide-react';
 import { useChat } from '@/hooks/use-chat';
 
 interface ChatMessageInputProps {
@@ -25,7 +25,7 @@ export function ChatMessageInput({
 	useEffect(() => {
 		if (textareaRef.current) {
 			textareaRef.current.style.height = 'auto';
-			textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 120)}px`;
+			textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 100)}px`;
 		}
 	}, [content]);
 
@@ -96,33 +96,43 @@ export function ChatMessageInput({
 	}
 
 	return (
-		<div className='border-t border-[#E5E7EB] p-3 bg-white space-y-2 sticky bottom-0'>
-			<div className='flex items-center gap-2'>
-				<div className='flex-1'>
-					<Textarea
-						ref={textareaRef}
-						placeholder='আপনার বার্তা লিখুন... (নতুন লাইনের জন্য Shift + Enter)'
-						value={content}
-						onChange={handleInputChange}
-						onKeyDown={handleKeyDown}
-						className='min-h-[42px] max-h-28 resize-none rounded-xl border-[#E5E7EB] focus:border-[#28321A] text-xs sm:text-sm font-medium py-2.5 px-3 bg-[#F7F6F0]/40'
-						disabled={isSending}
-						rows={1}
-					/>
-				</div>
+		<div className='border-t border-[#E5E7EB] p-3 bg-white sticky bottom-0 rounded-b-3xl'>
+			{/* Compact Single Row Composer (height 52-58px, 16px radius) */}
+			<div className='flex items-center gap-2 bg-[#FAFAF6] p-1.5 rounded-[16px] border border-[#E5E7EB] shadow-xs hover:border-[#F5B800]/50 transition-colors'>
+				{/* Attachment Icon */}
+				{/* <button
+					type='button'
+					className='p-2 text-[#64748B] hover:text-[#26351B] hover:bg-black/5 rounded-full transition-colors'
+					title='সংযুক্ত করুন'
+				>
+					<Plus className='w-5 h-5' />
+				</button> */}
 
+				{/* Input Textarea */}
+				<Textarea
+					ref={textareaRef}
+					placeholder='আপনার বার্তা লিখুন...'
+					value={content}
+					onChange={handleInputChange}
+					onKeyDown={handleKeyDown}
+					className='min-h-[38px] max-h-24 resize-none border-0 shadow-none focus-visible:ring-0 text-xs sm:text-sm font-medium py-2 px-1 bg-transparent placeholder:text-[#64748B]'
+					disabled={isSending}
+					rows={1}
+				/>
+
+				{/* Circular Warm Gold Send Button */}
 				<Button
 					onClick={handleSend}
 					disabled={!content.trim() || isSending}
 					size='icon'
-					className='h-10 w-10 bg-[#F4B400] hover:bg-[#E5A700] text-[#28321A] rounded-xl flex-shrink-0 shadow-xs transition-all hover:-translate-y-0.5 border-0 cursor-pointer disabled:opacity-50'
+					className='h-9 w-9 rounded-full bg-[#F5B800] hover:bg-[#E0A800] text-[#26351B] flex-shrink-0 shadow-xs transition-transform hover:scale-105 active:scale-95 border-0 cursor-pointer disabled:opacity-50'
 				>
 					{isSending ? (
-						<Loader2 className='h-4 w-4 animate-spin text-[#28321A]' />
+						<Loader2 className='h-4 w-4 animate-spin text-[#26351B]' />
 					) : (
-						<Send className='h-4.5 w-4.5 text-[#28321A]' />
+						<Send className='h-4 w-4 text-[#26351B] ml-0.5' />
 					)}
-					<span className='sr-only'>বার্তা পাঠান</span>
+					<span className='sr-only'>Send ➤</span>
 				</Button>
 			</div>
 		</div>

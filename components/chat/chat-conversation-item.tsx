@@ -33,10 +33,10 @@ export function ChatConversationItem({
 	return (
 		<button
 			onClick={onClick}
-			className={`w-full text-left rounded-xl p-3 transition-all duration-200 cursor-pointer ${
+			className={`w-full text-left p-3 transition-all duration-200 cursor-pointer ${
 				isActive
-					? 'bg-[#FFF9E8] border border-[#F4B400]/50 shadow-xs'
-					: 'bg-white hover:bg-gray-50 border border-transparent'
+					? 'bg-[#FFF9E8] border-l-4 border-[#F5B800] rounded-r-xl shadow-xs'
+					: 'bg-white hover:bg-gray-50/80 rounded-xl border border-transparent'
 			}`}
 		>
 			<div className='flex items-center gap-3'>
@@ -46,7 +46,7 @@ export function ChatConversationItem({
 							src={participantInfo.image}
 							alt={participantInfo.name}
 						/>
-						<AvatarFallback className='bg-[#F4B400] text-[#172033] font-bold text-xs'>
+						<AvatarFallback className='bg-[#F5B800] text-[#172033] font-bold text-xs'>
 							{participantInfo.name?.charAt(0).toUpperCase() || '?'}
 						</AvatarFallback>
 					</Avatar>
@@ -63,19 +63,19 @@ export function ChatConversationItem({
 							{participantInfo.name}
 						</p>
 						{lastActivityTime && (
-							<span className='text-[10px] text-[#667085] font-medium flex-shrink-0'>
+							<span className='text-[10px] text-[#64748B] font-medium flex-shrink-0'>
 								{lastActivityTime}
 							</span>
 						)}
 					</div>
 
-					<p className='text-xs text-[#667085] truncate font-medium'>
+					<p className='text-xs text-[#64748B] truncate font-medium'>
 						{lastMessage}
 					</p>
 				</div>
 
 				{unreadCount > 0 && (
-					<span className='flex-shrink-0 bg-[#F4B400] text-[#172033] font-black text-[10px] rounded-full h-5 w-5 flex items-center justify-center border border-white shadow-xs'>
+					<span className='flex-shrink-0 bg-[#F5B800] text-[#26351B] font-black text-[10px] rounded-full h-5 w-5 flex items-center justify-center border border-white shadow-xs'>
 						{unreadCount}
 					</span>
 				)}
