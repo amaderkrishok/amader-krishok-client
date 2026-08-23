@@ -12,7 +12,6 @@ import { ChatMessageArea } from './chat-message-area';
 import { ChatInfoPanel } from './chat-info-panel';
 import { useChatContext } from '@/hooks/useChatContext';
 
-// Simple mobile check
 function isMobileDevice() {
 	return (
 		typeof navigator !== 'undefined' &&
@@ -39,14 +38,13 @@ export function ChatInterface() {
 	async function handleSelectRoom(roomId: string) {
 		try {
 			setActiveRoom(roomId);
-
 			if (isMobile) {
-				setShowChatList(false); // Hide list on mobile when room selected
+				setShowChatList(false);
 			}
 		} catch (err) {
 			console.error('Failed to select room:', err);
-			toast.error('Failed to join conversation', {
-				description: 'Please try again',
+			toast.error('কথোপকথনে যুক্ত হতে সমস্যা হয়েছে', {
+				description: 'অনুগ্রহ করে পুনরায় চেষ্টা করুন',
 			});
 		}
 	}
@@ -66,78 +64,83 @@ export function ChatInterface() {
 	// Check authentication
 	if (!user) {
 		return (
-			<Card className='p-6 text-center'>
+			<Card className='p-8 text-center bg-white rounded-2xl border border-[#E5E7EB] shadow-xs max-w-md mx-auto my-12'>
 				<Alert>
-					<AlertTitle>Authentication Required</AlertTitle>
-					<p className='text-muted-foreground mt-2'>
-						Please log in to access the messaging system.
+					<AlertTitle className='font-extrabold text-[#172033] text-lg'>লগইন আবশ্যক</AlertTitle>
+					<p className='text-sm text-[#667085] mt-2 font-medium'>
+						মেসেজিং সার্ভিস অ্যাক্সেস করতে অনুগ্রহ করে লগইন করুন।
 					</p>
 				</Alert>
 			</Card>
 		);
 	}
 
-	// Show connection error if failed
+	// Connection Error State
 	if (
 		globalConnectionStatus === 'error' ||
 		globalConnectionStatus === 'disconnected'
 	) {
 		return (
-			<Card className='p-6 text-center'>
+			<Card className='p-8 text-center bg-white rounded-2xl border border-[#E5E7EB] shadow-xs max-w-md mx-auto my-12'>
 				<Alert variant='destructive'>
-					<AlertTitle>Connection Error</AlertTitle>
-					<p className='text-muted-foreground mt-2'>
-						Failed to connect to chat system
+					<AlertTitle className='font-bold text-red-700 text-lg'>কানেকশন সমস্যা</AlertTitle>
+					<p className='text-xs text-red-600 mt-2 font-medium'>
+						চ্যাট সার্ভারের সাথে সংযোগ স্থাপন করা সম্ভব হয়নি।
 					</p>
 					<Button
 						onClick={handleRetry}
 						disabled={isLoading}
-						className='mt-4'
-						variant='outline'
+						className='mt-4 bg-[#28321A] hover:bg-[#343D20] text-white font-bold rounded-xl'
 					>
 						{isLoading ? (
 							<Loader2 className='w-4 h-4 mr-2 animate-spin' />
 						) : (
 							<RotateCw className='w-4 h-4 mr-2' />
 						)}
-						Retry Connection
+						পুনরায় চেষ্টা করুন
 					</Button>
 				</Alert>
 			</Card>
 		);
 	}
 
-	// Show loading state
+	// Loading State
 	if (isLoading || globalConnectionStatus === 'connecting') {
 		return (
-			<Card className='p-6 text-center'>
-				<Loader2 className='w-8 h-8 animate-spin mx-auto mb-4' />
-				<p className='text-muted-foreground'>Loading conversations...</p>
-			</Card>
+			<div className='flex flex-col items-center justify-center h-full bg-white rounded-2xl border border-[#E5E7EB] p-12 shadow-xs'>
+				<Loader2 className='w-10 h-10 animate-spin text-[#28321A] mb-3' />
+				<p className='text-sm text-[#667085] font-bold'>কথোপকথন লোড হচ্ছে...</p>
+			</div>
 		);
 	}
 
-	// Show empty state if no rooms
+	// 14. EMPTY STATE IF NO CONVERSATIONS AT ALL (Requirement #14)
 	if (!allRooms || allRooms.length === 0) {
 		return (
-			<Card className='p-6 text-center'>
-				<MessageCircle className='w-12 h-12 mx-auto mb-4 text-muted-foreground' />
-				<h3 className='text-lg font-medium mb-2'>No conversations yet</h3>
-				<p className='text-muted-foreground'>
-					Start a conversation by messaging someone from their profile or store
-					page.
-				</p>
-			</Card>
+			<div className='bg-white h-full rounded-2xl border border-[#E5E7EB] shadow-xs p-12 text-center flex flex-col items-center justify-center max-w-md mx-auto space-y-4 my-auto'>
+				<div className='w-20 h-20 bg-[#FFF9E8] rounded-full flex items-center justify-center mx-auto border border-[#F4B400]/30 shadow-inner'>
+					<MessageCircle className='h-10 w-10 text-[#28321A]' />
+				</div>
+				<div className='space-y-1.5'>
+					<h3 className='text-xl font-extrabold text-[#172033]'>
+						কোনো কথোপকথন নেই
+					</h3>
+					<p className='text-sm text-[#667085] font-medium leading-relaxed'>
+						কোনো বিক্রেতার সাথে যোগাযোগ করলে আপনার কথোপকথন এখানে দেখা যাবে।
+					</p>
+				</div>
+			</div>
 		);
 	}
 
+	// 2. CLEAN 3-COLUMN DESKTOP LAYOUT (Requirement #2 & #12: 280px minmax(0,1fr) 300px)
 	return (
-		<div className='grid grid-cols-1 md:grid-cols-4 gap-4 h-[calc(100vh-240px)]'>
-			{/* Chat list sidebar */}
+		<div className='grid grid-cols-1 lg:grid-cols-12 gap-4 h-full w-full'>
+			{/* LEFT COLUMN: CONVERSATION LIST (Requirement #3) */}
 			<div
 				className={`${
 					isMobile ? (showChatList ? 'block' : 'hidden') : 'block'
-				} md:col-span-1`}
+				} lg:col-span-3 h-full`}
 			>
 				<ChatList
 					activeRoomId={activeRoomId || undefined}
@@ -146,11 +149,11 @@ export function ChatInterface() {
 				/>
 			</div>
 
-			{/* Main chat area */}
+			{/* CENTER COLUMN: ACTIVE CHAT AREA (Requirement #4 & #5) */}
 			<div
 				className={`${
 					isMobile ? (showChatList ? 'hidden' : 'block') : 'block'
-				} md:col-span-2`}
+				} lg:col-span-6 h-full`}
 			>
 				{activeRoomId ? (
 					<ChatMessageArea
@@ -161,26 +164,30 @@ export function ChatInterface() {
 						onBack={() => setShowChatList(true)}
 					/>
 				) : (
-					<Card className='h-full flex items-center justify-center p-4'>
-						<div className='text-center'>
-							<MessageCircle className='w-12 h-12 mx-auto mb-4 text-muted-foreground' />
-							<h3 className='text-lg font-medium mb-2'>
-								Select a conversation
-							</h3>
-							<p className='text-muted-foreground'>
-								Choose a conversation from the list to start messaging.
-							</p>
+					<div className='bg-white h-full rounded-2xl border border-[#E5E7EB] shadow-xs flex flex-col items-center justify-center p-8 text-center space-y-3'>
+						<div className='w-16 h-16 bg-[#FFF9E8] rounded-full flex items-center justify-center border border-[#F4B400]/30 shadow-inner'>
+							<MessageCircle className='w-8 h-8 text-[#28321A]' />
 						</div>
-					</Card>
+						<h3 className='text-lg font-extrabold text-[#172033]'>
+							কোনো কথোপকথন নির্বাচন করা হয়নি
+						</h3>
+						<p className='text-xs text-[#667085] font-medium max-w-xs leading-relaxed'>
+							ম্যাসেজ শুরু করতে বামপাশের তালিকা থেকে যেকোনো বিক্রেতার কথোপকথন নির্বাচন করুন।
+						</p>
+					</div>
 				)}
 			</div>
 
-			{/* Info panel sidebar */}
-			<div className='hidden md:block md:col-span-1'>
+			{/* RIGHT COLUMN: VENDOR INFORMATION PANEL (Requirement #7 & #8) */}
+			<div className='hidden lg:block lg:col-span-3 h-full'>
 				{activeRoomId ? (
 					<ChatInfoPanel roomId={activeRoomId} />
 				) : (
-					<Card className='h-full' />
+					<div className='bg-white h-full rounded-2xl border border-[#E5E7EB] shadow-xs p-6 flex flex-col items-center justify-center text-center'>
+						<p className='text-xs text-[#667085] font-medium'>
+							বিক্রেতার তথ্য দেখতে কথোপকথন নির্বাচন করুন
+						</p>
+					</div>
 				)}
 			</div>
 		</div>

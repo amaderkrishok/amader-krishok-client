@@ -1,7 +1,9 @@
+'use client';
+
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { Send } from 'lucide-react';
+import { Send, Loader2 } from 'lucide-react';
 import { useChat } from '@/hooks/use-chat';
 
 interface ChatMessageInputProps {
@@ -9,10 +11,6 @@ interface ChatMessageInputProps {
 	isBlocked?: boolean;
 }
 
-/**
- * ChatMessageInput component handles message composition and sending
- * Includes typing indicators, file attachments, and real-time socket integration
- */
 export function ChatMessageInput({
 	roomId,
 	isBlocked = false,
@@ -24,19 +22,13 @@ export function ChatMessageInput({
 
 	const { sendMessage, sendTyping, sendStopTyping } = useChat(roomId);
 
-	/**
-	 * Auto-resize textarea as content grows
-	 */
 	useEffect(() => {
 		if (textareaRef.current) {
 			textareaRef.current.style.height = 'auto';
-			textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+			textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 120)}px`;
 		}
 	}, [content]);
 
-	/**
-	 * Handle message sending
-	 */
 	const handleSend = async () => {
 		if (!content.trim() || isSending || isBlocked) return;
 
@@ -45,7 +37,6 @@ export function ChatMessageInput({
 			await sendMessage(content.trim(), 'text');
 			setContent('');
 
-			// Reset textarea height
 			if (textareaRef.current) {
 				textareaRef.current.style.height = 'auto';
 			}
@@ -56,23 +47,17 @@ export function ChatMessageInput({
 		}
 	};
 
-	/**
-	 * Handle input changes with typing indicator
-	 */
 	const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
 		const newContent = e.target.value;
 		setContent(newContent);
 
-		// Emit typing indicator
 		if (newContent.trim() && !isBlocked) {
 			sendTyping();
 
-			// Clear previous timeout
 			if (typingTimeoutRef.current) {
 				clearTimeout(typingTimeoutRef.current);
 			}
 
-			// Stop typing after 3 seconds of no input
 			typingTimeoutRef.current = setTimeout(() => {
 				sendStopTyping();
 			}, 3000);
@@ -84,9 +69,6 @@ export function ChatMessageInput({
 		}
 	};
 
-	/**
-	 * Handle key down events
-	 */
 	const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
 		if (e.key === 'Enter' && !e.shiftKey) {
 			e.preventDefault();
@@ -94,55 +76,54 @@ export function ChatMessageInput({
 		}
 	};
 
-	/**
-	 * Clean up typing timeout on unmount
-	 */
 	useEffect(() => {
 		return () => {
 			if (typingTimeoutRef.current) {
 				clearTimeout(typingTimeoutRef.current);
 			}
-			// Stop typing when component unmounts
 			sendStopTyping();
 		};
 	}, [sendStopTyping]);
 
 	if (isBlocked) {
 		return (
-			<div className='border-t p-4 text-center'>
-				<p className='text-sm text-muted-foreground'>
-					This conversation has been blocked. You cannot send messages.
+			<div className='border-t border-[#E5E7EB] p-4 text-center bg-[#FFF9E8]/50'>
+				<p className='text-xs font-bold text-red-600'>
+					এই কথোপকথনটি ব্লক করা হয়েছে। নতুন মেসেজ পাঠানো যাবে না।
 				</p>
 			</div>
 		);
 	}
 
 	return (
-		<div className='border-t p-3 space-y-2'>
-			<div className='flex items-end gap-2'>
-				<div className='flex-1 space-y-2'>
+		<div className='border-t border-[#E5E7EB] p-3 bg-white space-y-2 sticky bottom-0'>
+			<div className='flex items-center gap-2'>
+				<div className='flex-1'>
 					<Textarea
 						ref={textareaRef}
-						placeholder='Type your message... (Shift + Enter for new line)'
+						placeholder='আপনার বার্তা লিখুন... (নতুন লাইনের জন্য Shift + Enter)'
 						value={content}
 						onChange={handleInputChange}
 						onKeyDown={handleKeyDown}
-						className='min-h-[40px] max-h-32 resize-none'
+						className='min-h-[42px] max-h-28 resize-none rounded-xl border-[#E5E7EB] focus:border-[#28321A] text-xs sm:text-sm font-medium py-2.5 px-3 bg-[#F7F6F0]/40'
 						disabled={isSending}
+						rows={1}
 					/>
 				</div>
 
-				<div className='flex items-center gap-1'>
-					<Button
-						onClick={handleSend}
-						disabled={!content.trim() || isSending}
-						size='icon'
-						className='h-8 w-8'
-					>
-						<Send className='h-4 w-4' />
-						<span className='sr-only'>Send message</span>
-					</Button>
-				</div>
+				<Button
+					onClick={handleSend}
+					disabled={!content.trim() || isSending}
+					size='icon'
+					className='h-10 w-10 bg-[#F4B400] hover:bg-[#E5A700] text-[#28321A] rounded-xl flex-shrink-0 shadow-xs transition-all hover:-translate-y-0.5 border-0 cursor-pointer disabled:opacity-50'
+				>
+					{isSending ? (
+						<Loader2 className='h-4 w-4 animate-spin text-[#28321A]' />
+					) : (
+						<Send className='h-4.5 w-4.5 text-[#28321A]' />
+					)}
+					<span className='sr-only'>বার্তা পাঠান</span>
+				</Button>
 			</div>
 		</div>
 	);

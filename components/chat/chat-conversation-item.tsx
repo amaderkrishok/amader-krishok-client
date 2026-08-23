@@ -1,42 +1,24 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
 import { useChatParticipant } from '@/hooks/use-chat-participant';
 import { useChatContext } from '@/hooks/useChatContext';
 import { isUserOnline } from '@/types/chat';
 import type { RoomResponseDto } from '@/types/chat';
 
-/**
- * Props for the ChatConversationItem component
- */
 interface ChatConversationItemProps {
-	/** Room data to display */
 	room?: RoomResponseDto;
-	/** Whether this conversation is currently active */
 	isActive?: boolean;
-	/** Click handler for selecting this conversation */
 	onClick?: () => void;
 }
 
-/**
- * ChatConversationItem component that displays a single conversation in the chat list
- *
- * @description This component shows:
- * - Participant avatar and name
- * - Last message preview
- * - Timestamp of last activity
- * - Unread message count
- * - Online status indicator
- */
 export function ChatConversationItem({
 	room,
 	isActive = false,
 	onClick,
 }: ChatConversationItemProps) {
-	// Get enhanced participant information
 	const participantInfo = useChatParticipant(room);
 	const { getUserPresence } = useChatContext();
 
-	const lastMessage = room?.lastMessage?.content || 'No messages yet';
+	const lastMessage = room?.lastMessage?.content || 'কোনো বার্তা নেই';
 	const lastActivityTime = room?.lastActivityAt
 		? new Date(room.lastActivityAt).toLocaleTimeString([], {
 				hour: '2-digit',
@@ -45,70 +27,57 @@ export function ChatConversationItem({
 		: '';
 	const unreadCount = room?.unreadCount || 0;
 
-	// Get online status from global presence context
 	const userPresence = room ? getUserPresence(room.participant.id) : null;
 	const isOnline = isUserOnline(userPresence);
-	const isTyping = false; // This should come from typing indicators
-
-	// Debug logging for presence
-	if (room) {
-		console.log(`🔍 Conversation Item Debug - User ${room.participant.id}:`, {
-			userPresence,
-			isOnline,
-			participantName: participantInfo.name,
-		});
-	}
 
 	return (
 		<button
 			onClick={onClick}
-			className={`w-full text-left rounded-lg p-2.5 transition-colors ${
-				isActive ? 'bg-primary/10 hover:bg-primary/20' : 'hover:bg-muted'
+			className={`w-full text-left rounded-xl p-3 transition-all duration-200 cursor-pointer ${
+				isActive
+					? 'bg-[#FFF9E8] border border-[#F4B400]/50 shadow-xs'
+					: 'bg-white hover:bg-gray-50 border border-transparent'
 			}`}
 		>
-			<div className='flex items-start gap-3'>
-				<div className='relative'>
-					<Avatar className='h-10 w-10'>
+			<div className='flex items-center gap-3'>
+				<div className='relative flex-shrink-0'>
+					<Avatar className='h-10 w-10 border border-[#E5E7EB] shadow-xs'>
 						<AvatarImage
 							src={participantInfo.image}
 							alt={participantInfo.name}
 						/>
-						<AvatarFallback>
-							{participantInfo.name?.charAt(0) || '?'}
+						<AvatarFallback className='bg-[#F4B400] text-[#172033] font-bold text-xs'>
+							{participantInfo.name?.charAt(0).toUpperCase() || '?'}
 						</AvatarFallback>
 					</Avatar>
 					<span
-						className={`absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-background ${
-							isOnline ? 'bg-green-500' : 'bg-gray-500'
+						className={`absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full border-2 border-white ${
+							isOnline ? 'bg-emerald-500' : 'bg-gray-400'
 						}`}
 					/>
 				</div>
 
-				<div className='flex-1 min-w-0'>
-					<div className='flex justify-between items-start'>
-						<p className='font-medium text-sm truncate'>
+				<div className='flex-1 min-w-0 space-y-0.5'>
+					<div className='flex justify-between items-baseline gap-1'>
+						<p className={`text-xs sm:text-sm truncate ${isActive ? 'font-extrabold text-[#172033]' : 'font-bold text-[#172033]'}`}>
 							{participantInfo.name}
 						</p>
 						{lastActivityTime && (
-							<span className='text-xs text-muted-foreground'>
+							<span className='text-[10px] text-[#667085] font-medium flex-shrink-0'>
 								{lastActivityTime}
 							</span>
 						)}
 					</div>
 
-					{isTyping ? (
-						<p className='text-xs text-primary font-medium'>Typing...</p>
-					) : (
-						<p className='text-xs text-muted-foreground truncate mt-1'>
-							{lastMessage}
-						</p>
-					)}
+					<p className='text-xs text-[#667085] truncate font-medium'>
+						{lastMessage}
+					</p>
 				</div>
 
 				{unreadCount > 0 && (
-					<Badge className='ml-auto shrink-0 bg-primary text-primary-foreground'>
+					<span className='flex-shrink-0 bg-[#F4B400] text-[#172033] font-black text-[10px] rounded-full h-5 w-5 flex items-center justify-center border border-white shadow-xs'>
 						{unreadCount}
-					</Badge>
+					</span>
 				)}
 			</div>
 		</button>
