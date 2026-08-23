@@ -235,7 +235,7 @@ export const vendorNavigation: NavItem[] = [
 		isActive: true,
 	},
 	{
-		title: 'My Store',
+		title: 'My Profile',
 		url: '/vendor/store',
 		icon: Store,
 	},
