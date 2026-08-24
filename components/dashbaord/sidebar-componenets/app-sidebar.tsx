@@ -14,8 +14,6 @@ import {
 import { useSession } from '@/components/providers/session-provider';
 import { getNavigationByRole } from '@/config/dashboard-navigation';
 import { NavMain } from './nav-main';
-import { NavUser } from './nav-user';
-import { Separator } from '@/components/ui/separator';
 import Image from 'next/image';
 import Link from 'next/link';
 import { X, LogOut } from 'lucide-react';
@@ -23,8 +21,8 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 	const { toggleSidebar, isMobile } = useSidebar();
-	const { data: session, status } = useSession();
-	const userRole = session?.user?.role || 'user';
+	const { user, isLoading } = useSession();
+	const userRole = user?.role || 'user';
 
 	const navigationItems = React.useMemo(() => {
 		return getNavigationByRole(userRole);
@@ -42,12 +40,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 		}
 	};
 
-	if (status === 'loading') {
+	if (isLoading) {
 		return <SidebarSkeleton />;
 	}
 
 	return (
-		<Sidebar collapsible='icon' className='w-60 border-r-0 bg-[#26351B] text-white' {...props}>
+		<Sidebar collapsible='icon' className='w-64 border-r-0 bg-[#26351B] text-white' {...props}>
 			{/* BRAND HEADER */}
 			<SidebarHeader className='bg-[#26351B] px-4 py-4 border-b border-[#354126]'>
 				<div className='flex items-center justify-between w-full'>
@@ -88,57 +86,40 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 				<NavMain items={navigationItems} />
 			</SidebarContent>
 
-			{/* VENDOR PROFILE FOOTER (Requirement #3) */}
+			{/* VENDOR PROFILE FOOTER (Single Clean Card) */}
 			<SidebarFooter className='bg-[#26351B] border-t border-[#354126] p-3.5 mt-auto'>
-				{status !== 'authenticated' ? (
-					<div className='px-3 py-2 animate-pulse'>
-						<div className='flex items-center gap-2'>
-							<div className='h-8 w-8 rounded-full bg-white/10'></div>
-							<div className='flex-1 space-y-1'>
-								<div className='h-3.5 w-24 bg-white/10 rounded'></div>
-								<div className='h-3 w-16 bg-white/10 rounded'></div>
-							</div>
-						</div>
+				<div className='flex items-center gap-2.5 bg-[#1F2A16] p-3 rounded-2xl border border-white/10 shadow-xs'>
+					<div className='relative flex-shrink-0'>
+						<Avatar className='h-9 w-9 border-2 border-[#F5B800] shadow-xs'>
+							<AvatarImage
+								src={user?.image || ''}
+								alt={user?.name || 'Vendor'}
+							/>
+							<AvatarFallback className='bg-[#F5B800] text-[#172033] font-black text-xs'>
+								{user?.name ? user.name.charAt(0).toUpperCase() : 'V'}
+							</AvatarFallback>
+						</Avatar>
+						<span className='absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 rounded-full border-2 border-[#1F2A16]' />
 					</div>
-				) : (
-					<div className='flex flex-col gap-2.5 bg-[#1F2A16] p-3 rounded-2xl border border-white/10 shadow-xs'>
-						<div className='flex items-center gap-2.5'>
-							<div className='relative flex-shrink-0'>
-								<Avatar className='h-9 w-9 border-2 border-[#F5B800] shadow-xs'>
-									<AvatarImage
-										src={session?.user?.image || ''}
-										alt={session?.user?.name || 'User'}
-									/>
-									<AvatarFallback className='bg-[#F5B800] text-[#172033] font-bold text-xs'>
-										{session?.user?.name
-											? session.user.name.charAt(0).toUpperCase()
-											: 'V'}
-									</AvatarFallback>
-								</Avatar>
-								<span className='absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 rounded-full border-2 border-[#1F2A16]' />
-							</div>
 
-							<div className='flex flex-col min-w-0 flex-1'>
-								<span className='text-xs font-extrabold text-white truncate'>
-									{session?.user?.name || 'Test Vendor'}
-								</span>
-								<span className='text-[10px] font-semibold text-[#F5B800] flex items-center gap-1 truncate'>
-									<span className='w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse' />
-									{session?.user?.phoneNumber || 'Vendor'}
-								</span>
-							</div>
-						</div>
-
-						<button
-							onClick={handleLogout}
-							className='w-full flex items-center justify-center gap-2 px-3 py-1.5 bg-red-500/20 hover:bg-red-500/30 text-red-200 hover:text-white border border-red-500/30 rounded-xl text-xs font-bold transition-all shadow-xs cursor-pointer active:scale-98'
-							title='লগআউট করুন'
-						>
-							<LogOut className='h-3.5 w-3.5 text-red-300' />
-							<span>লগআউট</span>
-						</button>
+					<div className='flex flex-col min-w-0 flex-1'>
+						<span className='text-xs font-extrabold text-white truncate'>
+							{user?.name || 'Test Vendor'}
+						</span>
+						<span className='text-[10px] font-semibold text-[#F5B800] flex items-center gap-1 truncate'>
+							<span className='w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse' />
+							{user?.phoneNumber || 'Vendor / বিক্রেতা'}
+						</span>
 					</div>
-				)}
+
+					<button
+						onClick={handleLogout}
+						className='p-2 hover:bg-red-500/20 text-red-300 hover:text-red-100 rounded-xl transition-colors flex-shrink-0 cursor-pointer'
+						title='লগআউট করুন'
+					>
+						<LogOut className='w-4 h-4' />
+					</button>
+				</div>
 			</SidebarFooter>
 			<SidebarRail />
 		</Sidebar>
