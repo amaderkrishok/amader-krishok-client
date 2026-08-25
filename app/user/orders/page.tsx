@@ -11,7 +11,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import {
 	Package,
-	ShoppingCart,
 	Clock,
 	CheckCircle,
 	XCircle,
@@ -24,7 +23,6 @@ import {
 	AlertCircle,
 	ShoppingBag,
 	User,
-	ArrowRight,
 	Sprout,
 } from 'lucide-react';
 
@@ -142,7 +140,7 @@ export default function UserOrdersPage() {
 
 	return (
 		<div className='space-y-6 pb-8'>
-			{/* 5. PAGE HEADER (Subtle cream-to-white background card with Gold button) */}
+			{/* PAGE HEADER */}
 			<div className='flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-gradient-to-r from-[#FFF9E8] to-white p-6 sm:p-7 rounded-2xl border border-[#E5E7EB] shadow-xs relative overflow-hidden'>
 				<div className='space-y-1 z-10'>
 					<h1 className='text-2xl sm:text-3xl font-extrabold text-[#111827] tracking-tight'>
@@ -161,7 +159,7 @@ export default function UserOrdersPage() {
 				</Button>
 			</div>
 
-			{/* 6. ORDER FILTER TABS (Pill tabs) */}
+			{/* ORDER FILTER TABS */}
 			<div className='flex items-center gap-2 overflow-x-auto pb-2 scrollbar-hide pt-1'>
 				{(
 					[
@@ -218,7 +216,7 @@ export default function UserOrdersPage() {
 				</Card>
 			)}
 
-			{/* 16. LOADING SKELETON STATE */}
+			{/* LOADING SKELETON STATE */}
 			{loading ? (
 				<div className='space-y-4'>
 					{[1, 2, 3].map((i) => (
@@ -241,7 +239,7 @@ export default function UserOrdersPage() {
 					))}
 				</div>
 			) : orders.length === 0 ? (
-				/* 15. EMPTY STATE (Requirement #15) */
+				/* EMPTY STATE */
 				<Card className='p-12 sm:p-16 bg-white rounded-2xl border border-[#E5E7EB] shadow-xs text-center max-w-lg mx-auto space-y-4'>
 					<div className='w-20 h-20 bg-[#FFF4CC] rounded-full flex items-center justify-center mx-auto border border-[#F4B400]/30 shadow-inner'>
 						<Package className='h-10 w-10 text-[#28321A]' />
@@ -262,7 +260,7 @@ export default function UserOrdersPage() {
 					</Button>
 				</Card>
 			) : (
-				/* 7. ORDERS LIST (Requirement #7) */
+				/* ORDERS LIST WITH ACCURATE DELIVERY CHARGES */
 				<div className='space-y-4'>
 					{orders.map((order) => {
 						const status =
@@ -270,6 +268,14 @@ export default function UserOrdersPage() {
 							statusConfig[OrderStatus.PENDING];
 						const StatusIcon = status.icon;
 						const isExpanded = expandedOrder === order.id;
+
+						// Calculate Delivery Charge & Grand Total via OrderService
+						const deliveryCharge = OrderService.getOrderDeliveryCharge(order);
+						const grandTotal = OrderService.getOrderGrandTotal(order);
+						const itemsSubtotal = (order.orderItems || []).reduce(
+							(sum, item) => sum + (Number(item.total) || Number(item.price) * Number(item.quantity)),
+							0
+						);
 
 						return (
 							<Card
@@ -296,19 +302,27 @@ export default function UserOrdersPage() {
 														{OrderService.formatOrderDate(order.orderDate)}
 													</span>
 													<span>• {order.orderItems?.length || 0}টি আইটেম</span>
+													{deliveryCharge > 0 ? (
+														<span className='text-[10px] font-extrabold bg-[#FFF9E8] text-[#26351B] px-2 py-0.5 rounded-full border border-[#F5B800]/40 flex items-center gap-1'>
+															<Truck className='w-3 h-3 text-[#26351B]' /> +{formatCurrency(deliveryCharge)} ডেলিভারি
+														</span>
+													) : (
+														<span className='text-[10px] font-extrabold bg-[#ECFDF5] text-[#16A34A] px-2 py-0.5 rounded-full border border-[#A7F3D0]'>
+															ফ্রি ডেলিভারি
+														</span>
+													)}
 												</div>
 											</div>
 										</div>
 
 										<div className='flex items-center justify-between sm:justify-end gap-4 border-t sm:border-t-0 pt-3 sm:pt-0 border-gray-100'>
-											{/* 8. Status Badge */}
 											<span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border ${status.bgColor} ${status.color} ${status.borderColor}`}>
 												{status.label}
 											</span>
 
 											<div className='flex items-center gap-3'>
 												<p className='text-lg sm:text-xl font-black text-[#111827]'>
-													{formatCurrency(Number(order.totalAmount))}
+													{formatCurrency(grandTotal)}
 												</p>
 												<div className='p-1.5 rounded-xl bg-gray-50 border border-gray-200 text-gray-500'>
 													{isExpanded ? (
@@ -325,14 +339,13 @@ export default function UserOrdersPage() {
 								{/* Expanded Details */}
 								{isExpanded && (
 									<div className='border-t border-[#E5E7EB] bg-gray-50/50 p-5 sm:p-6 space-y-6'>
-										{/* 9. DELIVERY INFORMATION (#FFFDF5 subtle warm background, 3 columns desktop) */}
+										{/* DELIVERY INFORMATION */}
 										<div className='p-5 bg-[#FFFDF5] rounded-2xl border border-[#F4B400]/25 space-y-3 shadow-xs'>
 											<h4 className='text-sm font-extrabold text-[#111827] flex items-center gap-2'>
 												<MapPin className='h-4 w-4 text-[#28321A]' />
 												ডেলিভারি তথ্য
 											</h4>
 											
-											{/* Responsive 3 columns on desktop, stacked on mobile */}
 											<div className='grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs sm:text-sm font-semibold text-[#64748B]'>
 												<div className='flex items-center gap-2 bg-white p-3 rounded-xl border border-[#E5E7EB] shadow-xs'>
 													<User className='h-4 w-4 text-[#F4B400] flex-shrink-0' />
@@ -349,7 +362,7 @@ export default function UserOrdersPage() {
 											</div>
 										</div>
 
-										{/* 10. PRODUCT SECTION */}
+										{/* PRODUCT SECTION */}
 										<div className='space-y-3'>
 											<h4 className='text-sm font-extrabold text-[#111827] flex items-center gap-2'>
 												<Package className='h-4 w-4 text-[#28321A]' />
@@ -366,7 +379,6 @@ export default function UserOrdersPage() {
 															key={item.id}
 															className='flex items-center gap-4 p-3.5 rounded-xl bg-white border border-[#E5E7EB] shadow-xs'
 														>
-															{/* Product Image: 56–72px (w-16 h-16) rounded */}
 															<div className='h-16 w-16 rounded-xl overflow-hidden bg-[#FFF9E8] flex-shrink-0 relative border border-[#E5E7EB]'>
 																{!hasError && rawImg ? (
 																	<Image
@@ -407,20 +419,37 @@ export default function UserOrdersPage() {
 											</div>
 										</div>
 
-										{/* 11 & 12. TOTAL SECTION & ACTION BUTTON */}
-										<div className='pt-3 border-t border-[#E5E7EB] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4'>
-											<div className='flex items-baseline gap-2'>
-												<span className='text-sm font-extrabold text-[#64748B]'>সর্বমোট পরিশোধযোগ্য:</span>
-												<span className='text-2xl font-black text-[#28321A]'>
-													{formatCurrency(Number(order.totalAmount))}
+										{/* TOTAL SECTION WITH SUB-TOTAL & DELIVERY CHARGE */}
+										<div className='p-4 bg-[#FFF9E8] rounded-2xl border border-[#F5B800]/40 space-y-2 text-xs font-semibold'>
+											<div className='flex justify-between items-center text-[#64748B]'>
+												<span>পণ্যের মোট মূল্য (Subtotal):</span>
+												<span className='text-[#172033] font-bold'>{formatCurrency(itemsSubtotal)}</span>
+											</div>
+
+											<div className='flex justify-between items-center text-[#26351B]'>
+												<span className='flex items-center gap-1.5'>
+													<Truck className='w-3.5 h-3.5 text-[#26351B]' />
+													ডেলিভারি চার্জ (Delivery Charge):
+												</span>
+												<span className='font-extrabold bg-white px-2 py-0.5 rounded-md border border-[#F5B800]/30 text-xs text-[#26351B]'>
+													{deliveryCharge > 0 ? formatCurrency(deliveryCharge) : 'ফ্রি'}
 												</span>
 											</div>
 
-											<Button asChild className='bg-white hover:bg-[#28321A] hover:text-white border-2 border-[#28321A] text-[#28321A] rounded-xl font-bold px-5 py-2.5 transition-all shadow-xs'>
-												<Link href={`/order/confirmation/${order.id}`}>
-													ইনভয়েস ও বিস্তারিত দেখুন →
-												</Link>
-											</Button>
+											<div className='pt-2 border-t border-[#F5B800]/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4'>
+												<div className='flex items-baseline gap-2'>
+													<span className='text-sm font-extrabold text-[#26351B]'>সর্বমোট পরিশোধযোগ্য:</span>
+													<span className='text-2xl font-black text-[#28321A]'>
+														{formatCurrency(grandTotal)}
+													</span>
+												</div>
+
+												<Button asChild className='bg-[#28321A] hover:bg-[#1A2211] text-white rounded-xl font-bold px-5 py-2.5 transition-all shadow-xs border-0 text-xs'>
+													<Link href={`/order/confirmation/${order.id}`}>
+														ইনভয়েস ও বিস্তারিত দেখুন →
+													</Link>
+												</Button>
+											</div>
 										</div>
 									</div>
 								)}
