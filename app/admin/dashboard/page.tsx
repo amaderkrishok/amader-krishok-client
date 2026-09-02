@@ -12,13 +12,11 @@ import { StoreService } from '@/services/store-service';
 import { ProductService } from '@/services/product-service';
 import { Order, OrderStatus } from '@/types/order';
 import Link from 'next/link';
-import Image from 'next/image';
 import {
 	Users,
 	ShoppingCart,
 	Store,
 	Package,
-	TrendingUp,
 	AlertCircle,
 	MoveRight,
 	Coins,
@@ -26,6 +24,7 @@ import {
 	CheckCircle,
 	XCircle,
 	Truck,
+	ShieldCheck,
 } from 'lucide-react';
 
 const formatCurrency = (amount: number): string => {
@@ -77,14 +76,12 @@ export default function AdminDashboardPage() {
 
 	useEffect(() => {
 		const fetchDashboardData = async () => {
-			// Don't fetch until session is fully loaded
 			if (isSessionLoading) return;
 
 			try {
 				setLoading(true);
 				setError(null);
 
-				// Fetch all data in parallel for speed
 				const [ordersRes, usersRes, storesRes, productsRes] =
 					await Promise.allSettled([
 						OrderService.getAllOrders({ limit: 100 }),
@@ -93,7 +90,6 @@ export default function AdminDashboardPage() {
 						ProductService.getProducts({ page: 1, limit: 1 }),
 					]);
 
-				// Extract totals from meta - handle various response shapes
 				const orders =
 					ordersRes.status === 'fulfilled' ? ordersRes.value : null;
 				const usersData =
@@ -106,7 +102,6 @@ export default function AdminDashboardPage() {
 				const allOrders = orders?.data || [];
 				setRecentOrders(allOrders.slice(0, 8));
 
-				// Helper: extract totalItems from various response shapes
 				const getTotalItems = (res: any): number => {
 					return res?.meta?.totalItems 
 						|| res?.data?.meta?.totalItems 
@@ -114,7 +109,6 @@ export default function AdminDashboardPage() {
 						|| 0;
 				};
 
-				// Calculate order stats
 				const pendingOrders = allOrders.filter(
 					(o: Order) => o.orderStatus === OrderStatus.PENDING
 				).length;
@@ -133,7 +127,6 @@ export default function AdminDashboardPage() {
 					0
 				);
 
-				// Calculate time-based revenue
 				const today = new Date();
 				today.setHours(0, 0, 0, 0);
 				const weekStart = new Date();
@@ -195,15 +188,15 @@ export default function AdminDashboardPage() {
 
 	if (error) {
 		return (
-			<div className='p-6'>
-				<div className='bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 flex items-center gap-3'>
-					<AlertCircle className='h-5 w-5 text-red-500' />
-					<p className='text-red-700 dark:text-red-400'>{error}</p>
+			<div className='p-4 sm:p-6'>
+				<div className='bg-red-50 border border-red-200 rounded-2xl p-5 flex items-center gap-3 shadow-xs'>
+					<AlertCircle className='h-5 w-5 text-red-500 flex-shrink-0' />
+					<p className='text-red-700 text-xs sm:text-sm font-bold'>{error}</p>
 					<Button
 						variant='outline'
 						size='sm'
 						onClick={() => window.location.reload()}
-						className='ml-auto'
+						className='ml-auto rounded-xl border-red-300 text-red-700 font-bold text-xs'
 					>
 						পুনরায় চেষ্টা করুন
 					</Button>
@@ -213,182 +206,209 @@ export default function AdminDashboardPage() {
 	}
 
 	return (
-		<div className='p-6 space-y-6 w-full mx-auto'>
-			{/* Header */}
-			<div className='flex flex-col md:flex-row justify-between gap-4 items-start md:items-center'>
-				<div>
-					<h1 className='text-3xl font-bold dark:text-white'>
-						অ্যাডমিন ড্যাশবোর্ড
-					</h1>
-					<p className='text-gray-600 dark:text-gray-400'>
-						সাইটের সর্বশেষ পরিসংখ্যান ও আপডেট
+		<div className='space-y-6 w-full mx-auto pb-6'>
+			{/* HERO HEADER */}
+			<div className='flex flex-col md:flex-row justify-between gap-4 items-start md:items-center bg-gradient-to-r from-[#FFF9E8] via-white to-white p-6 sm:p-7 rounded-2xl border border-[#E5E7EB] shadow-xs relative overflow-hidden'>
+				<div className='space-y-1.5 z-10'>
+					<div className='flex items-center gap-2'>
+						<div className='w-8 h-8 rounded-xl bg-[#26351B] flex items-center justify-center text-[#F5B800] shadow-2xs'>
+							<ShieldCheck className='w-4 h-4 text-[#F5B800]' />
+						</div>
+						<h1 className='text-2xl sm:text-3xl font-black text-[#172033] tracking-tight'>
+							অ্যাডমিন ড্যাশবোর্ড
+						</h1>
+					</div>
+					<p className='text-xs sm:text-sm text-[#64748B] font-medium'>
+						আমাদের কৃষক প্ল্যাটফর্মের সার্বিক পর্যবেক্ষণ, পরিসংখ্যান ও পরিচালনা
 					</p>
 				</div>
-				<div className='flex gap-2'>
-					<Button variant='outline' asChild>
+
+				<div className='flex items-center gap-3 z-10 flex-wrap'>
+					<Button
+						variant='outline'
+						asChild
+						className='bg-white hover:bg-[#FAFAF6] text-[#172033] border-[#E5E7EB] font-extrabold rounded-xl h-10 px-4 text-xs shadow-xs transition-all'
+					>
 						<Link href='/admin/orders'>
-							<ShoppingCart className='h-4 w-4 mr-2' />
+							<ShoppingCart className='h-4 w-4 mr-2 text-[#26351B]' />
 							অর্ডার ম্যানেজমেন্ট
 						</Link>
 					</Button>
-					<Button asChild>
+					<Button
+						asChild
+						className='bg-[#F5B800] hover:bg-[#E0A800] text-[#172033] font-extrabold rounded-xl h-10 px-4 text-xs shadow-xs border-0 transition-all hover:-translate-y-0.5'
+					>
 						<Link href='/admin/users'>
-							<Users className='h-4 w-4 mr-2' />
+							<Users className='h-4 w-4 mr-2 text-[#172033]' />
 							ইউজার ম্যানেজমেন্ট
 						</Link>
 					</Button>
 				</div>
 			</div>
 
-			{/* Stats Grid - 4 main cards */}
-			<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4'>
-				<Card className='p-6 dark:bg-gray-800 dark:border-gray-700 hover:shadow-lg transition-shadow'>
+			{/* 4 MAIN KPI CARDS */}
+			<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5'>
+				{/* Total Orders */}
+				<Card className='p-5 sm:p-6 bg-white rounded-2xl border border-[#E5E7EB] shadow-xs hover:shadow-md transition-all duration-200 group'>
 					<div className='flex items-center justify-between'>
-						<div>
-							<p className='text-sm text-gray-500 dark:text-gray-400'>
+						<div className='space-y-1'>
+							<p className='text-xs font-bold text-[#64748B] uppercase tracking-wider'>
 								মোট অর্ডার
 							</p>
-							<h3 className='text-2xl font-bold dark:text-white'>
+							<h3 className='text-2xl sm:text-3xl font-black text-[#172033] tracking-tight'>
 								{stats.totalOrders}
 							</h3>
 						</div>
-						<div className='h-12 w-12 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center'>
-							<ShoppingCart className='h-6 w-6 text-blue-600 dark:text-blue-400' />
+						<div className='h-12 w-12 bg-[#FFF4CC] border border-[#F5B800]/40 rounded-2xl flex items-center justify-center group-hover:scale-105 transition-transform'>
+							<ShoppingCart className='h-6 w-6 text-[#26351B]' />
 						</div>
 					</div>
-					<p className='text-xs mt-2 text-gray-500 dark:text-gray-400'>
-						<span className='text-amber-500 font-medium'>
+					<div className='mt-3 pt-3 border-t border-[#E5E7EB] flex items-center justify-between text-xs'>
+						<span className='text-[#64748B] font-medium'>
+							অপেক্ষমান:
+						</span>
+						<span className='font-extrabold text-[#26351B] bg-[#FFF9E8] px-2 py-0.5 rounded-md border border-[#F5B800]/30'>
 							{stats.pendingOrders} টি
-						</span>{' '}
-						অর্ডার অপেক্ষমান
-					</p>
+						</span>
+					</div>
 				</Card>
 
-				<Card className='p-6 dark:bg-gray-800 dark:border-gray-700 hover:shadow-lg transition-shadow'>
+				{/* Total Users */}
+				<Card className='p-5 sm:p-6 bg-white rounded-2xl border border-[#E5E7EB] shadow-xs hover:shadow-md transition-all duration-200 group'>
 					<div className='flex items-center justify-between'>
-						<div>
-							<p className='text-sm text-gray-500 dark:text-gray-400'>
+						<div className='space-y-1'>
+							<p className='text-xs font-bold text-[#64748B] uppercase tracking-wider'>
 								মোট ইউজার
 							</p>
-							<h3 className='text-2xl font-bold dark:text-white'>
+							<h3 className='text-2xl sm:text-3xl font-black text-[#172033] tracking-tight'>
 								{stats.totalUsers}
 							</h3>
 						</div>
-						<div className='h-12 w-12 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center'>
-							<Users className='h-6 w-6 text-green-600 dark:text-green-400' />
+						<div className='h-12 w-12 bg-[#ECFDF5] border border-[#A7F3D0] rounded-2xl flex items-center justify-center group-hover:scale-105 transition-transform'>
+							<Users className='h-6 w-6 text-[#16A34A]' />
 						</div>
 					</div>
-					<p className='text-xs mt-2 text-gray-500 dark:text-gray-400'>
+					<div className='mt-3 pt-3 border-t border-[#E5E7EB] flex items-center justify-between text-xs'>
 						<Link
 							href='/admin/users'
-							className='text-green-500 font-medium flex items-center'
+							className='text-[#16A34A] font-extrabold flex items-center gap-1 hover:underline'
 						>
-							সব ইউজার দেখুন{' '}
-							<MoveRight className='h-3 w-3 ml-1' />
+							সব ইউজার ম্যানেজ করুন <MoveRight className='h-3 w-3' />
 						</Link>
-					</p>
+					</div>
 				</Card>
 
-				<Card className='p-6 dark:bg-gray-800 dark:border-gray-700 hover:shadow-lg transition-shadow'>
+				{/* Total Stores */}
+				<Card className='p-5 sm:p-6 bg-white rounded-2xl border border-[#E5E7EB] shadow-xs hover:shadow-md transition-all duration-200 group'>
 					<div className='flex items-center justify-between'>
-						<div>
-							<p className='text-sm text-gray-500 dark:text-gray-400'>
+						<div className='space-y-1'>
+							<p className='text-xs font-bold text-[#64748B] uppercase tracking-wider'>
 								মোট স্টোর
 							</p>
-							<h3 className='text-2xl font-bold dark:text-white'>
+							<h3 className='text-2xl sm:text-3xl font-black text-[#172033] tracking-tight'>
 								{stats.totalStores}
 							</h3>
 						</div>
-						<div className='h-12 w-12 bg-purple-100 dark:bg-purple-900 rounded-full flex items-center justify-center'>
-							<Store className='h-6 w-6 text-purple-600 dark:text-purple-400' />
-						 </div>
+						<div className='h-12 w-12 bg-[#F3E8FF] border border-[#D8B4FE] rounded-2xl flex items-center justify-center group-hover:scale-105 transition-transform'>
+							<Store className='h-6 w-6 text-[#9333EA]' />
+						</div>
 					</div>
-					<p className='text-xs mt-2 text-gray-500 dark:text-gray-400'>
+					<div className='mt-3 pt-3 border-t border-[#E5E7EB] flex items-center justify-between text-xs'>
 						<Link
 							href='/admin/shops'
-							className='text-purple-500 font-medium flex items-center'
+							className='text-[#9333EA] font-extrabold flex items-center gap-1 hover:underline'
 						>
-							সব দোকান দেখুন{' '}
-							<MoveRight className='h-3 w-3 ml-1' />
+							সব দোকান দেখুন <MoveRight className='h-3 w-3' />
 						</Link>
-					</p>
+					</div>
 				</Card>
 
-				<Card className='p-6 dark:bg-gray-800 dark:border-gray-700 hover:shadow-lg transition-shadow'>
+				{/* Total Products */}
+				<Card className='p-5 sm:p-6 bg-white rounded-2xl border border-[#E5E7EB] shadow-xs hover:shadow-md transition-all duration-200 group'>
 					<div className='flex items-center justify-between'>
-						<div>
-							<p className='text-sm text-gray-500 dark:text-gray-400'>
+						<div className='space-y-1'>
+							<p className='text-xs font-bold text-[#64748B] uppercase tracking-wider'>
 								মোট পণ্য
 							</p>
-							<h3 className='text-2xl font-bold dark:text-white'>
+							<h3 className='text-2xl sm:text-3xl font-black text-[#172033] tracking-tight'>
 								{stats.totalProducts}
 							</h3>
 						</div>
-						<div className='h-12 w-12 bg-orange-100 dark:bg-orange-900 rounded-full flex items-center justify-center'>
-							<Package className='h-6 w-6 text-orange-600 dark:text-orange-400' />
+						<div className='h-12 w-12 bg-[#FFEDD5] border border-[#FDBA74] rounded-2xl flex items-center justify-center group-hover:scale-105 transition-transform'>
+							<Package className='h-6 w-6 text-[#EA580C]' />
 						</div>
 					</div>
-					<p className='text-xs mt-2 text-gray-500 dark:text-gray-400'>
+					<div className='mt-3 pt-3 border-t border-[#E5E7EB] flex items-center justify-between text-xs'>
 						<Link
 							href='/admin/product-category'
-							className='text-orange-500 font-medium flex items-center'
+							className='text-[#EA580C] font-extrabold flex items-center gap-1 hover:underline'
 						>
-							ক্যাটাগরি ম্যানেজমেন্ট{' '}
-							<MoveRight className='h-3 w-3 ml-1' />
+							ক্যাটাগরি ম্যানেজমেন্ট <MoveRight className='h-3 w-3' />
 						</Link>
-					</p>
+					</div>
 				</Card>
 			</div>
 
-			{/* Order Status Breakdown */}
-			<div className='grid grid-cols-2 sm:grid-cols-4 gap-4'>
-				<Card className='p-4 dark:bg-gray-800 dark:border-gray-700 border-l-4 border-l-yellow-400'>
+			{/* ORDER STATUS BREAKDOWN GRID */}
+			<div className='grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4'>
+				<Card className='p-4 bg-white rounded-2xl border border-[#E5E7EB] shadow-xs hover:border-[#F5B800]/50 transition-colors'>
 					<div className='flex items-center gap-3'>
-						<Clock className='h-5 w-5 text-yellow-500' />
+						<div className='p-2.5 rounded-xl bg-[#FFF4CC] border border-[#FDE68A] text-[#B45309]'>
+							<Clock className='h-4 w-4' />
+						</div>
 						<div>
-							<p className='text-xs text-gray-500 dark:text-gray-400'>
+							<p className='text-[11px] font-extrabold text-[#64748B] uppercase tracking-wider'>
 								অপেক্ষমান
 							</p>
-							<p className='text-xl font-bold dark:text-white'>
+							<p className='text-lg font-black text-[#172033]'>
 								{stats.pendingOrders}
 							</p>
 						</div>
 					</div>
 				</Card>
-				<Card className='p-4 dark:bg-gray-800 dark:border-gray-700 border-l-4 border-l-blue-400'>
+
+				<Card className='p-4 bg-white rounded-2xl border border-[#E5E7EB] shadow-xs hover:border-blue-300 transition-colors'>
 					<div className='flex items-center gap-3'>
-						<CheckCircle className='h-5 w-5 text-blue-500' />
+						<div className='p-2.5 rounded-xl bg-blue-50 border border-blue-100 text-blue-700'>
+							<CheckCircle className='h-4 w-4' />
+						</div>
 						<div>
-							<p className='text-xs text-gray-500 dark:text-gray-400'>
+							<p className='text-[11px] font-extrabold text-[#64748B] uppercase tracking-wider'>
 								নিশ্চিত
 							</p>
-							<p className='text-xl font-bold dark:text-white'>
+							<p className='text-lg font-black text-[#172033]'>
 								{stats.confirmedOrders}
 							</p>
 						</div>
 					</div>
 				</Card>
-				<Card className='p-4 dark:bg-gray-800 dark:border-gray-700 border-l-4 border-l-green-400'>
+
+				<Card className='p-4 bg-white rounded-2xl border border-[#E5E7EB] shadow-xs hover:border-green-300 transition-colors'>
 					<div className='flex items-center gap-3'>
-						<Truck className='h-5 w-5 text-green-500' />
+						<div className='p-2.5 rounded-xl bg-[#DCFCE7] border border-[#86EFAC] text-[#15803D]'>
+							<Truck className='h-4 w-4' />
+						</div>
 						<div>
-							<p className='text-xs text-gray-500 dark:text-gray-400'>
+							<p className='text-[11px] font-extrabold text-[#64748B] uppercase tracking-wider'>
 								ডেলিভারি
 							</p>
-							<p className='text-xl font-bold dark:text-white'>
+							<p className='text-lg font-black text-[#172033]'>
 								{stats.deliveredOrders}
 							</p>
 						</div>
 					</div>
 				</Card>
-				<Card className='p-4 dark:bg-gray-800 dark:border-gray-700 border-l-4 border-l-red-400'>
+
+				<Card className='p-4 bg-white rounded-2xl border border-[#E5E7EB] shadow-xs hover:border-red-300 transition-colors'>
 					<div className='flex items-center gap-3'>
-						<XCircle className='h-5 w-5 text-red-500' />
+						<div className='p-2.5 rounded-xl bg-red-50 border border-red-100 text-red-700'>
+							<XCircle className='h-4 w-4' />
+						</div>
 						<div>
-							<p className='text-xs text-gray-500 dark:text-gray-400'>
+							<p className='text-[11px] font-extrabold text-[#64748B] uppercase tracking-wider'>
 								বাতিল
 							</p>
-							<p className='text-xl font-bold dark:text-white'>
+							<p className='text-lg font-black text-[#172033]'>
 								{stats.cancelledOrders}
 							</p>
 						</div>
@@ -396,115 +416,125 @@ export default function AdminDashboardPage() {
 				</Card>
 			</div>
 
-			{/* Revenue Card */}
-			<Card className='p-6 dark:bg-gray-800 dark:border-gray-700'>
-				<div className='flex items-center justify-between mb-4'>
-					<h2 className='text-xl font-semibold dark:text-white flex items-center gap-2'>
-						<Coins className='h-5 w-5 text-green-500' />
-						আয় পরিসংখ্যান
-					</h2>
-					<Badge variant='secondary' className='text-lg px-4 py-1'>
-						মোট: {formatCurrency(stats.totalRevenue)}
+			{/* REVENUE STATISTICS CARD */}
+			<Card className='p-6 bg-white rounded-2xl border border-[#E5E7EB] shadow-xs space-y-4'>
+				<div className='flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-[#E5E7EB] pb-4'>
+					<div className='flex items-center gap-2.5'>
+						<div className='w-9 h-9 rounded-xl bg-[#ECFDF5] border border-[#A7F3D0] flex items-center justify-center text-[#16A34A]'>
+							<Coins className='h-5 w-5 text-[#16A34A]' />
+						</div>
+						<div>
+							<h2 className='text-lg font-extrabold text-[#172033] tracking-tight'>
+								আয় পরিসংখ্যান (Revenue Overview)
+							</h2>
+							<p className='text-xs text-[#64748B] font-medium'>
+								প্ল্যাটফর্মের বিক্রয় ও অর্জিত রাজস্ব তথ্য
+							</p>
+						</div>
+					</div>
+
+					<Badge className='bg-[#FFF9E8] text-[#26351B] border border-[#F5B800]/40 text-sm font-black px-3.5 py-1.5 rounded-xl shadow-2xs'>
+						মোট আয়: {formatCurrency(stats.totalRevenue)}
 					</Badge>
 				</div>
 
-				<div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
-					<div className='bg-green-50 dark:bg-green-900/20 rounded-lg p-4'>
-						<p className='text-sm text-green-700 dark:text-green-400'>
+				<div className='grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5 pt-1'>
+					<div className='bg-[#FAFAF6] rounded-2xl p-4 sm:p-5 border border-[#E5E7EB] space-y-1 shadow-2xs'>
+						<p className='text-xs font-bold text-[#64748B] uppercase tracking-wider'>
 							আজকের আয়
 						</p>
-						<p className='text-2xl font-bold text-green-800 dark:text-green-300'>
+						<p className='text-2xl font-black text-[#26351B]'>
 							{formatCurrency(stats.todayRevenue)}
 						</p>
 					</div>
-					<div className='bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4'>
-						<p className='text-sm text-blue-700 dark:text-blue-400'>
+
+					<div className='bg-[#FAFAF6] rounded-2xl p-4 sm:p-5 border border-[#E5E7EB] space-y-1 shadow-2xs'>
+						<p className='text-xs font-bold text-[#64748B] uppercase tracking-wider'>
 							সাপ্তাহিক আয়
 						</p>
-						<p className='text-2xl font-bold text-blue-800 dark:text-blue-300'>
+						<p className='text-2xl font-black text-[#26351B]'>
 							{formatCurrency(stats.weekRevenue)}
 						</p>
 					</div>
-					<div className='bg-purple-50 dark:bg-purple-900/20 rounded-lg p-4'>
-						<p className='text-sm text-purple-700 dark:text-purple-400'>
+
+					<div className='bg-[#FAFAF6] rounded-2xl p-4 sm:p-5 border border-[#E5E7EB] space-y-1 shadow-2xs'>
+						<p className='text-xs font-bold text-[#64748B] uppercase tracking-wider'>
 							মাসিক আয়
 						</p>
-						<p className='text-2xl font-bold text-purple-800 dark:text-purple-300'>
+						<p className='text-2xl font-black text-[#26351B]'>
 							{formatCurrency(stats.monthRevenue)}
 						</p>
 					</div>
 				</div>
 			</Card>
 
-			{/* Recent Orders Table */}
-			<Card className='p-6 dark:bg-gray-800 dark:border-gray-700'>
-				<div className='flex justify-between items-center mb-4'>
-					<h2 className='text-xl font-semibold dark:text-white'>
-						সাম্প্রতিক অর্ডার
-					</h2>
-					<Button variant='outline' size='sm' asChild>
-						<Link href='/admin/orders'>সব দেখুন</Link>
+			{/* RECENT ORDERS TABLE */}
+			<Card className='p-6 bg-white rounded-2xl border border-[#E5E7EB] shadow-xs space-y-4 overflow-hidden'>
+				<div className='flex justify-between items-center border-b border-[#E5E7EB] pb-4'>
+					<div>
+						<h2 className='text-lg font-extrabold text-[#172033] tracking-tight'>
+							সাম্প্রতিক অর্ডার
+						</h2>
+						<p className='text-xs text-[#64748B] font-medium'>
+							সর্বশেষ সম্পন্ন হওয়া অর্ডার তালিকা
+						</p>
+					</div>
+					<Button
+						variant='outline'
+						size='sm'
+						asChild
+						className='rounded-xl border-[#E5E7EB] text-xs font-extrabold h-9 px-4 hover:bg-[#FAFAF6]'
+					>
+						<Link href='/admin/orders'>সব দেখুন →</Link>
 					</Button>
 				</div>
 
 				{recentOrders.length > 0 ? (
-					<div className='overflow-x-auto'>
-						<table className='w-full text-sm'>
+					<div className='overflow-x-auto rounded-2xl border border-[#E5E7EB]'>
+						<table className='w-full text-left border-collapse text-xs sm:text-sm'>
 							<thead>
-								<tr className='border-b dark:border-gray-700'>
-									<th className='text-left py-3 px-2 text-gray-500 dark:text-gray-400 font-medium'>
-										অর্ডার ID
-									</th>
-									<th className='text-left py-3 px-2 text-gray-500 dark:text-gray-400 font-medium'>
-										ক্রেতা
-									</th>
-									<th className='text-left py-3 px-2 text-gray-500 dark:text-gray-400 font-medium'>
-										ফোন
-									</th>
-									<th className='text-left py-3 px-2 text-gray-500 dark:text-gray-400 font-medium'>
-										মোট
-									</th>
-									<th className='text-left py-3 px-2 text-gray-500 dark:text-gray-400 font-medium'>
-										স্ট্যাটাস
-									</th>
-									<th className='text-left py-3 px-2 text-gray-500 dark:text-gray-400 font-medium'>
-										তারিখ
-									</th>
+								<tr className='bg-[#FAFAF6] border-b border-[#E5E7EB] text-[#64748B] font-extrabold uppercase tracking-wider text-[11px]'>
+									<th className='py-3.5 px-4'>অর্ডার ID</th>
+									<th className='py-3.5 px-4'>ক্রেতা</th>
+									<th className='py-3.5 px-4'>ফোন</th>
+									<th className='py-3.5 px-4'>মোট</th>
+									<th className='py-3.5 px-4'>স্ট্যাটাস</th>
+									<th className='py-3.5 px-4'>তারিখ</th>
 								</tr>
 							</thead>
-							<tbody>
+							<tbody className='divide-y divide-[#E5E7EB] bg-white'>
 								{recentOrders.map((order) => {
 									const statusInfo =
 										OrderService.getOrderStatusInfo(
 											order.orderStatus
 										);
+									const grandTotal = OrderService.getOrderGrandTotal(order);
+
 									return (
 										<tr
 											key={order.id}
-											className='border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors'
+											className='hover:bg-[#FFF9E8] transition-colors duration-150'
 										>
-											<td className='py-3 px-2 font-mono text-xs dark:text-gray-300'>
+											<td className='py-3.5 px-4 font-black text-[#172033]'>
 												#{order.id.substring(0, 8)}
 											</td>
-											<td className='py-3 px-2 dark:text-white font-medium'>
+											<td className='py-3.5 px-4 text-[#172033] font-bold'>
 												{order.name}
 											</td>
-											<td className='py-3 px-2 dark:text-gray-300'>
+											<td className='py-3.5 px-4 text-[#64748B] font-semibold'>
 												{order.phoneNumber}
 											</td>
-											<td className='py-3 px-2 font-semibold dark:text-white'>
-												{formatCurrency(
-													Number(order.totalAmount)
-												)}
+											<td className='py-3.5 px-4 font-black text-[#26351B] text-base'>
+												{formatCurrency(grandTotal)}
 											</td>
-											<td className='py-3 px-2'>
+											<td className='py-3.5 px-4'>
 												<span
-													className={`inline-block text-xs px-2 py-1 rounded-full ${statusInfo.color} ${statusInfo.textColor}`}
+													className={`inline-block text-[11px] font-extrabold px-2.5 py-0.5 rounded-full border ${statusInfo.color} ${statusInfo.textColor}`}
 												>
 													{statusInfo.label}
 												</span>
 											</td>
-											<td className='py-3 px-2 text-gray-500 dark:text-gray-400 text-xs'>
+											<td className='py-3.5 px-4 text-[#64748B] font-medium text-xs'>
 												{OrderService.formatOrderDate(
 													order.orderDate
 												)}
@@ -516,10 +546,10 @@ export default function AdminDashboardPage() {
 						</table>
 					</div>
 				) : (
-					<div className='text-center py-12'>
-						<ShoppingCart className='h-12 w-12 mx-auto mb-3 text-gray-300 dark:text-gray-600' />
-						<p className='text-gray-500 dark:text-gray-400'>
-							এখনো কোনো অর্ডার নেই
+					<div className='text-center py-12 bg-[#FAFAF6] rounded-2xl border border-[#E5E7EB]'>
+						<ShoppingCart className='h-10 w-10 mx-auto mb-2 text-[#64748B]/40' />
+						<p className='text-xs font-bold text-[#64748B]'>
+							এখনো কোনো অর্ডার পাওয়া যায়নি
 						</p>
 					</div>
 				)}
@@ -530,51 +560,48 @@ export default function AdminDashboardPage() {
 
 function DashboardSkeleton() {
 	return (
-		<div className='p-6 space-y-6 w-full mx-auto'>
-			<div className='flex flex-col md:flex-row justify-between gap-4'>
+		<div className='space-y-6 w-full mx-auto pb-6 animate-pulse'>
+			<div className='flex flex-col md:flex-row justify-between gap-4 p-6 bg-white rounded-2xl border border-[#E5E7EB]'>
 				<div>
-					<Skeleton className='h-8 w-56 mb-2' />
-					<Skeleton className='h-4 w-72' />
+					<Skeleton className='h-8 w-56 mb-2 rounded-lg' />
+					<Skeleton className='h-4 w-72 rounded-md' />
 				</div>
 				<div className='flex gap-2'>
-					<Skeleton className='h-10 w-36' />
-					<Skeleton className='h-10 w-36' />
+					<Skeleton className='h-10 w-36 rounded-xl' />
+					<Skeleton className='h-10 w-36 rounded-xl' />
 				</div>
 			</div>
+
 			<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4'>
 				{[1, 2, 3, 4].map((i) => (
-					<Card key={i} className='p-6'>
+					<Card key={i} className='p-6 bg-white rounded-2xl border border-[#E5E7EB]'>
 						<div className='flex items-center justify-between'>
 							<div>
-								<Skeleton className='h-4 w-20 mb-2' />
-								<Skeleton className='h-8 w-16' />
+								<Skeleton className='h-4 w-20 mb-2 rounded-md' />
+								<Skeleton className='h-8 w-16 rounded-lg' />
 							</div>
-							<Skeleton className='h-12 w-12 rounded-full' />
+							<Skeleton className='h-12 w-12 rounded-2xl' />
 						</div>
-						<Skeleton className='h-4 w-32 mt-2' />
+						<Skeleton className='h-4 w-32 mt-3 rounded-md' />
 					</Card>
 				))}
 			</div>
+
 			<div className='grid grid-cols-2 sm:grid-cols-4 gap-4'>
 				{[1, 2, 3, 4].map((i) => (
-					<Card key={i} className='p-4'>
-						<Skeleton className='h-12 w-full' />
+					<Card key={i} className='p-4 bg-white rounded-2xl border border-[#E5E7EB]'>
+						<Skeleton className='h-10 w-full rounded-xl' />
 					</Card>
 				))}
 			</div>
-			<Card className='p-6'>
-				<Skeleton className='h-6 w-40 mb-4' />
+
+			<Card className='p-6 bg-white rounded-2xl border border-[#E5E7EB]'>
+				<Skeleton className='h-6 w-40 mb-4 rounded-lg' />
 				<div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
 					{[1, 2, 3].map((i) => (
-						<Skeleton key={i} className='h-20 w-full rounded-lg' />
+						<Skeleton key={i} className='h-20 w-full rounded-2xl' />
 					))}
 				</div>
-			</Card>
-			<Card className='p-6'>
-				<Skeleton className='h-6 w-48 mb-4' />
-				{[1, 2, 3, 4, 5].map((i) => (
-					<Skeleton key={i} className='h-12 w-full mb-2' />
-				))}
 			</Card>
 		</div>
 	);

@@ -9,6 +9,9 @@ import {
 	FileText,
 	MoreHorizontal,
 	RefreshCw,
+	Search,
+	Filter,
+	Store as StoreIcon,
 } from 'lucide-react';
 
 import { StoreService } from '@/services/store-service';
@@ -23,14 +26,6 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import {
-	Table,
-	TableBody,
-	TableCell,
-	TableHead,
-	TableHeader,
-	TableRow,
-} from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -94,33 +89,40 @@ export function AdminShopsList() {
 	};
 
 	return (
-		<div className='space-y-4'>
-			<div className='flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between'>
-				<div className='flex gap-2 w-full sm:w-auto'>
-					<Input
-						placeholder='নাম দিয়ে খুঁজুন...'
-						value={search}
-						onChange={(e) => setSearch(e.target.value)}
-						onKeyDown={(e) => {
-							if (e.key === 'Enter') {
-								setPage(1);
-								fetchStores();
-							}
-						}}
-					/>
+		<Card className='p-6 bg-white rounded-2xl border border-[#E5E7EB] shadow-xs space-y-5'>
+			{/* TOOLBAR */}
+			<div className='flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between bg-[#FAFAF6] p-4 rounded-2xl border border-[#E5E7EB]'>
+				<div className='flex items-center gap-2 flex-1 max-w-md'>
+					<div className='relative w-full'>
+						<Search className='absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#64748B]' />
+						<Input
+							placeholder='নাম দিয়ে খুঁজুন...'
+							value={search}
+							className='pl-9 bg-white border-[#E5E7EB] rounded-xl text-xs font-bold focus-visible:ring-[#F5B800] h-10'
+							onChange={(e) => setSearch(e.target.value)}
+							onKeyDown={(e) => {
+								if (e.key === 'Enter') {
+									setPage(1);
+									fetchStores();
+								}
+							}}
+						/>
+					</div>
 					<Button
 						variant='outline'
 						onClick={() => {
 							setPage(1);
 							fetchStores();
 						}}
+						className='bg-white border-[#E5E7EB] text-xs font-extrabold h-10 rounded-xl hover:bg-white shrink-0'
 					>
-						<RefreshCw className='h-4 w-4 mr-2' /> রিফ্রেশ
+						<RefreshCw className='h-3.5 w-3.5 mr-1.5 text-[#26351B]' /> রিফ্রেশ
 					</Button>
 				</div>
-				<div className='flex gap-2'>
+
+				<div className='flex items-center gap-2'>
 					<select
-						className='h-10 border rounded-md px-3 text-sm'
+						className='h-10 border border-[#E5E7EB] rounded-xl px-3 text-xs font-bold bg-white text-[#172033] focus:ring-1 focus:ring-[#F5B800]'
 						value={statusFilter || ''}
 						onChange={(e) =>
 							setStatusFilter((e.target.value || undefined) as any)
@@ -134,185 +136,189 @@ export function AdminShopsList() {
 						))}
 					</select>
 					<Button
-						variant='secondary'
+						variant='outline'
 						onClick={() => {
 							setStatusFilter(undefined);
 							setSearch('');
 							setPage(1);
 							fetchStores();
 						}}
+						className='bg-white border-[#E5E7EB] text-xs font-extrabold h-10 rounded-xl hover:bg-[#FAFAF6]'
 					>
 						ক্লিয়ার
 					</Button>
 				</div>
 			</div>
 
-			<Card className='overflow-hidden'>
-				<div className='overflow-x-auto'>
-					<Table>
-						<TableHeader>
-							<TableRow>
-								<TableHead className='w-[72px]'>ছবি</TableHead>
-								<TableHead>নাম</TableHead>
-								<TableHead>অবস্থান</TableHead>
-								<TableHead>স্টেটাস</TableHead>
-								<TableHead className='w-[80px]' />
-							</TableRow>
-						</TableHeader>
-						<TableBody>
-							{loading ? (
-								Array.from({ length: 5 }).map((_, i) => (
-									<TableRow key={`sk-${i}`}>
-										<TableCell>
-											<div className='h-12 w-12 bg-muted animate-pulse rounded' />
-										</TableCell>
-										<TableCell>
-											<div className='h-4 w-40 bg-muted animate-pulse rounded' />
-										</TableCell>
-										<TableCell>
-											<div className='h-4 w-32 bg-muted animate-pulse rounded' />
-										</TableCell>
-										<TableCell>
-											<div className='h-6 w-24 bg-muted animate-pulse rounded' />
-										</TableCell>
-										<TableCell />
-									</TableRow>
-								))
-							) : stores.length === 0 ? (
-								<TableRow>
-									<TableCell
-										colSpan={5}
-										className='text-center py-8 text-muted-foreground'
-									>
-										কোন স্টোর পাওয়া যায়নি
-									</TableCell>
-								</TableRow>
-							) : (
-								stores.map((store) => {
-									const statusInfo = StoreService.getFormattedStatus(
-										store.status
-									);
-									const img = StoreService.getStoreImageUrl(store);
-									return (
-										<TableRow key={store.id}>
-											<TableCell>
-												<div className='h-12 w-12 rounded-md overflow-hidden bg-muted/20'>
-													<Image
-														src={img || '/placeholder.svg'}
-														alt={store.name}
-														width={48}
-														height={48}
-														className='h-full w-full object-cover'
-													/>
-												</div>
-											</TableCell>
-											<TableCell className='font-medium'>
-												<div className='flex flex-col'>
-													<span>{store.name}</span>
-													<span className='text-xs text-muted-foreground'>
-														{store.slug}
-													</span>
-												</div>
-											</TableCell>
-											<TableCell>
-												<div className='text-sm text-muted-foreground'>
-													{store.district ? `${store.district}, ` : ''}
-													{store.division || ''}
-												</div>
-											</TableCell>
-											<TableCell>
-												<Badge
-													variant='outline'
-													className={`${statusInfo.color} ${statusInfo.textColor}`}
-												>
-													{statusInfo.label}
-												</Badge>
-											</TableCell>
-											<TableCell>
-												<DropdownMenu>
-													<DropdownMenuTrigger asChild>
-														<Button variant='ghost' size='icon'>
-															<MoreHorizontal className='h-4 w-4' />
-															<span className='sr-only'>মেনু</span>
-														</Button>
-													</DropdownMenuTrigger>
-													<DropdownMenuContent align='end'>
-														<DropdownMenuLabel>অ্যাকশন</DropdownMenuLabel>
-														<DropdownMenuSeparator />
-														<DropdownMenuItem asChild>
-															<Link href={`/admin/shops/${store.id}`}>
-																<CheckCircle2 className='h-4 w-4 mr-2' />{' '}
-																ম্যানেজ
-															</Link>
-														</DropdownMenuItem>
-														<DropdownMenuItem asChild>
-															<Link href={`/admin/shops/${store.id}/products`}>
-																<CheckCircle2 className='h-4 w-4 mr-2' />{' '}
-																প্রোডাক্টস
-															</Link>
-														</DropdownMenuItem>
-														<DropdownMenuItem asChild>
-															<StoreNidViewer
-																storeId={String(store.id)}
-																storeName={store.name}
-																trigger={
-																	<div className='flex items-center w-full px-2 py-1.5 text-sm cursor-pointer hover:bg-accent hover:text-accent-foreground rounded-sm'>
-																		<FileText className='h-4 w-4 mr-2' />
-																		NID দেখুন
-																	</div>
-																}
-															/>
-														</DropdownMenuItem>
-														<DropdownMenuSeparator />
-														<DropdownMenuItem
-															onClick={() => onArchiveToggle(store)}
-															className='text-destructive focus:text-destructive'
-														>
-															{store.status === StoreStatus.ARCHIVED ? (
-																<>
-																	<RefreshCw className='h-4 w-4 mr-2' />{' '}
-																	আনআর্কাইভ
-																</>
-															) : (
-																<>
-																	<Archive className='h-4 w-4 mr-2' /> আর্কাইভ
-																</>
-															)}
-														</DropdownMenuItem>
-													</DropdownMenuContent>
-												</DropdownMenu>
-											</TableCell>
-										</TableRow>
-									);
-								})
-							)}
-						</TableBody>
-					</Table>
-				</div>
-				{!loading && totalPages > 1 && (
-					<div className='flex items-center justify-end gap-2 py-4 px-4 border-t'>
+			{/* STORES TABLE */}
+			<div className='overflow-x-auto rounded-2xl border border-[#E5E7EB]'>
+				<table className='w-full text-left border-collapse text-xs sm:text-sm'>
+					<thead>
+						<tr className='bg-[#FAFAF6] border-b border-[#E5E7EB] text-[#64748B] font-extrabold uppercase tracking-wider text-[11px]'>
+							<th className='py-3.5 px-4 w-[72px]'>ছবি</th>
+							<th className='py-3.5 px-4'>নাম</th>
+							<th className='py-3.5 px-4'>অবস্থান</th>
+							<th className='py-3.5 px-4'>স্টেটাস</th>
+							<th className='py-3.5 px-4 text-right w-[80px]'>অ্যাকশন</th>
+						</tr>
+					</thead>
+					<tbody className='divide-y divide-[#E5E7EB] bg-white'>
+						{loading ? (
+							Array.from({ length: 5 }).map((_, i) => (
+								<tr key={`sk-${i}`}>
+									<td className='py-3.5 px-4'>
+										<div className='h-12 w-12 bg-gray-100 animate-pulse rounded-xl' />
+									</td>
+									<td className='py-3.5 px-4'>
+										<div className='h-4 w-40 bg-gray-100 animate-pulse rounded-md' />
+									</td>
+									<td className='py-3.5 px-4'>
+										<div className='h-4 w-32 bg-gray-100 animate-pulse rounded-md' />
+									</td>
+									<td className='py-3.5 px-4'>
+										<div className='h-6 w-24 bg-gray-100 animate-pulse rounded-full' />
+									</td>
+									<td className='py-3.5 px-4' />
+								</tr>
+							))
+						) : stores.length === 0 ? (
+							<tr>
+								<td
+									colSpan={5}
+									className='text-center py-12 text-[#64748B] font-bold text-xs bg-[#FAFAF6]'
+								>
+									<StoreIcon className='h-10 w-10 mx-auto mb-2 text-[#64748B]/40' />
+									কোন স্টোর পাওয়া যায়নি
+								</td>
+							</tr>
+						) : (
+							stores.map((store) => {
+								const statusInfo = StoreService.getFormattedStatus(
+									store.status
+								);
+								const img = StoreService.getStoreImageUrl(store);
+								return (
+									<tr key={store.id} className='hover:bg-[#FFF9E8] transition-colors duration-150'>
+										<td className='py-3.5 px-4'>
+											<div className='h-12 w-12 rounded-xl overflow-hidden bg-[#FFF9E8] border border-[#E5E7EB] relative flex-shrink-0'>
+												<Image
+													src={img || '/placeholder.svg'}
+													alt={store.name}
+													width={48}
+													height={48}
+													className='h-full w-full object-cover'
+												/>
+											</div>
+										</td>
+										<td className='py-3.5 px-4 font-extrabold text-[#172033]'>
+											<div className='flex flex-col'>
+												<span>{store.name}</span>
+												<span className='text-xs font-semibold text-[#64748B]'>
+													{store.slug}
+												</span>
+											</div>
+										</td>
+										<td className='py-3.5 px-4 text-xs font-bold text-[#64748B]'>
+											{store.district ? `${store.district}, ` : ''}
+											{store.division || ''}
+										</td>
+										<td className='py-3.5 px-4'>
+											<Badge
+												variant='outline'
+												className={`text-[11px] font-extrabold px-2.5 py-0.5 rounded-full border ${statusInfo.color} ${statusInfo.textColor}`}
+											>
+												{statusInfo.label}
+											</Badge>
+										</td>
+										<td className='py-3.5 px-4 text-right'>
+											<DropdownMenu>
+												<DropdownMenuTrigger asChild>
+													<Button variant='ghost' size='icon' className='h-8 w-8 rounded-xl border border-[#E5E7EB] hover:bg-[#FAFAF6]'>
+														<MoreHorizontal className='h-4 w-4 text-[#172033]' />
+														<span className='sr-only'>মেনু</span>
+													</Button>
+												</DropdownMenuTrigger>
+												<DropdownMenuContent align='end' className='rounded-xl border-[#E5E7EB] bg-white font-bold text-xs p-2 shadow-md'>
+													<DropdownMenuLabel className='text-[10px] text-[#64748B] uppercase tracking-wider'>অ্যাকশন</DropdownMenuLabel>
+													<DropdownMenuSeparator />
+													<DropdownMenuItem asChild className='cursor-pointer py-2'>
+														<Link href={`/admin/shops/${store.id}`}>
+															<CheckCircle2 className='h-4 w-4 mr-2 text-[#26351B]' />{' '}
+															ম্যানেজ
+														</Link>
+													</DropdownMenuItem>
+													<DropdownMenuItem asChild className='cursor-pointer py-2'>
+														<Link href={`/admin/shops/${store.id}/products`}>
+															<CheckCircle2 className='h-4 w-4 mr-2 text-[#26351B]' />{' '}
+															প্রোডাক্টস
+														</Link>
+													</DropdownMenuItem>
+													<DropdownMenuItem asChild className='cursor-pointer py-2'>
+														<StoreNidViewer
+															storeId={String(store.id)}
+															storeName={store.name}
+															trigger={
+																<div className='flex items-center w-full px-2 py-1 text-xs font-bold cursor-pointer hover:bg-[#FFF9E8] rounded-md'>
+																	<FileText className='h-4 w-4 mr-2 text-[#F5B800]' />
+																	NID দেখুন
+																</div>
+															}
+														/>
+													</DropdownMenuItem>
+													<DropdownMenuSeparator />
+													<DropdownMenuItem
+														onClick={() => onArchiveToggle(store)}
+														className='text-red-600 focus:text-red-700 cursor-pointer py-2'
+													>
+														{store.status === StoreStatus.ARCHIVED ? (
+															<>
+																<RefreshCw className='h-4 w-4 mr-2' />{' '}
+																আনআর্কাইভ
+															</>
+														) : (
+															<>
+																<Archive className='h-4 w-4 mr-2' /> আর্কাইভ
+															</>
+														)}
+													</DropdownMenuItem>
+												</DropdownMenuContent>
+											</DropdownMenu>
+										</td>
+									</tr>
+								);
+							})
+						)}
+					</tbody>
+				</table>
+			</div>
+
+			{!loading && totalPages > 1 && (
+				<div className='flex items-center justify-between py-3 px-2 border-t border-[#E5E7EB] pt-4'>
+					<div className='text-xs font-bold text-[#64748B]'>
+						পৃষ্ঠা {page} / {totalPages}
+					</div>
+					<div className='flex items-center gap-2'>
 						<Button
 							variant='outline'
 							size='sm'
 							onClick={() => setPage((p) => Math.max(1, p - 1))}
 							disabled={page === 1}
+							className='rounded-xl border-[#E5E7EB] text-xs font-extrabold h-9 px-3'
 						>
 							পূর্ববর্তী
 						</Button>
-						<div className='text-sm text-muted-foreground'>
-							পৃষ্ঠা {page} / {totalPages}
-						</div>
 						<Button
 							variant='outline'
 							size='sm'
 							onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
 							disabled={page === totalPages}
+							className='rounded-xl border-[#E5E7EB] text-xs font-extrabold h-9 px-3'
 						>
 							পরবর্তী
 						</Button>
 					</div>
-				)}
-			</Card>
-		</div>
+				</div>
+			)}
+		</Card>
 	);
 }

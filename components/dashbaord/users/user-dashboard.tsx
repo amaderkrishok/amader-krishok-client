@@ -3,20 +3,14 @@
 import type React from 'react';
 
 import { useState, useEffect } from 'react';
-import { Plus, Filter, Search } from 'lucide-react';
+import { Plus, Filter, Search, Users, ShieldCheck } from 'lucide-react';
 import { toast } from 'sonner';
 import { useSession } from '@/components/providers/session-provider';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
 	DropdownMenu,
@@ -52,7 +46,6 @@ export function UserDashboard() {
 		currentPage: 1,
 	});
 
-	// Debounce search term
 	useEffect(() => {
 		const timer = setTimeout(() => {
 			setDebouncedSearchTerm(searchTerm);
@@ -60,7 +53,6 @@ export function UserDashboard() {
 		return () => clearTimeout(timer);
 	}, [searchTerm]);
 
-	// Fetch users when filters or search term changes
 	useEffect(() => {
 		fetchUsers(1);
 	}, [filters, debouncedSearchTerm]);
@@ -76,9 +68,7 @@ export function UserDashboard() {
 				isBlocked: filters.isBlocked,
 			});
 
-			// Make sure response.data exists and is an array
 			if (Array.isArray(response.data)) {
-				// Filter out the current user
 				let filteredUsers = response.data;
 
 				if (session?.user?.id) {
@@ -93,7 +83,6 @@ export function UserDashboard() {
 				setUsers([]);
 			}
 
-			// Check if meta exists before setting it
 			if (response.meta) {
 				setMeta(response.meta);
 			} else {
@@ -165,7 +154,6 @@ export function UserDashboard() {
 	const handleFormSubmit = async (user: UserType) => {
 		try {
 			if (user.id) {
-				// Update basic user info
 				await UserService.updateUser(user.id, {
 					name: user.name,
 					email: user.email,
@@ -173,7 +161,6 @@ export function UserDashboard() {
 					password: user.password,
 				});
 
-				// Update status fields separately
 				await UserService.updateCompleteStatus(user.id, {
 					role: user.role,
 					isApproved: user.isApproved,
@@ -214,60 +201,90 @@ export function UserDashboard() {
 	};
 
 	return (
-		<Card className='w-full'>
-			<CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-				<div>
-					<CardTitle className='text-2xl font-bold tracking-tight'>
-						User Management
-					</CardTitle>
-					<CardDescription>
-						Manage your users and their account permissions
-					</CardDescription>
+		<div className='space-y-6 w-full mx-auto pb-6'>
+			{/* HERO HEADER */}
+			<div className='flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-gradient-to-r from-[#FFF9E8] via-white to-white p-6 sm:p-7 rounded-2xl border border-[#E5E7EB] shadow-xs relative overflow-hidden'>
+				<div className='space-y-1.5 z-10'>
+					<div className='flex items-center gap-2'>
+						<div className='w-8 h-8 rounded-xl bg-[#26351B] flex items-center justify-center text-[#F5B800] shadow-2xs'>
+							<Users className='w-4 h-4 text-[#F5B800]' />
+						</div>
+						<h1 className='text-2xl sm:text-3xl font-black text-[#172033] tracking-tight'>
+							ইউজার ম্যানেজমেন্ট (User Management)
+						</h1>
+					</div>
+					<p className='text-xs sm:text-sm text-[#64748B] font-medium'>
+						প্ল্যাটফর্মের সকল ব্যবহারকারী, রোলে পারমিশন ও একাউন্ট স্ট্যাটাস পরিচালনা করুন
+					</p>
 				</div>
-				<Button onClick={handleAddUser}>
-					<Plus className='mr-2 h-4 w-4' />
-					Add User
+
+				<Button
+					onClick={handleAddUser}
+					className='bg-[#F5B800] hover:bg-[#E0A800] text-[#172033] font-extrabold rounded-xl h-10 px-5 text-xs shadow-xs border-0 transition-all hover:-translate-y-0.5 z-10'
+				>
+					<Plus className='mr-2 h-4 w-4 text-[#172033]' />
+					নতুন ইউজার যোগ করুন
 				</Button>
-			</CardHeader>
-			<CardContent>
+			</div>
+
+			{/* MAIN CARD CONTAINER */}
+			<Card className='p-6 bg-white rounded-2xl border border-[#E5E7EB] shadow-xs space-y-6'>
 				<Tabs value={activeTab} onValueChange={setActiveTab}>
-					<TabsList className='mb-4'>
-						<TabsTrigger value='list'>Users List</TabsTrigger>
-						<TabsTrigger value='form' disabled={!isFormOpen}>
-							{selectedUser ? 'Edit User' : 'New User'}
+					<TabsList className='mb-6 bg-[#FAFAF6] p-1.5 rounded-2xl border border-[#E5E7EB] w-full sm:w-auto inline-flex'>
+						<TabsTrigger
+							value='list'
+							className='rounded-xl text-xs font-extrabold py-2 px-4 transition-all data-[state=active]:bg-white data-[state=active]:text-[#172033] data-[state=active]:shadow-xs'
+						>
+							👥 ইউজার লিস্ট ({meta.totalItems})
+						</TabsTrigger>
+						<TabsTrigger
+							value='form'
+							disabled={!isFormOpen}
+							className='rounded-xl text-xs font-extrabold py-2 px-4 transition-all data-[state=active]:bg-white data-[state=active]:text-[#172033] data-[state=active]:shadow-xs'
+						>
+							{selectedUser ? '✏️ সম্পাদনা করুন' : '➕ নতুন ইউজার'}
 						</TabsTrigger>
 					</TabsList>
-					<TabsContent value='list'>
-						<div className='flex items-center justify-between mb-4'>
+
+					<TabsContent value='list' className='space-y-4 focus-visible:outline-none'>
+						{/* TOOLBAR SEARCH & FILTERS */}
+						<div className='flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-[#FAFAF6] p-4 rounded-2xl border border-[#E5E7EB]'>
 							<div className='flex items-center gap-2'>
-								<h2 className='text-lg font-medium'>All users</h2>
-								<Badge variant='secondary'>{meta.totalItems}</Badge>
+								<h2 className='text-xs font-extrabold text-[#172033] uppercase tracking-wider flex items-center gap-2'>
+									<ShieldCheck className='w-4 h-4 text-[#26351B]' />
+									ব্যবহারকারী তালিকা
+								</h2>
+								<Badge className='bg-[#FFF9E8] text-[#26351B] border border-[#F5B800]/40 font-bold text-xs px-2.5 py-0.5 rounded-lg'>
+									{meta.totalItems} জন
+								</Badge>
 							</div>
-							<div className='flex items-center gap-3'>
-								<div className='relative'>
-									<Search className='absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground' />
+
+							<div className='flex flex-col sm:flex-row items-stretch sm:items-center gap-3'>
+								<div className='relative flex-1 sm:w-72'>
+									<Search className='absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#64748B]' />
 									<Input
-										placeholder='Search users...'
-										className='pl-9 w-[300px]'
+										placeholder='ইউজার খুঁজুন (নাম, ইমেইল, ফোন)...'
+										className='pl-9 bg-white border-[#E5E7EB] rounded-xl text-xs font-bold focus-visible:ring-[#F5B800] h-10'
 										value={searchTerm}
 										onChange={handleSearch}
 									/>
 								</div>
+
 								<DropdownMenu>
 									<DropdownMenuTrigger asChild>
-										<Button variant='outline'>
-											<Filter className='h-4 w-4 mr-2' />
-											Filters
+										<Button variant='outline' className='bg-white border-[#E5E7EB] text-xs font-extrabold h-10 rounded-xl hover:bg-white'>
+											<Filter className='h-4 w-4 mr-2 text-[#26351B]' />
+											ফিল্টার
 										</Button>
 									</DropdownMenuTrigger>
-									<DropdownMenuContent>
+									<DropdownMenuContent className='rounded-xl border-[#E5E7EB] bg-white font-bold text-xs p-2 shadow-md'>
 										<DropdownMenuCheckboxItem
 											checked={filters.isBlocked === false}
 											onCheckedChange={(checked) =>
 												handleFilterChange('isBlocked', checked ? false : null)
 											}
 										>
-											Active Users
+											সক্রিয় ইউজার (Active)
 										</DropdownMenuCheckboxItem>
 										<DropdownMenuCheckboxItem
 											checked={filters.isBlocked === true}
@@ -275,7 +292,7 @@ export function UserDashboard() {
 												handleFilterChange('isBlocked', checked ? true : null)
 											}
 										>
-											Blocked Users
+											ব্লকড ইউজার (Blocked)
 										</DropdownMenuCheckboxItem>
 										<DropdownMenuSeparator />
 										<DropdownMenuCheckboxItem
@@ -284,7 +301,7 @@ export function UserDashboard() {
 												handleFilterChange('role', checked ? 'user' : null)
 											}
 										>
-											User Role
+											User রোল
 										</DropdownMenuCheckboxItem>
 										<DropdownMenuCheckboxItem
 											checked={filters.role === 'admin'}
@@ -292,7 +309,7 @@ export function UserDashboard() {
 												handleFilterChange('role', checked ? 'admin' : null)
 											}
 										>
-											Admin Role
+											Admin রোল
 										</DropdownMenuCheckboxItem>
 										<DropdownMenuCheckboxItem
 											checked={filters.role === 'moderator'}
@@ -300,7 +317,7 @@ export function UserDashboard() {
 												handleFilterChange('role', checked ? 'moderator' : null)
 											}
 										>
-											Moderator Role
+											Moderator রোল
 										</DropdownMenuCheckboxItem>
 										<DropdownMenuCheckboxItem
 											checked={filters.role === 'vendor'}
@@ -308,12 +325,13 @@ export function UserDashboard() {
 												handleFilterChange('role', checked ? 'vendor' : null)
 											}
 										>
-											Vendor Role
+											Vendor রোল
 										</DropdownMenuCheckboxItem>
 									</DropdownMenuContent>
 								</DropdownMenu>
 							</div>
 						</div>
+
 						<UserList
 							users={users}
 							isLoading={isLoading}
@@ -326,7 +344,8 @@ export function UserDashboard() {
 							onPageChange={handlePageChange}
 						/>
 					</TabsContent>
-					<TabsContent value='form'>
+
+					<TabsContent value='form' className='focus-visible:outline-none'>
 						{isFormOpen && (
 							<UserForm
 								user={selectedUser}
@@ -336,7 +355,7 @@ export function UserDashboard() {
 						)}
 					</TabsContent>
 				</Tabs>
-			</CardContent>
-		</Card>
+			</Card>
+		</div>
 	);
 }
