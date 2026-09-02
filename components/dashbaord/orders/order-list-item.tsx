@@ -1,10 +1,12 @@
+'use client';
+
 import { useState } from 'react';
 import { Order } from '@/types/order';
 import { OrderService } from '@/services/order-service';
 import { OrderStatusBadge } from './order-status-badge';
 import { OrderStatusUpdate } from './order-status-update';
 import { Button } from '@/components/ui/button';
-import { Eye, ChevronDown, ChevronUp, FileDown } from 'lucide-react';
+import { Eye, ChevronDown, ChevronUp, Truck } from 'lucide-react';
 import { OrderInvoice } from '@/components/orders/order-invoice';
 
 interface OrderListItemProps {
@@ -21,8 +23,6 @@ export function OrderListItem({
 	const [expanded, setExpanded] = useState(false);
 	const [currentOrder, setCurrentOrder] = useState<Order>(order);
 
-	console.log(currentOrder);
-
 	const toggleExpand = () => {
 		setExpanded((prev) => !prev);
 	};
@@ -34,76 +34,95 @@ export function OrderListItem({
 		}
 	};
 
-	// Check if order ID exists before accessing it
 	const orderIdDisplay = currentOrder?.id
 		? `#${currentOrder.id.substring(0, 8)}`
-		: 'ID Not Available';
+		: '#N/A';
+
+	// Calculate unified Delivery Charge & Grand Total via OrderService
+	const deliveryCharge = OrderService.getOrderDeliveryCharge(currentOrder);
+	const grandTotal = OrderService.getOrderGrandTotal(currentOrder);
 
 	return (
-		<div className='border-b dark:border-gray-700'>
-			<div className='flex flex-col md:flex-row justify-between items-start md:items-center p-4 gap-3 dark:bg-gray-800'>
-				<div className='flex-1 mb-3 md:mb-0'>
-					<div className='flex items-center gap-2'>
-						<p className='font-medium dark:text-white'>{orderIdDisplay}</p>
+		<div className='border-b border-[#E5E7EB] last:border-b-0 hover:bg-[#FFF9E8] transition-colors duration-200 group'>
+			<div className='flex flex-col md:flex-row justify-between items-start md:items-center p-4 sm:p-5 gap-4 bg-white group-hover:bg-[#FFF9E8] transition-colors'>
+				{/* ORDER ID & STATUS & DATE */}
+				<div className='flex-1 min-w-0 space-y-1'>
+					<div className='flex items-center gap-2 flex-wrap'>
+						<span className='font-black text-sm text-[#172033] tracking-tight'>
+							{orderIdDisplay}
+						</span>
 						{currentOrder?.orderStatus && (
-							<OrderStatusBadge status={currentOrder.orderStatus} />
+							<OrderStatusBadge status={currentOrder.orderStatus} size='sm' />
 						)}
 					</div>
-					<p className='text-sm text-gray-500 dark:text-gray-400'>
+					<p className='text-xs text-[#64748B] font-medium'>
 						{currentOrder?.orderDate
 							? OrderService.formatOrderDate(currentOrder.orderDate)
-							: 'Date not available'}
+							: 'তারিখ পাওয়া যায়নি'}
 					</p>
 				</div>
 
-				<div className='flex-1'>
-					<p className='font-medium dark:text-white break-words'>
-						{currentOrder?.name || 'Unknown'}
+				{/* CUSTOMER COLUMN */}
+				<div className='flex-1 min-w-0 space-y-0.5'>
+					<p className='font-bold text-xs sm:text-sm text-[#172033] truncate'>
+						{currentOrder?.name || 'অজানা গ্রাহক'}
 					</p>
-					<p className='text-sm text-gray-500 dark:text-gray-400 break-words'>
-						{currentOrder?.phoneNumber || 'No phone number'}
-					</p>
-				</div>
-
-				<div className='flex-1'>
-					<p className='font-medium dark:text-white'>
-						{currentOrder?.totalAmount || '0'} ৳
-					</p>
-					<p className='text-sm text-gray-500 dark:text-gray-400'>
-						{currentOrder?.orderItems?.length || 0} আইটেম
+					<p className='text-xs text-[#64748B] font-medium truncate'>
+						{currentOrder?.phoneNumber || 'ফোন নম্বর নেই'}
 					</p>
 				</div>
 
-				<div className='flex gap-2 flex-wrap md:flex-nowrap w-full md:w-auto justify-start md:justify-end'>
-					{/* Invoice Download */}
+				{/* TOTAL & DELIVERY CHARGE COLUMN */}
+				<div className='flex-1 min-w-0 space-y-0.5'>
+					<p className='font-black text-base text-[#26351B] tracking-tight'>
+						৳{grandTotal.toFixed(2)}
+					</p>
+					<div className='flex items-center gap-1.5 text-xs text-[#64748B] font-semibold flex-wrap'>
+						<span>{currentOrder?.orderItems?.length || 0}টি আইটেম</span>
+						{deliveryCharge > 0 ? (
+							<span className='text-[10px] font-extrabold bg-[#FFF9E8] text-[#26351B] px-2 py-0.5 rounded-full border border-[#F5B800]/40 flex items-center gap-1 shadow-2xs'>
+								<Truck className='w-3 h-3 text-[#26351B]' /> +৳{deliveryCharge} ডেলিভারি
+							</span>
+						) : (
+							<span className='text-[10px] font-extrabold bg-[#ECFDF5] text-[#16A34A] px-2 py-0.5 rounded-full border border-[#A7F3D0] shadow-2xs'>
+								ফ্রি ডেলিভারি
+							</span>
+						)}
+					</div>
+				</div>
+
+				{/* ACTION AREA */}
+				<div className='flex items-center gap-2 flex-wrap sm:flex-nowrap w-full md:w-auto justify-start md:justify-end pt-2 md:pt-0 border-t md:border-t-0 border-[#E5E7EB]'>
 					<OrderInvoice order={currentOrder} />
-
-					<Button
-						variant='ghost'
-						size='sm'
-						onClick={() => onViewDetails(currentOrder)}
-						className='dark:hover:bg-gray-700 shrink-0'
-					>
-						<Eye className='h-4 w-4 mr-1' /> বিস্তারিত
-					</Button>
 
 					<Button
 						variant='outline'
 						size='sm'
+						onClick={() => onViewDetails(currentOrder)}
+						className='rounded-xl border-[#E5E7EB] hover:bg-white text-xs font-extrabold h-9 px-3 shrink-0'
+					>
+						<Eye className='h-3.5 w-3.5 mr-1.5 text-[#26351B]' />
+						বিস্তারিত
+					</Button>
+
+					<Button
+						variant='ghost'
+						size='sm'
 						onClick={toggleExpand}
-						className='px-2 dark:border-gray-600 dark:hover:bg-gray-700 shrink-0'
+						className='h-9 w-9 p-0 rounded-xl hover:bg-black/5 shrink-0 border border-[#E5E7EB]'
+						title='স্ট্যাটাস আপডেট করুন'
 					>
 						{expanded ? (
-							<ChevronUp className='h-4 w-4' />
+							<ChevronUp className='h-4 w-4 text-[#172033]' />
 						) : (
-							<ChevronDown className='h-4 w-4' />
+							<ChevronDown className='h-4 w-4 text-[#172033]' />
 						)}
 					</Button>
 				</div>
 			</div>
 
 			{expanded && currentOrder && (
-				<div className='px-4 pb-4 bg-gray-50 dark:bg-gray-900 border-t dark:border-gray-700'>
+				<div className='px-5 py-4 bg-[#FAFAF6] border-t border-[#E5E7EB]'>
 					<OrderStatusUpdate
 						order={currentOrder}
 						onStatusUpdated={handleStatusUpdated}

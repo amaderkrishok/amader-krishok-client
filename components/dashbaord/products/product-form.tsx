@@ -11,7 +11,6 @@ import {
 	CreateSimpleProductDTO,
 	CreateVariableProductDTO,
 	ProductType,
-	StoreStatus,
 } from '@/types/product';
 import { Button } from '@/components/ui/button';
 import {
@@ -25,13 +24,6 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from '@/components/ui/select';
 import { Card, CardContent } from '@/components/ui/card';
 import { CategorySelector } from './category-selector';
 import { toast } from 'sonner';
@@ -40,29 +32,29 @@ import { SupplyCalendarForm } from './supply-calendar-form';
 import { VariableProductForm } from './variable-product-form';
 import { useSession } from '@/components/providers/session-provider';
 import { getAxiosErrorMessage, generateSlug } from '@/lib/utils';
+import { Package, Tag, Calendar, Layers, CheckCircle2, ArrowRight } from 'lucide-react';
 
-// Base product schema
 const productSchema = z.object({
 	name: z
 		.string()
-		.min(3, { message: 'Product name must be at least 3 characters' }),
+		.min(3, { message: 'পণ্যের নাম কমপক্ষে ৩ অক্ষরের হতে হবে' }),
 	slug: z.string().optional(),
 	description: z
 		.string()
-		.min(10, { message: 'Description must be at least 10 characters' }),
+		.min(10, { message: 'বিবরণ কমপক্ষে ১০ অক্ষরের হতে হবে' }),
 	unit: z
 		.string()
 		.trim()
-		.min(1, { message: 'Please enter a unit such as kg, gram, or piece' })
+		.min(1, { message: 'অনুগ্রহ করে পরিমাপের একক লিখুন (কেজি, পিস বা গ্রাম)' })
 		.max(32),
 	deliveryCharge: z.coerce
 		.number()
-		.min(0, { message: 'Delivery charge cannot be negative' }),
+		.min(0, { message: 'ডেলিভারি চার্জ নেতিবাচক হতে পারবে না' }),
 	productType: z.enum([ProductType.SIMPLE, ProductType.VARIABLE]),
-	storeId: z.string().min(1, { message: 'Please select a store' }),
+	storeId: z.string().min(1, { message: 'অনুগ্রহ করে স্টোর আইডি নিশ্চিত করুন' }),
 	categoryIds: z
 		.array(z.number())
-		.min(1, { message: 'Please select at least one category' }),
+		.min(1, { message: 'কমপক্ষে একটি বিভাগ নির্বাচন করুন' }),
 	supplyCalendar: z
 		.object({
 			months: z.array(z.number()),
@@ -71,7 +63,6 @@ const productSchema = z.object({
 		.optional(),
 });
 
-// We'll extend this schema in the component based on the product type
 export function ProductForm() {
 	const router = useRouter();
 	const [isLoading, setIsLoading] = useState(false);
@@ -80,7 +71,6 @@ export function ProductForm() {
 	);
 	const { user } = useSession();
 
-	// Initialize the form with the base schema
 	const form = useForm<z.infer<typeof productSchema>>({
 		resolver: zodResolver(productSchema),
 		defaultValues: {
@@ -96,7 +86,6 @@ export function ProductForm() {
 		},
 	});
 
-	// Simple product data state
 	const [simpleProductData, setSimpleProductData] = useState<{
 		price: number;
 		discountPrice?: number;
@@ -107,7 +96,6 @@ export function ProductForm() {
 		images: [],
 	});
 
-	// Variable product data state
 	const [variableProductData, setVariableProductData] = useState<{
 		variants: {
 			variantName: string;
@@ -119,9 +107,7 @@ export function ProductForm() {
 		variants: [],
 	});
 
-	// Add this after your other useEffect hooks
 	useEffect(() => {
-		// Watch the name field and generate slug automatically
 		const subscription = form.watch((value, { name }) => {
 			if (name === 'name' && value.name && value.name.length > 0) {
 				const generatedSlug = generateSlug(value.name);
@@ -133,39 +119,23 @@ export function ProductForm() {
 	}, [form]);
 
 	useEffect(() => {
-		// Set store ID from user session when component loads
 		if (user?.storeId) {
-			console.log('Setting store ID:', user.storeId);
-
-			// Make sure storeId is correctly formatted before setting
-			// Remove any extra characters that might have been added
 			const cleanStoreId = user.storeId.trim();
-
 			form.setValue('storeId', cleanStoreId);
-
-			// Verify the value was set correctly
-			setTimeout(() => {
-				console.log('Current form storeId:', form.getValues('storeId'));
-			}, 100);
 		}
 	}, [user, form]);
 
-	// Handle product type change
-	const handleProductTypeChange = (value: string) => {
-		const newType = value as ProductType;
+	const handleProductTypeChange = (newType: ProductType) => {
 		setProductType(newType);
 		form.setValue('productType', newType);
 	};
 
-	// Handle form submission
 	const onSubmit = async (values: z.infer<typeof productSchema>) => {
 		try {
 			setIsLoading(true);
 
-			// Prepare the product data based on the product type
 			const productData = {
 				...values,
-				// Remove supplyCalendar if it's undefined or empty
 				supplyCalendar:
 					values.supplyCalendar &&
 					(values.supplyCalendar.months?.length > 0 ||
@@ -215,7 +185,6 @@ export function ProductForm() {
 					productType: ProductType.SIMPLE,
 					simpleProductData,
 				};
-				console.log(createData);
 
 				await ProductService.createProduct(
 					createData as CreateSimpleProductDTO
@@ -230,7 +199,6 @@ export function ProductForm() {
 					return;
 				}
 
-				// Validate variants
 				for (const variant of variableProductData.variants) {
 					if (variant.price <= 0) {
 						toast.error('ত্রুটি', {
@@ -272,7 +240,6 @@ export function ProductForm() {
 				description: 'পণ্য সফলভাবে তৈরি করা হয়েছে',
 			});
 
-			// Redirect to products list
 			router.push('/vendor/products');
 		} catch (error) {
 			console.error('Error creating product:', error);
@@ -287,202 +254,280 @@ export function ProductForm() {
 
 	return (
 		<Form {...form}>
-			<form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
-				<Card>
-					<CardContent className='pt-6'>
-						<h3 className='text-lg font-medium mb-4'>বিবরণ</h3>
-						<div className='grid gap-6 sm:grid-cols-2 lg:grid-cols-3'>
-							<div className='col-span-full lg:col-span-2'>
-								<FormField
-									control={form.control}
-									name='name'
-									render={({ field }) => (
-										<FormItem>
-											<FormLabel>পণ্যের নাম</FormLabel>
-											<FormControl>
-												<Input placeholder='পণ্যের নাম লিখুন' {...field} />
-											</FormControl>
-											<FormMessage />
-										</FormItem>
-									)}
-								/>
-							</div>
+			<form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
+				{/* 12. SECTION NAVIGATION BAR */}
+				<div className='flex items-center gap-2 overflow-x-auto bg-white p-2.5 rounded-[18px] border border-[#E5E7EB] shadow-xs scrollbar-hide text-xs font-extrabold'>
+					<span className='px-3 py-1.5 rounded-xl bg-[#FFF9E8] text-[#26351B] border border-[#F5B800]/40 flex items-center gap-1.5 whitespace-nowrap shadow-xs'>
+						<span className='w-2 h-2 rounded-full bg-[#F5B800]' /> 01 পণ্যের তথ্য
+					</span>
+					<span className='px-3 py-1.5 rounded-xl bg-[#FAFAF6] text-[#64748B] flex items-center gap-1.5 whitespace-nowrap'>
+						02 মূল্য ও বিক্রয়
+					</span>
+					<span className='px-3 py-1.5 rounded-xl bg-[#FAFAF6] text-[#64748B] flex items-center gap-1.5 whitespace-nowrap'>
+						03 বিভাগ
+					</span>
+					<span className='px-3 py-1.5 rounded-xl bg-[#FAFAF6] text-[#64748B] flex items-center gap-1.5 whitespace-nowrap'>
+						04 ছবি
+					</span>
+					<span className='px-3 py-1.5 rounded-xl bg-[#FAFAF6] text-[#64748B] flex items-center gap-1.5 whitespace-nowrap'>
+						05 সরবরাহ
+					</span>
+				</div>
 
-							<div className='col-span-full lg:col-span-1'>
-								<FormField
-									control={form.control}
-									name='slug'
-									render={({ field }) => (
-										<FormItem>
-											<FormLabel>স্লাগ</FormLabel>
-											<FormControl>
-												<Input
-													placeholder='auto-generated-slug'
-													{...field}
-													disabled
-													className='bg-muted/50 text-muted-foreground'
-												/>
-											</FormControl>
-											<FormDescription>
-												নাম থেকে স্বয়ংক্রিয়ভাবে তৈরি হচ্ছে
-											</FormDescription>
-											<FormMessage />
-										</FormItem>
-									)}
-								/>
-							</div>
+				{/* 2. TWO-COLUMN DESKTOP GRID LAYOUT */}
+				<div className='grid grid-cols-1 lg:grid-cols-12 gap-6 items-start'>
+					{/* LEFT COLUMN: MAIN PRODUCT INFORMATION (7 cols) */}
+					<div className='lg:col-span-7 space-y-6'>
+						{/* 3. BASIC INFORMATION CARD */}
+						<Card className='rounded-[18px] border border-[#E5E7EB] bg-white shadow-xs overflow-hidden'>
+							<CardContent className='p-6 space-y-5'>
+								<div className='flex items-center gap-2 border-b border-[#E5E7EB] pb-3.5'>
+									<Package className='w-5 h-5 text-[#26351B]' />
+									<h3 className='text-base font-extrabold text-[#172033] tracking-tight'>
+										📦 পণ্যের তথ্য
+									</h3>
+								</div>
 
-							<div className='col-span-full'>
-								<FormField
-									control={form.control}
-									name='description'
-									render={({ field }) => (
-										<FormItem>
-											<FormLabel>বিবরণ</FormLabel>
-											<FormControl>
-												<Textarea
-													placeholder='পণ্যের বিবরণ লিখুন'
-													className='min-h-[120px]'
-													{...field}
-												/>
-											</FormControl>
-											<FormMessage />
-										</FormItem>
-									)}
-								/>
-							</div>
+								<div className='grid gap-4 sm:grid-cols-2'>
+									<div className='sm:col-span-2'>
+										<FormField
+											control={form.control}
+											name='name'
+											render={({ field }) => (
+												<FormItem>
+													<FormLabel className='text-xs font-bold text-[#172033]'>
+														পণ্যের নাম *
+													</FormLabel>
+													<FormControl>
+														<Input
+															placeholder='যেমন: দেশি লাল টমেটো'
+															className='h-11 rounded-xl border-[#E5E7EB] text-sm font-semibold focus-visible:ring-1 focus-visible:ring-[#F5B800] bg-[#FAFAF6] focus:bg-white'
+															{...field}
+														/>
+													</FormControl>
+													<FormMessage className='text-xs' />
+												</FormItem>
+											)}
+										/>
+									</div>
 
-							<div className='col-span-full grid gap-6 sm:grid-cols-2'>
-								<FormField
-									control={form.control}
-									name='unit'
-									render={({ field }) => (
-										<FormItem>
-											<FormLabel>পরিমাপের একক</FormLabel>
-											<FormControl>
-												<Input placeholder='যেমন: কেজি, গ্রাম, পিস' {...field} />
-											</FormControl>
-											<FormDescription>পণ্যটি যে এককে বিক্রি হবে</FormDescription>
-											<FormMessage />
-										</FormItem>
-									)}
-								/>
+									<div className='sm:col-span-2'>
+										<FormField
+											control={form.control}
+											name='slug'
+											render={({ field }) => (
+												<FormItem>
+													<FormLabel className='text-xs font-bold text-[#64748B]'>
+														স্লাগ (Auto Generated)
+													</FormLabel>
+													<FormControl>
+														<Input
+															placeholder='auto-generated-slug'
+															{...field}
+															disabled
+															className='h-10 rounded-xl border-[#E5E7EB] bg-[#FAFAF6] text-xs font-medium text-[#64748B]'
+														/>
+													</FormControl>
+													<FormDescription className='text-[11px] text-[#64748B]'>
+														পণ্যের নাম থেকে স্বয়ংক্রিয়ভাবে স্লাগ তৈরি হয়
+													</FormDescription>
+													<FormMessage className='text-xs' />
+												</FormItem>
+											)}
+										/>
+									</div>
 
-								<FormField
-									control={form.control}
-									name='deliveryCharge'
-									render={({ field }) => (
-										<FormItem>
-											<FormLabel>ডেলিভারি চার্জ</FormLabel>
-											<FormControl>
-												<Input type='number' min='0' step='0.01' placeholder='০' {...field} />
-											</FormControl>
-											<FormDescription>ডেলিভারি চার্জ না থাকলে ০ লিখুন</FormDescription>
-											<FormMessage />
-										</FormItem>
-									)}
-								/>
-							</div>
-						</div>
-					</CardContent>
-				</Card>
+									{/* 4. DESCRIPTION TEXTAREA */}
+									<div className='sm:col-span-2'>
+										<FormField
+											control={form.control}
+											name='description'
+											render={({ field }) => (
+												<FormItem>
+													<FormLabel className='text-xs font-bold text-[#172033]'>
+														পণ্যের বিবরণ *
+													</FormLabel>
+													<FormControl>
+														<Textarea
+															placeholder='পণ্যের বিস্তারিত বিবরণ, পুষ্টিগুণ বা গুণমান লিখুন...'
+															className='min-h-[130px] rounded-xl border-[#E5E7EB] text-xs font-medium focus-visible:ring-1 focus-visible:ring-[#F5B800] bg-[#FAFAF6] focus:bg-white'
+															{...field}
+														/>
+													</FormControl>
+													<FormMessage className='text-xs' />
+												</FormItem>
+											)}
+										/>
+									</div>
 
-				<div className='grid gap-8 md:grid-cols-2'>
-					<div className='space-y-8'>
-						<Card>
-							<CardContent className='pt-6'>
-								<h3 className='text-lg font-medium mb-4'>পণ্যের ধরন</h3>
-								<FormField
-									control={form.control}
-									name='productType'
-									render={({ field }) => (
-										<FormItem>
-											<FormLabel>পণ্যের ধরন নির্বাচন করুন</FormLabel>
-											<Select
-												onValueChange={handleProductTypeChange}
-												defaultValue={field.value}
-											>
-												<FormControl>
-													<SelectTrigger>
-														<SelectValue placeholder='পণ্যের ধরন নির্বাচন করুন' />
-													</SelectTrigger>
-												</FormControl>
-												<SelectContent>
-													<SelectItem value={ProductType.SIMPLE}>
-														সাধারণ পণ্য
-													</SelectItem>
-													<SelectItem value={ProductType.VARIABLE}>
-														ভেরিয়েবল পণ্য
-													</SelectItem>
-												</SelectContent>
-											</Select>
-											<FormDescription>
-												সাধারণ পণ্যের একটি মূল্য এবং ইনভেন্টরি থাকে। ভেরিয়েবল
-												পণ্যের একাধিক ভেরিয়েন্ট থাকে।
-											</FormDescription>
-											<FormMessage />
-										</FormItem>
-									)}
-								/>
-							</CardContent>
-						</Card>
+									<div>
+										<FormField
+											control={form.control}
+											name='unit'
+											render={({ field }) => (
+												<FormItem>
+													<FormLabel className='text-xs font-bold text-[#172033]'>
+														পরিমাপের একক *
+													</FormLabel>
+													<FormControl>
+														<Input
+															placeholder='যেমন: কেজি, গ্রাম, পিস'
+															className='h-11 rounded-xl border-[#E5E7EB] text-xs font-semibold bg-[#FAFAF6] focus:bg-white focus-visible:ring-1 focus-visible:ring-[#F5B800]'
+															{...field}
+														/>
+													</FormControl>
+													<FormDescription className='text-[11px] text-[#64748B]'>
+														পণ্য যে এককে বিক্রি হবে
+													</FormDescription>
+													<FormMessage className='text-xs' />
+												</FormItem>
+											)}
+										/>
+									</div>
 
-						<Card>
-							<CardContent className='pt-6'>
-								<h3 className='text-lg font-medium mb-4'>
-									বিক্রয়কেন্দ্র এবং বিভাগ
-								</h3>
-								<div className='space-y-6'>
-									{/* Hidden field to set storeId from session */}
-									<FormField
-										control={form.control}
-										name='storeId'
-										render={({ field }) => (
-											<FormItem className='hidden'>
-												<FormControl>
-													<Input
-														type='hidden'
-														{...field}
-														// Don't override field value with direct binding
-														// Let form's setValue handle it instead
-													/>
-												</FormControl>
-											</FormItem>
-										)}
-									/>
-
-									<FormField
-										control={form.control}
-										name='categoryIds'
-										render={({ field }) => (
-											<FormItem>
-												<FormLabel>বিভাগ</FormLabel>
-												<FormControl>
-													<CategorySelector
-														selectedCategories={field.value}
-														onChange={field.onChange}
-													/>
-												</FormControl>
-												<FormDescription>
-													এই পণ্যের জন্য এক বা একাধিক বিভাগ নির্বাচন করুন
-												</FormDescription>
-												<FormMessage />
-											</FormItem>
-										)}
-									/>
+									<div>
+										<FormField
+											control={form.control}
+											name='deliveryCharge'
+											render={({ field }) => (
+												<FormItem>
+													<FormLabel className='text-xs font-bold text-[#172033]'>
+														ডেলিভারি চার্জ (৳)
+													</FormLabel>
+													<FormControl>
+														<Input
+															type='number'
+															min='0'
+															step='0.01'
+															placeholder='০'
+															className='h-11 rounded-xl border-[#E5E7EB] text-xs font-semibold bg-[#FAFAF6] focus:bg-white focus-visible:ring-1 focus-visible:ring-[#F5B800]'
+															{...field}
+														/>
+													</FormControl>
+													<FormDescription className='text-[11px] text-[#64748B]'>
+														ডেলিভারি চার্জ না থাকলে ০ লিখুন
+													</FormDescription>
+													<FormMessage className='text-xs' />
+												</FormItem>
+											)}
+										/>
+									</div>
 								</div>
 							</CardContent>
 						</Card>
 
-						<Card>
-							<CardContent className='pt-6'>
-								<h3 className='text-lg font-medium mb-4'>
-									সরবরাহ ক্যালেন্ডার (ঐচ্ছিক)
-								</h3>
+						{/* 5. PRODUCT TYPE SEGMENTED SELECTOR */}
+						<Card className='rounded-[18px] border border-[#E5E7EB] bg-white shadow-xs overflow-hidden'>
+							<CardContent className='p-6 space-y-4'>
+								<div className='flex items-center gap-2 border-b border-[#E5E7EB] pb-3'>
+									<Layers className='w-4 h-4 text-[#26351B]' />
+									<h3 className='text-sm font-extrabold text-[#172033]'>
+										🏷️ পণ্যের ধরন
+									</h3>
+								</div>
+
+								<FormField
+									control={form.control}
+									name='productType'
+									render={({ field }) => (
+										<FormItem className='space-y-3'>
+											{/* Segmented Button Selection */}
+											<div className='grid grid-cols-2 gap-3 p-1.5 bg-[#FAFAF6] rounded-2xl border border-[#E5E7EB]'>
+												<button
+													type='button'
+													onClick={() => handleProductTypeChange(ProductType.SIMPLE)}
+													className={`py-3 px-4 rounded-xl text-xs font-extrabold transition-all duration-200 cursor-pointer flex items-center justify-center gap-2 ${
+														field.value === ProductType.SIMPLE
+															? 'bg-[#F5B800] text-[#172033] shadow-xs'
+															: 'bg-transparent text-[#64748B] hover:text-[#172033]'
+													}`}
+												>
+													<span>সাধারণ পণ্য</span>
+													{field.value === ProductType.SIMPLE && (
+														<CheckCircle2 className='w-4 h-4 text-[#172033]' />
+													)}
+												</button>
+
+												<button
+													type='button'
+													onClick={() => handleProductTypeChange(ProductType.VARIABLE)}
+													className={`py-3 px-4 rounded-xl text-xs font-extrabold transition-all duration-200 cursor-pointer flex items-center justify-center gap-2 ${
+														field.value === ProductType.VARIABLE
+															? 'bg-[#F5B800] text-[#172033] shadow-xs'
+															: 'bg-transparent text-[#64748B] hover:text-[#172033]'
+													}`}
+												>
+													<span>ভেরিয়েবল পণ্য</span>
+													{field.value === ProductType.VARIABLE && (
+														<CheckCircle2 className='w-4 h-4 text-[#172033]' />
+													)}
+												</button>
+											</div>
+
+											<p className='text-xs text-[#64748B] font-medium leading-relaxed bg-[#FFF9E8]/60 p-3 rounded-xl border border-[#F5B800]/25'>
+												{field.value === ProductType.SIMPLE
+													? 'সাধারণ পণ্যের একটি নির্দিষ্ট মূল্য এবং ইনভেন্টরি থাকে।'
+													: 'ভেরিয়েন্ট পণ্যের একাধিক সাইজ, ওজন বা কালারের ভিন্ন ভিন্ন মূল্য থাকে।'}
+											</p>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+							</CardContent>
+						</Card>
+
+						{/* 8. CATEGORY SECTION */}
+						<Card className='rounded-[18px] border border-[#E5E7EB] bg-white shadow-xs overflow-hidden'>
+							<CardContent className='p-6 space-y-4'>
+								<div className='flex items-center gap-2 border-b border-[#E5E7EB] pb-3'>
+									<Tag className='w-4 h-4 text-[#26351B]' />
+									<h3 className='text-sm font-extrabold text-[#172033]'>
+										🏪 বিক্রয়কেন্দ্র এবং বিভাগ
+									</h3>
+								</div>
+
+								<FormField
+									control={form.control}
+									name='storeId'
+									render={({ field }) => (
+										<FormItem className='hidden'>
+											<FormControl>
+												<Input type='hidden' {...field} />
+											</FormControl>
+										</FormItem>
+									)}
+								/>
+
+								<FormField
+									control={form.control}
+									name='categoryIds'
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel className='text-xs font-bold text-[#172033]'>
+												বিভাগ নির্বাচন করুন *
+											</FormLabel>
+											<FormControl>
+												<CategorySelector
+													selectedCategories={field.value}
+													onChange={field.onChange}
+												/>
+											</FormControl>
+											<FormDescription className='text-xs text-[#64748B] font-medium'>
+												এই পণ্যের জন্য এক বা একাধিক বিভাগ নির্বাচন করুন
+											</FormDescription>
+											<FormMessage className='text-xs' />
+										</FormItem>
+									)}
+								/>
+							</CardContent>
+						</Card>
+
+						{/* 9 & 10. SUPPLY CALENDAR & SEASONAL DESCRIPTION */}
+						<Card className='rounded-[18px] border border-[#E5E7EB] bg-white shadow-xs overflow-hidden'>
+							<CardContent className='p-6'>
 								<SupplyCalendarForm
 									value={form.watch('supplyCalendar') || undefined}
 									onChange={(value) => {
-										// If no months are selected and no description, set to undefined
 										if (
 											(!value.months || value.months.length === 0) &&
 											!value.description?.trim()
@@ -497,13 +542,11 @@ export function ProductForm() {
 						</Card>
 					</div>
 
-					<div className='space-y-8'>
+					{/* RIGHT COLUMN: PRICING & IMAGE PREVIEWS (5 cols) */}
+					<div className='lg:col-span-5 space-y-6'>
 						{productType === ProductType.SIMPLE ? (
-							<Card>
-								<CardContent className='pt-6'>
-									<h3 className='text-lg font-medium mb-4'>
-										সাধারণ পণ্যের বিবরণ
-									</h3>
+							<Card className='rounded-[18px] border border-[#E5E7EB] bg-white shadow-xs overflow-hidden sticky top-20'>
+								<CardContent className='p-6'>
 									<SimpleProductForm
 										value={simpleProductData}
 										onChange={setSimpleProductData}
@@ -511,10 +554,11 @@ export function ProductForm() {
 								</CardContent>
 							</Card>
 						) : (
-							<Card>
-								<CardContent className='pt-6'>
-									<h3 className='text-lg font-medium mb-4'>
-										ভেরিয়েবল পণ্যের বিবরণ
+							<Card className='rounded-[18px] border border-[#E5E7EB] bg-white shadow-xs overflow-hidden sticky top-20'>
+								<CardContent className='p-6'>
+									<h3 className='text-sm font-extrabold text-[#172033] mb-4 flex items-center gap-2'>
+										<Layers className='w-4 h-4 text-[#F5B800]' />
+										ভেরিয়েবল পণ্যের ভেরিয়েন্ট
 									</h3>
 									<VariableProductForm
 										value={variableProductData}
@@ -526,17 +570,31 @@ export function ProductForm() {
 					</div>
 				</div>
 
-				<div className='flex justify-end gap-4'>
+				{/* 11. FORM ACTION FOOTER */}
+				<div className='flex items-center justify-between gap-4 p-5 bg-white rounded-[18px] border border-[#E5E7EB] shadow-xs sticky bottom-4 z-30'>
 					<Button
 						type='button'
 						variant='outline'
 						onClick={() => router.back()}
 						disabled={isLoading}
+						className='rounded-xl border-[#E5E7EB] font-extrabold text-xs px-5 hover:bg-[#FAFAF6]'
 					>
 						বাতিল
 					</Button>
-					<Button type='submit' disabled={isLoading}>
-						{isLoading ? 'তৈরি করা হচ্ছে...' : 'পণ্য তৈরি করুন'}
+
+					{/* Primary Gold CTA */}
+					<Button
+						type='submit'
+						disabled={isLoading}
+						className='bg-[#F5B800] hover:bg-[#E0A800] text-[#172033] font-black rounded-xl px-7 py-2.5 shadow-xs border-0 transition-all hover:-translate-y-0.5 cursor-pointer text-xs sm:text-sm'
+					>
+						{isLoading ? (
+							'তৈরি করা হচ্ছে...'
+						) : (
+							<span className='flex items-center gap-2'>
+								+ পণ্য তৈরি করুন <ArrowRight className='w-4 h-4 text-[#172033]' />
+							</span>
+						)}
 					</Button>
 				</div>
 			</form>

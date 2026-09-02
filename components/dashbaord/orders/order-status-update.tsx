@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import { Order, OrderStatus } from '@/types/order';
 import { OrderService } from '@/services/order-service';
@@ -9,7 +11,7 @@ import {
 	SelectValue,
 } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
-import { Loader2 } from 'lucide-react';
+import { Loader2, RefreshCw, CheckCircle } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface OrderStatusUpdateProps {
@@ -34,52 +36,62 @@ export function OrderStatusUpdate({
 		setIsUpdating(true);
 		try {
 			const response = await OrderService.updateOrderStatus(order.id, status);
-
-			// Extract the actual order data from the response
 			const updatedOrder = response.data;
 
-			console.log('Updated order:', updatedOrder);
-
 			onStatusUpdated(updatedOrder);
-			toast.success('অর্ডার স্ট্যাটাস আপডেট করা হয়েছে।');
+			toast.success('সফল', {
+				description: 'অর্ডার স্ট্যাটাস সফলভাবে আপডেট করা হয়েছে।',
+			});
 		} catch (error) {
 			console.error('Error updating order status:', error);
-			toast.error('অর্ডার স্ট্যাটাস আপডেট করতে সমস্যা হয়েছে।');
+			toast.error('ত্রুটি', {
+				description: 'অর্ডার স্ট্যাটাস আপডেট করতে সমস্যা হয়েছে।',
+			});
 		} finally {
 			setIsUpdating(false);
 		}
 	};
 
-	// If no valid next statuses, don't render the component
 	if (validNextStatuses.length === 0) {
-		return null;
+		return (
+			<div className='p-3 bg-[#ECFDF5] border border-[#A7F3D0] rounded-xl text-xs font-extrabold text-[#16A34A] flex items-center gap-2'>
+				<CheckCircle className='w-4 h-4 text-[#16A34A]' />
+				<span>এই অর্ডারের স্ট্যাটাস আর পরিবর্তন করা যাবে না (চুড়ান্ত স্ট্যাটাস)।</span>
+			</div>
+		);
 	}
 
 	return (
-		<div className='p-4 bg-gray-50 dark:bg-gray-900 rounded-lg space-y-4'>
-			<h3 className='font-medium dark:text-white'>
-				অর্ডার স্ট্যাটাস আপডেট করুন
-			</h3>
+		<div className='p-4 sm:p-5 bg-[#FAFAF6] border border-[#E5E7EB] rounded-2xl space-y-3 shadow-xs'>
+			<div className='flex items-center gap-2'>
+				<RefreshCw className='w-4 h-4 text-[#F5B800]' />
+				<h3 className='text-xs font-extrabold text-[#172033] uppercase tracking-wider'>
+					অর্ডার স্ট্যাটাস আপডেট করুন
+				</h3>
+			</div>
 
-			<div className='flex flex-col md:flex-row gap-4'>
-				<div className='w-full md:w-2/3'>
+			<div className='flex flex-col sm:flex-row items-center gap-3'>
+				<div className='w-full sm:flex-1'>
 					<Select
 						value={status}
 						onValueChange={(value) => setStatus(value as OrderStatus)}
 					>
-						<SelectTrigger className='dark:border-gray-700 dark:bg-gray-800 dark:text-white'>
-							<SelectValue placeholder='স্ট্যাটাস নির্বাচন করুন' />
+						<SelectTrigger className='h-11 rounded-xl border-[#E5E7EB] bg-white text-xs font-extrabold text-[#172033] focus:ring-1 focus:ring-[#F5B800] shadow-xs'>
+							<SelectValue placeholder='পরবর্তী স্ট্যাটাস নির্বাচন করুন' />
 						</SelectTrigger>
-						<SelectContent className='dark:border-gray-700 dark:bg-gray-800'>
-							{validNextStatuses.map((nextStatus) => (
-								<SelectItem
-									key={nextStatus}
-									value={nextStatus}
-									className='dark:text-white dark:focus:bg-gray-700'
-								>
-									{OrderService.getOrderStatusInfo(nextStatus).label}
-								</SelectItem>
-							))}
+						<SelectContent className='rounded-xl border-[#E5E7EB] bg-white text-xs font-bold shadow-md'>
+							{validNextStatuses.map((nextStatus) => {
+								const info = OrderService.getOrderStatusInfo(nextStatus);
+								return (
+									<SelectItem
+										key={nextStatus}
+										value={nextStatus}
+										className='cursor-pointer py-2.5 px-3 focus:bg-[#FFF9E8] font-bold'
+									>
+										<span>{info.label}</span>
+									</SelectItem>
+								);
+							})}
 						</SelectContent>
 					</Select>
 				</div>
@@ -87,15 +99,19 @@ export function OrderStatusUpdate({
 				<Button
 					onClick={handleStatusChange}
 					disabled={isUpdating || status === order.orderStatus}
-					className='w-full md:w-1/3 dark:bg-primary dark:hover:bg-primary/90'
+					className={`w-full sm:w-auto h-11 px-6 rounded-xl font-extrabold text-xs transition-all duration-200 shadow-xs ${
+						status !== order.orderStatus
+							? 'bg-[#F5B800] hover:bg-[#E0A800] text-[#172033] border-0 cursor-pointer hover:-translate-y-0.5'
+							: 'bg-gray-200 text-gray-500 border border-gray-300 cursor-not-allowed'
+					}`}
 				>
 					{isUpdating ? (
 						<>
-							<Loader2 className='mr-2 h-4 w-4 animate-spin' />
-							আপডেট হচ্ছে
+							<Loader2 className='mr-2 h-4 w-4 animate-spin text-[#172033]' />
+							আপডেট হচ্ছে...
 						</>
 					) : (
-						'আপডেট করুন'
+						'স্ট্যাটাস আপডেট করুন'
 					)}
 				</Button>
 			</div>

@@ -1,5 +1,5 @@
-import api from '@/lib/axios'; // Your authenticated axios instance
-import axios from 'axios'; // Regular axios for public endpoints
+import api from '@/lib/axios';
+import axios from 'axios';
 import {
 	Order,
 	OrderStatus,
@@ -14,36 +14,18 @@ import {
 const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL || '';
 const ORDERS_ENDPOINT = `${API_URL}/orders`;
 
-/**
- * Service for interacting with the order-related endpoints
- */
 export const OrderService = {
-	/**
-	 * Creates a new order (public endpoint - works for both authenticated and guest users)
-	 *
-	 * @param {CreateOrderDTO} orderData - Order creation data
-	 * @returns {Promise<Order>} - The newly created order
-	 */
 	createOrder: async (orderData: CreateOrderDTO): Promise<OrderResponse> => {
 		const response = await axios.post(ORDERS_ENDPOINT, orderData);
 		return response.data;
 	},
 
-	/**
-	 * Gets a paginated list of all orders (admin/mod only)
-	 *
-	 * @param {OrderFilters} filters - Filter and pagination options
-	 * @returns {Promise<OrdersResponse>} - Paginated list of orders
-	 */
 	getAllOrders: async (filters: OrderFilters = {}): Promise<OrdersResponse> => {
 		let url = `${ORDERS_ENDPOINT}?`;
 		const queryParams = new URLSearchParams();
 
-		// Add pagination params
 		if (filters.page) queryParams.append('page', filters.page.toString());
 		if (filters.limit) queryParams.append('limit', filters.limit.toString());
-
-		// Add filter params
 		if (filters.status) queryParams.append('status', filters.status);
 		if (filters.buyerId) queryParams.append('buyerId', filters.buyerId);
 		if (filters.phoneNumber)
@@ -56,24 +38,11 @@ export const OrderService = {
 		return response.data;
 	},
 
-	/**
-	 * Gets a single order by its ID (public endpoint but with proper access control)
-	 *
-	 * @param {string} id - Order ID
-	 * @returns {Promise<OrderResponse>} - The requested order
-	 */
 	getOrderById: async (id: string): Promise<OrderResponse> => {
 		const response = await axios.get(`${ORDERS_ENDPOINT}/${id}`);
 		return response.data;
 	},
 
-	/**
-	 * Gets orders for a specific store (vendor/admin/mod only)
-	 *
-	 * @param {string} storeId - Store ID
-	 * @param {OrderFilters} filters - Filter and pagination options
-	 * @returns {Promise<OrdersResponse>} - Paginated list of store orders
-	 */
 	getStoreOrders: async (
 		storeId: string,
 		filters: OrderFilters = {}
@@ -81,11 +50,8 @@ export const OrderService = {
 		let url = `${ORDERS_ENDPOINT}/store/${storeId}?`;
 		const queryParams = new URLSearchParams();
 
-		// Add pagination params
 		if (filters.page) queryParams.append('page', filters.page.toString());
 		if (filters.limit) queryParams.append('limit', filters.limit.toString());
-
-		// Add filter params
 		if (filters.status) queryParams.append('status', filters.status);
 
 		url += queryParams.toString();
@@ -94,13 +60,6 @@ export const OrderService = {
 		return response.data;
 	},
 
-	/**
-	 * Gets orders for a specific user (user/admin/mod only)
-	 *
-	 * @param {string} userId - User ID
-	 * @param {OrderFilters} filters - Filter and pagination options
-	 * @returns {Promise<OrdersResponse>} - Paginated list of user orders
-	 */
 	getUserOrders: async (
 		userId: string,
 		filters: OrderFilters = {}
@@ -108,11 +67,8 @@ export const OrderService = {
 		let url = `${ORDERS_ENDPOINT}/user/${userId}?`;
 		const queryParams = new URLSearchParams();
 
-		// Add pagination params
 		if (filters.page) queryParams.append('page', filters.page.toString());
 		if (filters.limit) queryParams.append('limit', filters.limit.toString());
-
-		// Add filter params
 		if (filters.status) queryParams.append('status', filters.status);
 
 		url += queryParams.toString();
@@ -121,13 +77,6 @@ export const OrderService = {
 		return response.data;
 	},
 
-	/**
-	 * Updates an order (admin/mod only)
-	 *
-	 * @param {string} id - Order ID
-	 * @param {UpdateOrderDTO} updateData - Updated order data
-	 * @returns {Promise<Order>} - The updated order
-	 */
 	updateOrder: async (
 		id: string,
 		updateData: UpdateOrderDTO
@@ -136,13 +85,6 @@ export const OrderService = {
 		return response.data;
 	},
 
-	/**
-	 * Updates only the status of an order (vendor/admin/mod only)
-	 *
-	 * @param {string} id - Order ID
-	 * @param {OrderStatus} status - New order status
-	 * @returns {Promise<Order>} - The updated order
-	 */
 	updateOrderStatus: async (
 		id: string,
 		status: OrderStatus
@@ -153,22 +95,66 @@ export const OrderService = {
 		return response.data;
 	},
 
-	/**
-	 * Deletes an order (admin/mod only)
-	 *
-	 * @param {string} id - Order ID
-	 * @returns {Promise<void>}
-	 */
 	deleteOrder: async (id: string): Promise<void> => {
 		await api.delete(`${ORDERS_ENDPOINT}/${id}`);
 	},
 
 	/**
-	 * Helper function to get order status display information with Bengali labels
-	 *
-	 * @param {OrderStatus} status - The order status
-	 * @returns {{ label: string; color: string; textColor: string; icon: string }}
+	 * Calculates delivery charge consistently for any order.
+	 * 1. Checks item.productDetails.deliveryCharge
+	 * 2. Checks order.totalAmount vs itemsSubtotal
+	 * 3. Fallback standard delivery charge if order has items
 	 */
+	getOrderDeliveryCharge: (order: Order): number => {
+		if (!order || !order.orderItems || order.orderItems.length === 0) return 0;
+
+		let explicitDeliveryCharge = 0;
+		let hasExplicitDeliveryCharge = false;
+
+		order.orderItems.forEach((item) => {
+			if (item.productDetails && item.productDetails.deliveryCharge != null) {
+				explicitDeliveryCharge += Number(item.productDetails.deliveryCharge);
+				hasExplicitDeliveryCharge = true;
+			}
+		});
+
+		if (hasExplicitDeliveryCharge && explicitDeliveryCharge >= 0) {
+			return explicitDeliveryCharge;
+		}
+
+		const itemsSubtotal = order.orderItems.reduce(
+			(sum, item) =>
+				sum + (Number(item.total) || Number(item.price) * Number(item.quantity)),
+			0
+		);
+
+		const totalAmountNum = Number(order.totalAmount || 0);
+
+		if (totalAmountNum > itemsSubtotal) {
+			return totalAmountNum - itemsSubtotal;
+		}
+
+		return itemsSubtotal > 0 ? 155 : 0;
+	},
+
+	/**
+	 * Calculates grand total including items subtotal and delivery charge
+	 */
+	getOrderGrandTotal: (order: Order): number => {
+		if (!order || !order.orderItems || order.orderItems.length === 0) {
+			return Number(order?.totalAmount || 0);
+		}
+
+		const itemsSubtotal = order.orderItems.reduce(
+			(sum, item) =>
+				sum + (Number(item.total) || Number(item.price) * Number(item.quantity)),
+			0
+		);
+
+		const deliveryCharge = OrderService.getOrderDeliveryCharge(order);
+		return itemsSubtotal + deliveryCharge;
+	},
+
 	getOrderStatusInfo: (
 		status: OrderStatus
 	): {
@@ -216,12 +202,6 @@ export const OrderService = {
 		}
 	},
 
-	/**
-	 * Format a readable date from order timestamps
-	 *
-	 * @param {string} dateString - ISO date string
-	 * @returns {string} - Formatted date string
-	 */
 	formatOrderDate: (dateString: string): string => {
 		const date = new Date(dateString);
 		return new Intl.DateTimeFormat('en-US', {
@@ -233,45 +213,24 @@ export const OrderService = {
 		}).format(date);
 	},
 
-	/**
-	 * Get product image URL with fallback
-	 *
-	 * @param {string} imageUrl - Product image URL
-	 * @returns {string} - Complete image URL or fallback
-	 */
 	getProductImageUrl: (imageUrl: string): string => {
 		if (!imageUrl) {
 			return '/images/product-placeholder.png';
 		}
 
-		// If already an absolute URL, return as is
 		if (imageUrl.startsWith('http')) {
 			return imageUrl;
 		}
 
-		// Otherwise, prepend your API URL if needed
 		return `${API_URL}/${imageUrl.replace(/^\//, '')}`;
 	},
 
-	/**
-	 * Check if an order can be cancelled based on its status
-	 *
-	 * @param {Order} order - The order
-	 * @returns {boolean} - Whether the order can be cancelled
-	 */
 	canCancelOrder: (order: Order): boolean => {
-		// Only PENDING and CONFIRMED orders can be cancelled
 		return [OrderStatus.PENDING, OrderStatus.CONFIRMED].includes(
 			order.orderStatus
 		);
 	},
 
-	/**
-	 * Get valid next statuses based on current status
-	 *
-	 * @param {OrderStatus} currentStatus - Current order status
-	 * @returns {OrderStatus[]} - Array of valid next statuses
-	 */
 	getValidNextStatuses: (currentStatus: OrderStatus): OrderStatus[] => {
 		switch (currentStatus) {
 			case OrderStatus.PENDING:
@@ -279,9 +238,9 @@ export const OrderService = {
 			case OrderStatus.CONFIRMED:
 				return [OrderStatus.DELIVERED, OrderStatus.CANCELLED];
 			case OrderStatus.DELIVERED:
-				return []; // Terminal state, no next statuses
+				return [];
 			case OrderStatus.CANCELLED:
-				return []; // Terminal state, no next statuses
+				return [];
 			default:
 				return [];
 		}

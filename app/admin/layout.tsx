@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { Separator } from '@/components/ui/separator';
 import {
 	SidebarInset,
@@ -13,7 +12,7 @@ import { ModeToggle } from '@/components/dashbaord/sidebar-componenets/theme-tog
 import { AdminOnly } from '@/components/auth/protected/protected-page';
 
 type Props = {
-	children: React.ReactNode; // Corrected prop name
+	children: React.ReactNode;
 };
 
 const Layout = ({ children }: Props) => {
@@ -27,16 +26,20 @@ const Layout = ({ children }: Props) => {
 			>
 				<SidebarProvider>
 					<AppSidebar />
-					<SidebarInset>
-						<header className='flex h-16 shrink-0 items-center justify-between px-4 gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12'>
-							<div className='flex items-center gap-2 px-4'>
-								<SidebarTrigger className='-ml-1' />
-								<Separator orientation='vertical' className='mr-2 h-4' />
+					<SidebarInset className='bg-[#F7F6F0] min-h-screen w-full flex-1 border-0'>
+						<header className='flex h-16 shrink-0 items-center justify-between px-6 gap-2 bg-white border-b border-[#E5E7EB] sticky top-0 z-30 shadow-xs'>
+							<div className='flex items-center gap-3'>
+								<SidebarTrigger className='-ml-1 text-[#172033] hover:bg-[#F7F6F0]' />
+								<Separator orientation='vertical' className='mr-2 h-4 bg-[#E5E7EB]' />
 								<SiteBreadcrumb />
 							</div>
-							<ModeToggle />
+							<div className='flex items-center gap-3'>
+								<ModeToggle />
+							</div>
 						</header>
-						{children}
+						<div className='w-full min-h-[calc(100vh-64px)] bg-[#F7F6F0] p-6'>
+							{children}
+						</div>
 					</SidebarInset>
 				</SidebarProvider>
 			</DashboardThemeProvider>

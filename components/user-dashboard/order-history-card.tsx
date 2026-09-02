@@ -26,10 +26,11 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
-import { Search, Clock, CheckCircle, XCircle, Package } from 'lucide-react';
+import { Search, Clock, CheckCircle, XCircle, Package, ArrowRight, Calendar, ShoppingBag } from 'lucide-react';
 import { OrderService } from '@/services/order-service';
 import { useSession } from '@/components/providers/session-provider';
 import { OrderStatus, type Order } from '@/types/order';
+import Link from 'next/link';
 
 interface OrderHistoryState {
 	orders: Order[];
@@ -64,13 +65,11 @@ export function OrderHistoryCard() {
 			try {
 				setOrderHistory((prev) => ({ ...prev, isLoading: true }));
 
-				// Build filters
 				const filters: any = {
 					page: orderHistory.currentPage,
 					limit: 10,
 				};
 
-				// Add status filter if not 'all'
 				if (statusFilter !== 'all') {
 					filters.status = statusFilter.toUpperCase();
 				}
@@ -80,7 +79,6 @@ export function OrderHistoryCard() {
 				if (response.statusCode === 200 && response.data) {
 					let orders = response.data;
 
-					// Apply search filter on frontend (since API might not support it)
 					if (searchTerm) {
 						orders = orders.filter(
 							(order) =>
@@ -94,16 +92,15 @@ export function OrderHistoryCard() {
 						);
 					}
 
-					// Apply sorting
 					orders = [...orders].sort((a, b) => {
 						const dateA = new Date(a.orderDate).getTime();
 						const dateB = new Date(b.orderDate).getTime();
 
 						switch (sortBy) {
 							case 'recent':
-								return dateB - dateA; // Newest first
+								return dateB - dateA;
 							case 'oldest':
-								return dateA - dateB; // Oldest first
+								return dateA - dateB;
 							default:
 								return dateB - dateA;
 						}
@@ -147,133 +144,136 @@ export function OrderHistoryCard() {
 		searchTerm,
 	]);
 
-	// Handle pagination
 	const handlePageChange = (page: number) => {
 		setOrderHistory((prev) => ({ ...prev, currentPage: page }));
 	};
 
-	// Get status badge
-	const getStatusBadge = (status: OrderStatus) => {
-		const statusInfo = OrderService.getOrderStatusInfo(status);
-
-		const getIcon = () => {
-			switch (status) {
-				case OrderStatus.PENDING:
-					return <Clock className='h-3 w-3' />;
-				case OrderStatus.CONFIRMED:
-					return <Package className='h-3 w-3' />;
-				case OrderStatus.DELIVERED:
-					return <CheckCircle className='h-3 w-3' />;
-				case OrderStatus.CANCELLED:
-					return <XCircle className='h-3 w-3' />;
-				default:
-					return null;
-			}
-		};
-
-		return (
-			<Badge
-				variant='outline'
-				className={`flex items-center gap-1 w-fit ${statusInfo.color} ${statusInfo.textColor}`}
-			>
-				{getIcon()}
-				{statusInfo.label}
-			</Badge>
-		);
+	// Format Order ID to short hash (Requirement #7)
+	const formatShortOrderId = (id: string) => {
+		if (!id) return '#000000';
+		const cleanId = id.replace(/-/g, '').substring(0, 7).toUpperCase();
+		return `#${cleanId}`;
 	};
 
-	// Format currency
+	// Get status badge matching Requirement #7
+	const getStatusBadge = (status: OrderStatus) => {
+		switch (status) {
+			case OrderStatus.PENDING:
+				return (
+					<span className='inline-flex items-center gap-1.5 bg-[#FFF4CC] text-[#B45309] border border-[#FDE68A] px-3 py-1 rounded-full text-xs font-bold shadow-xs'>
+						<Clock className='h-3.5 w-3.5 text-[#B45309]' />
+						অপেক্ষমান
+					</span>
+				);
+			case OrderStatus.CONFIRMED:
+				return (
+					<span className='inline-flex items-center gap-1.5 bg-blue-50 text-blue-700 border border-blue-100 px-3 py-1 rounded-full text-xs font-bold shadow-xs'>
+						<Package className='h-3.5 w-3.5 text-blue-700' />
+						নিশ্চিত
+					</span>
+				);
+			case OrderStatus.DELIVERED:
+				return (
+					<span className='inline-flex items-center gap-1.5 bg-[#DCFCE7] text-[#15803D] border border-[#86EFAC] px-3 py-1 rounded-full text-xs font-bold shadow-xs'>
+						<CheckCircle className='h-3.5 w-3.5 text-[#15803D]' />
+						সম্পন্ন
+					</span>
+				);
+			case OrderStatus.CANCELLED:
+				return (
+					<span className='inline-flex items-center gap-1.5 bg-red-50 text-red-700 border border-red-100 px-3 py-1 rounded-full text-xs font-bold shadow-xs'>
+						<XCircle className='h-3.5 w-3.5 text-red-700' />
+						বাতিল
+					</span>
+				);
+			default:
+				return (
+					<span className='inline-flex items-center gap-1.5 bg-[#FFF9E8] text-[#B45309] border border-[#F4B400]/30 px-3 py-1 rounded-full text-xs font-bold shadow-xs'>
+						<Clock className='h-3.5 w-3.5 text-[#B45309]' />
+						প্রস্তুত হচ্ছে
+					</span>
+				);
+		}
+	};
+
 	const formatCurrency = (amount: string | number) => {
 		const numAmount = typeof amount === 'string' ? parseFloat(amount) : amount;
 		return new Intl.NumberFormat('bn-BD', {
 			style: 'currency',
 			currency: 'BDT',
 			minimumFractionDigits: 0,
-		}).format(numAmount);
+			maximumFractionDigits: 0,
+		})
+			.format(numAmount)
+			.replace('BDT', '৳')
+			.trim();
 	};
 
-	// Get primary product name for display
 	const getPrimaryProductName = (order: Order) => {
-		if (order.orderItems.length === 0) return 'No items';
+		if (!order.orderItems || order.orderItems.length === 0) return 'পণ্য তথ্য নেই';
 		if (order.orderItems.length === 1) return order.orderItems[0].productName;
-		return `${order.orderItems[0].productName} +${
-			order.orderItems.length - 1
-		} more`;
+		return `${order.orderItems[0].productName} (+আরো ${order.orderItems.length - 1}টি)`;
 	};
 
-	// Loading skeleton
 	if (orderHistory.isLoading) {
 		return (
-			<Card>
-				<CardHeader>
-					<div className='flex flex-col md:flex-row md:items-center md:justify-between gap-4'>
-						<div>
-							<div className='h-6 w-32 bg-gray-200 rounded animate-pulse mb-2'></div>
-							<div className='h-4 w-48 bg-gray-200 rounded animate-pulse'></div>
-						</div>
-						<div className='flex items-center gap-2'>
-							<div className='h-10 w-64 bg-gray-200 rounded animate-pulse'></div>
-							<div className='h-10 w-32 bg-gray-200 rounded animate-pulse'></div>
-						</div>
-					</div>
-				</CardHeader>
-				<CardContent>
-					<div className='rounded-md border'>
-						<div className='p-4 space-y-4'>
-							{[...Array(5)].map((_, i) => (
-								<div key={i} className='flex justify-between items-center'>
-									<div className='flex-1 space-y-2'>
-										<div className='h-4 w-24 bg-gray-200 rounded animate-pulse'></div>
-										<div className='h-4 w-32 bg-gray-200 rounded animate-pulse'></div>
-									</div>
-									<div className='h-4 w-16 bg-gray-200 rounded animate-pulse'></div>
-								</div>
-							))}
-						</div>
-					</div>
-				</CardContent>
+			<Card className='bg-white rounded-3xl border border-[#E5E7EB] shadow-xs p-6 space-y-4 animate-pulse'>
+				<div className='flex justify-between items-center'>
+					<div className='h-6 w-36 bg-gray-200 rounded-md'></div>
+					<div className='h-10 w-48 bg-gray-200 rounded-xl'></div>
+				</div>
+				<div className='space-y-3 pt-4'>
+					{[1, 2, 3, 4].map((i) => (
+						<div key={i} className='h-12 w-full bg-gray-100 rounded-xl'></div>
+					))}
+				</div>
 			</Card>
 		);
 	}
 
 	return (
-		<Card>
-			<CardHeader>
+		<Card className='bg-white rounded-3xl border border-[#E5E7EB] shadow-xs overflow-hidden'>
+			<CardHeader className='p-6 sm:p-8 pb-4 border-b border-[#E5E7EB]/60'>
 				<div className='flex flex-col md:flex-row md:items-center md:justify-between gap-4'>
 					<div>
-						<CardTitle>অর্ডার ইতিহাস</CardTitle>
-						<CardDescription>
-							আপনার সকল পূর্ববর্তী অর্ডার এবং তাদের বিস্তারিত দেখুন
+						<CardTitle className='text-xl sm:text-2xl font-extrabold text-[#172033] tracking-tight'>
+							সাম্প্রতিক অর্ডার
+						</CardTitle>
+						<CardDescription className='text-sm text-[#667085] font-medium mt-1'>
+							আপনার সর্বশেষ অর্ডারগুলোর অবস্থা দেখুন।
 						</CardDescription>
 					</div>
-					<div className='flex items-center gap-2'>
-						<div className='relative'>
-							<Search className='absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground' />
+
+					<div className='flex items-center gap-2.5 flex-wrap sm:flex-nowrap'>
+						<div className='relative flex-1 sm:w-auto'>
+							<Search className='absolute left-3 top-3 h-4 w-4 text-[#667085]' />
 							<Input
 								type='search'
 								placeholder='অর্ডার খুঁজুন...'
-								className='pl-8 w-[200px] md:w-[250px]'
+								className='pl-9 w-full sm:w-[200px] md:w-[240px] rounded-xl border-[#E5E7EB] focus:border-[#28321A] text-xs sm:text-sm font-medium'
 								value={searchTerm}
 								onChange={(e) => setSearchTerm(e.target.value)}
 							/>
 						</div>
+
 						<Select value={statusFilter} onValueChange={setStatusFilter}>
-							<SelectTrigger className='w-[130px]'>
+							<SelectTrigger className='w-[130px] rounded-xl border-[#E5E7EB] text-xs font-bold text-[#172033]'>
 								<SelectValue placeholder='স্ট্যাটাস' />
 							</SelectTrigger>
-							<SelectContent>
+							<SelectContent className='rounded-xl'>
 								<SelectItem value='all'>সব অর্ডার</SelectItem>
 								<SelectItem value='pending'>অপেক্ষমান</SelectItem>
 								<SelectItem value='confirmed'>নিশ্চিত</SelectItem>
-								<SelectItem value='delivered'>ডেলিভারি</SelectItem>
+								<SelectItem value='delivered'>সম্পন্ন</SelectItem>
 								<SelectItem value='cancelled'>বাতিল</SelectItem>
 							</SelectContent>
 						</Select>
+
 						<Select value={sortBy} onValueChange={setSortBy}>
-							<SelectTrigger className='w-[130px]'>
+							<SelectTrigger className='w-[130px] rounded-xl border-[#E5E7EB] text-xs font-bold text-[#172033]'>
 								<SelectValue placeholder='সাজান' />
 							</SelectTrigger>
-							<SelectContent>
+							<SelectContent className='rounded-xl'>
 								<SelectItem value='recent'>নতুন আগে</SelectItem>
 								<SelectItem value='oldest'>পুরাতন আগে</SelectItem>
 							</SelectContent>
@@ -281,66 +281,130 @@ export function OrderHistoryCard() {
 					</div>
 				</div>
 			</CardHeader>
-			<CardContent>
-				<div className='rounded-md border'>
-					<Table>
-						<TableHeader>
-							<TableRow>
-								<TableHead>অর্ডার আইডি</TableHead>
-								<TableHead>তারিখ</TableHead>
-								<TableHead className='hidden md:table-cell'>পণ্য</TableHead>
-								<TableHead>মূল্য</TableHead>
-								<TableHead className='hidden md:table-cell'>
-									স্ট্যাটাস
-								</TableHead>
-								<TableHead className='text-right'>অ্যাকশন</TableHead>
-							</TableRow>
-						</TableHeader>
-						<TableBody>
-							{orderHistory.orders.length > 0 ? (
-								orderHistory.orders.map((order) => (
-									<TableRow key={order.id}>
-										<TableCell className='font-medium'>{order.id}</TableCell>
-										<TableCell>
-											{OrderService.formatOrderDate(order.orderDate)}
-										</TableCell>
-										<TableCell className='hidden md:table-cell max-w-[200px] truncate'>
-											{getPrimaryProductName(order)}
-										</TableCell>
-										<TableCell>{formatCurrency(order.totalAmount)}</TableCell>
-										<TableCell className='hidden md:table-cell'>
-											{getStatusBadge(order.orderStatus)}
-										</TableCell>
-										<TableCell className='text-right'>
-											<Button
-												variant='outline'
-												size='sm'
-												onClick={() => {
-													window.location.href = `/order/confirmation/${order.id}`;
-												}}
-											>
-												দেখুন
-											</Button>
-										</TableCell>
-									</TableRow>
-								))
-							) : (
-								<TableRow>
-									<TableCell colSpan={6} className='text-center py-6'>
-										{searchTerm || statusFilter !== 'all'
-											? 'আপনার অনুসন্ধানের সাথে কোন অর্ডার পাওয়া যায়নি।'
-											: 'এখনও কোন অর্ডার নেই।'}
-									</TableCell>
-								</TableRow>
-							)}
-						</TableBody>
-					</Table>
-				</div>
 
-				{/* Pagination */}
+			<CardContent className='p-0'>
+				{orderHistory.orders.length > 0 ? (
+					<>
+						{/* DESKTOP TABLE VIEW */}
+						<div className='hidden md:block overflow-x-auto'>
+							<Table>
+								<TableHeader className='bg-gray-50/70'>
+									<TableRow className='hover:bg-transparent border-b border-[#E5E7EB]'>
+										<TableHead className='font-bold text-[#172033] pl-6 py-4'>অর্ডার আইডি</TableHead>
+										<TableHead className='font-bold text-[#172033] py-4'>তারিখ</TableHead>
+										<TableHead className='font-bold text-[#172033] py-4'>পণ্য</TableHead>
+										<TableHead className='font-bold text-[#172033] py-4'>মূল্য</TableHead>
+										<TableHead className='font-bold text-[#172033] py-4'>স্ট্যাটাস</TableHead>
+										<TableHead className='font-bold text-[#172033] text-right pr-6 py-4'>অ্যাকশন</TableHead>
+									</TableRow>
+								</TableHeader>
+								<TableBody>
+									{orderHistory.orders.map((order) => (
+										<TableRow key={order.id} className='hover:bg-[#FFF9E8]/40 transition-colors border-b border-[#E5E7EB]/50'>
+											{/* Requirement #7: Shortened Order ID */}
+											<TableCell className='font-extrabold text-[#28321A] pl-6 py-4'>
+												{formatShortOrderId(order.id)}
+											</TableCell>
+											<TableCell className='text-xs font-semibold text-[#667085] py-4'>
+												{OrderService.formatOrderDate(order.orderDate)}
+											</TableCell>
+											<TableCell className='font-bold text-[#172033] max-w-[220px] truncate py-4'>
+												{getPrimaryProductName(order)}
+											</TableCell>
+											<TableCell className='font-black text-[#172033] text-base py-4'>
+												{formatCurrency(order.totalAmount)}
+											</TableCell>
+											<TableCell className='py-4'>
+												{getStatusBadge(order.orderStatus)}
+											</TableCell>
+											<TableCell className='text-right pr-6 py-4'>
+												<Button
+													variant='outline'
+													size='sm'
+													onClick={() => {
+														window.location.href = `/order/confirmation/${order.id}`;
+													}}
+													className='bg-white hover:bg-[#28321A] hover:text-white border-2 border-[#28321A] text-[#28321A] rounded-xl font-bold px-4 shadow-xs transition-all'
+												>
+													দেখুন →
+												</Button>
+											</TableCell>
+										</TableRow>
+									))}
+								</TableBody>
+							</Table>
+						</div>
+
+						{/* Requirement #8: MOBILE RESPONSIVE CARDS VIEW */}
+						<div className='md:hidden p-4 space-y-3'>
+							{orderHistory.orders.map((order) => (
+								<div
+									key={order.id}
+									className='bg-white border border-[#E5E7EB] rounded-2xl p-4 space-y-3 shadow-xs hover:border-[#28321A] transition-all'
+								>
+									<div className='flex items-center justify-between border-b border-gray-100 pb-2.5'>
+										<span className='font-extrabold text-[#28321A] text-sm'>
+											{formatShortOrderId(order.id)}
+										</span>
+										{getStatusBadge(order.orderStatus)}
+									</div>
+
+									<div className='space-y-1'>
+										<p className='font-bold text-sm text-[#172033] line-clamp-1'>
+											{getPrimaryProductName(order)}
+										</p>
+										<p className='text-xs text-[#667085] font-medium flex items-center gap-1'>
+											<Calendar className='w-3.5 h-3.5 text-[#F4B400]' />
+											{OrderService.formatOrderDate(order.orderDate)}
+										</p>
+									</div>
+
+									<div className='flex items-center justify-between pt-2 border-t border-gray-100'>
+										<span className='font-black text-base text-[#172033]'>
+											{formatCurrency(order.totalAmount)}
+										</span>
+										<Button
+											variant='outline'
+											size='sm'
+											onClick={() => {
+												window.location.href = `/order/confirmation/${order.id}`;
+											}}
+											className='bg-white hover:bg-[#28321A] hover:text-white border-2 border-[#28321A] text-[#28321A] rounded-xl font-bold px-3 py-1 text-xs'
+										>
+											দেখুন →
+										</Button>
+									</div>
+								</div>
+							))}
+						</div>
+					</>
+				) : (
+					/* POLISHED EMPTY STATE (Requirement #12) */
+					<div className='text-center py-16 px-6 max-w-md mx-auto my-4 space-y-4'>
+						<div className='w-20 h-20 bg-[#FFF9E8] rounded-full flex items-center justify-center mx-auto border border-[#F4B400]/30 shadow-inner'>
+							<Package className='w-10 h-10 text-[#28321A]' />
+						</div>
+						<div className='space-y-1.5'>
+							<h3 className='text-xl font-bold text-[#172033]'>
+								এখনো কোনো অর্ডার নেই
+							</h3>
+							<p className='text-sm text-[#667085] font-medium leading-relaxed'>
+								কৃষকের কাছ থেকে সরাসরি তাজা ও মানসম্মত পণ্য কিনতে শুরু করুন।
+							</p>
+						</div>
+						<Button asChild className='bg-[#F4B400] hover:bg-[#E5A700] text-[#172033] font-bold rounded-xl px-6 shadow-md border-0'>
+							<Link href='/marketplace'>
+								<ShoppingBag className='w-4 h-4 mr-2' />
+								পণ্য দেখুন
+							</Link>
+						</Button>
+					</div>
+				)}
+
+				{/* PAGINATION */}
 				{orderHistory.totalPages > 1 && (
-					<div className='flex items-center justify-between mt-4'>
-						<div className='text-sm text-muted-foreground'>
+					<div className='flex items-center justify-between p-4 sm:p-6 border-t border-[#E5E7EB] bg-gray-50/50'>
+						<div className='text-xs sm:text-sm font-bold text-[#667085]'>
 							মোট {orderHistory.totalOrders} টি অর্ডার
 						</div>
 						<div className='flex items-center gap-2'>
@@ -349,10 +413,11 @@ export function OrderHistoryCard() {
 								size='sm'
 								disabled={orderHistory.currentPage === 1}
 								onClick={() => handlePageChange(orderHistory.currentPage - 1)}
+								className='rounded-xl border-[#E5E7EB] text-xs font-bold'
 							>
 								আগের
 							</Button>
-							<span className='text-sm'>
+							<span className='text-xs font-bold text-[#172033] px-2'>
 								পৃষ্ঠা {orderHistory.currentPage} / {orderHistory.totalPages}
 							</span>
 							<Button
@@ -360,6 +425,7 @@ export function OrderHistoryCard() {
 								size='sm'
 								disabled={orderHistory.currentPage === orderHistory.totalPages}
 								onClick={() => handlePageChange(orderHistory.currentPage + 1)}
+								className='rounded-xl border-[#E5E7EB] text-xs font-bold'
 							>
 								পরের
 							</Button>

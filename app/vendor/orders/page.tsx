@@ -2,10 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import { OrderService } from '@/services/order-service';
-import { OrderFilters } from '@/types/order';
+import { OrderFilters, OrderStatus } from '@/types/order';
 import { Order, OrdersResponse } from '@/types/order';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Loader2 } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
+import { ShoppingBag, PackageCheck, Clock, CheckCircle2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { OrderFilter } from '@/components/dashbaord/orders/order-filter';
 import { OrderList } from '@/components/dashbaord/orders/order-list';
@@ -36,12 +36,8 @@ export default function VendorOrdersPage() {
 			setLoading(true);
 			try {
 				const result = await OrderService.getStoreOrders(storeId, filters);
-
-				setOrders(result.data);
-				console.log('Orders data:', result.data);
-
+				setOrders(result.data || []);
 				setResponse(result);
-				console.log('Response state:', result);
 			} catch (error) {
 				console.error('Error fetching orders:', error);
 				toast.error('অর্ডার লোড করতে সমস্যা হয়েছে।');
@@ -62,14 +58,12 @@ export default function VendorOrdersPage() {
 	};
 
 	const handleOrderUpdated = (updatedOrder: Order) => {
-		// Update the orders array
 		setOrders((currentOrders) =>
 			currentOrders.map((order) =>
 				order.id === updatedOrder.id ? updatedOrder : order
 			)
 		);
 
-		// Update the full response
 		if (response) {
 			const updatedData = response.data.map((order) =>
 				order.id === updatedOrder.id ? updatedOrder : order
@@ -82,54 +76,118 @@ export default function VendorOrdersPage() {
 		}
 	};
 
+	// Real Data KPI Summary Counters
+	const totalCount = response?.meta?.totalItems || orders.length;
+	const pendingCount = orders.filter(
+		(o) => o.orderStatus === OrderStatus.PENDING
+	).length;
+	const confirmedCount = orders.filter(
+		(o) => o.orderStatus === OrderStatus.CONFIRMED
+	).length;
+	const deliveredCount = orders.filter(
+		(o) => o.orderStatus === OrderStatus.DELIVERED
+	).length;
+
 	return (
-		<div className='container mx-auto py-8 px-4'>
-			<div className='mb-8'>
-				<h1 className='text-3xl font-bold mb-2 dark:text-white'>
-					অর্ডার ম্যানেজমেন্ট
-				</h1>
-				<p className='text-gray-600 dark:text-gray-300'>
-					আপনার দোকানের সকল অর্ডার দেখুন এবং পরিচালনা করুন।
-				</p>
+		<div className='p-4 sm:p-6 lg:p-8 space-y-6 w-full min-h-screen bg-[#F7F6F0] selection:bg-[#F5B800] selection:text-[#172033]'>
+			{/* HERO PAGE HEADER */}
+			<div className='flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 sm:p-7 rounded-[18px] border border-[#E5E7EB] shadow-xs relative overflow-hidden'>
+				<div className='space-y-1.5 z-10'>
+					<div className='flex items-center gap-2.5'>
+						<div className='p-2 rounded-xl bg-[#FFF9E8] text-[#26351B] border border-[#F5B800]/30'>
+							<ShoppingBag className='w-5 h-5 text-[#26351B]' />
+						</div>
+						<h1 className='text-2xl sm:text-3xl font-extrabold text-[#172033] tracking-tight'>
+							অর্ডার ম্যানেজমেন্ট
+						</h1>
+					</div>
+					<p className='text-sm text-[#64748B] font-medium'>
+						আপনার দোকানের সকল অর্ডার দেখুন এবং পরিচালনা করুন।
+					</p>
+				</div>
+
+				<div className='flex items-center gap-2 bg-[#FAFAF6] px-4 py-2 rounded-xl border border-[#E5E7EB] z-10'>
+					<span className='text-xs font-semibold text-[#64748B]'>মোট অর্ডার:</span>
+					<span className='text-sm font-black text-[#26351B]'>{totalCount}টি</span>
+				</div>
 			</div>
 
 			{!storeId ? (
-				<div className='text-center py-12'>
-					<p className='text-gray-500 dark:text-gray-400'>
-						আপনার কোন স্টোর নেই। আপনি যদি ভেন্ডর হন, তাহলে প্রথমে একটি স্টোর
-						তৈরি করুন।
+				<div className='text-center py-12 bg-white rounded-[18px] border border-[#E5E7EB] p-8 shadow-xs'>
+					<p className='text-sm font-bold text-[#64748B]'>
+						আপনার কোন স্টোর নেই। আপনি যদি ভেন্ডর হন, তাহলে প্রথমে একটি স্টোর তৈরি করুন।
 					</p>
 				</div>
 			) : (
-				<Card className='dark:border-gray-700 dark:bg-gray-800'>
-					<CardHeader>
-						<CardTitle className='dark:text-white'>অর্ডার সমূহ</CardTitle>
-					</CardHeader>
-
-					<CardContent>
-						<OrderFilter
-							onChange={handleFilterChange}
-							initialFilters={filters}
-						/>
-
-						{loading ? (
-							<div className='flex justify-center items-center py-12'>
-								<Loader2 className='h-8 w-8 text-primary animate-spin' />
-								<span className='ml-2 dark:text-white'>
-									অর্ডার লোড হচ্ছে...
-								</span>
+				<div className='space-y-6'>
+					{/* 2. ORDER SUMMARY CARDS (KPIs) */}
+					<div className='grid grid-cols-2 lg:grid-cols-4 gap-4'>
+						{/* Total Orders */}
+						<div className='bg-white p-4.5 rounded-[18px] border border-[#E5E7EB] shadow-xs space-y-1 flex items-center justify-between'>
+							<div>
+								<p className='text-xs font-extrabold text-[#64748B] uppercase tracking-wider'>
+									মোট অর্ডার
+								</p>
+								<p className='text-2xl font-black text-[#172033] mt-1'>{totalCount}</p>
 							</div>
-						) : (
-							<OrderList
-								orders={orders}
-								meta={response?.meta || null}
-								links={response?.links || null}
-								onPageChange={handlePageChange}
-								onOrderUpdated={handleOrderUpdated}
-							/>
-						)}
-					</CardContent>
-				</Card>
+							<div className='p-2.5 rounded-xl bg-[#FAFAF6] text-[#26351B] border border-[#E5E7EB]'>
+								<PackageCheck className='w-5 h-5 text-[#26351B]' />
+							</div>
+						</div>
+
+						{/* Pending */}
+						<div className='bg-[#FFF9E8] p-4.5 rounded-[18px] border border-[#F5B800]/40 shadow-xs space-y-1 flex items-center justify-between'>
+							<div>
+								<p className='text-xs font-extrabold text-[#B45309] uppercase tracking-wider'>
+									অপেক্ষমান
+								</p>
+								<p className='text-2xl font-black text-[#B45309] mt-1'>{pendingCount}</p>
+							</div>
+							<div className='p-2.5 rounded-xl bg-white text-[#B45309] border border-[#F5B800]/40'>
+								<Clock className='w-5 h-5 text-[#B45309]' />
+							</div>
+						</div>
+
+						{/* Confirmed */}
+						<div className='bg-[#EFF6FF] p-4.5 rounded-[18px] border border-[#93C5FD] shadow-xs space-y-1 flex items-center justify-between'>
+							<div>
+								<p className='text-xs font-extrabold text-[#1D4ED8] uppercase tracking-wider'>
+									নিশ্চিত
+								</p>
+								<p className='text-2xl font-black text-[#1D4ED8] mt-1'>{confirmedCount}</p>
+							</div>
+							<div className='p-2.5 rounded-xl bg-white text-[#1D4ED8] border border-[#93C5FD]'>
+								<CheckCircle2 className='w-5 h-5 text-[#1D4ED8]' />
+							</div>
+						</div>
+
+						{/* Completed / Delivered */}
+						<div className='bg-[#ECFDF5] p-4.5 rounded-[18px] border border-[#A7F3D0] shadow-xs space-y-1 flex items-center justify-between'>
+							<div>
+								<p className='text-xs font-extrabold text-[#15803D] uppercase tracking-wider'>
+									সম্পন্ন
+								</p>
+								<p className='text-2xl font-black text-[#15803D] mt-1'>{deliveredCount}</p>
+							</div>
+							<div className='p-2.5 rounded-xl bg-white text-[#15803D] border border-[#A7F3D0]'>
+								<CheckCircle2 className='w-5 h-5 text-[#15803D]' />
+							</div>
+						</div>
+					</div>
+
+					{/* 3. ORDER FILTER TOOLBAR */}
+					<OrderFilter onChange={handleFilterChange} initialFilters={filters} />
+
+					{/* 4. ORDERS LIST / TABLE */}
+					<OrderList
+						orders={orders}
+						meta={response?.meta || null}
+						links={response?.links || null}
+						onPageChange={handlePageChange}
+						onOrderUpdated={handleOrderUpdated}
+						isLoading={loading}
+					/>
+				</div>
 			)}
 		</div>
 	);

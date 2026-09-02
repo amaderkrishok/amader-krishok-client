@@ -6,13 +6,11 @@ import { OrderService } from '@/services/order-service';
 import { Order, OrderStatus } from '@/types/order';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
 	Package,
-	ShoppingCart,
 	Clock,
 	CheckCircle,
 	XCircle,
@@ -24,6 +22,8 @@ import {
 	Calendar,
 	AlertCircle,
 	ShoppingBag,
+	User,
+	Sprout,
 } from 'lucide-react';
 
 const formatCurrency = (amount: number): string => {
@@ -40,31 +40,35 @@ const formatCurrency = (amount: number): string => {
 
 const statusConfig: Record<
 	OrderStatus,
-	{ label: string; icon: typeof Clock; color: string; bgColor: string }
+	{ label: string; icon: typeof Clock; color: string; bgColor: string; borderColor: string }
 > = {
 	[OrderStatus.PENDING]: {
 		label: 'অপেক্ষমান',
 		icon: Clock,
-		color: 'text-yellow-700 dark:text-yellow-400',
-		bgColor: 'bg-yellow-100 dark:bg-yellow-900/30',
+		color: 'text-[#B45309]',
+		bgColor: 'bg-[#FFF4CC]',
+		borderColor: 'border-[#FDE68A]',
 	},
 	[OrderStatus.CONFIRMED]: {
 		label: 'নিশ্চিত',
 		icon: CheckCircle,
-		color: 'text-blue-700 dark:text-blue-400',
-		bgColor: 'bg-blue-100 dark:bg-blue-900/30',
+		color: 'text-blue-700',
+		bgColor: 'bg-blue-50',
+		borderColor: 'border-blue-100',
 	},
 	[OrderStatus.DELIVERED]: {
 		label: 'ডেলিভারি সম্পন্ন',
 		icon: Truck,
-		color: 'text-green-700 dark:text-green-400',
-		bgColor: 'bg-green-100 dark:bg-green-900/30',
+		color: 'text-[#15803D]',
+		bgColor: 'bg-[#DCFCE7]',
+		borderColor: 'border-[#86EFAC]',
 	},
 	[OrderStatus.CANCELLED]: {
 		label: 'বাতিল',
 		icon: XCircle,
-		color: 'text-red-700 dark:text-red-400',
-		bgColor: 'bg-red-100 dark:bg-red-900/30',
+		color: 'text-red-700',
+		bgColor: 'bg-red-50',
+		borderColor: 'border-red-100',
 	},
 };
 
@@ -79,6 +83,7 @@ export default function UserOrdersPage() {
 	const [expandedOrder, setExpandedOrder] = useState<string | null>(null);
 	const [currentPage, setCurrentPage] = useState(1);
 	const [totalPages, setTotalPages] = useState(1);
+	const [imageErrors, setImageErrors] = useState<Record<string, boolean>>({});
 
 	useEffect(() => {
 		const fetchOrders = async () => {
@@ -123,45 +128,39 @@ export default function UserOrdersPage() {
 		setExpandedOrder(expandedOrder === orderId ? null : orderId);
 	};
 
-	// Count by status
-	const orderCounts = {
-		ALL: orders.length,
-		[OrderStatus.PENDING]: orders.filter(
-			(o) => o.orderStatus === OrderStatus.PENDING
-		).length,
-		[OrderStatus.CONFIRMED]: orders.filter(
-			(o) => o.orderStatus === OrderStatus.CONFIRMED
-		).length,
-		[OrderStatus.DELIVERED]: orders.filter(
-			(o) => o.orderStatus === OrderStatus.DELIVERED
-		).length,
-		[OrderStatus.CANCELLED]: orders.filter(
-			(o) => o.orderStatus === OrderStatus.CANCELLED
-		).length,
+	const handleImageError = (itemId: string) => {
+		setImageErrors((prev) => ({ ...prev, [itemId]: true }));
+	};
+
+	const formatShortOrderId = (id: string) => {
+		if (!id) return '#000000';
+		const cleanId = id.replace(/-/g, '').substring(0, 7).toLowerCase();
+		return `#${cleanId}`;
 	};
 
 	return (
-		<div className='space-y-6'>
-			{/* Header */}
-			<div className='flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4'>
-				<div>
-					<h1 className='text-2xl font-bold dark:text-white'>
+		<div className='space-y-6 pb-8'>
+			{/* PAGE HEADER */}
+			<div className='flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-gradient-to-r from-[#FFF9E8] to-white p-6 sm:p-7 rounded-2xl border border-[#E5E7EB] shadow-xs relative overflow-hidden'>
+				<div className='space-y-1 z-10'>
+					<h1 className='text-2xl sm:text-3xl font-extrabold text-[#111827] tracking-tight'>
 						আমার অর্ডার সমূহ
 					</h1>
-					<p className='text-sm text-gray-500 dark:text-gray-400'>
-						আপনার সমস্ত অর্ডারের তালিকা ও বিস্তারিত
+					<p className='text-sm text-[#64748B] font-medium'>
+						আপনার সকল অর্ডারের তালিকা ও বিস্তারিত তথ্য
 					</p>
 				</div>
-				<Button asChild>
+
+				<Button asChild className='bg-[#F4B400] hover:bg-[#E5A700] text-[#28321A] font-extrabold rounded-xl px-5 py-2.5 shadow-xs border-0 transition-all hover:-translate-y-0.5 z-10'>
 					<Link href='/marketplace'>
-						<ShoppingBag className='h-4 w-4 mr-2' />
-						শপিং করুন
+						<ShoppingBag className='h-4 w-4 mr-2 text-[#28321A]' />
+						🛍 পণ্য কিনুন
 					</Link>
 				</Button>
 			</div>
 
-			{/* Filter Tabs */}
-			<div className='flex flex-wrap gap-2'>
+			{/* ORDER FILTER TABS */}
+			<div className='flex items-center gap-2 overflow-x-auto pb-2 scrollbar-hide pt-1'>
 				{(
 					[
 						'ALL',
@@ -178,35 +177,38 @@ export default function UserOrdersPage() {
 							: statusConfig[status as OrderStatus]?.label;
 
 					return (
-						<Button
+						<button
 							key={status}
-							variant={isActive ? 'default' : 'outline'}
-							size='sm'
 							onClick={() => {
 								setFilterStatus(status);
 								setCurrentPage(1);
 							}}
-							className='rounded-full'
+							className={`flex items-center gap-1.5 px-4.5 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all duration-200 border cursor-pointer ${
+								isActive
+									? 'bg-[#28321A] text-white border-[#28321A] shadow-xs scale-102'
+									: 'bg-white text-[#111827] border-[#E5E7EB] hover:bg-[#FFF4CC] hover:border-[#F4B400]/40 font-medium'
+							}`}
 						>
+							{isActive && <span className='w-1.5 h-1.5 rounded-full bg-[#F4B400]' />}
 							{label}
-						</Button>
+						</button>
 					);
 				})}
 			</div>
 
 			{/* Error State */}
 			{error && (
-				<Card className='p-4 border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/20'>
+				<Card className='p-5 border-red-200 bg-red-50 rounded-2xl'>
 					<div className='flex items-center gap-3'>
-						<AlertCircle className='h-5 w-5 text-red-500' />
-						<p className='text-red-700 dark:text-red-400'>
+						<AlertCircle className='h-5 w-5 text-red-600' />
+						<p className='text-sm font-bold text-red-700'>
 							{error}
 						</p>
 						<Button
 							variant='outline'
 							size='sm'
 							onClick={() => window.location.reload()}
-							className='ml-auto'
+							className='ml-auto rounded-xl border-red-300 text-red-700 font-bold'
 						>
 							পুনরায় চেষ্টা
 						</Button>
@@ -214,20 +216,20 @@ export default function UserOrdersPage() {
 				</Card>
 			)}
 
-			{/* Loading State */}
+			{/* LOADING SKELETON STATE */}
 			{loading ? (
 				<div className='space-y-4'>
 					{[1, 2, 3].map((i) => (
-						<Card key={i} className='p-6'>
+						<Card key={i} className='p-6 bg-white rounded-2xl border border-[#E5E7EB] space-y-4 animate-pulse'>
 							<div className='flex items-center justify-between'>
 								<div className='space-y-2'>
-									<Skeleton className='h-5 w-32' />
-									<Skeleton className='h-4 w-48' />
+									<Skeleton className='h-5 w-36 rounded-md' />
+									<Skeleton className='h-4 w-48 rounded-md' />
 								</div>
 								<Skeleton className='h-8 w-24 rounded-full' />
 							</div>
-							<div className='mt-4 flex gap-4'>
-								<Skeleton className='h-16 w-16 rounded-md' />
+							<div className='flex gap-4 pt-2'>
+								<Skeleton className='h-16 w-16 rounded-xl' />
 								<div className='space-y-2 flex-1'>
 									<Skeleton className='h-4 w-3/4' />
 									<Skeleton className='h-4 w-1/2' />
@@ -237,32 +239,28 @@ export default function UserOrdersPage() {
 					))}
 				</div>
 			) : orders.length === 0 ? (
-				/* Empty State */
-				<Card className='p-12'>
-					<div className='text-center'>
-						<ShoppingCart className='h-16 w-16 mx-auto mb-4 text-gray-300 dark:text-gray-600' />
-						<h3 className='text-xl font-semibold mb-2 dark:text-white'>
-							{filterStatus === 'ALL'
-								? 'এখনো কোন অর্ডার নেই'
-								: 'এই ক্যাটাগরিতে কোন অর্ডার নেই'}
-						</h3>
-						<p className='text-gray-500 dark:text-gray-400 mb-6'>
-							{filterStatus === 'ALL'
-								? 'আমাদের মার্কেটপ্লেস থেকে পণ্য কিনতে শুরু করুন!'
-								: 'অন্য ফিল্টার চেষ্টা করুন'}
-						</p>
-						{filterStatus === 'ALL' && (
-							<Button asChild>
-								<Link href='/marketplace'>
-									<ShoppingBag className='h-4 w-4 mr-2' />
-									মার্কেটপ্লেসে যান
-								</Link>
-							</Button>
-						)}
+				/* EMPTY STATE */
+				<Card className='p-12 sm:p-16 bg-white rounded-2xl border border-[#E5E7EB] shadow-xs text-center max-w-lg mx-auto space-y-4'>
+					<div className='w-20 h-20 bg-[#FFF4CC] rounded-full flex items-center justify-center mx-auto border border-[#F4B400]/30 shadow-inner'>
+						<Package className='h-10 w-10 text-[#28321A]' />
 					</div>
+					<div className='space-y-1.5'>
+						<h3 className='text-xl font-extrabold text-[#111827]'>
+							এখনও কোনো অর্ডার নেই
+						</h3>
+						<p className='text-sm text-[#64748B] font-medium leading-relaxed'>
+							আপনার পছন্দের তাজা কৃষিপণ্য খুঁজে অর্ডার করুন।
+						</p>
+					</div>
+					<Button asChild className='bg-[#F4B400] hover:bg-[#E5A700] text-[#28321A] font-bold rounded-xl px-6 shadow-xs border-0 mt-2'>
+						<Link href='/marketplace'>
+							<ShoppingBag className='h-4 w-4 mr-2 text-[#28321A]' />
+							পণ্য দেখুন
+						</Link>
+					</Button>
 				</Card>
 			) : (
-				/* Orders List */
+				/* ORDERS LIST WITH ACCURATE DELIVERY CHARGES */
 				<div className='space-y-4'>
 					{orders.map((order) => {
 						const status =
@@ -271,174 +269,186 @@ export default function UserOrdersPage() {
 						const StatusIcon = status.icon;
 						const isExpanded = expandedOrder === order.id;
 
+						// Calculate Delivery Charge & Grand Total via OrderService
+						const deliveryCharge = OrderService.getOrderDeliveryCharge(order);
+						const grandTotal = OrderService.getOrderGrandTotal(order);
+						const itemsSubtotal = (order.orderItems || []).reduce(
+							(sum, item) => sum + (Number(item.total) || Number(item.price) * Number(item.quantity)),
+							0
+						);
+
 						return (
 							<Card
 								key={order.id}
-								className='overflow-hidden dark:bg-gray-800 dark:border-gray-700 hover:shadow-md transition-shadow'
+								className='overflow-hidden bg-white rounded-2xl border border-[#E5E7EB] shadow-xs hover:shadow-md transition-all duration-300'
 							>
-								{/* Order Header */}
+								{/* Order Header (Clickable) */}
 								<div
-									className='p-4 sm:p-6 cursor-pointer'
-									onClick={() =>
-										toggleOrderExpand(order.id)
-									}
+									className='p-5 sm:p-6 cursor-pointer bg-white hover:bg-[#FFF9E8]/30 transition-colors'
+									onClick={() => toggleOrderExpand(order.id)}
 								>
-									<div className='flex flex-col sm:flex-row sm:items-center justify-between gap-3'>
-										<div className='flex items-start sm:items-center gap-3'>
-											<div
-												className={`p-2 rounded-full ${status.bgColor}`}
-											>
-												<StatusIcon
-													className={`h-5 w-5 ${status.color}`}
-												/>
+									<div className='flex flex-col sm:flex-row sm:items-center justify-between gap-4'>
+										<div className='flex items-start sm:items-center gap-3.5'>
+											<div className={`p-2.5 rounded-xl ${status.bgColor} ${status.borderColor} border`}>
+												<StatusIcon className={`h-5 w-5 ${status.color}`} />
 											</div>
 											<div>
-												<p className='font-semibold dark:text-white'>
-													অর্ডার #
-													{order.id.substring(0, 8)}
+												<p className='font-extrabold text-[#28321A] text-base sm:text-lg tracking-tight'>
+													🕐 অর্ডার {formatShortOrderId(order.id)}
 												</p>
-												<div className='flex flex-wrap items-center gap-2 text-xs text-gray-500 dark:text-gray-400 mt-1'>
+												<div className='flex flex-wrap items-center gap-2 text-xs text-[#64748B] font-medium mt-0.5'>
 													<span className='flex items-center gap-1'>
-														<Calendar className='h-3 w-3' />
-														{OrderService.formatOrderDate(
-															order.orderDate
-														)}
+														<Calendar className='h-3.5 w-3.5 text-[#F4B400]' />
+														{OrderService.formatOrderDate(order.orderDate)}
 													</span>
-													<span>
-														•{' '}
-														{order.orderItems
-															?.length || 0}{' '}
-														টি আইটেম
-													</span>
+													<span>• {order.orderItems?.length || 0}টি আইটেম</span>
+													{deliveryCharge > 0 ? (
+														<span className='text-[10px] font-extrabold bg-[#FFF9E8] text-[#26351B] px-2 py-0.5 rounded-full border border-[#F5B800]/40 flex items-center gap-1'>
+															<Truck className='w-3 h-3 text-[#26351B]' /> +{formatCurrency(deliveryCharge)} ডেলিভারি
+														</span>
+													) : (
+														<span className='text-[10px] font-extrabold bg-[#ECFDF5] text-[#16A34A] px-2 py-0.5 rounded-full border border-[#A7F3D0]'>
+															ফ্রি ডেলিভারি
+														</span>
+													)}
 												</div>
 											</div>
 										</div>
-										<div className='flex items-center gap-3'>
-											<Badge
-												className={`${status.bgColor} ${status.color} border-0`}
-											>
+
+										<div className='flex items-center justify-between sm:justify-end gap-4 border-t sm:border-t-0 pt-3 sm:pt-0 border-gray-100'>
+											<span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border ${status.bgColor} ${status.color} ${status.borderColor}`}>
 												{status.label}
-											</Badge>
-											<p className='text-lg font-bold dark:text-white'>
-												{formatCurrency(
-													Number(order.totalAmount)
-												)}
-											</p>
-											{isExpanded ? (
-												<ChevronUp className='h-5 w-5 text-gray-400' />
-											) : (
-												<ChevronDown className='h-5 w-5 text-gray-400' />
-											)}
+											</span>
+
+											<div className='flex items-center gap-3'>
+												<p className='text-lg sm:text-xl font-black text-[#111827]'>
+													{formatCurrency(grandTotal)}
+												</p>
+												<div className='p-1.5 rounded-xl bg-gray-50 border border-gray-200 text-gray-500'>
+													{isExpanded ? (
+														<ChevronUp className='h-4 w-4' />
+													) : (
+														<ChevronDown className='h-4 w-4' />
+													)}
+												</div>
+											</div>
 										</div>
 									</div>
 								</div>
 
-								{/* Expanded Order Details */}
+								{/* Expanded Details */}
 								{isExpanded && (
-									<div className='border-t dark:border-gray-700'>
-										{/* Delivery Info */}
-										<div className='px-4 sm:px-6 py-4 bg-gray-50 dark:bg-gray-900/50'>
-											<h4 className='text-sm font-semibold mb-2 dark:text-gray-300'>
+									<div className='border-t border-[#E5E7EB] bg-gray-50/50 p-5 sm:p-6 space-y-6'>
+										{/* DELIVERY INFORMATION */}
+										<div className='p-5 bg-[#FFFDF5] rounded-2xl border border-[#F4B400]/25 space-y-3 shadow-xs'>
+											<h4 className='text-sm font-extrabold text-[#111827] flex items-center gap-2'>
+												<MapPin className='h-4 w-4 text-[#28321A]' />
 												ডেলিভারি তথ্য
 											</h4>
-											<div className='grid grid-cols-1 sm:grid-cols-3 gap-2 text-sm'>
-												<div className='flex items-center gap-2 text-gray-600 dark:text-gray-400'>
-													<Package className='h-4 w-4' />
-													<span>{order.name}</span>
+											
+											<div className='grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs sm:text-sm font-semibold text-[#64748B]'>
+												<div className='flex items-center gap-2 bg-white p-3 rounded-xl border border-[#E5E7EB] shadow-xs'>
+													<User className='h-4 w-4 text-[#F4B400] flex-shrink-0' />
+													<span className='text-[#111827] truncate'>{order.name}</span>
 												</div>
-												<div className='flex items-center gap-2 text-gray-600 dark:text-gray-400'>
-													<Phone className='h-4 w-4' />
-													<span>
-														{order.phoneNumber}
-													</span>
+												<div className='flex items-center gap-2 bg-white p-3 rounded-xl border border-[#E5E7EB] shadow-xs'>
+													<Phone className='h-4 w-4 text-[#F4B400] flex-shrink-0' />
+													<span className='text-[#111827]'>{order.phoneNumber}</span>
 												</div>
-												<div className='flex items-center gap-2 text-gray-600 dark:text-gray-400'>
-													<MapPin className='h-4 w-4' />
-													<span>
-														{order.address}
-													</span>
+												<div className='flex items-center gap-2 bg-white p-3 rounded-xl border border-[#E5E7EB] shadow-xs'>
+													<MapPin className='h-4 w-4 text-[#F4B400] flex-shrink-0' />
+													<span className='text-[#111827] truncate'>{order.address}</span>
 												</div>
 											</div>
 										</div>
 
-										{/* Order Items */}
-										<div className='px-4 sm:px-6 py-4'>
-											<h4 className='text-sm font-semibold mb-3 dark:text-gray-300'>
-												অর্ডার আইটেম
+										{/* PRODUCT SECTION */}
+										<div className='space-y-3'>
+											<h4 className='text-sm font-extrabold text-[#111827] flex items-center gap-2'>
+												<Package className='h-4 w-4 text-[#28321A]' />
+												অর্ডারের আইটেমসমূহ
 											</h4>
-											<div className='space-y-3'>
-												{order.orderItems?.map(
-													(item) => (
+
+											<div className='space-y-2.5'>
+												{order.orderItems?.map((item) => {
+													const hasError = imageErrors[String(item.id)];
+													const rawImg = OrderService.getProductImageUrl(item.productImage);
+
+													return (
 														<div
 															key={item.id}
-															className='flex items-center gap-4 p-3 rounded-lg bg-gray-50 dark:bg-gray-900/30'
+															className='flex items-center gap-4 p-3.5 rounded-xl bg-white border border-[#E5E7EB] shadow-xs'
 														>
-															<div className='h-14 w-14 rounded-md overflow-hidden bg-white dark:bg-gray-700 flex-shrink-0 relative'>
-																<Image
-																	src={
-																		OrderService.getProductImageUrl(
-																			item.productImage
-																		) ||
-																		'/placeholder.svg'
-																	}
-																	alt={
-																		item.productName
-																	}
-																	fill
-																	sizes='56px'
-																	className='object-cover'
-																/>
+															<div className='h-16 w-16 rounded-xl overflow-hidden bg-[#FFF9E8] flex-shrink-0 relative border border-[#E5E7EB]'>
+																{!hasError && rawImg ? (
+																	<Image
+																		src={rawImg}
+																		alt={item.productName}
+																		fill
+																		sizes='64px'
+																		className='object-cover'
+																		onError={() => handleImageError(String(item.id))}
+																	/>
+																) : (
+																	<div className='w-full h-full flex items-center justify-center text-[#28321A]/40'>
+																		<Sprout className='w-6 h-6' />
+																	</div>
+																)}
 															</div>
-															<div className='flex-1 min-w-0'>
-																<p className='font-medium dark:text-white truncate'>
-																	{
-																		item.productName
-																	}
+
+															<div className='flex-1 min-w-0 space-y-0.5'>
+																<p className='font-bold text-sm text-[#111827] truncate'>
+																	{item.productName}
 																</p>
 																{item.variantName && (
-																	<p className='text-xs text-gray-500 dark:text-gray-400'>
-																		ভেরিয়েন্ট:{' '}
-																		{
-																			item.variantName
-																		}
+																	<p className='text-xs text-[#64748B] font-medium'>
+																		ভেরিয়েন্ট: {item.variantName}
 																	</p>
 																)}
-																<p className='text-xs text-gray-500 dark:text-gray-400'>
-																	{formatCurrency(
-																		Number(
-																			item.price
-																		)
-																	)}{' '}
-																	×{' '}
-																	{
-																		item.quantity
-																	}
+																<p className='text-xs text-[#64748B] font-medium'>
+																	{formatCurrency(Number(item.price))} × {item.quantity}
 																</p>
 															</div>
-															<p className='font-semibold dark:text-white'>
-																{formatCurrency(
-																	Number(
-																		item.total
-																	)
-																)}
+
+															<p className='font-black text-base text-[#111827] text-right'>
+																{formatCurrency(Number(item.total))}
 															</p>
 														</div>
-													)
-												)}
+													);
+												})}
+											</div>
+										</div>
+
+										{/* TOTAL SECTION WITH SUB-TOTAL & DELIVERY CHARGE */}
+										<div className='p-4 bg-[#FFF9E8] rounded-2xl border border-[#F5B800]/40 space-y-2 text-xs font-semibold'>
+											<div className='flex justify-between items-center text-[#64748B]'>
+												<span>পণ্যের মোট মূল্য (Subtotal):</span>
+												<span className='text-[#172033] font-bold'>{formatCurrency(itemsSubtotal)}</span>
 											</div>
 
-											{/* Total */}
-											<div className='mt-4 pt-3 border-t dark:border-gray-700 flex justify-between items-center'>
-												<span className='font-medium dark:text-gray-300'>
-													সর্বমোট
+											<div className='flex justify-between items-center text-[#26351B]'>
+												<span className='flex items-center gap-1.5'>
+													<Truck className='w-3.5 h-3.5 text-[#26351B]' />
+													ডেলিভারি চার্জ (Delivery Charge):
 												</span>
-												<span className='text-xl font-bold dark:text-white'>
-													{formatCurrency(
-														Number(
-															order.totalAmount
-														)
-													)}
+												<span className='font-extrabold bg-white px-2 py-0.5 rounded-md border border-[#F5B800]/30 text-xs text-[#26351B]'>
+													{deliveryCharge > 0 ? formatCurrency(deliveryCharge) : 'ফ্রি'}
 												</span>
+											</div>
+
+											<div className='pt-2 border-t border-[#F5B800]/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4'>
+												<div className='flex items-baseline gap-2'>
+													<span className='text-sm font-extrabold text-[#26351B]'>সর্বমোট পরিশোধযোগ্য:</span>
+													<span className='text-2xl font-black text-[#28321A]'>
+														{formatCurrency(grandTotal)}
+													</span>
+												</div>
+
+												<Button asChild className='bg-[#28321A] hover:bg-[#1A2211] text-white rounded-xl font-bold px-5 py-2.5 transition-all shadow-xs border-0 text-xs'>
+													<Link href={`/order/confirmation/${order.id}`}>
+														ইনভয়েস ও বিস্তারিত দেখুন →
+													</Link>
+												</Button>
 											</div>
 										</div>
 									</div>
@@ -449,29 +459,25 @@ export default function UserOrdersPage() {
 
 					{/* Pagination */}
 					{totalPages > 1 && (
-						<div className='flex items-center justify-center gap-4 py-4'>
+						<div className='flex items-center justify-center gap-4 py-4 pt-6'>
 							<Button
 								variant='outline'
 								size='sm'
-								onClick={() =>
-									setCurrentPage((p) => Math.max(1, p - 1))
-								}
+								onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
 								disabled={currentPage === 1}
+								className='rounded-xl border-[#E5E7EB] font-bold text-xs'
 							>
 								পূর্ববর্তী
 							</Button>
-							<span className='text-sm text-gray-500 dark:text-gray-400'>
+							<span className='text-xs font-bold text-[#111827]'>
 								পৃষ্ঠা {currentPage} / {totalPages}
 							</span>
 							<Button
 								variant='outline'
 								size='sm'
-								onClick={() =>
-									setCurrentPage((p) =>
-										Math.min(totalPages, p + 1)
-									)
-								}
+								onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
 								disabled={currentPage === totalPages}
+								className='rounded-xl border-[#E5E7EB] font-bold text-xs'
 							>
 								পরবর্তী
 							</Button>

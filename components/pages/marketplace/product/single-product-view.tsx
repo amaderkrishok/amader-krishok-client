@@ -37,6 +37,7 @@ import { useSession } from '@/components/providers/session-provider';
 import React from 'react';
 import { MagnifiableImage } from './magnifiable-image';
 import { motion, AnimatePresence } from 'framer-motion';
+import { ProductReviewsSection } from './product-reviews-section';
 
 interface SingleProductViewProps {
     product: Product;
@@ -217,7 +218,7 @@ export function SingleProductView({ product }: SingleProductViewProps) {
             >
                 <Link
                     href='/marketplace'
-                    className='inline-flex items-center text-emerald-600 hover:text-emerald-700 font-medium transition-all duration-300 hover:gap-2'
+                    className='inline-flex items-center text-[#2D331F] hover:text-[#40492F] font-medium transition-all duration-300 hover:gap-2'
                 >
                     <ChevronLeft className='h-4 w-4 transition-transform group-hover:-translate-x-1' />
                     <span>মার্কেটপ্লেসে ফিরে যান</span>
@@ -307,7 +308,7 @@ export function SingleProductView({ product }: SingleProductViewProps) {
                                     whileTap={{ scale: 0.95 }}
                                     className={`relative aspect-square rounded-xl overflow-hidden border-2 transition-all ${
                                         currentImageIndex === index 
-                                            ? 'border-emerald-500 shadow-lg' 
+                                            ? 'border-[#2D331F] shadow-lg' 
                                             : 'border-transparent hover:border-gray-300'
                                     }`}
                                     onClick={() => setCurrentImageIndex(index)}
@@ -337,7 +338,7 @@ export function SingleProductView({ product }: SingleProductViewProps) {
                                 product.productCategories.length > 0 && (
                                     <div className='flex flex-wrap gap-2'>
                                         {product.productCategories.map((category) => (
-                                            <Badge key={category.id} variant='secondary' className='bg-emerald-50 text-emerald-700 border-emerald-200'>
+                                            <Badge key={category.id} variant='secondary' className='bg-[#2D331F]/10 text-[#2D331F] border-[#2D331F]/20 font-semibold'>
                                                 {category.name}
                                             </Badge>
                                         ))}
@@ -351,21 +352,21 @@ export function SingleProductView({ product }: SingleProductViewProps) {
                         <motion.div 
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className='bg-gradient-to-r from-emerald-50 to-teal-50 rounded-xl p-4 border border-emerald-100'
+                            className='bg-gradient-to-r from-[#2D331F]/5 to-[#2D331F]/10 rounded-xl p-4 border border-[#2D331F]/15'
                         >
                             <div className='flex items-center gap-3'>
-                                <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center">
-                                    <Store className='w-5 h-5 text-emerald-600' />
+                                <div className="w-10 h-10 rounded-full bg-[#2D331F]/15 flex items-center justify-center">
+                                    <Store className='w-5 h-5 text-[#2D331F]' />
                                 </div>
                                 <div>
                                     <div className="flex items-center gap-2">
                                         <Link
                                             href={`/marketplace/stores/${product.store.id}`}
-                                            className='text-emerald-600 hover:underline font-semibold'
+                                            className='text-[#2D331F] hover:underline font-bold'
                                         >
                                             {product.store.name}
                                         </Link>
-                                        <Badge className="bg-emerald-500 text-white text-xs">বিশ্বস্ত</Badge>
+                                        <Badge className="bg-[#2D331F] text-[#EAB308] text-xs font-bold">বিশ্বস্ত</Badge>
                                     </div>
                                     {product.store.address && (
                                         <p className='text-sm text-gray-600 flex items-center gap-1 mt-0.5'>
@@ -386,7 +387,7 @@ export function SingleProductView({ product }: SingleProductViewProps) {
                     <div>
                         {priceInfo.hasDiscount ? (
                             <div className='flex items-end gap-3 flex-wrap'>
-                                <span className='text-3xl md:text-4xl font-bold text-emerald-600'>
+                                <span className='text-3xl md:text-4xl font-bold text-[#2D331F]'>
                                     {priceInfo.formattedDiscountPrice}
                                 </span>
                                 <span className='text-xl text-gray-400 line-through'>
@@ -399,7 +400,7 @@ export function SingleProductView({ product }: SingleProductViewProps) {
                                 )}
                             </div>
                         ) : (
-                            <span className='text-3xl md:text-4xl font-bold text-emerald-600'>
+                            <span className='text-3xl md:text-4xl font-bold text-[#2D331F]'>
                                 {priceInfo.formattedPrice}
                             </span>
                         )}
@@ -462,7 +463,7 @@ export function SingleProductView({ product }: SingleProductViewProps) {
                                             onClick={() => handleVariantSelect(variant)}
                                             className={`px-4 py-2 rounded-lg border-2 transition-all ${
                                                 selectedVariant?.id === variant.id
-                                                    ? 'border-emerald-500 bg-emerald-50 text-emerald-700 font-semibold shadow-md'
+                                                    ? 'border-[#2D331F] bg-[#2D331F]/10 text-[#2D331F] font-semibold shadow-md'
                                                     : 'border-gray-200 hover:border-gray-400 text-gray-700'
                                             }`}
                                         >
@@ -480,8 +481,7 @@ export function SingleProductView({ product }: SingleProductViewProps) {
                             <motion.button
                                 whileHover={{ scale: 1.1 }}
                                 whileTap={{ scale: 0.9 }}
-                                variant='outline'
-                                className='w-9 h-9 rounded-full border-2 border-gray-200 hover:border-emerald-400 flex items-center justify-center bg-white transition-all disabled:opacity-50'
+                                className='w-9 h-9 rounded-full border-2 border-gray-200 hover:border-[#2D331F] flex items-center justify-center bg-white transition-all disabled:opacity-50'
                                 onClick={() => handleQuantityChange(quantity - 1)}
                                 disabled={quantity <= 1}
                             >
@@ -491,8 +491,7 @@ export function SingleProductView({ product }: SingleProductViewProps) {
                             <motion.button
                                 whileHover={{ scale: 1.1 }}
                                 whileTap={{ scale: 0.9 }}
-                                variant='outline'
-                                className='w-9 h-9 rounded-full border-2 border-gray-200 hover:border-emerald-400 flex items-center justify-center bg-white transition-all'
+                                className='w-9 h-9 rounded-full border-2 border-gray-200 hover:border-[#2D331F] flex items-center justify-center bg-white transition-all'
                                 onClick={() => handleQuantityChange(quantity + 1)}
                             >
                                 <Plus className='h-4 w-4' />
@@ -504,7 +503,7 @@ export function SingleProductView({ product }: SingleProductViewProps) {
                         <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                             <Button
                                 variant="outline"
-                                className='w-full border-2 border-gray-300 text-gray-600 hover:border-emerald-500 hover:text-emerald-600 hover:bg-emerald-50 transition-all'
+                                className='w-full border-2 border-gray-300 text-gray-600 hover:border-[#2D331F] hover:text-[#2D331F] hover:bg-[#2D331F]/10 transition-all'
                                 size='lg'
                                 onClick={handleShare}
                             >
@@ -538,8 +537,8 @@ export function SingleProductView({ product }: SingleProductViewProps) {
                                         {/* Header */}
                                         <div className="flex items-center justify-between p-5 border-b border-gray-100">
                                             <div className="flex items-center gap-3">
-                                                <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center">
-                                                    <Share2 className="w-5 h-5 text-emerald-600" />
+                                                <div className="w-10 h-10 rounded-full bg-[#2D331F]/15 flex items-center justify-center">
+                                                    <Share2 className="w-5 h-5 text-[#2D331F]" />
                                                 </div>
                                                 <div>
                                                     <h3 className="font-bold text-gray-900 text-lg">শেয়ার করুন</h3>
@@ -570,13 +569,13 @@ export function SingleProductView({ product }: SingleProductViewProps) {
                                                 <div className="min-w-0">
                                                     <p className="font-semibold text-gray-900 text-sm truncate">{product.name}</p>
                                                     {product.store?.name && (
-                                                        <p className="text-xs text-emerald-600 flex items-center gap-1">
+                                                        <p className="text-xs text-[#2D331F] flex items-center gap-1 font-medium">
                                                             <Store className="w-3 h-3" />
                                                             {product.store.name}
                                                         </p>
                                                     )}
                                                 </div>
-                                                <span className="ml-auto font-bold text-emerald-600 text-sm whitespace-nowrap">
+                                                <span className="ml-auto font-bold text-[#2D331F] text-sm whitespace-nowrap">
                                                     {priceInfo.hasDiscount ? priceInfo.formattedDiscountPrice : priceInfo.formattedPrice}
                                                 </span>
                                             </div>
@@ -640,8 +639,8 @@ export function SingleProductView({ product }: SingleProductViewProps) {
                                                     onClick={handleCopyLink}
                                                     className={`flex-shrink-0 px-4 py-2.5 rounded-lg font-medium text-sm transition-all ${
                                                         isCopied
-                                                            ? 'bg-emerald-500 text-white'
-                                                            : 'bg-emerald-600 hover:bg-emerald-700 text-white'
+                                                            ? 'bg-[#2D331F] text-white'
+                                                            : 'bg-[#2D331F] hover:bg-[#3F472F] text-white'
                                                     }`}
                                                 >
                                                     {isCopied ? (
@@ -667,7 +666,7 @@ export function SingleProductView({ product }: SingleProductViewProps) {
                     <div className='flex flex-col sm:flex-row gap-3 pt-2'>
                         <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
                             <Button
-                                className='w-full bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg hover:shadow-xl transition-all'
+                                className='w-full bg-gradient-to-r from-[#2D331F] to-[#40492F] hover:from-[#40492F] hover:to-[#2D331F] text-white shadow-lg hover:shadow-xl transition-all'
                                 size='lg'
                                 disabled={!canPurchase}
                                 onClick={() => {
@@ -692,7 +691,7 @@ export function SingleProductView({ product }: SingleProductViewProps) {
                         </motion.div>
                         <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
                             <Button
-                                className='w-full bg-white border-2 border-emerald-600 text-emerald-600 hover:bg-emerald-50 transition-all'
+                                className='w-full bg-white border-2 border-[#2D331F] text-[#2D331F] hover:bg-[#2D331F]/10 transition-all font-semibold'
                                 size='lg'
                                 disabled={!canPurchase}
                                 onClick={handleAddToCart}
@@ -705,16 +704,16 @@ export function SingleProductView({ product }: SingleProductViewProps) {
 
                     {/* Trust Badges */}
                     <div className='grid grid-cols-3 gap-3 pt-2'>
-                        <div className='flex items-center gap-2 text-sm text-gray-600'>
-                            <Shield className='h-4 w-4 text-emerald-500' />
+                        <div className='flex items-center gap-2 text-sm text-gray-600 font-medium'>
+                            <Shield className='h-4 w-4 text-[#2D331F]' />
                             <span>নিরাপদ লেনদেন</span>
                         </div>
-                        <div className='flex items-center gap-2 text-sm text-gray-600'>
-                            <Truck className='h-4 w-4 text-emerald-500' />
+                        <div className='flex items-center gap-2 text-sm text-gray-600 font-medium'>
+                            <Truck className='h-4 w-4 text-[#2D331F]' />
                             <span>দ্রুত ডেলিভারি</span>
                         </div>
-                        <div className='flex items-center gap-2 text-sm text-gray-600'>
-                            <CheckCircle className='h-4 w-4 text-emerald-500' />
+                        <div className='flex items-center gap-2 text-sm text-gray-600 font-medium'>
+                            <CheckCircle className='h-4 w-4 text-[#2D331F]' />
                             <span>গুণগত মান</span>
                         </div>
                     </div>
@@ -724,6 +723,9 @@ export function SingleProductView({ product }: SingleProductViewProps) {
                         <TabsList className='w-full bg-gray-100 p-1 rounded-xl'>
                             <TabsTrigger value='description' className='flex-1 rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm'>
                                 বিবরণ
+                            </TabsTrigger>
+                            <TabsTrigger value='reviews' className='flex-1 rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm'>
+                                রিভিউ ও রেটিং
                             </TabsTrigger>
                             <TabsTrigger value='store' className='flex-1 rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm'>
                                 বিক্রেতা
@@ -740,6 +742,10 @@ export function SingleProductView({ product }: SingleProductViewProps) {
                             </div>
                         </TabsContent>
 
+                        <TabsContent value='reviews' className='mt-4'>
+                            <ProductReviewsSection productId={product.id} />
+                        </TabsContent>
+
                         <TabsContent value='store' className='mt-4'>
                             {product.store ? (
                                 <div className='space-y-4'>
@@ -754,8 +760,8 @@ export function SingleProductView({ product }: SingleProductViewProps) {
                                                 />
                                             </div>
                                         ) : (
-                                            <div className='w-16 h-16 rounded-full bg-emerald-100 flex items-center justify-center'>
-                                                <Store className='h-8 w-8 text-emerald-600' />
+                                            <div className='w-16 h-16 rounded-full bg-[#2D331F]/15 flex items-center justify-center'>
+                                                <Store className='h-8 w-8 text-[#2D331F]' />
                                             </div>
                                         )}
                                         <div>
@@ -764,7 +770,7 @@ export function SingleProductView({ product }: SingleProductViewProps) {
                                             </h3>
                                             {/* <Link
                                                 href={`/store/${product.store.id}`}
-                                                className='text-sm text-emerald-600 hover:underline font-medium'
+                                                className='text-sm text-[#2D331F] hover:underline font-medium'
                                             >
                                                 দোকান দেখুন →
                                             </Link> */}
@@ -799,7 +805,7 @@ export function SingleProductView({ product }: SingleProductViewProps) {
                                         )}
                                     </div>
 
-                                    {/* <Button asChild className='bg-emerald-600 hover:bg-emerald-700'>
+                                    {/* <Button asChild className='bg-[#2D331F] hover:bg-[#3F472F]'>
                                         <Link href={`/store/${product.store.id}`}>
                                             এই বিক্রেতার অন্যান্য পণ্য দেখুন
                                         </Link>
@@ -826,7 +832,7 @@ export function SingleProductView({ product }: SingleProductViewProps) {
                                                     key={month}
                                                     className={`p-2 rounded-lg text-center text-sm transition-all ${
                                                         isAvailable
-                                                            ? 'bg-emerald-100 text-emerald-700 border border-emerald-200'
+                                                            ? 'bg-[#2D331F]/10 text-[#2D331F] border border-[#2D331F]/20 font-semibold'
                                                             : 'bg-gray-100 text-gray-400'
                                                     }`}
                                                 >

@@ -1,15 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Plus } from 'lucide-react';
+import { Plus, FolderTree, Layers } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
-} from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from 'sonner';
 
@@ -94,9 +88,6 @@ export function ProductCategoryDashboard() {
 		newParentId: number | null
 	) => {
 		try {
-			console.log(`Moving category ${categoryId} to parent ${newParentId}`);
-
-			// Create a clean update payload with only the parentId
 			const updatePayload: Partial<ProductCategoryType> = {
 				parentId: newParentId,
 			};
@@ -115,30 +106,53 @@ export function ProductCategoryDashboard() {
 	};
 
 	return (
-		<Card className='w-full'>
-			<CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-				<div>
-					<CardTitle className='text-2xl font-bold tracking-tight'>
-						Product Categories
-					</CardTitle>
-					<CardDescription>
-						Manage your product categories hierarchy
-					</CardDescription>
+		<div className='space-y-6 w-full mx-auto pb-6'>
+			{/* HERO HEADER */}
+			<div className='flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-gradient-to-r from-[#FFF9E8] via-white to-white p-6 sm:p-7 rounded-2xl border border-[#E5E7EB] shadow-xs relative overflow-hidden'>
+				<div className='space-y-1.5 z-10'>
+					<div className='flex items-center gap-2'>
+						<div className='w-8 h-8 rounded-xl bg-[#26351B] flex items-center justify-center text-[#F5B800] shadow-2xs'>
+							<FolderTree className='w-4 h-4 text-[#F5B800]' />
+						</div>
+						<h1 className='text-2xl sm:text-3xl font-black text-[#172033] tracking-tight'>
+							পণ্য ক্যাটাগরি (Product Categories)
+						</h1>
+					</div>
+					<p className='text-xs sm:text-sm text-[#64748B] font-medium'>
+						পণ্যের বিভাগ, সাব-ক্যাটাগরি ও হায়ারার্কি ম্যানেজমেন্ট
+					</p>
 				</div>
-				<Button onClick={handleAddCategory}>
-					<Plus className='mr-2 h-4 w-4' />
-					Add Category
+
+				<Button
+					onClick={handleAddCategory}
+					className='bg-[#F5B800] hover:bg-[#E0A800] text-[#172033] font-extrabold rounded-xl h-10 px-5 text-xs shadow-xs border-0 transition-all hover:-translate-y-0.5 z-10'
+				>
+					<Plus className='mr-2 h-4 w-4 text-[#172033]' />
+					নতুন ক্যাটাগরি যোগ করুন
 				</Button>
-			</CardHeader>
-			<CardContent>
+			</div>
+
+			{/* MAIN CARD CONTAINER */}
+			<Card className='p-6 bg-white rounded-2xl border border-[#E5E7EB] shadow-xs space-y-6'>
 				<Tabs value={activeTab} onValueChange={setActiveTab}>
-					<TabsList className='mb-4'>
-						<TabsTrigger value='tree'>Category Tree</TabsTrigger>
-						<TabsTrigger value='form' disabled={!isFormOpen}>
-							{selectedCategory ? 'Edit Category' : 'New Category'}
+					<TabsList className='mb-6 bg-[#FAFAF6] p-1.5 rounded-2xl border border-[#E5E7EB] w-full sm:w-auto inline-flex'>
+						<TabsTrigger
+							value='tree'
+							className='rounded-xl text-xs font-extrabold py-2 px-4 transition-all data-[state=active]:bg-white data-[state=active]:text-[#172033] data-[state=active]:shadow-xs'
+						>
+							<Layers className='w-3.5 h-3.5 mr-2 text-[#26351B]' />
+							ক্যাটাগরি ট্রি (Category Tree)
+						</TabsTrigger>
+						<TabsTrigger
+							value='form'
+							disabled={!isFormOpen}
+							className='rounded-xl text-xs font-extrabold py-2 px-4 transition-all data-[state=active]:bg-white data-[state=active]:text-[#172033] data-[state=active]:shadow-xs'
+						>
+							{selectedCategory ? '✏️ সম্পাদনা করুন' : '➕ নতুন ক্যাটাগরি'}
 						</TabsTrigger>
 					</TabsList>
-					<TabsContent value='tree'>
+
+					<TabsContent value='tree' className='focus-visible:outline-none'>
 						<CategoryTree
 							categories={categories}
 							isLoading={isLoading}
@@ -147,7 +161,8 @@ export function ProductCategoryDashboard() {
 							onMove={handleMoveCategory}
 						/>
 					</TabsContent>
-					<TabsContent value='form'>
+
+					<TabsContent value='form' className='focus-visible:outline-none'>
 						{isFormOpen && (
 							<CategoryForm
 								category={selectedCategory}
@@ -158,7 +173,7 @@ export function ProductCategoryDashboard() {
 						)}
 					</TabsContent>
 				</Tabs>
-			</CardContent>
-		</Card>
+			</Card>
+		</div>
 	);
 }

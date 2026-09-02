@@ -2,10 +2,9 @@
 
 import React from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
-import { formatDistanceToNow } from 'date-fns';
 import Image from 'next/image';
 import type { MessageEvent } from '@/services/chat/socket-service';
+import { CheckCheck, Check } from 'lucide-react';
 
 interface ChatMessageItemProps {
 	message: MessageEvent;
@@ -16,10 +15,6 @@ interface ChatMessageItemProps {
 	senderImage?: string;
 }
 
-/**
- * ChatMessageItem component displays individual chat messages
- * Supports different message types, read status, and responsive layout
- */
 export function ChatMessageItem({
 	message,
 	currentUserId,
@@ -31,39 +26,40 @@ export function ChatMessageItem({
 	const isOwn = isOwnMessage ?? message.senderId === currentUserId;
 	const isRead = message.isRead;
 
-	// Format timestamp
-	const timestamp = formatDistanceToNow(new Date(message.createdAt), {
-		addSuffix: true,
-	});
-
-	const containerClasses = isOwn
-		? 'flex justify-end mb-3'
-		: 'flex justify-start mb-3';
-
-	const bubbleClasses = isOwn
-		? 'bg-primary text-primary-foreground ml-12'
-		: 'bg-muted text-muted-foreground mr-12';
+	const messageTime = message.createdAt
+		? new Date(message.createdAt).toLocaleTimeString([], {
+				hour: '2-digit',
+				minute: '2-digit',
+		  })
+		: '';
 
 	return (
-		<div className={containerClasses}>
-			<div className='flex items-end space-x-2 max-w-[70%]'>
+		<div className={`flex w-full mb-3 ${isOwn ? 'justify-end' : 'justify-start'}`}>
+			<div className={`flex items-end gap-2.5 max-w-[70%] ${isOwn ? 'flex-row-reverse' : 'flex-row'}`}>
 				{!isOwn && showAvatar && (
-					<Avatar className='h-6 w-6 flex-shrink-0'>
+					<Avatar className='h-7 w-7 flex-shrink-0 border border-[#E5E7EB] shadow-xs mb-1'>
 						<AvatarImage src={senderImage} alt={senderName} />
-						<AvatarFallback className='text-xs'>
+						<AvatarFallback className='text-[10px] font-bold bg-[#FFF9E8] text-[#26351B]'>
 							{senderName.charAt(0).toUpperCase()}
 						</AvatarFallback>
 					</Avatar>
 				)}
 
-				<div className='flex flex-col space-y-1'>
+				<div className={`flex flex-col ${isOwn ? 'items-end' : 'items-start'}`}>
 					{!isOwn && showAvatar && (
-						<span className='text-xs text-muted-foreground ml-1'>
+						<span className='text-[10px] font-extrabold text-[#64748B] ml-1 mb-1'>
 							{senderName}
 						</span>
 					)}
 
-					<div className={`p-3 rounded-lg break-words ${bubbleClasses}`}>
+					{/* Modern Message Bubble (65-70% max-width, rounded 16px) */}
+					<div
+						className={`px-4 py-2.5 rounded-2xl break-words text-sm font-medium shadow-xs leading-relaxed ${
+							isOwn
+								? 'bg-[#26351B] text-white rounded-br-xs'
+								: 'bg-white text-[#172033] border border-[#E5E7EB] rounded-bl-xs'
+						}`}
+					>
 						{message.type === 'text' && (
 							<p className='whitespace-pre-wrap'>{message.content}</p>
 						)}
@@ -73,12 +69,12 @@ export function ChatMessageItem({
 									<p className='whitespace-pre-wrap'>{message.content}</p>
 								)}
 								{message.imageUrl && (
-									<div className='relative w-48 h-32'>
+									<div className='relative w-52 h-36 rounded-xl overflow-hidden border border-black/10'>
 										<Image
 											src={message.imageUrl}
 											alt='Shared image'
 											fill
-											className='object-cover rounded'
+											className='object-cover'
 										/>
 									</div>
 								)}
@@ -89,41 +85,34 @@ export function ChatMessageItem({
 								{message.content && (
 									<p className='whitespace-pre-wrap'>{message.content}</p>
 								)}
-								<div className='bg-background/10 p-2 rounded flex items-center space-x-2'>
-									<span className='text-sm'>📎</span>
-									<span className='text-sm'>
-										File: {message.content || 'Unknown file'}
+								<div className='bg-black/5 p-2 rounded-xl flex items-center gap-2 text-xs'>
+									<span>📎</span>
+									<span className='truncate max-w-[180px]'>
+										{message.content || 'সংযুক্ত ফাইল'}
 									</span>
 								</div>
 							</div>
 						)}
 					</div>
 
+					{/* Muted Timestamp & Read/Sent Status */}
 					<div
-						className={`flex items-center space-x-2 text-xs text-muted-foreground ${
+						className={`flex items-center gap-1.5 text-[10px] font-semibold text-[#64748B] mt-1 px-1 ${
 							isOwn ? 'justify-end' : 'justify-start'
-						} px-1`}
+						}`}
 					>
-						<span>{timestamp}</span>
+						<span>{messageTime}</span>
 						{isOwn && (
-							<Badge
-								variant={isRead ? 'default' : 'secondary'}
-								className='h-4 px-1 text-xs'
-							>
-								{isRead ? 'Read' : 'Sent'}
-							</Badge>
+							<span className='flex items-center gap-0.5'>
+								{isRead ? (
+									<CheckCheck className='w-3.5 h-3.5 text-[#F5B800]' />
+								) : (
+									<Check className='w-3.5 h-3.5 text-gray-400' />
+								)}
+							</span>
 						)}
 					</div>
 				</div>
-
-				{isOwn && showAvatar && (
-					<Avatar className='h-6 w-6 flex-shrink-0'>
-						<AvatarImage src={senderImage} alt={senderName} />
-						<AvatarFallback className='text-xs'>
-							{senderName.charAt(0).toUpperCase()}
-						</AvatarFallback>
-					</Avatar>
-				)}
 			</div>
 		</div>
 	);

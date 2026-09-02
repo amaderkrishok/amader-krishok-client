@@ -14,6 +14,8 @@ import {
 	FileCheck,
 	MessageSquare,
 	MessageCircleMoreIcon,
+	Star,
+	MessageSquareWarning,
 } from 'lucide-react';
 
 // Shared types
@@ -88,7 +90,21 @@ export const adminNavigation: NavItem[] = [
 				title: 'Modify Shop Products',
 				url: '/admin/shops/products',
 			},
+			{
+				title: 'Shop Reviews',
+				url: '/admin/shop-reviews',
+			},
 		],
+	},
+	{
+		title: 'Product Reviews',
+		url: '/admin/product-reviews',
+		icon: Star,
+	},
+	{
+		title: 'Ovijog Box (অভিযোগ)',
+		url: '/admin/ovijogs',
+		icon: MessageSquareWarning,
 	},
 	{
 		title: 'Crop Listing',
@@ -219,7 +235,7 @@ export const vendorNavigation: NavItem[] = [
 		isActive: true,
 	},
 	{
-		title: 'My Store',
+		title: 'My Profile',
 		url: '/vendor/store',
 		icon: Store,
 	},

@@ -93,7 +93,9 @@ export interface Product {
 	supplyCalendar?: ProductSupplyCalendar[];
 	simpleProduct?: SimpleProductData;
 	variableProduct?: VariableProductData;
-	storeId?: string
+	storeId?: string;
+	createdAt?: string;
+	updatedAt?: string;
 	// Optional status for archival; backend may return this
 	status?: 'active' | 'archived' | 'pending';
 }
