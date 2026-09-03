@@ -3,6 +3,7 @@
 import { Footer } from '@/components/global/footer';
 import { NavBar } from '@/components/global/nav-bar';
 import { OvijogModal } from '@/components/global/ovijog-modal';
+import { WhatsAppSupport } from '@/components/global/whatsapp-support';
 
 export function WebsiteWrapper({
 	children,
@@ -23,6 +24,9 @@ export function WebsiteWrapper({
 
 			{/* Floating Ovijog Box */}
 			<OvijogModal />
+
+			{/* Floating WhatsApp Support Widget */}
+			<WhatsAppSupport />
 
 			{/* Footer */}
 			<Footer />
