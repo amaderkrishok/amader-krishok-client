@@ -13,7 +13,7 @@ interface WhatsAppSupportProps {
 }
 
 export function WhatsAppSupport({
-	phoneNumber = '8801797576842',
+	phoneNumber = '8801311848915',
 	agentName = 'সাপোর্ট প্রতিনিধি',
 	messageText = 'স্যার, কিভাবে সহযোগিতা করতে পারি?',
 	whatsappMessage = 'আসসালামু আলাইকুম, আমি আমাদের কৃষক ওয়েবসাইট থেকে সহায়তার জন্য যোগাযোগ করছি।',
