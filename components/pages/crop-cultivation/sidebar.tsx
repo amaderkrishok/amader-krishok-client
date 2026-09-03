@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { Search, Menu, X, Sprout, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -58,12 +57,12 @@ export function Sidebar({ onSelectCrop, crops = [], selectedCropId: propSelected
 
 			{/* Sidebar Container */}
 			<aside
-				className={`fixed lg:sticky top-[88px] left-0 z-30 w-72 sm:w-80 h-[calc(100vh-104px)] bg-[#FDFBF7]/95 backdrop-blur-md rounded-3xl border border-gray-200/80 shadow-[0_15px_35px_rgba(0,0,0,0.06)] transition-all duration-300 ease-in-out flex flex-col overflow-hidden ${
-					isOpen ? 'translate-x-0 inset-y-0 left-4 top-24 bottom-6' : '-translate-x-full lg:translate-x-0'
+				className={`fixed lg:sticky top-[88px] left-0 z-30 w-72 sm:w-80 h-[calc(100vh-104px)] max-h-[calc(100vh-104px)] bg-[#FDFBF7]/95 backdrop-blur-md rounded-3xl border border-gray-200/80 shadow-[0_15px_35px_rgba(0,0,0,0.06)] transition-all duration-300 ease-in-out flex flex-col overflow-hidden ${
+					isOpen ? 'translate-x-0 inset-y-0 left-4 top-24 bottom-6 h-auto max-h-[80vh]' : '-translate-x-full lg:translate-x-0'
 				}`}
 			>
 				{/* Sidebar Header */}
-				<div className='p-5 pb-3 border-b border-gray-200/80 bg-gradient-to-r from-emerald-50/60 via-white to-amber-50/40'>
+				<div className='p-5 pb-3 border-b border-gray-200/80 bg-gradient-to-r from-emerald-50/60 via-white to-amber-50/40 flex-shrink-0'>
 					<div className='flex items-center justify-between mb-3'>
 						<div className='flex items-center gap-2'>
 							<div className='p-1.5 rounded-xl bg-[#2D331F] text-[#EAB308]'>
@@ -100,60 +99,58 @@ export function Sidebar({ onSelectCrop, crops = [], selectedCropId: propSelected
 					</div>
 				</div>
 
-				{/* Crops List */}
-				<ScrollArea className='flex-1 p-3'>
-					<div className='space-y-2 pr-2'>
-						{filteredCrops.length === 0 ? (
-							<div className='p-8 text-center text-gray-500'>
-								<p className='text-sm font-medium'>কোনো ফসল পাওয়া যায়নি</p>
-							</div>
-						) : (
-							filteredCrops.map((crop) => {
-								const isSelected = selectedId === crop.id;
-								return (
-									<motion.button
-										key={crop.id}
-										whileHover={{ x: 3, scale: 1.01 }}
-										whileTap={{ scale: 0.98 }}
-										onClick={() => handleCropSelect(crop.id)}
-										className={`w-full text-left p-3 rounded-2xl transition-all duration-200 flex items-center justify-between group ${
-											isSelected
-												? 'bg-gradient-to-r from-[#2D331F] to-[#3f472f] text-white shadow-md shadow-[#2D331F]/20 ring-1 ring-white/10'
-												: 'bg-white hover:bg-emerald-50/60 border border-gray-100 text-gray-700 hover:text-[#2D331F] shadow-sm'
-										}`}
-									>
-										<div className='flex items-center gap-3 min-w-0'>
-											<div className={`w-9 h-9 rounded-xl flex items-center justify-center text-lg flex-shrink-0 ${
-												isSelected ? 'bg-[#EAB308]/20 border border-[#EAB308]/30' : 'bg-gray-100 group-hover:bg-emerald-100/50'
-											}`}>
-												{getCropEmoji(crop.name)}
-											</div>
-											<div className='truncate'>
-												<p className={`font-bold text-sm truncate ${isSelected ? 'text-white' : 'text-gray-800'}`}>
-													{crop.name}
-												</p>
-												<p className={`text-[11px] truncate ${isSelected ? 'text-emerald-200/80' : 'text-gray-400'}`}>
-													চাষাবাদ নির্দেশিকা
-												</p>
-											</div>
+				{/* Crops List (Fully Scrollable Container) */}
+				<div className='flex-1 min-h-0 overflow-y-auto p-3 space-y-2 pr-2 scrollbar-thin scrollbar-thumb-[#2D331F]/30 hover:scrollbar-thumb-[#2D331F]/50 scrollbar-track-transparent'>
+					{filteredCrops.length === 0 ? (
+						<div className='p-8 text-center text-gray-500'>
+							<p className='text-sm font-medium'>কোনো ফসল পাওয়া যায়নি</p>
+						</div>
+					) : (
+						filteredCrops.map((crop) => {
+							const isSelected = selectedId === crop.id;
+							return (
+								<motion.button
+									key={crop.id}
+									whileHover={{ x: 3, scale: 1.01 }}
+									whileTap={{ scale: 0.98 }}
+									onClick={() => handleCropSelect(crop.id)}
+									className={`w-full text-left p-3 rounded-2xl transition-all duration-200 flex items-center justify-between group ${
+										isSelected
+											? 'bg-gradient-to-r from-[#2D331F] to-[#3f472f] text-white shadow-md shadow-[#2D331F]/20 ring-1 ring-white/10'
+											: 'bg-white hover:bg-emerald-50/60 border border-gray-100 text-gray-700 hover:text-[#2D331F] shadow-sm'
+									}`}
+								>
+									<div className='flex items-center gap-3 min-w-0'>
+										<div className={`w-9 h-9 rounded-xl flex items-center justify-center text-lg flex-shrink-0 ${
+											isSelected ? 'bg-[#EAB308]/20 border border-[#EAB308]/30' : 'bg-gray-100 group-hover:bg-emerald-100/50'
+										}`}>
+											{getCropEmoji(crop.name)}
 										</div>
+										<div className='truncate'>
+											<p className={`font-bold text-sm truncate ${isSelected ? 'text-white' : 'text-gray-800'}`}>
+												{crop.name}
+											</p>
+											<p className={`text-[11px] truncate ${isSelected ? 'text-emerald-200/80' : 'text-gray-400'}`}>
+												চাষাবাদ নির্দেশিকা
+											</p>
+										</div>
+									</div>
 
-										<div className='flex items-center gap-1'>
-											{isSelected && (
-												<span className='px-2 py-0.5 rounded-full bg-[#EAB308] text-[#2D331F] text-[10px] font-extrabold'>
-													নির্বাচিত
-												</span>
-											)}
-											<ChevronRight className={`w-4 h-4 transition-transform group-hover:translate-x-0.5 ${
-												isSelected ? 'text-[#EAB308]' : 'text-gray-300'
-											}`} />
-										</div>
-									</motion.button>
-								);
-							})
-						)}
-					</div>
-				</ScrollArea>
+									<div className='flex items-center gap-1'>
+										{isSelected && (
+											<span className='px-2 py-0.5 rounded-full bg-[#EAB308] text-[#2D331F] text-[10px] font-extrabold'>
+												নির্বাচিত
+											</span>
+										)}
+										<ChevronRight className={`w-4 h-4 transition-transform group-hover:translate-x-0.5 ${
+											isSelected ? 'text-[#EAB308]' : 'text-gray-300'
+										}`} />
+									</div>
+								</motion.button>
+							);
+						})
+					)}
+				</div>
 			</aside>
 
 			{/* Mobile Backdrop */}
