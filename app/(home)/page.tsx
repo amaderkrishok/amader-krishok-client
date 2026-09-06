@@ -1,39 +1,43 @@
 import FeaturesSection from '@/components/pages/home/FeaturesSection';
-import Goal from '@/components/pages/home/goal';
 import { Hero } from '@/components/pages/home/hero';
-import Mission from '@/components/pages/home/mission';
-import Product from '@/components/pages/home/product';
 import { CategorySection } from '@/components/pages/home/CategorySection';
 import { OffersSection } from '@/components/pages/home/OffersSection';
 import { VendorsSection } from '@/components/pages/home/VendorsSection';
+import { TrustSection } from '@/components/pages/home/TrustSection';
 import { TextRotatorSection } from '@/components/pages/home/TextRotatorSection';
+import { VendorBanner } from '@/components/pages/home/vendor-banner';
 
 export const dynamic = 'force-static';
 export const revalidate = 3600; // Cache for 1 hour
 
 export default function Home() {
 	return (
-		<div>
-			{/* Premium Hero Banner */}
+		<div className='bg-[#FAF9F3] text-[#172033]'>
+			{/* 1. Agriculture Video Hero Section with Prominent Search Bar */}
 			<Hero />
 
-			{/* Category Showcase Section */}
+			{/* 2. Quick Category Section ("কী খুঁজছেন আজ?") */}
 			<CategorySection />
 
-			{/* Today's Krishok er Bazar Showcase Section */}
+			{/* 3. Featured Direct Produce Section */}
 			<OffersSection />
 
-			{/* Vertical Automatic Text Rotator Banner (White Background) */}
-			<TextRotatorSection />
+			{/* 4. Trust Section ("কেন আমাদের কৃষকের বাজার?") */}
+			<TrustSection />
 
-			{/* Top Verified Vendors & Farms Section */}
+			{/* 5. Verified Farmers Section ("আমাদের কৃষক") */}
 			<VendorsSection />
 
-			{/* Platform Core Features & Tools */}
-			{/* <Mission /> */}
+			{/* 6. Vertical Text Rotator Banner */}
+			<TextRotatorSection />
+
+			{/* 7. Platform Core Features & Tools */}
 			<FeaturesSection />
-			{/* <Goal />
-			<Product /> */}
+
+			{/* 8. Seller/Vendor Call-to-Action Banner */}
+			<div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+				<VendorBanner />
+			</div>
 		</div>
 	);
 }

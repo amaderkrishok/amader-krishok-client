@@ -155,24 +155,20 @@ export function FeaturedProductsSection() {
   const gridProducts = activeProductsList.slice(1, 4);
 
   return (
-    <section className="py-28 bg-[#FAF8F5] relative overflow-hidden border-t border-gray-200/60">
-      {/* Background Lighting Elements */}
-      <div className="absolute top-1/4 left-0 w-[30rem] h-[30rem] bg-[#EAB308]/5 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-10 right-0 w-[30rem] h-[30rem] bg-[#2D331F]/5 rounded-full blur-3xl pointer-events-none" />
-
-      <div className="max-w-7xl mx-auto px-6 lg:px-24 xl:px-40 2xl:px-12 relative z-10">
+    <section className="py-16 sm:py-20 bg-[#FAF9F3] text-[#172033] relative overflow-hidden border-b border-gray-200/60">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header & Category Filter Tabs */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-8">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-6">
           <div>
             <motion.div
               initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#2D331F]/10 border border-[#2D331F]/15 mb-4 text-[#2D331F] text-xs font-black uppercase tracking-wider"
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#3F6212]/10 border border-[#3F6212]/20 mb-3 text-[#3F6212] text-xs font-bold uppercase tracking-wider"
             >
-             
-              <span>জনপ্রিয় পণ্য কালেকশন</span>
+              <Sparkles className="w-3.5 h-3.5 text-[#F5B800]" />
+              <span>জনপ্রিয় পণ্য কালেকশন</span>
             </motion.div>
 
             <motion.h2
@@ -180,12 +176,12 @@ export function FeaturedProductsSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="text-4xl md:text-5xl lg:text-6xl font-black text-[#2D331F] tracking-tight leading-tight"
+              className="text-3xl md:text-4xl lg:text-4xl font-extrabold text-[#172033] tracking-tight leading-tight"
             >
-              আকর্ষণীয় সেরা পণ্যসমূহ
+              আকর্ষণীয় সেরা পণ্যসমূহ
             </motion.h2>
-            <p className="text-gray-600 text-base md:text-lg mt-3 max-w-xl">
-              সরাসরি আমাদের রেজিস্টার্ড কৃষকদের বাগান ও খামার থেকে সংগৃহীত ১০০% বিশুদ্ধ অর্গানিক কৃষিপণ্য।
+            <p className="text-[#64748B] text-sm sm:text-base mt-2 max-w-xl font-medium">
+              সরাসরি আমাদের রেজিস্টার্ড কৃষকদের খামার থেকে সংগৃহীত ১০০% অর্গানিক কৃষিপণ্য।
             </p>
           </div>
 
@@ -197,7 +193,7 @@ export function FeaturedProductsSection() {
           >
             <Link
               href="/marketplace"
-              className="group inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full bg-[#2D331F] hover:bg-[#3F472F] text-white font-black text-sm transition-all shadow-xl hover:shadow-2xl hover:scale-105"
+              className="group inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#26351B] hover:bg-[#1B2813] text-white font-bold text-sm transition-all shadow-md hover:scale-105"
             >
               <span>সকল পণ্য দেখুন</span>
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -206,15 +202,15 @@ export function FeaturedProductsSection() {
         </div>
 
         {/* Dynamic Category Filter Tabs */}
-        <div className="flex flex-wrap gap-2.5 mb-12 pb-3 border-b border-gray-200">
+        <div className="flex flex-wrap gap-2 mb-8 pb-2 border-b border-gray-200/80">
           {categoryTabs.map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`px-6 py-3 rounded-2xl text-xs font-black transition-all duration-300 ${
+              className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 ${
                 activeTab === tab
-                  ? 'bg-[#2D331F] text-white shadow-xl scale-105'
-                  : 'bg-white border border-gray-200 text-gray-700 hover:border-[#2D331F] hover:text-[#2D331F]'
+                  ? 'bg-[#26351B] text-white shadow-md'
+                  : 'bg-white border border-gray-200 text-[#172033] hover:border-[#26351B] hover:bg-gray-50'
               }`}
             >
               {tab}

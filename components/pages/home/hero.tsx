@@ -1,225 +1,225 @@
 'use client';
-import { useState, useEffect, useRef } from 'react';
-import { Search, Leaf } from 'lucide-react';
-import { motion, useInView } from 'framer-motion';
+
+import { useState, useRef, useEffect } from 'react';
+import { Search, ArrowRight, Store, ShieldCheck, Sparkles } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 export function Hero() {
-    const router = useRouter();
-    const [searchInput, setSearchInput] = useState('');
+	const router = useRouter();
+	const [searchInput, setSearchInput] = useState('');
+	const [activeCategory, setActiveCategory] = useState('সবজি');
+	const [videoLoaded, setVideoLoaded] = useState(false);
+	const videoRef = useRef<HTMLVideoElement>(null);
 
-    const statsData = [
-        { target: 10000, suffix: '+', label: 'সক্রিয় কৃষক', isComma: true },
-        { target: 42, suffix: '', label: 'জেলা কভারেজ', isComma: false },
-        { target: 50, suffix: '+', label: 'রিটেইল পার্টনার', isComma: false },
-        { target: 98, suffix: '%', label: 'সন্তুষ্ট গ্রাহক', isComma: false },
-    ];
+	const categoryTabs = [
+		{ label: 'সবজি', icon: '🥬', query: 'সবজি' },
+		{ label: 'ফল', icon: '🍎', query: 'ফল' },
+		{ label: 'মাছ', icon: '🐟', query: 'মাছ' },
+		{ label: 'শস্য', icon: '🌾', query: 'শস্য' },
+		{ label: 'কৃষি উপকরণ', icon: '🧪', query: 'কৃষি উপকরণ' },
+		{ label: 'সার', icon: '🌱', query: 'সার' },
+		{ label: 'বীজ', icon: '🌾', query: 'বীজ' },
+	];
 
-    const tabs = ['সব পণ্য', 'সবজি', 'ফল', 'শস্য', 'মাছ', 'সার ও উপকরণ'];
+	const quickChips = [
+		{ label: 'সবজি', query: 'সবজি' },
+		{ label: 'ফল', query: 'ফল' },
+		{ label: 'মাছ', query: 'মাছ' },
+		{ label: 'শস্য', query: 'শস্য' },
+		{ label: 'কৃষি উপকরণ', query: 'কৃষি উপকরণ' },
+		{ label: 'সার', query: 'সার' },
+		{ label: 'বীজ', query: 'বীজ' },
+	];
 
-    const handleSearch = () => {
-        if (searchInput.trim()) {
-            router.push(`/marketplace?term=${encodeURIComponent(searchInput.trim())}`);
-        } else {
-            router.push('/marketplace');
-        }
-    };
+	const handleSearch = () => {
+		if (searchInput.trim()) {
+			router.push(`/marketplace?term=${encodeURIComponent(searchInput.trim())}`);
+		} else if (activeCategory) {
+			router.push(`/marketplace?category=${encodeURIComponent(activeCategory)}`);
+		} else {
+			router.push('/marketplace');
+		}
+	};
 
-    // Count-up animation state
-    const statsRef = useRef<HTMLDivElement>(null);
-    const isStatsInView = useInView(statsRef, { once: true, amount: 0.3 });
-    const [counts, setCounts] = useState<number[]>([0, 0, 0, 0]);
+	const handleCategoryTabClick = (query: string, label: string) => {
+		setActiveCategory(label);
+		router.push(`/marketplace?category=${encodeURIComponent(query)}`);
+	};
 
-    useEffect(() => {
-        if (isStatsInView) {
-            const duration = 1800; // ms
-            const steps = 40;
-            const stepTime = duration / steps;
-            let currentStep = 0;
+	const handleChipClick = (query: string) => {
+		router.push(`/marketplace?category=${encodeURIComponent(query)}`);
+	};
 
-            const timer = setInterval(() => {
-                currentStep++;
-                const progress = Math.min(currentStep / steps, 1);
-                // Ease out quad
-                const easeProgress = 1 - Math.pow(1 - progress, 3);
+	useEffect(() => {
+		if (videoRef.current && videoRef.current.readyState >= 3) {
+			setVideoLoaded(true);
+		}
+	}, []);
 
-                setCounts(statsData.map(stat => Math.floor(stat.target * easeProgress)));
+	return (
+		<section className='relative w-full min-h-[580px] sm:min-h-[640px] lg:min-h-[680px] flex flex-col justify-between overflow-visible bg-[#1B2813] select-none pt-24 sm:pt-28 pb-12 sm:pb-16'>
+			{/* --- Real Agriculture Background Video --- */}
+			<div className='absolute inset-0 z-0 w-full h-full overflow-hidden'>
+				{/* Poster fallback image */}
+				<Image
+					src='/images/hero_farmer_fresh_produce.jpg'
+					alt='Agricultural Farm Background'
+					fill
+					priority
+					className={`object-cover transition-opacity duration-1000 ${
+						videoLoaded ? 'opacity-0' : 'opacity-100'
+					}`}
+				/>
+				<video
+					ref={videoRef}
+					autoPlay
+					muted
+					loop
+					playsInline
+					onCanPlay={() => setVideoLoaded(true)}
+					className='absolute inset-0 w-full h-full object-cover pointer-events-none'
+				>
+					<source src='/videos/banner-video.mp4' type='video/mp4' />
+				</video>
+			</div>
 
-                if (currentStep >= steps) {
-                    clearInterval(timer);
-                }
-            }, stepTime);
+			{/* --- Hero Dark Overlay rgba(20, 32, 12, 0.35) --- */}
+			<div
+				className='absolute inset-0 z-10 pointer-events-none'
+				style={{
+					backgroundColor: 'rgba(20, 32, 12, 0.35)',
+				}}
+			/>
 
-            return () => clearInterval(timer);
-        }
-    }, [isStatsInView]);
+			{/* --- HERO TEXT CONTENT AREA --- */}
+			<div className='relative z-20 w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center justify-center gap-4 sm:gap-5 flex-1 mb-6 sm:mb-8'>
+				{/* 1. Small Badge */}
+				<motion.div
+					initial={{ opacity: 0, y: 15 }}
+					animate={{ opacity: 1, y: 0 }}
+					transition={{ duration: 0.5, ease: 'easeOut' }}
+					className='inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/12 backdrop-blur-md border border-white/20 text-xs sm:text-sm font-semibold text-white shadow-sm'
+				>
+					<Sparkles className='w-4 h-4 text-[#F5B800]' />
+					<span>বাংলাদেশের ১ম আধুনিক ডিজিটাল কৃষকের বাজার</span>
+				</motion.div>
 
-    const toBengaliNumber = (num: number, isComma: boolean): string => {
-        const bengaliDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
-        let str = isComma ? num.toLocaleString('en-US') : num.toString();
-        return str.replace(/\d/g, (digit) => bengaliDigits[parseInt(digit, 10)]);
-    };
+				{/* 2. Main Headline & 3. Subtitle (Updated as requested) */}
+				<motion.div
+					initial={{ opacity: 0, y: 20 }}
+					animate={{ opacity: 1, y: 0 }}
+					transition={{ duration: 0.5, delay: 0.1, ease: 'easeOut' }}
+					className='space-y-3 max-w-4xl'
+				>
+					<h1 className='text-[36px] sm:text-[52px] md:text-[60px] lg:text-[64px] font-extrabold text-white leading-[1.10] tracking-tight drop-shadow-sm'>
+						কোনো মধ্যস্বত্বভোগী নেই
+					</h1>
 
-    // Animation Variants
-    const fadeUp = {
-        hidden: { opacity: 0, y: 25 },
-        visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] } }
-    };
+					<p className='text-white/90 text-[15px] sm:text-[18px] md:text-[19px] font-normal leading-relaxed max-w-[800px] mx-auto drop-shadow-sm'>
+						বাংলাদেশের ৪২টি জেলার যাচাইকৃত কৃষকদের প্রোফাইল ঘুরে দেখুন, সরাসরি কথা বলুন এবং নিজেই দরদাম করে কিনুন।
+					</p>
+				</motion.div>
 
-    const staggerContainer = {
-        hidden: { opacity: 0 },
-        visible: {
-            opacity: 1,
-            transition: { staggerChildren: 0.1, delayChildren: 0.1 }
-        }
-    };
+				{/* Hero Secondary CTA Action Buttons */}
+				<motion.div
+					initial={{ opacity: 0, y: 15 }}
+					animate={{ opacity: 1, y: 0 }}
+					transition={{ duration: 0.5, delay: 0.2, ease: 'easeOut' }}
+					className='flex flex-wrap items-center justify-center gap-3 pt-1'
+				>
+					<button
+						onClick={() => router.push('/marketplace')}
+						className='h-[46px] px-5 rounded-[12px] bg-[#F5B800] hover:bg-[#e0a800] text-[#26351B] font-bold text-sm sm:text-base transition-all duration-200 shadow-md flex items-center gap-2 hover:scale-[1.02] active:scale-[0.98]'
+					>
+						<Store className='w-4 h-4' />
+						<span>কৃষকের বাজার দেখুন</span>
+					</button>
 
-    return (
-        <div className="relative min-h-screen flex flex-col items-center justify-center bg-[#2D331F] overflow-hidden pt-16 pb-32 lg:pb-40 selection:bg-[#EAB308] selection:text-[#2D331F]">
-            
-            {/* --- Background Pattern & Floating Animated Leaves --- */}
-            <div className="absolute inset-0 z-0 pointer-events-none">
-                <div className="absolute top-[-20%] left-[-10%] w-[60vw] h-[60vw] rounded-full bg-[radial-gradient(circle,rgba(234,179,8,0.15)_0%,transparent_60%)]"></div>
-                <div className="absolute bottom-[-20%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-[radial-gradient(circle,rgba(74,222,128,0.1)_0%,transparent_60%)]"></div>
+					<button
+						onClick={() => router.push('/about')}
+						className='h-[46px] px-5 rounded-[12px] bg-white/10 hover:bg-white/20 border border-white/35 text-white font-bold text-sm sm:text-base transition-all duration-200 backdrop-blur-sm flex items-center gap-2 hover:scale-[1.02] active:scale-[0.98]'
+					>
+						<ShieldCheck className='w-4 h-4' />
+						<span>কৃষকদের সম্পর্কে জানুন</span>
+					</button>
+				</motion.div>
+			</div>
 
-                {/* Floating Leaf Micro-Animations */}
-                {[
-                    { left: '8%', top: '22%', scale: 1.1, duration: 8, delay: 0 },
-                    { left: '88%', top: '18%', scale: 0.9, duration: 9, delay: 1 },
-                    { left: '80%', top: '72%', scale: 1.2, duration: 10, delay: 1.5 },
-                    { left: '12%', top: '75%', scale: 0.85, duration: 7, delay: 0.5 },
-                    { left: '48%', top: '10%', scale: 0.75, duration: 6, delay: 0.8 },
-                ].map((leaf, i) => (
-                    <motion.div
-                        key={i}
-                        className="absolute text-[#4ADE80]/20"
-                        style={{ left: leaf.left, top: leaf.top }}
-                        animate={{
-                            y: [-10, 10, -10],
-                            rotate: [0, 15, -15, 0],
-                            scale: [leaf.scale, leaf.scale * 1.08, leaf.scale],
-                        }}
-                        transition={{
-                            duration: leaf.duration,
-                            repeat: Infinity,
-                            ease: "easeInOut",
-                            delay: leaf.delay,
-                        }}
-                    >
-                        <Leaf className="w-8 h-8" />
-                    </motion.div>
-                ))}
-            </div>
+			{/* --- SHARETRIP-INSPIRED LARGE & WIDE FLOATING SEARCH MODULE CARD OVERLAPPING HERO BOUNDARY --- */}
+			<div className='relative z-30 w-full max-w-[1240px] xl:max-w-[1300px] 2xl:max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 translate-y-1/2 -mt-16 sm:-mt-20 lg:-mt-24 mb-16 sm:mb-20'>
+				<motion.div
+					initial={{ opacity: 0, y: 30 }}
+					animate={{ opacity: 1, y: 0 }}
+					transition={{ duration: 0.5, delay: 0.25, ease: 'easeOut' }}
+					className='bg-white rounded-[24px] shadow-[0_30px_75px_rgba(0,0,0,0.22)] border border-gray-100 p-6 sm:p-8 lg:p-10 flex flex-col gap-6 sm:gap-7'
+				>
+					{/* 1. Category Tabs Header inside Search Module */}
+					<div className='flex items-center gap-3 sm:gap-5 overflow-x-auto pb-3 border-b border-gray-100 scrollbar-none'>
+						{categoryTabs.map((tab) => {
+							const isActive = activeCategory === tab.label;
+							return (
+								<button
+									key={tab.label}
+									onClick={() => handleCategoryTabClick(tab.query, tab.label)}
+									className={`flex items-center gap-2.5 px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl font-bold text-sm sm:text-base whitespace-nowrap transition-all duration-200 ${
+										isActive
+											? 'bg-[#3F6212]/10 text-[#3F6212] border-b-3 border-[#F5B800] shadow-sm font-extrabold'
+											: 'text-gray-600 hover:text-[#172033] hover:bg-gray-50'
+									}`}
+								>
+									<span className='text-lg sm:text-xl'>{tab.icon}</span>
+									<span>{tab.label}</span>
+								</button>
+							);
+						})}
+					</div>
 
-            <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center gap-10">
-                
-                {/* --- HERO TITLE & SUBTITLE SECTION --- */}
-                <motion.div 
-                    variants={staggerContainer}
-                    initial="hidden"
-                    animate="visible"
-                    className="flex flex-col items-center w-full max-w-4xl text-center pt-4"
-                >
-                    {/* Main Impactful Headline (Single Line & Slightly Smaller Text) */}
-                    <motion.div variants={fadeUp} className="mb-4 w-full">
-                        <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-5xl font-extrabold leading-tight tracking-tight text-[#EAB308] whitespace-nowrap">
-                            কোনো মধ্যস্বত্বভোগী নেই
-                        </h1>
-                    </motion.div>
+					{/* 2. Main Search Input & Submit Button Row */}
+					<div className='flex flex-col sm:flex-row items-center gap-3 bg-gray-50/80 border border-gray-200/80 rounded-[18px] p-2.5 sm:p-3 transition-all focus-within:bg-white focus-within:border-[#F5B800] focus-within:ring-4 focus-within:ring-[#F5B800]/20 shadow-inner min-h-[64px] sm:min-h-[72px]'>
+						{/* Input */}
+						<div className='flex-1 w-full flex items-center px-4 sm:px-5 py-2 sm:py-0 gap-3.5 bg-transparent'>
+							<Search className='w-6 h-6 sm:w-7 sm:h-7 text-[#64748B] flex-shrink-0' />
+							<input
+								type='text'
+								value={searchInput}
+								onChange={(e) => setSearchInput(e.target.value)}
+								onKeyDown={(e) => {
+									if (e.key === 'Enter') handleSearch();
+								}}
+								placeholder='সবজি, ফল, মাছ, শস্য খুঁজুন...'
+								className='w-full text-[#172033] placeholder-[#64748B] text-base sm:text-lg lg:text-xl font-semibold outline-none bg-transparent border-none'
+							/>
+						</div>
 
-                    {/* Subtitle Description */}
-                    <motion.p 
-                        variants={fadeUp} 
-                        className="text-gray-200 text-base sm:text-lg md:text-xl leading-relaxed max-w-3xl font-medium tracking-wide"
-                    >
-                        বাংলাদেশের ৪২টি জেলার যাচাইকৃত কৃষকদের প্রোফাইল ঘুরে দেখুন, সরাসরি কথা বলুন এবং নিজেই দরদাম করে কিনুন।
-                    </motion.p>
-                </motion.div>
+						{/* Search Button */}
+						<button
+							onClick={handleSearch}
+							className='w-full sm:w-auto h-[56px] sm:h-[62px] px-9 sm:px-12 bg-[#F5B800] hover:bg-[#e0a800] text-[#26351B] font-extrabold text-base sm:text-lg rounded-[15px] transition-all duration-200 shadow-md flex items-center justify-center gap-2.5 flex-shrink-0 hover:scale-[1.01] active:scale-[0.99]'
+						>
+							<span>খুঁজুন</span>
+							<ArrowRight className='w-5 h-5 sm:w-6 sm:h-6' />
+						</button>
+					</div>
 
-                {/* --- SEARCH CARD & STATS SECTION (Increased Width & Bottom Spacing) --- */}
-                <motion.div 
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.25, duration: 0.6, ease: "easeOut" }}
-                    className="relative z-40 w-full max-w-5xl"
-                >
-                    <div className="bg-[#FDFBF7] rounded-[2.25rem] shadow-2xl overflow-hidden border border-white/60">
-                        
-                        {/* Category Tabs */}
-                        <div className="flex flex-wrap items-center justify-center border-b border-gray-200/80 p-3.5 gap-2 bg-white/60">
-                            {tabs.map((tab) => (
-                                <button
-                                    key={tab}
-                                    onClick={() => {
-                                        if (tab === 'সব পণ্য') {
-                                            router.push('/marketplace');
-                                        } else {
-                                            router.push(`/marketplace?category=${encodeURIComponent(tab)}`);
-                                        }
-                                    }}
-                                    className="px-5 py-2.5 rounded-xl text-sm sm:text-base font-semibold transition-all duration-300 relative text-gray-600 hover:text-[#2D331F] hover:bg-[#EAB308]/20"
-                                >
-                                    <span className="relative z-10">{tab}</span>
-                                </button>
-                            ))}
-                        </div>
-
-                        {/* Search Input Box */}
-                        <div className="p-4 sm:p-6 flex flex-col sm:flex-row items-center gap-4 border-b border-gray-200/80 bg-white">
-                            <div className="flex-1 w-full bg-gray-50 border border-gray-200 rounded-2xl px-5 py-2.5 sm:py-3.5 flex flex-col items-start text-left justify-center focus-within:ring-2 focus-within:ring-[#EAB308]/50 focus-within:border-[#EAB308]/50 transition-all duration-300 shadow-inner group">
-                                <label className="text-[11px] text-gray-500 font-bold mb-0.5 uppercase tracking-wider group-focus-within:text-[#2D331F] transition-colors text-left w-full">কি খুঁজছেন?</label>
-                                <input 
-                                    type="text" 
-                                    value={searchInput}
-                                    onChange={(e) => setSearchInput(e.target.value)}
-                                    onKeyDown={(e) => {
-                                        if (e.key === 'Enter') {
-                                            handleSearch();
-                                        }
-                                    }}
-                                    placeholder="যেমন: দেশি টমেটো, কাটারিভোগ চাল..." 
-                                    className="w-full outline-none text-[#2D331F] placeholder-gray-400 font-medium bg-transparent text-sm sm:text-base text-left"
-                                />
-                            </div>
-
-                            {/* Search Button */}
-                            <motion.button 
-                                onClick={handleSearch}
-                                whileHover={{ scale: 1.02 }}
-                                whileTap={{ scale: 0.98 }}
-                                className="w-full sm:w-auto h-full min-h-[58px] sm:min-h-[64px] px-10 bg-gradient-to-r from-[#2D331F] to-[#40492F] hover:from-[#40492F] hover:to-[#2D331F] text-white rounded-2xl font-bold flex items-center justify-center gap-2 transition-all duration-300 shadow-xl shadow-[#2D331F]/20"
-                            >
-                                <Search className="w-4 h-4 text-[#EAB308]" />
-                                <span className="text-base font-bold">খুঁজুন</span>
-                            </motion.button>
-                        </div>
-
-                        {/* Stats Counter Bar */}
-                        <div ref={statsRef} className="p-6 sm:p-8 grid grid-cols-2 md:grid-cols-4 gap-6 bg-gradient-to-b from-[#FDFBF7] to-[#F3EFE0]">
-                            {statsData.map((stat, idx) => (
-                                <motion.div 
-                                    key={idx} 
-                                    initial={{ opacity: 0, y: 20 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    viewport={{ once: true }}
-                                    transition={{ delay: idx * 0.1 + 0.4 }}
-                                    className={`text-center flex flex-col justify-center relative group ${idx !== statsData.length - 1 ? 'md:after:content-[""] md:after:absolute md:after:right-0 md:after:top-1/4 md:after:h-1/2 md:after:w-px md:after:bg-gray-300' : ''}`}
-                                >
-                                    <motion.div 
-                                        className="text-3xl sm:text-4xl md:text-4xl font-black text-[#2D331F] mb-1 tracking-tighter"
-                                        whileHover={{ scale: 1.08, color: "#EAB308" }}
-                                    >
-                                        {toBengaliNumber(counts[idx], stat.isComma)}{stat.suffix}
-                                    </motion.div>
-                                    <div className="text-xs sm:text-sm font-bold text-gray-500 uppercase tracking-wide group-hover:text-[#2D331F] transition-colors">
-                                        {stat.label}
-                                    </div>
-                                </motion.div>
-                            ))}
-                        </div>
-                    </div>
-                </motion.div>
-            </div>
-        </div>
-    );
+					{/* 3. Bottom Popular Search Chips inside Module */}
+					<div className='flex flex-wrap items-center gap-2.5 pt-1'>
+						<span className='text-xs sm:text-sm font-semibold text-gray-500 mr-1'>
+							জনপ্রিয় অনুসন্ধান:
+						</span>
+						{quickChips.map((chip) => (
+							<button
+								key={chip.label}
+								onClick={() => handleChipClick(chip.query)}
+								className='px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-gray-100 hover:bg-[#F5B800] text-gray-700 hover:text-[#26351B] transition-colors duration-200'
+							>
+								{chip.label}
+							</button>
+						))}
+					</div>
+				</motion.div>
+			</div>
+		</section>
+	);
 }
