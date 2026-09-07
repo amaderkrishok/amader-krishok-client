@@ -59,29 +59,18 @@ export function Hero() {
 	}, []);
 
 	return (
-		<section className='relative w-full min-h-[580px] sm:min-h-[640px] lg:min-h-[680px] flex flex-col justify-between overflow-visible bg-[#1B2813] select-none pt-24 sm:pt-28 pb-12 sm:pb-16'>
+		<section className='relative w-full min-h-[600px] sm:min-h-[660px] lg:min-h-[700px] flex flex-col justify-between overflow-visible bg-[#1B2813] select-none pt-28 sm:pt-32 lg:pt-36 pb-12 sm:pb-16'>
 			{/* --- Real Agriculture Background Video --- */}
-			<div className='absolute inset-0 z-0 w-full h-full overflow-hidden'>
-				{/* Poster fallback image */}
-				<Image
-					src='/images/hero_farmer_fresh_produce.jpg'
-					alt='Agricultural Farm Background'
-					fill
-					priority
-					className={`object-cover transition-opacity duration-1000 ${
-						videoLoaded ? 'opacity-0' : 'opacity-100'
-					}`}
-				/>
+			<div className='absolute inset-0 z-0 w-full h-full overflow-hidden bg-[#1B2813]'>
 				<video
 					ref={videoRef}
 					autoPlay
 					muted
-					loop
+				  	loop
 					playsInline
-					onCanPlay={() => setVideoLoaded(true)}
 					className='absolute inset-0 w-full h-full object-cover pointer-events-none'
 				>
-					<source src='/videos/banner-video.mp4' type='video/mp4' />
+					<source src='/videos/banner-10.mp4' type='video/mp4' />
 				</video>
 			</div>
 
@@ -150,9 +139,8 @@ export function Hero() {
 			{/* --- SHARETRIP-INSPIRED LARGE & WIDE FLOATING SEARCH MODULE CARD OVERLAPPING HERO BOUNDARY --- */}
 			<div className='relative z-30 w-full max-w-[1240px] xl:max-w-[1300px] 2xl:max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 translate-y-1/2 -mt-16 sm:-mt-20 lg:-mt-24 mb-16 sm:mb-20'>
 				<motion.div
-					initial={{ opacity: 0, y: 30 }}
+					initial={{ opacity: 1, y: 0 }}
 					animate={{ opacity: 1, y: 0 }}
-					transition={{ duration: 0.5, delay: 0.25, ease: 'easeOut' }}
 					className='bg-white rounded-[24px] shadow-[0_30px_75px_rgba(0,0,0,0.22)] border border-gray-100 p-6 sm:p-8 lg:p-10 flex flex-col gap-6 sm:gap-7'
 				>
 					{/* 1. Category Tabs Header inside Search Module */}

@@ -40,7 +40,7 @@ export function NavBar() {
 	const dashboardPath = user ? getRedirectPathByRole(user.role) : '/auth/login';
 
 	return (
-		<nav className='w-full px-6 lg:px-24 xl:px-40 2xl:px-12 py-4 bg-[#2D331F] fixed top-0 left-0 z-50 shadow-lg border-b border-white/10 transition-colors duration-300'>
+		<nav className='w-full px-6 lg:px-24 xl:px-40 2xl:px-12 py-4 bg-[rgba(55,68,40,0.65)] backdrop-blur-md fixed top-0 left-0 z-50 shadow-lg border-b border-white/10 transition-colors duration-300'>
 			<div className='max-w-7xl mx-auto flex items-center justify-between'>
 				{/* Logo */}
 				<Link href='/' className='flex items-center space-x-2'>
