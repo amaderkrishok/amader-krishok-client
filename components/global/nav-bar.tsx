@@ -23,7 +23,7 @@ const menuItems: { href: string; label: string }[] = [
 	{ href: '/about', label: 'এবাউট' },
 ];
 
-export function NavBar({ navClassName = '' }: { navClassName?: string }) {
+export function NavBar() {
 	const pathname = usePathname();
 	const [isOpen, setIsOpen] = useState(false);
 	const { user, isAuthenticated, logout } = useSession();
@@ -31,102 +31,60 @@ export function NavBar({ navClassName = '' }: { navClassName?: string }) {
 	const router = useRouter();
 
 	const [showUserMenu, setShowUserMenu] = useState(false);
-	const [isScrolled, setIsScrolled] = useState(false);
 
 	useEffect(() => {
 		setIsOpen(false);
 	}, [pathname]);
 
-	useEffect(() => {
-		const handleScroll = () => {
-			if (window.scrollY > 20) {
-				setIsScrolled(true);
-			} else {
-				setIsScrolled(false);
-			}
-		};
-
-		handleScroll();
-		window.addEventListener('scroll', handleScroll);
-		return () => window.removeEventListener('scroll', handleScroll);
-	}, []);
-
 	// Determine dashboard redirect path based on user role
 	const dashboardPath = user ? getRedirectPathByRole(user.role) : '/auth/login';
 
-	const isHomePage = pathname === '/';
-	const isTransparent = isHomePage;
-
 	return (
-		<nav
-			className={`w-full px-4 sm:px-6 lg:px-8 xl:px-12 fixed top-0 left-0 z-50 transition-all duration-300 h-[72px] flex items-center ${
-				isTransparent
-					? 'bg-[rgba(38,53,27,0.85)] backdrop-blur-md border-b border-white/10 text-white shadow-lg'
-					: 'bg-[#26351B] backdrop-blur-md border-b border-white/10 shadow-md text-white'
-			} ${navClassName}`}
-		>
-			<div className='max-w-7xl mx-auto w-full flex items-center justify-between gap-4'>
+		<nav className='w-full px-6 lg:px-24 xl:px-40 2xl:px-12 py-4 bg-[#2D331F] fixed top-0 left-0 z-50 shadow-lg border-b border-white/10 transition-colors duration-300'>
+			<div className='max-w-7xl mx-auto flex items-center justify-between'>
 				{/* Logo */}
-				<Link href='/' className='flex items-center space-x-2 flex-shrink-0'>
+				<Link href='/' className='flex items-center space-x-2'>
 					<Image
 						src='/images/logo-transparent.png'
 						width={130}
 						height={60}
-						alt='Amader Krishok Logo'
-						className='transition-transform duration-300 hover:scale-105 w-[100px] sm:w-[120px] lg:w-[130px] h-auto object-contain'
-						priority
+						alt='Logo'
+						className='transition-transform duration-300 hover:scale-105'
 					/>
 				</Link>
 
-				{/* Desktop & Laptop Navigation Container (lg: 1024px+) */}
-				<div className='hidden lg:flex items-center gap-2 xl:gap-3 2xl:gap-5 flex-shrink-0'>
+				{/* Right side container for navigation, cart, and auth button */}
+				<div className='hidden md:flex items-center gap-6'>
 					{/* Navigation Items */}
 					<div className='flex items-center space-x-1'>
-						{menuItems.map((item) => {
-							const isActive = pathname === item.href;
-							return (
-								<Link
-									key={item.href}
-									href={item.href}
-									className={`
-                    px-3 py-2 rounded-xl text-xs xl:text-sm font-semibold whitespace-nowrap
-                    transition-all duration-200
-                    ${
-											isTransparent
-												? isActive
-													? 'bg-white/13 text-[#F5B800] font-bold'
-													: 'text-white hover:text-[#F5B800] hover:bg-white/10'
-												: isActive
-													? 'bg-[#F5F3EA] text-[#3F6212] font-bold'
-													: 'text-[#172033] hover:text-[#3F6212] hover:bg-gray-100/80'
-										}
-                  `}
-								>
-									{item.label}
-								</Link>
-							);
-						})}
+						{menuItems.map((item) => (
+							<Link
+								key={item.href}
+								href={item.href}
+								className={`
+                text-white px-3 py-2 rounded-md text-base font-medium
+                transition-colors duration-200
+                ${
+									pathname === item.href
+										? 'bg-white/10 font-bold'
+										: 'hover:bg-white/5'
+								}
+              `}
+							>
+								{item.label}
+							</Link>
+						))}
 					</div>
 
 					{/* Cart Icon Button */}
 					<button
 						onClick={toggleCart}
-						className={`relative p-2.5 rounded-full transition-all focus:outline-none flex-shrink-0 ${
-							isTransparent
-								? 'text-white hover:text-[#F5B800] hover:bg-white/10'
-								: 'text-[#172033] hover:text-[#3F6212] hover:bg-gray-100'
-						}`}
+						className='relative text-white hover:text-[#EAB308] p-2 rounded-full hover:bg-white/10 transition-all focus:outline-none'
 						aria-label='কার্ট দেখুন'
 					>
-						<ShoppingCart className='h-5 w-5 xl:h-5 xl:w-5' />
+						<ShoppingCart className='h-6 w-6' />
 						{itemCount > 0 && (
-							<span
-								className={`absolute -top-1 -right-1 text-white text-[10px] xl:text-[11px] font-black rounded-full h-4 w-4 xl:h-5 xl:w-5 flex items-center justify-center border-2 ${
-									isTransparent
-										? 'bg-[#F5B800] text-[#26351B] border-[#1B2813]'
-										: 'bg-rose-500 text-white border-white'
-								}`}
-							>
+							<span className='absolute -top-1 -right-1 bg-rose-500 text-white text-[11px] font-black rounded-full h-5 w-5 flex items-center justify-center border-2 border-[#2D331F]'>
 								{itemCount}
 							</span>
 						)}
@@ -135,13 +93,10 @@ export function NavBar({ navClassName = '' }: { navClassName?: string }) {
 					{/* Auth Button */}
 					<Button
 						asChild
-						className={`text-xs xl:text-sm h-10 px-5 rounded-xl font-bold transition-all shadow-sm flex-shrink-0 border-none ${
-							isTransparent
-								? 'bg-[#F5B800] text-[#26351B] hover:bg-[#e0a800]'
-								: 'bg-[#26351B] text-white hover:bg-[#1B2813]'
-						}`}
+						variant='outline'
+						className='bg-white/10 hover:bg-white/20 text-white border-white/20 hover:text-white'
 					>
-						<Link href={dashboardPath} className='flex items-center gap-2 whitespace-nowrap'>
+						<Link href={dashboardPath} className='flex items-center gap-2'>
 							{isAuthenticated ? (
 								<>
 									<User size={16} />
@@ -161,7 +116,7 @@ export function NavBar({ navClassName = '' }: { navClassName?: string }) {
 						<Button
 							variant='destructive'
 							size='sm'
-							className='bg-red-600 hover:bg-red-700 text-white text-xs xl:text-sm h-9 xl:h-10 px-3 rounded-xl font-bold flex-shrink-0'
+							className='bg-red-600/80 hover:bg-red-700 text-white'
 							onClick={async () => {
 								router.push('/');
 								setTimeout(async () => {
@@ -176,25 +131,17 @@ export function NavBar({ navClassName = '' }: { navClassName?: string }) {
 					)}
 				</div>
 
-				{/* Mobile & Tablet Actions (< lg: 1024px) */}
-				<div className='flex items-center gap-3 sm:gap-4 lg:hidden'>
-					{/* Mobile/Tablet Cart Icon Button */}
+				{/* Mobile Actions */}
+				<div className='flex items-center gap-4 md:hidden'>
+					{/* Mobile Cart Icon Button */}
 					<button
 						onClick={toggleCart}
-						className={`relative p-1.5 focus:outline-none rounded-full transition-colors ${
-							isTransparent ? 'text-white hover:bg-white/10' : 'text-[#172033] hover:bg-gray-100'
-						}`}
+						className='relative text-white p-1 focus:outline-none'
 						aria-label='কার্ট দেখুন'
 					>
-						<ShoppingCart className='h-5 w-5 sm:h-6 sm:w-6' />
+						<ShoppingCart className='h-6 w-6' />
 						{itemCount > 0 && (
-							<span
-								className={`absolute -top-1 -right-1 text-white text-[10px] font-black rounded-full h-4 w-4 flex items-center justify-center border ${
-									isTransparent
-										? 'bg-[#F5B800] text-[#172033] border-[#1B2813]'
-										: 'bg-rose-500 text-white border-white'
-								}`}
-							>
+							<span className='absolute -top-1.5 -right-1.5 bg-rose-500 text-white text-[10px] font-black rounded-full h-4 h-4 w-4 flex items-center justify-center'>
 								{itemCount}
 							</span>
 						)}
@@ -204,12 +151,10 @@ export function NavBar({ navClassName = '' }: { navClassName?: string }) {
 					{isAuthenticated && (
 						<div className='relative'>
 							<button
-								className={`p-1 focus:outline-none rounded-full transition-colors ${
-									isTransparent ? 'text-white hover:bg-white/10' : 'text-[#172033] hover:bg-gray-100'
-								}`}
+								className='text-white focus:outline-none'
 								onClick={() => setShowUserMenu(!showUserMenu)}
 							>
-								<User size={22} className='sm:w-6 sm:h-6' />
+								<User size={24} />
 							</button>
 
 							{/* User dropdown menu */}
@@ -220,22 +165,22 @@ export function NavBar({ navClassName = '' }: { navClassName?: string }) {
 										animate={{ opacity: 1, y: 0 }}
 										exit={{ opacity: 0, y: -10 }}
 										transition={{ duration: 0.2 }}
-										className='absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl py-2 border border-gray-100 z-50 text-[#172033]'
+										className='absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50'
 									>
 										<Link
 											href='/account'
-											className='flex items-center gap-2.5 px-4 py-2 text-xs sm:text-sm font-semibold text-gray-700 hover:bg-gray-50'
+											className='flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'
 											onClick={() => setShowUserMenu(false)}
 										>
-											<UserCircle size={16} className='text-[#26351B]' />
+											<UserCircle size={16} />
 											<span>প্রোফাইল</span>
 										</Link>
 										<Link
 											href={dashboardPath}
-											className='flex items-center gap-2.5 px-4 py-2 text-xs sm:text-sm font-semibold text-gray-700 hover:bg-gray-50'
+											className='flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'
 											onClick={() => setShowUserMenu(false)}
 										>
-											<LayoutDashboard size={16} className='text-[#26351B]' />
+											<LayoutDashboard size={16} />
 											<span>ড্যাশবোর্ড</span>
 										</Link>
 										<button
@@ -247,7 +192,7 @@ export function NavBar({ navClassName = '' }: { navClassName?: string }) {
 													console.log('Logout completed after navigation');
 												}, 100);
 											}}
-											className='flex items-center gap-2.5 w-full text-left px-4 py-2 text-xs sm:text-sm font-semibold text-red-600 hover:bg-red-50'
+											className='flex items-center gap-2 w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100'
 										>
 											<LogOut size={16} />
 											<span>লগআউট</span>
@@ -258,13 +203,10 @@ export function NavBar({ navClassName = '' }: { navClassName?: string }) {
 						</div>
 					)}
 
-					{/* Hamburger Menu Icon */}
+					{/* Hamburger Icon */}
 					<button
-						className={`p-1.5 focus:outline-none rounded-xl transition-colors ${
-							isTransparent ? 'text-white hover:bg-white/10' : 'text-[#172033] hover:bg-gray-100'
-						}`}
+						className='text-white focus:outline-none'
 						onClick={() => setIsOpen(!isOpen)}
-						aria-label='Toggle menu'
 					>
 						<svg
 							xmlns='http://www.w3.org/2000/svg'
@@ -284,7 +226,7 @@ export function NavBar({ navClassName = '' }: { navClassName?: string }) {
 				</div>
 			</div>
 
-			{/* Mobile & Tablet Drawer Menu (< lg) */}
+			{/* Mobile Menu */}
 			<AnimatePresence>
 				{isOpen && (
 					<motion.div
@@ -292,62 +234,48 @@ export function NavBar({ navClassName = '' }: { navClassName?: string }) {
 						animate={{ opacity: 1, y: 0 }}
 						exit={{ opacity: 0, y: -20 }}
 						transition={{ duration: 0.3 }}
-						className={`lg:hidden absolute top-full left-0 right-0 shadow-2xl overflow-hidden ${
-							isTransparent
-								? 'bg-[#1B2813] border-t border-white/10 text-white'
-								: 'bg-white border-t border-gray-200 text-[#172033]'
-						}`}
+						className='md:hidden absolute top-full left-0 right-0 bg-[#2D331F] border-t border-white/10 shadow-lg'
 					>
-						<div className='px-4 sm:px-6 py-4 space-y-1.5 max-h-[80vh] overflow-y-auto'>
-							{menuItems.map((item) => {
-								const isActive = pathname === item.href;
-								return (
-									<Link
-										key={item.href}
-										href={item.href}
-										className={`
-                      block px-4 py-2.5 rounded-xl text-sm font-bold transition-colors duration-200
-                      ${
-												isTransparent
-													? isActive
-														? 'bg-white/20 text-[#F5B800]'
-														: 'text-white hover:bg-white/10'
-													: isActive
-														? 'bg-[#F5F3EA] text-[#3F6212]'
-														: 'text-[#172033] hover:bg-gray-100'
-											}
-                    `}
-										onClick={() => setIsOpen(false)}
-									>
-										{item.label}
-									</Link>
-								);
-							})}
-
-							{/* Auth Button - Mobile/Tablet Drawer */}
-							<div className={`pt-3 border-t mt-2 ${isTransparent ? 'border-white/10' : 'border-gray-200'}`}>
+						<div className='px-4 py-2 space-y-2'>
+							{menuItems.map((item) => (
 								<Link
-									href={dashboardPath}
-									className={`px-4 py-3 rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition-colors ${
-										isTransparent
-											? 'bg-[#F5B800] text-[#172033] hover:bg-[#e0a800]'
-											: 'bg-[#26351B] text-white hover:bg-[#1B2813]'
-									}`}
+									key={item.href}
+									href={item.href}
+									className={`
+                    block px-3 py-2 rounded-md text-base font-medium text-white
+                    transition-colors duration-200
+                    ${
+											pathname === item.href
+												? 'bg-white/10 font-bold'
+												: 'hover:bg-white/5'
+										}
+                  `}
 									onClick={() => setIsOpen(false)}
 								>
-									{isAuthenticated ? (
-										<>
-											<User size={18} />
-											<span>ড্যাশবোর্ড</span>
-										</>
-									) : (
-										<>
-											<LogIn size={18} />
-											<span>লগইন করুন</span>
-										</>
-									)}
+									{item.label}
 								</Link>
-							</div>
+							))}
+							{/* Auth Button - Mobile  */}
+							<Link
+								href={dashboardPath}
+								className={`
+     px-3 py-2 rounded-md text-base font-medium text-white
+    bg-white/10 hover:bg-white/20 mt-4 flex items-center gap-2
+  `}
+								onClick={() => setIsOpen(false)}
+							>
+								{isAuthenticated ? (
+									<>
+										<User size={16} />
+										<span>ড্যাশবোর্ড</span>
+									</>
+								) : (
+									<>
+										<LogIn size={16} />
+										<span>লগইন</span>
+									</>
+								)}
+							</Link>
 						</div>
 					</motion.div>
 				)}

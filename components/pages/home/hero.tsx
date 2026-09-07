@@ -96,7 +96,7 @@ export function Hero() {
 			{/* --- HERO TEXT CONTENT AREA --- */}
 			<div className='relative z-20 w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center justify-center gap-4 sm:gap-5 flex-1 mb-6 sm:mb-8'>
 				{/* 1. Small Badge */}
-				<motion.div
+				{/* <motion.div
 					initial={{ opacity: 0, y: 15 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.5, ease: 'easeOut' }}
@@ -104,7 +104,7 @@ export function Hero() {
 				>
 					<Sparkles className='w-4 h-4 text-[#F5B800]' />
 					<span>বাংলাদেশের ১ম আধুনিক ডিজিটাল কৃষকের বাজার</span>
-				</motion.div>
+				</motion.div> */}
 
 				{/* 2. Main Headline & 3. Subtitle (Updated as requested) */}
 				<motion.div
@@ -113,7 +113,7 @@ export function Hero() {
 					transition={{ duration: 0.5, delay: 0.1, ease: 'easeOut' }}
 					className='space-y-3 max-w-4xl'
 				>
-					<h1 className='text-[36px] sm:text-[52px] md:text-[60px] lg:text-[64px] font-extrabold text-white leading-[1.10] tracking-tight drop-shadow-sm'>
+					<h1 className='text-[36px] lg:mt-20 sm:text-[52px] md:text-[60px] lg:text-[64px] font-extrabold text-white leading-[1.10] tracking-tight drop-shadow-sm'>
 						কোনো মধ্যস্বত্বভোগী নেই
 					</h1>
 
