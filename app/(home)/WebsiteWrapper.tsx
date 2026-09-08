@@ -3,26 +3,28 @@
 import { Footer } from '@/components/global/footer';
 import { NavBar } from '@/components/global/nav-bar';
 import { OvijogModal } from '@/components/global/ovijog-modal';
+import { WhatsAppSupport } from '@/components/global/whatsapp-support';
 
 export function WebsiteWrapper({
 	children,
-	navClassName = 'bg-gray-800', // Default background color for navbar
+	navClassName = '',
 }: Readonly<{
 	children: React.ReactNode;
 	navClassName?: string;
 }>) {
 	return (
-		<div className='flex flex-col min-h-screen relative'>
+		<div className='flex flex-col min-h-screen relative bg-[#FAF9F3] text-[#172033] selection:bg-[#F5B800] selection:text-[#172033]'>
 			{/* Navigation Bar */}
-			<div className={`fixed top-0 w-full z-50 ${navClassName}`}>
-				<NavBar />
-			</div>
+			<NavBar navClassName={navClassName} />
 
-			{/* Content */}
-			<div className='pt-[88px] flex-grow'>{children}</div>
+			{/* Main Content */}
+			<div className='flex-grow'>{children}</div>
 
 			{/* Floating Ovijog Box */}
 			<OvijogModal />
+
+			{/* Floating WhatsApp Support Widget */}
+			<WhatsAppSupport />
 
 			{/* Footer */}
 			<Footer />

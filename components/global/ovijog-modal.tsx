@@ -80,18 +80,20 @@ export function OvijogModal() {
   return (
     <>
       {/* Floating Ovijog Button */}
-      <div className="fixed bottom-6 right-6 z-50">
+      <div className="fixed bottom-22 right-6 z-40">
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
           <DialogTrigger asChild>
-            <Button
-              className="bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white font-bold py-3 px-4 rounded-full shadow-[0_8px_25px_rgba(225,29,72,0.4)] hover:shadow-2xl transition-all duration-300 flex items-center gap-2.5 hover:scale-105 border border-red-400/30"
+            <button
+              className="group relative flex items-center justify-center bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white font-bold h-13 px-4 rounded-full shadow-[0_8px_25px_rgba(225,29,72,0.4)] hover:shadow-2xl transition-all duration-300 hover:scale-105 border-2 border-red-400/40 focus:outline-none active:scale-95 cursor-pointer"
               aria-label="Ovijog Box"
             >
-              <div className="relative">
-                <AlertTriangle className="w-5 h-5 animate-pulse text-amber-300" />
+              <div className="flex items-center justify-center flex-shrink-0">
+                <AlertTriangle className="w-5 h-5 text-amber-300 animate-pulse group-hover:scale-110 transition-transform" />
               </div>
-              <span className="text-sm font-medium tracking-wide">অভিযোগ বাক্স</span>
-            </Button>
+              <div className="max-w-0 opacity-0 group-hover:max-w-xs group-hover:opacity-100 group-hover:ml-2.5 overflow-hidden whitespace-nowrap transition-all duration-300 ease-out text-xs font-black tracking-wide text-white">
+                <span>অভিযোগ বাক্স</span>
+              </div>
+            </button>
           </DialogTrigger>
 
           <DialogContent className="max-w-lg rounded-3xl p-6 sm:p-8 bg-white border border-gray-100 shadow-2xl">

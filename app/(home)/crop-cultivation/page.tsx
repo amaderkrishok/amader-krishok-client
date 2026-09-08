@@ -62,9 +62,9 @@ export default function CropCultivationPage() {
 
 	if (error) {
 		return (
-			<div className='min-h-screen bg-[#2D331F] text-white p-6 flex items-center justify-center'>
+			<div className='min-h-screen bg-[#37462A] text-white p-6 flex items-center justify-center'>
 				<div className='container mx-auto max-w-lg'>
-					<div className='bg-[#3f472f]/90 border border-white/10 p-10 rounded-3xl shadow-2xl text-center backdrop-blur-md'>
+					<div className='bg-[#4A5E3A]/90 border border-white/10 p-10 rounded-3xl shadow-2xl text-center backdrop-blur-md'>
 						<div className='bg-rose-500/20 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 border border-rose-500/30'>
 							<AlertCircle className='h-10 w-10 text-rose-400' />
 						</div>
@@ -72,7 +72,7 @@ export default function CropCultivationPage() {
 						<p className='text-gray-300 text-lg mb-8'>{error}</p>
 						<button
 							onClick={() => window.location.reload()}
-							className='w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-[#EAB308] to-[#D97706] text-[#2D331F] rounded-xl font-bold shadow-lg hover:brightness-110 transition-all duration-300'
+							className='w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-[#EAB308] to-[#D97706] text-[#37462A] rounded-xl font-bold shadow-lg hover:brightness-110 transition-all duration-300'
 						>
 							আবার চেষ্টা করুন
 						</button>
@@ -86,7 +86,7 @@ export default function CropCultivationPage() {
 		<div className='min-h-screen bg-[#FDFBF7] text-[#2D331F] selection:bg-[#EAB308] selection:text-[#2D331F]'>
 			
 			{/* --- HERO SECTION --- */}
-			<section className='relative bg-[#2D331F] text-white py-16 sm:py-24 px-4 sm:px-6 lg:px-8 overflow-hidden'>
+			<section className='relative bg-[#37462A] text-white pt-28 sm:pt-36 pb-16 sm:pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden'>
 				{/* Background Decorations (Matching Banner Pattern) */}
 				<div className='absolute inset-0 z-0 pointer-events-none'>
 					<div className='absolute top-[-20%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-[radial-gradient(circle,rgba(234,179,8,0.15)_0%,transparent_60%)]'></div>
@@ -212,7 +212,7 @@ export default function CropCultivationPage() {
 
 			{/* --- BOTTOM CTA SECTION --- */}
 			<section className='max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16'>
-				<div className='bg-gradient-to-r from-[#2D331F] via-[#3f472f] to-[#2D331F] rounded-3xl p-8 sm:p-12 text-white shadow-2xl relative overflow-hidden border border-white/10 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-8'>
+				<div className='bg-gradient-to-r from-[#4A5E3A] via-[#3D4F2E] to-[#4A5E3A] rounded-3xl p-8 sm:p-12 text-white shadow-2xl relative overflow-hidden border border-white/15 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-8'>
 					
 					<div className='space-y-3 max-w-xl'>
 						<div className='inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#EAB308]/20 border border-[#EAB308]/30 text-[#EAB308] text-xs font-bold'>

@@ -40,10 +40,10 @@ export function NavBar() {
 	const dashboardPath = user ? getRedirectPathByRole(user.role) : '/auth/login';
 
 	return (
-		<nav className='w-full px-6 lg:px-24 xl:px-40 2xl:px-12 py-4 bg-[#2D331F] fixed top-0 left-0 z-50 shadow-lg border-b border-white/10 transition-colors duration-300'>
+		<nav className='w-full px-4 sm:px-6 lg:px-8 xl:px-20 2xl:px-12 py-4 bg-[#37462A] fixed top-0 left-0 z-50 shadow-lg border-b border-white/10 transition-colors duration-300'>
 			<div className='max-w-7xl mx-auto flex items-center justify-between'>
 				{/* Logo */}
-				<Link href='/' className='flex items-center space-x-2'>
+				<Link href='/' className='flex items-center space-x-2 shrink-0'>
 					<Image
 						src='/images/logo-transparent.png'
 						width={130}
@@ -54,15 +54,15 @@ export function NavBar() {
 				</Link>
 
 				{/* Right side container for navigation, cart, and auth button */}
-				<div className='hidden md:flex items-center gap-6'>
+				<div className='hidden lg:flex items-center gap-2 xl:gap-6'>
 					{/* Navigation Items */}
-					<div className='flex items-center space-x-1'>
+					<div className='flex items-center space-x-0.5 lg:space-x-1'>
 						{menuItems.map((item) => (
 							<Link
 								key={item.href}
 								href={item.href}
 								className={`
-                text-white px-3 py-2 rounded-md text-base font-medium
+                text-white px-2 lg:px-2.5 xl:px-3 py-1.5 lg:py-2 rounded-md text-xs lg:text-sm xl:text-base font-medium whitespace-nowrap
                 transition-colors duration-200
                 ${
 									pathname === item.href
@@ -132,7 +132,7 @@ export function NavBar() {
 				</div>
 
 				{/* Mobile Actions */}
-				<div className='flex items-center gap-4 md:hidden'>
+				<div className='flex items-center gap-4 lg:hidden'>
 					{/* Mobile Cart Icon Button */}
 					<button
 						onClick={toggleCart}
@@ -234,7 +234,7 @@ export function NavBar() {
 						animate={{ opacity: 1, y: 0 }}
 						exit={{ opacity: 0, y: -20 }}
 						transition={{ duration: 0.3 }}
-						className='md:hidden absolute top-full left-0 right-0 bg-[#2D331F] border-t border-white/10 shadow-lg'
+						className='lg:hidden absolute top-full left-0 right-0 bg-[#37462A] border-t border-white/10 shadow-lg'
 					>
 						<div className='px-4 py-2 space-y-2'>
 							{menuItems.map((item) => (

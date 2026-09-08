@@ -290,8 +290,8 @@ export function MarketplaceContainer() {
 	};
 
 	return (
-		<div className='min-h-screen pb-8 bg-gradient-to-br from-slate-50 via-white to-[#2D331F]/5'>
-			<div className='container mx-auto px-4 py-8'>
+		<div className='min-h-screen pt-28 md:pt-36 pb-8 bg-gradient-to-br from-slate-50 via-white to-[#2D331F]/5'>
+			<div className='container mx-auto px-4 py-4 md:py-6'>
 				{!isAuthenticated && <VendorBanner />}
 
 				<div className='flex flex-col md:flex-row gap-8 mt-8'>

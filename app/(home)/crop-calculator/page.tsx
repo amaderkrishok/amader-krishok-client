@@ -55,7 +55,7 @@ export default function CropCalculatorPage() {
 			{/* ==================================================== */}
 			{/* HERO SECTION                                         */}
 			{/* ==================================================== */}
-			<section className='relative bg-gradient-to-b from-[#1E2817] via-[#2A351F] to-[#1E2817] text-white pt-16 pb-24 md:pb-28 px-4 sm:px-6 lg:px-8 overflow-hidden'>
+			<section className='relative bg-gradient-to-b from-[#37462A] via-[#2F3C23] to-[#37462A] text-white pt-28 sm:pt-36 pb-20 md:pb-24 px-4 sm:px-6 lg:px-8 overflow-hidden'>
 				
 				{/* Background Decorations & Soft Glows */}
 				<div className='absolute inset-0 pointer-events-none z-0'>
@@ -194,11 +194,11 @@ export default function CropCalculatorPage() {
 			{/* ==================================================== */}
 			<section className='max-w-[900px] mx-auto px-4 mb-20'>
 				<motion.div
-					initial={{ opacity: 0, y: 20 }}
+					initial={{ opacity: 0, y: 30 }}
 					whileInView={{ opacity: 1, y: 0 }}
 					viewport={{ once: true }}
 					transition={{ duration: 0.5 }}
-					className='bg-gradient-to-r from-[#1E2817] via-[#2A351F] to-[#1E2817] rounded-[28px] p-8 md:p-10 text-white shadow-xl border border-white/10 flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden'
+					className='bg-gradient-to-r from-[#4A5E3A] via-[#3D4F2E] to-[#4A5E3A] rounded-[28px] p-8 md:p-10 text-white shadow-xl border border-white/15 flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden'
 				>
 					{/* Subtle Background Glow inside help card */}
 					<div className='absolute right-0 bottom-0 w-64 h-64 bg-[#4CAF50]/10 rounded-full blur-3xl pointer-events-none' />

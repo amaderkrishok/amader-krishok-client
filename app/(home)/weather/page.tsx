@@ -115,7 +115,7 @@ export default function WeatherPage() {
 			{/* ==================================================== */}
 			{/* HERO SECTION                                         */}
 			{/* ==================================================== */}
-			<section className='relative bg-gradient-to-b from-[#1E2817] via-[#2A351F] to-[#1E2817] text-white pt-16 pb-24 md:pb-28 px-4 sm:px-6 lg:px-8 overflow-hidden'>
+			<section className='relative bg-gradient-to-b from-[#37462A] via-[#2F3C23] to-[#37462A] text-white pt-28 sm:pt-36 pb-20 md:pb-24 px-4 sm:px-6 lg:px-8 overflow-hidden'>
 				
 				{/* Background Glows & Floating Leaves */}
 				<div className='absolute inset-0 pointer-events-none z-0'>
@@ -204,7 +204,7 @@ export default function WeatherPage() {
 								type='button'
 								onClick={handleSearch}
 								disabled={isSearching}
-								className='absolute right-2 px-6 h-[44px] md:h-[50px] rounded-full bg-[#2E3B20] hover:bg-[#384A2C] text-white font-bold text-sm md:text-base flex items-center gap-2 shadow-md hover:scale-[1.02] active:scale-95 transition-all cursor-pointer disabled:opacity-60 shrink-0'
+								className='absolute right-2 px-6 h-[44px] md:h-[50px] rounded-full bg-[#37462A] hover:bg-[#4A5E3A] text-white font-bold text-sm md:text-base flex items-center gap-2 shadow-md hover:scale-[1.02] active:scale-95 transition-all cursor-pointer disabled:opacity-60 shrink-0'
 							>
 								{isSearching ? (
 									<RefreshCw className='w-4 h-4 animate-spin text-[#FBBF24]' />

@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ShoppingCart, Star, Eye, Store, ShieldCheck, Heart, ArrowRight } from 'lucide-react';
+import { ShoppingCart, Store, ShieldCheck, Heart, ArrowRight } from 'lucide-react';
 import { ProductService } from '@/services/product-service';
 import type { Product } from '@/types/product';
 import { ProductType, StoreStatus } from '@/types/product';
@@ -128,24 +128,20 @@ export function OffersSection() {
   const activeList = products.length > 0 ? products : fallbackItems;
 
   return (
-    <section className="py-28 bg-[#1C2314] text-white relative overflow-hidden">
-      {/* Ambient Lighting Backdrops */}
-      <div className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-[radial-gradient(circle,rgba(234,179,8,0.15)_0%,transparent_60%)] pointer-events-none" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-[radial-gradient(circle,rgba(74,222,128,0.12)_0%,transparent_60%)] pointer-events-none" />
-
-      <div className="max-w-7xl mx-auto px-6 lg:px-24 xl:px-40 2xl:px-12 relative z-10">
+    <section className="py-16 sm:py-20 bg-[#FAF9F3] text-[#172033] relative overflow-hidden border-b border-gray-200/60">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
           <div>
             <motion.div
               initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#2D331F] border border-white/15 mb-4 text-[#EAB308] text-xs font-black uppercase tracking-wider shadow-lg"
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#3F6212]/10 border border-[#3F6212]/20 mb-3 text-[#3F6212] text-xs font-bold uppercase tracking-wider"
             >
-              <Store className="w-4 h-4 text-[#EAB308]" />
-              <span>ডিজিটাল কৃষি বাজার</span>
+              <Store className="w-4 h-4 text-[#F5B800]" />
+              <span>আজকের সেরা কৃষিপণ্য</span>
             </motion.div>
 
             <motion.h2
@@ -153,12 +149,12 @@ export function OffersSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight leading-tight"
+              className="text-3xl md:text-4xl lg:text-4xl font-extrabold text-[#172033] tracking-tight leading-tight"
             >
               কৃষকের বাজার থেকে সরাসরি
             </motion.h2>
-            <p className="text-gray-300 text-base md:text-lg mt-3 max-w-xl">
-              মধ্যস্বত্বভোগী ছাড়াই সরাসরি কৃষকের খামার থেকে তাজা পণ্য আপনার দোরগোড়ায়। যাচাইকৃত, নিরাপদ এবং ১০০% অর্গানিক।
+            <p className="text-[#64748B] text-sm sm:text-base mt-2 max-w-xl font-medium">
+              মধ্যস্বত্বভোগী ছাড়াই সরাসরি কৃষকের খামার থেকে তাজা পণ্য আপনার দোরগোড়ায়।
             </p>
           </div>
 
@@ -170,9 +166,9 @@ export function OffersSection() {
           >
             <Link
               href="/marketplace"
-              className="group inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full bg-[#EAB308] hover:bg-[#FCD34D] text-[#2D331F] font-black text-sm transition-all shadow-xl hover:shadow-2xl hover:scale-105"
+              className="group inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#F5B800] hover:bg-[#e0a800] text-[#172033] font-bold text-sm transition-all shadow-md hover:scale-105"
             >
-              <span>বাজারে প্রবেশ করুন</span>
+              <span>সকল পণ্য দেখুন</span>
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
             </Link>
           </motion.div>
@@ -182,7 +178,7 @@ export function OffersSection() {
         {loading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[...Array(4)].map((_, i) => (
-              <div key={i} className="h-[450px] rounded-3xl bg-white/5 animate-pulse border border-white/10" />
+              <div key={i} className="h-[400px] rounded-2xl bg-gray-200 animate-pulse" />
             ))}
           </div>
         ) : (
@@ -202,90 +198,70 @@ export function OffersSection() {
               return (
                 <motion.div
                   key={product.id}
-                  initial={{ opacity: 0, y: 30 }}
+                  initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: idx * 0.1, duration: 0.5 }}
-                  whileHover={{ y: -8 }}
-                  className="group bg-[#262E1B] rounded-[32px] p-4 border border-white/10 shadow-xl hover:shadow-2xl hover:shadow-[#EAB308]/10 transition-all duration-300 flex flex-col justify-between"
+                  transition={{ delay: idx * 0.08, duration: 0.4 }}
+                  whileHover={{ y: -4 }}
+                  className="group bg-white rounded-2xl p-4 border border-gray-200/80 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
                 >
                   <div>
                     {/* Image */}
-                    <div className="relative aspect-[4/3] w-full rounded-[24px] overflow-hidden mb-5 bg-[#1C2314]">
+                    <div className="relative aspect-[4/3] w-full rounded-xl overflow-hidden mb-4 bg-gray-100">
                       <Image
                         src={img}
                         alt={product.name}
                         fill
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                        className="object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100"
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
                       />
                       
-                      {/* Organic Badge */}
-                      <div className="absolute top-3 left-3">
-                        <span className="inline-flex items-center gap-1 bg-[#2D331F]/90 backdrop-blur-md text-[#4ADE80] text-[10px] font-black px-2.5 py-1 rounded-full border border-white/10 shadow-md">
-                          <ShieldCheck className="w-3 h-3" />
-                          <span>খাঁটি</span>
+                      {/* Top Badges */}
+                      <div className="absolute top-3 left-3 right-3 flex items-center justify-between pointer-events-none">
+                        <span className="px-2.5 py-1 rounded-lg bg-emerald-600/90 backdrop-blur-md text-[11px] font-bold text-white shadow-sm flex items-center gap-1">
+                          <ShieldCheck className="w-3 h-3 text-white" />
+                          <span>সরাসরি খামার</span>
                         </span>
-                      </div>
-
-                      {/* Wishlist Heart Button */}
-                      <button
-                        onClick={() => toggleLike(product.id)}
-                        className="absolute top-3 right-3 w-8 h-8 rounded-full bg-[#1C2314]/70 backdrop-blur-md flex items-center justify-center shadow-md hover:bg-[#EAB308] hover:text-[#2D331F] text-white transition-colors border border-white/10"
-                      >
-                        <Heart
-                          className={`w-4 h-4 transition-colors ${
-                            isLiked ? 'fill-rose-500 text-rose-500' : ''
-                          }`}
-                        />
-                      </button>
-                    </div>
-
-                    {/* Store & Rating */}
-                    <div className="flex items-center justify-between text-[11px] text-gray-400 mb-2">
-                      <span className="font-bold flex items-center gap-1.5 truncate max-w-[120px]">
-                        <Store className="w-3.5 h-3.5 text-[#EAB308]" />
-                        <span className="truncate">{storeName}</span>
-                      </span>
-                      <div className="flex items-center gap-1 text-amber-500 font-extrabold shrink-0">
-                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                        <span>৪.৯</span>
+                        
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault();
+                            toggleLike(product.id);
+                          }}
+                          className="pointer-events-auto p-2 rounded-full bg-white/80 hover:bg-white text-gray-700 hover:text-rose-500 transition-colors shadow-sm"
+                        >
+                          <Heart className={`w-4 h-4 ${isLiked ? 'fill-rose-500 text-rose-500' : ''}`} />
+                        </button>
                       </div>
                     </div>
 
-                    {/* Name Link */}
-                    <Link href={`/marketplace/product/${product.id}`}>
-                      <h4 className="text-lg font-extrabold text-white mb-2 leading-snug group-hover:text-[#EAB308] transition-colors line-clamp-1">
-                        {product.name}
-                      </h4>
-                    </Link>
-
-                    {/* Price */}
-                    <div className="flex items-baseline gap-2 mb-5">
-                      <span className="text-2xl font-black text-[#EAB308]">
-                        ৳{price}
-                      </span>
-                      <span className="text-xs text-gray-400 font-medium">
-                        / {product.unit || 'কেজি'}
-                      </span>
+                    {/* Store Info */}
+                    <div className="flex items-center gap-1.5 text-xs text-[#64748B] font-medium mb-1">
+                      <Store className="w-3.5 h-3.5 text-[#65A30D]" />
+                      <span className="truncate">{storeName}</span>
                     </div>
+
+                    {/* Title */}
+                    <h3 className="text-base font-bold text-[#172033] group-hover:text-[#3F6212] transition-colors line-clamp-1 mb-2">
+                      {product.name}
+                    </h3>
                   </div>
 
-                  {/* Action Triggers */}
-                  <div className="grid grid-cols-2 gap-2 pt-4 border-t border-white/10">
-                    <Link href={`/marketplace/product/${product.id}`} className="w-full">
-                      <button className="w-full py-2.5 rounded-xl border border-white/15 text-gray-300 font-bold text-xs hover:bg-white/10 flex items-center justify-center gap-1.5 transition-colors">
-                        <Eye className="w-3.5 h-3.5" />
-                        <span>দেখুন</span>
-                      </button>
-                    </Link>
+                  {/* Footer Action */}
+                  <div className="pt-3 border-t border-gray-100 flex items-center justify-between mt-2">
+                    <div>
+                      <span className="text-xs text-[#64748B] font-medium block">মূল্য</span>
+                      <span className="text-lg font-extrabold text-[#26351B]">
+                        ৳{price} <span className="text-xs text-[#64748B] font-normal">/ কেজি</span>
+                      </span>
+                    </div>
 
                     <button
                       onClick={() => handleAddToCart(product)}
-                      className="w-full py-2.5 rounded-xl bg-white/10 hover:bg-[#EAB308] hover:text-[#2D331F] text-white font-extrabold text-xs flex items-center justify-center gap-1.5 transition-all shadow-md"
+                      className="p-2.5 rounded-xl bg-[#26351B] hover:bg-[#1B2813] text-white transition-colors shadow-sm flex items-center justify-center"
+                      title="কার্টে যোগ করুন"
                     >
-                      <ShoppingCart className="w-3.5 h-3.5" />
-                      <span>কিনুন</span>
+                      <ShoppingCart className="w-4 h-4" />
                     </button>
                   </div>
                 </motion.div>

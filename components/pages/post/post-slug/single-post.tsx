@@ -278,7 +278,7 @@ export default function PostPageClient({
 			/>
 
 			{/* BREADCRUMB SECTION */}
-			<div className='max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-4'>
+			<div className='max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pt-28 md:pt-36 pb-4'>
 				<nav className='flex items-center flex-wrap gap-1.5 text-xs sm:text-sm text-[#667085]'>
 					<Link href='/' className='hover:text-[#1E2817] transition-colors font-medium'>
 						হোম
