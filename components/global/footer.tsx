@@ -60,7 +60,7 @@ export function Footer() {
                     <div className="absolute bottom-[-20%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-[radial-gradient(circle,rgba(74,222,128,0.1)_0%,transparent_60%)]"></div>
                 </div>
 
-                <div className="max-w-7xl mx-auto px-6 lg:px-24 xl:px-40 2xl:px-12 py-12 lg:py-16 relative z-10">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-16 2xl:px-12 py-12 lg:py-16 relative z-10">
                     <motion.div
                         variants={containerVariants}
                         initial="hidden"

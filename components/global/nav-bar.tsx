@@ -54,7 +54,7 @@ export function NavBar() {
 				</Link>
 
 				{/* Right side container for navigation, cart, and auth button */}
-				<div className='hidden md:flex items-center gap-2 lg:gap-3 xl:gap-6'>
+				<div className='hidden lg:flex items-center gap-2 xl:gap-6'>
 					{/* Navigation Items */}
 					<div className='flex items-center space-x-0.5 lg:space-x-1'>
 						{menuItems.map((item) => (
@@ -132,7 +132,7 @@ export function NavBar() {
 				</div>
 
 				{/* Mobile Actions */}
-				<div className='flex items-center gap-4 md:hidden'>
+				<div className='flex items-center gap-4 lg:hidden'>
 					{/* Mobile Cart Icon Button */}
 					<button
 						onClick={toggleCart}
@@ -234,7 +234,7 @@ export function NavBar() {
 						animate={{ opacity: 1, y: 0 }}
 						exit={{ opacity: 0, y: -20 }}
 						transition={{ duration: 0.3 }}
-						className='md:hidden absolute top-full left-0 right-0 bg-[#37462A] border-t border-white/10 shadow-lg'
+						className='lg:hidden absolute top-full left-0 right-0 bg-[#37462A] border-t border-white/10 shadow-lg'
 					>
 						<div className='px-4 py-2 space-y-2'>
 							{menuItems.map((item) => (
