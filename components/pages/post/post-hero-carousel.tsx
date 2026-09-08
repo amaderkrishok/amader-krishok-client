@@ -135,7 +135,7 @@ export function PostHeroCarousel({
 
 			{/* Static or Animated Slide */}
 			{slides.length === 0 ? (
-				<div className='relative h-full w-full'>
+				<div className='absolute inset-0 h-full w-full'>
 					<Image
 						src='/images/hero_farmer_fresh_produce.jpg'
 						alt='আমাদের কৃষক'
@@ -144,13 +144,13 @@ export function PostHeroCarousel({
 						priority
 					/>
 					<div
-						className='absolute inset-0'
+						className='absolute inset-0 z-10'
 						style={{
 							background:
-								'linear-gradient(90deg, rgba(20,30,15,0.92) 0%, rgba(30,40,23,0.65) 50%, rgba(30,40,23,0.25) 100%)',
+								'linear-gradient(90deg, rgba(35,50,25,0.85) 0%, rgba(45,65,32,0.50) 55%, rgba(45,65,32,0.15) 100%)',
 						}}
 					/>
-					<div className='relative z-20 container mx-auto h-full pt-28 sm:pt-36 pb-8 px-4 sm:px-6 lg:px-8 flex items-center'>
+					<div className='absolute inset-0 pt-28 sm:pt-36 pb-8 z-20 container mx-auto px-4 sm:px-6 lg:px-8 flex items-center'>
 						<div className='max-w-2xl text-white space-y-4'>
 							<div className='inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-[#FBBF24] text-xs sm:text-sm font-semibold shadow-sm'>
 								<Sprout className='w-4 h-4 text-[#FBBF24]' />
@@ -163,8 +163,7 @@ export function PostHeroCarousel({
 								কৃষি, ফসল চাষ, রোগবালাই ও কৃষি প্রযুক্তি সম্পর্কে প্রয়োজনীয় তথ্য ও পরামর্শ এক জায়গায়।
 							</p>
 							<div className='flex items-center gap-3 text-xs sm:text-sm text-gray-300 font-medium pt-2'>
-								<span className='inline-flex items-center gap-1.5 bg-[#2A351F]/80 px-2.5 py-1 rounded-md border border-white/10'>
-									
+								<span className='inline-flex items-center gap-1.5 bg-[#37462A]/80 px-2.5 py-1 rounded-md border border-white/10'>
 									নতুন পোস্ট
 								</span>
 								<span>•</span>
