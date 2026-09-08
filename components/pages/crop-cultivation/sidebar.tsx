@@ -116,7 +116,7 @@ export function Sidebar({ onSelectCrop, crops = [], selectedCropId: propSelected
 									onClick={() => handleCropSelect(crop.id)}
 									className={`w-full text-left p-3 rounded-2xl transition-all duration-200 flex items-center justify-between group ${
 										isSelected
-											? 'bg-gradient-to-r from-[#2D331F] to-[#3f472f] text-white shadow-md shadow-[#2D331F]/20 ring-1 ring-white/10'
+											? 'bg-gradient-to-r from-[#37462A] to-[#4A5E3A] text-white shadow-md shadow-[#37462A]/20 ring-1 ring-white/10'
 											: 'bg-white hover:bg-emerald-50/60 border border-gray-100 text-gray-700 hover:text-[#2D331F] shadow-sm'
 									}`}
 								>

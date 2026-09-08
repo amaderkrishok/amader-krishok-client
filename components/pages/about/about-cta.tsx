@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 
 export function AboutCta() {
 	return (
-		<section className='bg-[#2D331F] text-white py-16 md:py-24 relative overflow-hidden selection:bg-[#EAB308] selection:text-[#2D331F]'>
+		<section className='bg-[#37462A] text-white py-16 md:py-24 relative overflow-hidden selection:bg-[#EAB308] selection:text-[#37462A]'>
 			{/* Decorative background glows */}
 			<div className='absolute top-0 right-0 w-96 h-96 bg-[#EAB308]/10 rounded-full blur-3xl pointer-events-none' />
 			<div className='absolute bottom-0 left-0 w-96 h-96 bg-[#4ADE80]/10 rounded-full blur-3xl pointer-events-none' />

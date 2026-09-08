@@ -204,7 +204,7 @@ export function FertilizerCalculator({ language }: FertilizerCalculatorProps) {
 					<button
 						type='submit'
 						disabled={isLoading}
-						className='w-full sm:flex-1 h-[58px] rounded-[18px] bg-[#2E3B20] hover:bg-[#384A2C] text-white font-extrabold text-base md:text-lg flex items-center justify-center shadow-[0_10px_25px_rgba(46,59,32,0.25)] hover:shadow-[0_15px_30px_rgba(46,59,32,0.35)] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed group cursor-pointer'
+						className='w-full sm:flex-1 h-[58px] rounded-[18px] bg-[#37462A] hover:bg-[#4A5E3A] text-white font-extrabold text-base md:text-lg flex items-center justify-center shadow-[0_10px_25px_rgba(55,70,42,0.25)] hover:shadow-[0_15px_30px_rgba(55,70,42,0.35)] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed group cursor-pointer'
 					>
 						<Calculator className='w-5 h-5 mr-2.5 text-[#FBBF24] group-hover:rotate-12 transition-transform' />
 						<span>{language === 'bn' ? 'হিসাব করুন' : 'Calculate'}</span>

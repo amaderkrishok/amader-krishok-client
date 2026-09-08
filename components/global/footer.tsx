@@ -52,7 +52,7 @@ export function Footer() {
 
     return (
         <>
-            <footer ref={footerRef} className="relative bg-[#2D331F] text-white border-t border-white/10 overflow-hidden selection:bg-[#EAB308] selection:text-[#2D331F]">
+            <footer ref={footerRef} className="relative bg-[#37462A] text-white border-t border-white/10 overflow-hidden selection:bg-[#EAB308] selection:text-[#37462A]">
                 
                 {/* Background Decorations (Matching Banner Pattern) */}
                 <div className="absolute inset-0 pointer-events-none">

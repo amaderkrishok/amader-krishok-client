@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 export function VendorBanner() {
 	return (
-		<div className='relative overflow-hidden bg-gradient-to-r from-[#26351B] via-[#1B2813] to-[#26351B] rounded-2xl p-6 sm:p-8 my-10 shadow-lg text-white border border-[#3F6212]/30'>
+		<div className='relative overflow-hidden bg-gradient-to-r from-[#4A5E3A] via-[#3D4F2E] to-[#4A5E3A] rounded-2xl p-6 sm:p-8 my-10 shadow-lg text-white border border-white/15'>
 			<div className='flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative z-10'>
 				<div className='max-w-2xl'>
 					<div className='inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-[#F5B800] text-xs font-bold mb-2.5 backdrop-blur-sm'>

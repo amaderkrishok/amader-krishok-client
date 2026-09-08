@@ -318,7 +318,7 @@ const PostsPageContent = () => {
 
 			{/* BOTTOM ECOSYSTEM CTA SECTION */}
 			<section className='max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-12'>
-				<div className='bg-gradient-to-r from-[#1E2817] via-[#2A351F] to-[#1E2817] rounded-3xl p-8 sm:p-12 text-white shadow-2xl relative overflow-hidden border border-white/10 flex flex-col sm:flex-row items-center justify-between gap-8'>
+				<div className='bg-gradient-to-r from-[#4A5E3A] via-[#3D4F2E] to-[#4A5E3A] rounded-3xl p-8 sm:p-12 text-white shadow-2xl relative overflow-hidden border border-white/15 flex flex-col sm:flex-row items-center justify-between gap-8'>
 					<div className='space-y-3 max-w-xl text-center sm:text-left'>
 						<div className='inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FBBF24]/20 border border-[#FBBF24]/30 text-[#FBBF24] text-xs font-bold'>
 							<ShieldCheck className='w-4 h-4' />

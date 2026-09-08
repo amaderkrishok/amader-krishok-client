@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 
 export function AboutHero() {
 	return (
-		<section className='relative bg-[#F7F9F4] py-12 md:py-20 lg:py-24 overflow-hidden'>
+		<section className='relative bg-[#F7F9F4] pt-28 md:pt-36 lg:pt-40 pb-16 md:pb-24 overflow-hidden'>
 			{/* Subtle decorative background glow */}
 			<div className='absolute top-0 right-0 w-96 h-96 bg-[#4ADE80]/10 rounded-full blur-3xl pointer-events-none' />
 			<div className='absolute bottom-0 left-0 w-96 h-96 bg-[#EAB308]/10 rounded-full blur-3xl pointer-events-none' />

@@ -97,7 +97,7 @@ export function AboutHowItWorks() {
 				</div>
 
 				{/* Visual Banner Bar */}
-				<div className='mt-14 bg-[#2D331F] rounded-2xl p-6 md:p-8 text-white flex flex-col sm:flex-row items-center justify-between gap-6 shadow-md'>
+				<div className='mt-14 bg-[#4A5E3A] rounded-2xl p-6 md:p-8 text-white flex flex-col sm:flex-row items-center justify-between gap-6 shadow-md'>
 					<div className='flex items-center gap-4 text-center sm:text-left'>
 						<div className='w-12 h-12 rounded-full bg-[#EAB308] text-[#2D331F] flex items-center justify-center font-bold text-xl flex-shrink-0'>
 							✓

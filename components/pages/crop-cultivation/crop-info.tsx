@@ -133,7 +133,7 @@ export function CropInfo({ cropId }: CropInfoProps) {
 			<Card className='border border-gray-200/80 shadow-[0_20px_50px_rgba(0,0,0,0.05)] bg-[#FDFBF7]/95 backdrop-blur-md rounded-3xl overflow-hidden'>
 				
 				{/* Crop Info Header */}
-				<CardHeader className='bg-gradient-to-r from-[#2D331F] to-[#3f472f] text-white p-6 sm:p-8 relative overflow-hidden'>
+				<CardHeader className='bg-gradient-to-r from-[#37462A] to-[#4A5E3A] text-white p-6 sm:p-8 relative overflow-hidden'>
 					<div className='absolute -right-10 -bottom-10 opacity-10 pointer-events-none'>
 						<Sprout className='w-64 h-64 text-[#4ADE80]' />
 					</div>
@@ -172,7 +172,7 @@ export function CropInfo({ cropId }: CropInfoProps) {
 						<TabsList className='bg-gray-100/90 p-1.5 rounded-2xl mb-8 flex flex-wrap h-auto border border-gray-200/80 gap-1.5'>
 							<TabsTrigger 
 								value='cultivation' 
-								className='rounded-xl px-6 py-3 data-[state=active]:bg-[#2D331F] data-[state=active]:text-[#EAB308] data-[state=active]:shadow-md text-sm sm:text-base font-bold flex-1 transition-all'
+								className='rounded-xl px-6 py-3 data-[state=active]:bg-[#37462A] data-[state=active]:text-[#EAB308] data-[state=active]:shadow-md text-sm sm:text-base font-bold flex-1 transition-all'
 							>
 								🌱 চাষাবাদ ধাপসমূহ ({selectedCrop.cultivations.length})
 							</TabsTrigger>
