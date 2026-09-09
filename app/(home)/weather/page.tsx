@@ -233,7 +233,7 @@ export default function WeatherPage() {
 								onClick={() => handlePopularClick(city)}
 								className='px-4 py-1.5 rounded-full bg-white/[0.08] border border-white/[0.12] backdrop-blur-md text-white/90 text-xs sm:text-sm font-medium hover:bg-[#FBBF24] hover:text-[#1E2817] hover:border-[#FBBF24] hover:scale-105 transition-all duration-200 cursor-pointer shadow-xs'
 							>
-								📍 {city}
+								{city}
 							</button>
 						))}
 					</motion.div>
@@ -269,17 +269,17 @@ export default function WeatherPage() {
 
 				{/* Weather Dashboard Workspace */}
 				{weatherdata && !initialLoading && (
-					<div className='space-y-8'>
+					<div className='space-y-8 min-w-0'>
 						{/* Top Grid: Current Weather (2 cols) & Right Column (1 col) */}
-						<div className='grid grid-cols-1 lg:grid-cols-3 gap-8 items-start'>
+						<div className='grid grid-cols-1 xl:grid-cols-3 gap-8 items-start min-w-0'>
 							{/* Main Left Block */}
-							<div className='lg:col-span-2 space-y-8'>
+							<div className='xl:col-span-2 space-y-8 min-w-0'>
 								<CurrentWeather data={weatherdata} />
 								<WeatherOverview data={weatherdata} />
 							</div>
 
 							{/* Right Sidebar Block */}
-							<div className='space-y-8'>
+							<div className='space-y-8 min-w-0'>
 								<AirQualityCard data={weatherdata} />
 								<WeatherForecast data={weatherdata} />
 							</div>

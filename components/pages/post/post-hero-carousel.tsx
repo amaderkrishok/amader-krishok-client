@@ -137,7 +137,7 @@ export function PostHeroCarousel({
 			{slides.length === 0 ? (
 				<div className='absolute inset-0 h-full w-full'>
 					<Image
-						src='/images/hero_farmer_fresh_produce.jpg'
+						src='/images/post_hero_crop_field.jpg'
 						alt='আমাদের কৃষক'
 						fill
 						className='object-cover object-center'
@@ -191,7 +191,7 @@ export function PostHeroCarousel({
 						{/* Background Image */}
 						<div className='relative h-full w-full overflow-hidden'>
 							<Image
-								src={activeSlide?.image || '/images/hero_farmer_fresh_produce.jpg'}
+								src={activeSlide?.image || '/images/post_hero_crop_field.jpg'}
 								alt={activeSlide?.title || 'কৃষি পোস্ট'}
 								fill
 								className='object-cover object-center transform scale-105 transition-transform duration-1000'
