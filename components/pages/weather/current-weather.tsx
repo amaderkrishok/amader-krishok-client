@@ -173,7 +173,7 @@ export function CurrentWeather({ data }: { data: any }) {
 			</div>
 
 			{/* Precipitation Badge & Quick Stats Grid */}
-			<div className='grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8'>
+			<div className='grid grid-cols-1 xl:grid-cols-3 gap-6 mb-8'>
 				{/* Rain Details Card */}
 				{precipDetails && (
 					<div
@@ -201,7 +201,7 @@ export function CurrentWeather({ data }: { data: any }) {
 				)}
 
 				{/* Weather Metrics Stats Grid */}
-				<div className='lg:col-span-2 grid grid-cols-2 sm:grid-cols-4 gap-3'>
+				<div className='xl:col-span-2 grid grid-cols-2 sm:grid-cols-4 gap-3'>
 					{/* Humidity */}
 					<div className='bg-[#F8F8F8] p-4 rounded-[18px] border border-gray-100 flex flex-col justify-between hover:shadow-xs transition-shadow'>
 						<div className='flex items-center gap-2 text-gray-500 mb-2'>

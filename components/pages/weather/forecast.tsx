@@ -78,16 +78,16 @@ export function WeatherForecast({ data }: { data: WeatherData }) {
 			initial={{ opacity: 0, y: 20 }}
 			animate={{ opacity: 1, y: 0 }}
 			transition={{ duration: 0.5, delay: 0.2 }}
-			className='bg-white border border-gray-100 rounded-[28px] p-6 md:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.06)] w-full'
+			className='bg-white border border-gray-100 rounded-[28px] p-4 sm:p-6 md:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.06)] w-full overflow-hidden'
 		>
 			{/* Section Header */}
 			<div className='flex items-center justify-between mb-6 pb-4 border-b border-gray-100'>
 				<div className='flex items-center gap-3'>
-					<div className='w-10 h-10 rounded-xl bg-[#4CAF50]/15 text-[#2E7D32] flex items-center justify-center'>
+					<div className='w-10 h-10 rounded-xl bg-[#4CAF50]/15 text-[#2E7D32] flex items-center justify-center shrink-0'>
 						<Calendar className='w-5 h-5' />
 					</div>
 					<div>
-						<h3 className='text-xl font-extrabold text-[#2A351F] tracking-tight'>
+						<h3 className='text-lg sm:text-xl font-extrabold text-[#2A351F] tracking-tight'>
 							৭ দিনের পূর্বাভাস
 						</h3>
 						<p className='text-xs text-gray-500 font-medium'>
@@ -95,7 +95,7 @@ export function WeatherForecast({ data }: { data: WeatherData }) {
 						</p>
 					</div>
 				</div>
-				<span className='px-3 py-1 rounded-full bg-[#2A351F]/10 text-[#2A351F] text-xs font-bold'>
+				<span className='px-3 py-1 rounded-full bg-[#2A351F]/10 text-[#2A351F] text-xs font-bold shrink-0'>
 					{forecastEntries.length} দিন
 				</span>
 			</div>
@@ -113,26 +113,26 @@ export function WeatherForecast({ data }: { data: WeatherData }) {
 						<motion.div
 							key={index}
 							whileHover={{ y: -2 }}
-							className='flex items-center justify-between bg-[#F8F8F8] hover:bg-emerald-50/40 border border-gray-200/60 hover:border-[#4CAF50]/40 rounded-[20px] p-4 transition-all duration-200 shadow-2xs hover:shadow-md group'
+							className='flex items-center justify-between gap-2 sm:gap-3 bg-[#F8F8F8] hover:bg-emerald-50/40 border border-gray-200/60 hover:border-[#4CAF50]/40 rounded-[20px] p-3 sm:p-4 transition-all duration-200 shadow-2xs hover:shadow-md group min-w-0 overflow-hidden'
 						>
 							{/* Date & Day Badge */}
-							<div className='flex items-center gap-3.5'>
-								<div className='w-12 h-12 rounded-xl bg-white border border-gray-200/80 shadow-2xs flex flex-col items-center justify-center shrink-0 group-hover:border-[#4CAF50] transition-colors'>
-									<span className='text-xs font-bold text-gray-500 leading-none'>
+							<div className='flex items-center gap-2.5 sm:gap-3.5 min-w-0 shrink'>
+								<div className='w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-white border border-gray-200/80 shadow-2xs flex flex-col items-center justify-center shrink-0 group-hover:border-[#4CAF50] transition-colors'>
+									<span className='text-[10px] sm:text-xs font-bold text-gray-500 leading-none'>
 										{monthName}
 									</span>
-									<span className='text-lg font-black text-[#2E7D32] leading-tight'>
+									<span className='text-base sm:text-lg font-black text-[#2E7D32] leading-tight'>
 										{day}
 									</span>
 								</div>
 
-								<div>
-									<h4 className='text-base font-bold text-[#2A351F] capitalize'>
+								<div className='min-w-0'>
+									<h4 className='text-sm sm:text-base font-bold text-[#2A351F] capitalize truncate'>
 										{fullDayName}
 									</h4>
-									<div className='flex items-center gap-2 mt-0.5'>
-										<Droplets className='w-3.5 h-3.5 text-[#4CAF50]' />
-										<span className='text-xs font-semibold text-gray-600'>
+									<div className='flex items-center gap-1.5 sm:gap-2 mt-0.5'>
+										<Droplets className='w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#4CAF50] shrink-0' />
+										<span className='text-[11px] sm:text-xs font-semibold text-gray-600 truncate'>
 											বৃষ্টি {maxPop}%
 										</span>
 									</div>
@@ -140,13 +140,13 @@ export function WeatherForecast({ data }: { data: WeatherData }) {
 							</div>
 
 							{/* Temperature Progress Indicator & Value */}
-							<div className='flex items-center gap-4'>
-								<div className='hidden sm:block w-24'>
+							<div className='flex items-center gap-2 sm:gap-3 shrink-0 ml-auto'>
+								<div className='hidden min-[500px]:block xl:hidden w-16 sm:w-20 md:w-24'>
 									<div className='flex justify-between text-[10px] font-bold text-gray-400 mb-1'>
 										<span>কম</span>
 										<span>বেশি</span>
 									</div>
-									<div className='w-full bg-gray-200 h-2 rounded-full overflow-hidden p-0.5'>
+									<div className='w-full bg-gray-200 h-1.5 sm:h-2 rounded-full overflow-hidden p-0.5'>
 										<div
 											className='h-full rounded-full bg-gradient-to-r from-[#4CAF50] to-[#FBBF24]'
 											style={{
@@ -159,7 +159,7 @@ export function WeatherForecast({ data }: { data: WeatherData }) {
 									</div>
 								</div>
 
-								<div className='bg-white px-3.5 py-2 rounded-xl border border-gray-200/80 shadow-2xs font-black text-[#2A351F] text-base md:text-lg min-w-[70px] text-center'>
+								<div className='bg-white px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl border border-gray-200/80 shadow-2xs font-black text-[#2A351F] text-sm sm:text-base md:text-lg min-w-[58px] sm:min-w-[68px] text-center shrink-0'>
 									{avgTemp}
 								</div>
 							</div>
