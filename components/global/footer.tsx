@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { Facebook, Linkedin, Mail, Phone, Youtube, MapPin, ChevronUp, Heart, Leaf } from 'lucide-react';
+import { Facebook, Linkedin, Mail, Phone, Youtube, MapPin, ChevronUp, Heart, Leaf, MessageCircle } from 'lucide-react';
 import Link from 'next/link';
 
 export function Footer() {
@@ -146,6 +146,17 @@ export function Footer() {
                                 />
                             </h4>
                             <div className="space-y-3.5">
+                                <motion.div
+                                    whileHover={{ x: 4 }}
+                                    className="flex items-center gap-3 text-gray-300 text-sm group"
+                                >
+                                    <div className="w-8 h-8 rounded-full bg-[#3f472f]/80 border border-white/10 flex items-center justify-center group-hover:bg-emerald-500 transition-colors">
+                                        <MessageCircle className="w-4 h-4 text-[#4ADE80] group-hover:text-white transition-colors" />
+                                    </div>
+                                    <a href="https://wa.me/8801311848915?text=%E0%A6%AE%E0%A7%81%E0%A6%96%E0%A7%8D%E0%A6%AF%E0%A6%A4%E0%A7%8D%E0%A6%AF%E0%A6%AE%E0%A6%BE%E0%A6%A8%20%E0%A6%B8%E0%A6%BE%E0%A6%A5%E0%A7%8E%20%E0%A6%9A%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%9F" target="_blank" rel="noopener noreferrer" className="hover:text-emerald-400 font-bold transition-colors text-emerald-300">
+                                        হোয়াটসঅ্যাপে লাইভ চ্যাট করুন
+                                    </a>
+                                </motion.div>
                                 <motion.div
                                     whileHover={{ x: 4 }}
                                     className="flex items-center gap-3 text-gray-300 text-sm group"
