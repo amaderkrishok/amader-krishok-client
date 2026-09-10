@@ -2,8 +2,6 @@
 
 import { Footer } from '@/components/global/footer';
 import { NavBar } from '@/components/global/nav-bar';
-import { OvijogModal } from '@/components/global/ovijog-modal';
-import { WhatsAppSupport } from '@/components/global/whatsapp-support';
 
 export function WebsiteWrapper({
 	children,
@@ -19,12 +17,6 @@ export function WebsiteWrapper({
 
 			{/* Main Content */}
 			<div className='flex-grow'>{children}</div>
-
-			{/* Floating Ovijog Box */}
-			<OvijogModal />
-
-			{/* Floating WhatsApp Support Widget */}
-			<WhatsAppSupport />
 
 			{/* Footer */}
 			<Footer />

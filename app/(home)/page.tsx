@@ -23,7 +23,7 @@ export default function Home() {
 			<OffersSection />
 
 			{/* 4. Trust Section ("কেন আমাদের কৃষকের বাজার?") */}
-			<TrustSection />
+			{/* <TrustSection /> */}
 
 			{/* 5. Verified Farmers Section ("আমাদের কৃষক") */}
 			<VendorsSection />

@@ -8,6 +8,7 @@ import { AboutFarmers } from '@/components/pages/about/about-farmers';
 import { AboutWhyUs } from '@/components/pages/about/about-why-us';
 import { AboutTestimonials } from '@/components/pages/about/about-testimonials';
 import { AboutCta } from '@/components/pages/about/about-cta';
+import { AboutOvijogForm } from '@/components/pages/about/about-ovijog-form';
 
 export const metadata: Metadata = {
 	title: 'আমাদের সম্পর্কে | আমাদের কৃষক - কৃষকের সাথে, কৃষির পাশে',
@@ -34,12 +35,15 @@ export default function AboutPage() {
 
 			{/* 6. WHY CHOOSE AMADER KRISHOK */}
 			<AboutWhyUs />
-{/* 8. FINAL CTA */}
-			<AboutCta />
-			{/* 7. TRUST / TESTIMONIAL SECTION */}
-			<AboutTestimonials />
 
-			
+			{/* 7. OVIJOG & SUPPORT FORM SECTION */}
+			<AboutOvijogForm />
+
+			{/* 8. FINAL CTA */}
+			<AboutCta />
+
+			{/* 9. TRUST / TESTIMONIAL SECTION */}
+			<AboutTestimonials />
 		</div>
 	);
 }

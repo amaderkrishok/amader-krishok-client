@@ -2,11 +2,10 @@ import { PostService } from '@/services/post-service';
 import { getPostJsonLd } from '@/lib/metadata';
 import PostPageClient from '@/components/pages/post/post-slug/single-post';
 
-export default async function PostPage(props: { params: { slug: string } }) {
+export default async function PostPage(props: { params: Promise<{ slug: string }> }) {
 	try {
-		// Use the parameter from props directly
-		const slug = String(props.params.slug);
-		const response = await PostService.getPostBySlug(slug);
+		const { slug } = await props.params;
+		const response = await PostService.getPostBySlug(String(slug));
 		const post = response.data;
 
 		// Generate JSON-LD

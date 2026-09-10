@@ -5,11 +5,10 @@ import { PostCategoryService } from '@/services/post-category-service';
 export async function generateMetadata({
 	params,
 }: {
-	params: { slug: string };
+	params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-	// Ensure params is properly awaited
-	const resolvedParams = await Promise.resolve(params);
-	const slug = resolvedParams.slug;
+	const resolvedParams = await params;
+	const slug = resolvedParams?.slug;
 
 	try {
 		const response = await PostCategoryService.getCategoryBySlug(slug);

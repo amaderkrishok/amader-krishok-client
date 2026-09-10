@@ -4,11 +4,10 @@ import CategoryPageClient from '@/components/pages/post/post-category/category-p
 export default async function CategoryPage({
 	params,
 }: {
-	params: { slug: string };
+	params: Promise<{ slug: string }>;
 }) {
-	// Ensure params is properly awaited
-	const resolvedParams = await Promise.resolve(params);
-	const slug = resolvedParams.slug;
+	const resolvedParams = await params;
+	const slug = resolvedParams?.slug;
 
 	try {
 		// Fetch category data
