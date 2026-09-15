@@ -7,7 +7,7 @@ import { TrustSection } from '@/components/pages/home/TrustSection';
 import { TextRotatorSection } from '@/components/pages/home/TextRotatorSection';
 import { VendorBanner } from '@/components/pages/home/vendor-banner';
 
-export const dynamic = 'force-static';
+export const dynamic = 'force-dynamic';
 export const revalidate = 3600; // Cache for 1 hour
 
 export default function Home() {
@@ -17,7 +17,7 @@ export default function Home() {
 			<Hero />
 
 			{/* 2. Quick Category Section ("কী খুঁজছেন আজ?") */}
-			<CategorySection />
+			{/* <CategorySection /> */}
 
 			{/* 3. Featured Direct Produce Section */}
 			<OffersSection />

@@ -96,6 +96,10 @@ export interface Product {
 	storeId?: string;
 	createdAt?: string;
 	updatedAt?: string;
+	// Optional rating fields loaded dynamically from review service
+	rating?: number;
+	avgRating?: number;
+	totalReviews?: number;
 	// Optional status for archival; backend may return this
 	status?: 'active' | 'archived' | 'pending';
 }
