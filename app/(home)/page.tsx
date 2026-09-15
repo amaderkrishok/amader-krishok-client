@@ -2,13 +2,13 @@ import FeaturesSection from '@/components/pages/home/FeaturesSection';
 import { Hero } from '@/components/pages/home/hero';
 import { CategorySection } from '@/components/pages/home/CategorySection';
 import { OffersSection } from '@/components/pages/home/OffersSection';
+import { CropCultivationSection } from '@/components/pages/home/CropCultivationSection';
 import { VendorsSection } from '@/components/pages/home/VendorsSection';
 import { TrustSection } from '@/components/pages/home/TrustSection';
 import { TextRotatorSection } from '@/components/pages/home/TextRotatorSection';
 import { VendorBanner } from '@/components/pages/home/vendor-banner';
 
 export const dynamic = 'force-dynamic';
-export const revalidate = 3600; // Cache for 1 hour
 
 export default function Home() {
 	return (
@@ -21,6 +21,9 @@ export default function Home() {
 
 			{/* 3. Featured Direct Produce Section */}
 			<OffersSection />
+
+			{/* 4. Crop Cultivation & Disease Prevention Section ("ফসল চাষ প্রক্রিয়া ও রোগবালাই") */}
+			<CropCultivationSection />
 
 			{/* 4. Trust Section ("কেন আমাদের কৃষকের বাজার?") */}
 			{/* <TrustSection /> */}

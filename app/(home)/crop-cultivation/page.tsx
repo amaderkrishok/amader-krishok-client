@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { Sidebar } from '@/components/pages/crop-cultivation/sidebar';
 import { CropInfo } from '@/components/pages/crop-cultivation/crop-info';
 import {
@@ -12,7 +13,11 @@ import { AlertCircle, Sprout, Search, Leaf, ArrowRight, ShieldCheck, BookOpen, L
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 
-export default function CropCultivationPage() {
+function CropCultivationContent() {
+	const searchParams = useSearchParams();
+	const urlCropId = searchParams?.get('cropId');
+	const urlCropName = searchParams?.get('crop');
+
 	const [crops, setCrops] = useState<CropNameIdDto[]>([]);
 	const [selectedCropId, setSelectedCropId] = useState<string | null>(null);
 	const [loading, setLoading] = useState(true);
@@ -32,8 +37,17 @@ export default function CropCultivationPage() {
 					: (response as { data: CropNameIdDto[] }).data || [];
 				setCrops(cropNamesData);
 
-				// Auto-select first crop if available
-				if (cropNamesData.length > 0) {
+				// Auto-select crop based on URL query param or fallback to first crop
+				if (urlCropId && cropNamesData.some(c => c.id === urlCropId)) {
+					setSelectedCropId(urlCropId);
+				} else if (urlCropName) {
+					const matched = cropNamesData.find(c => c.name.toLowerCase().includes(urlCropName.toLowerCase()));
+					if (matched) {
+						setSelectedCropId(matched.id);
+					} else if (cropNamesData.length > 0) {
+						setSelectedCropId(cropNamesData[0].id);
+					}
+				} else if (cropNamesData.length > 0) {
 					setSelectedCropId(cropNamesData[0].id);
 				}
 			} catch (err) {
@@ -45,7 +59,7 @@ export default function CropCultivationPage() {
 		};
 
 		fetchCropNames();
-	}, []);
+	}, [urlCropId, urlCropName]);
 
 	const handleCropSelect = (cropId: string) => {
 		setSelectedCropId(cropId);
@@ -240,3 +254,10 @@ export default function CropCultivationPage() {
 	);
 }
 
+export default function CropCultivationPage() {
+	return (
+		<Suspense fallback={<div className="min-h-screen bg-[#37462A] flex items-center justify-center text-[#EAB308] font-bold text-xl">লোডিং...</div>}>
+			<CropCultivationContent />
+		</Suspense>
+	);
+}
