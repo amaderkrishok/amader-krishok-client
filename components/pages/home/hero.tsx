@@ -58,13 +58,14 @@ export function Hero() {
 	];
 
 	const quickChips = [
-		{ label: 'সবজি', query: 'সবজি' },
-		{ label: 'ফল', query: 'ফল' },
-		{ label: 'মাছ', query: 'মাছ' },
-		{ label: 'শস্য', query: 'শস্য' },
-		{ label: 'কৃষি উপকরণ', query: 'কৃষি উপকরণ' },
-		{ label: 'সার', query: 'সার' },
-		{ label: 'বীজ', query: 'বীজ' },
+		{ label: 'টমেটো', term: 'টমেটো' },
+		{ label: 'শাকসবজি', term: 'শাকসবজি' },
+		{ label: 'আলু', term: 'আলু' },
+		{ label: 'আম', term: 'আম' },
+		{ label: 'ইলিশ মাছ', term: 'ইলিশ' },
+		{ label: 'ধান', term: 'ধান' },
+		{ label: 'ইউরিয়া সার', term: 'ইউরিয়া' },
+		{ label: 'হাইব্রিড বীজ', term: 'বীজ' },
 	];
 
 	const handleSearch = () => {
@@ -264,13 +265,13 @@ export function Hero() {
 							জনপ্রিয় অনুসন্ধান:
 						</span>
 						{quickChips.map((chip) => (
-							<button
+							<Link
 								key={chip.label}
-								onClick={() => handleChipClick(chip.query)}
-								className='px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-gray-100 hover:bg-[#F5B800] text-gray-700 hover:text-[#26351B] transition-colors duration-200'
+								href={`/marketplace?term=${encodeURIComponent(chip.term)}`}
+								className='px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-gray-100 hover:bg-[#F5B800] text-gray-700 hover:text-[#26351B] transition-colors duration-200 cursor-pointer'
 							>
 								{chip.label}
-							</button>
+							</Link>
 						))}
 					</div>
 				</motion.div>
