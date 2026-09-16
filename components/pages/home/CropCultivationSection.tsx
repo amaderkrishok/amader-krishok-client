@@ -258,40 +258,7 @@ export function CropCultivationSection() {
         )}
 
         {/* Bottom Call-to-Action Banner with Direct /marketplace Redirection */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="bg-gradient-to-r from-[#26351B] to-[#3B5228] rounded-3xl p-6 sm:p-10 text-white shadow-xl flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden"
-        >
-          <div className="absolute right-0 top-0 bottom-0 w-1/3 opacity-10 pointer-events-none">
-            <Sprout className="w-full h-full text-white" />
-          </div>
-
-          <div className="relative z-10 max-w-xl text-center md:text-left">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#F5B800]/20 border border-[#F5B800]/40 text-[#F5B800] text-xs font-bold mb-3">
-            
-              <span>কৃষকের অনলাইন ডিজিটাল বাজার</span>
-            </div>
-            <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-tight mb-2">
-              আপনার কাঙ্ক্ষিত বীজ, সার ও বালাইনাশক প্রয়োজন?
-            </h3>
-            <p className="text-gray-300 text-xs sm:text-sm font-medium">
-              সরাসরি কৃষক ও অনুমোদিত ডিলারদের কাছ থেকে সেরা মানের কৃষি উপকরণ দ্রুত হোম ডেলিভারিতে পান।
-            </p>
-          </div>
-
-          <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }} className="relative z-10 shrink-0">
-            <Link
-              href="/marketplace"
-              className="inline-flex items-center gap-2.5 px-8 py-4 rounded-2xl bg-[#F5B800] hover:bg-[#e0a800] text-[#172033] font-extrabold text-base shadow-lg transition-all"
-            >
-              <ShoppingCart className="w-5 h-5 text-[#172033]" />
-              <span>কৃষকের বাজারে যান</span>
-              <ArrowRight className="w-5 h-5 text-[#172033]" />
-            </Link>
-          </motion.div>
-        </motion.div>
+        
 
       </div>
     </section>

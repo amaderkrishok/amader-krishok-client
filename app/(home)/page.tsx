@@ -42,7 +42,7 @@ export default function Home() {
 			<FeaturesSection />
 
 			{/* 8. Seller/Vendor Call-to-Action Banner */}
-			<div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+			<div className='max-w-7xl mx-auto px-4'>
 				<VendorBanner />
 			</div>
 		</div>
