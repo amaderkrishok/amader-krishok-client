@@ -105,19 +105,23 @@ export function SmartFarmingRecommendations({ data }: SmartFarmingProps) {
 			className='w-full max-w-7xl mx-auto'
 		>
 			{/* Section Header */}
-			<div className='flex items-center gap-3 mb-6'>
-				<div className='w-10 h-10 rounded-full bg-[#E8F5E9] text-[#2E7D32] flex items-center justify-center shadow-xs shrink-0'>
-					<Sprout className='w-5 h-5 text-[#2E7D32]' />
-				</div>
-				<div>
-					<h3 className='text-xl md:text-2xl font-bold text-[#172033] tracking-tight flex items-center gap-2 flex-wrap'>
-						<span>স্মার্ট কৃষি পরামর্শ</span>
-						<span className='text-sm sm:text-base font-semibold text-gray-500'>(Smart Farming Advisory)</span>
-					</h3>
-					<p className='text-xs sm:text-sm text-gray-500 font-medium'>
-						বর্তমান আবহাওয়ার ভিত্তিতে স্বয়ংক্রিয়ভাবে প্রণীত কৃষিকাজের উপযোগী নির্দেশিকা
-					</p>
-				</div>
+			<div className='mb-10 text-left'>
+				<motion.div
+					initial={{ opacity: 0, y: 15 }}
+					whileInView={{ opacity: 1, y: 0 }}
+					viewport={{ once: true }}
+					className='inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#3F6212]/10 border border-[#3F6212]/20 mb-3 text-[#3F6212] text-xs font-bold uppercase tracking-wider'
+				>
+					<Sprout className='w-4 h-4 text-[#F5B800]' />
+					<span>আবহাওয়াভিত্তিক অটো নির্দেশিকা</span>
+				</motion.div>
+
+				<h2 className='text-3xl md:text-4xl lg:text-4xl font-extrabold text-[#172033] tracking-tight leading-tight'>
+					স্মার্ট কৃষি পরামর্শ 
+				</h2>
+				<p className='text-[#64748B] text-sm sm:text-base mt-2 max-w-2xl font-medium'>
+					বর্তমান আবহাওয়ার ভিত্তিতে স্বয়ংক্রিয়ভাবে প্রণীত কৃষিকাজের উপযোগী নির্দেশিকা।
+				</p>
 			</div>
 
 			{/* Recommendation Cards Grid */}

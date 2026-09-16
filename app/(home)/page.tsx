@@ -36,7 +36,7 @@ export default function Home() {
 			<VendorsSection />
 
 			{/* 6. Vertical Text Rotator Banner */}
-			<TextRotatorSection />
+			{/* <TextRotatorSection /> */}
 
 			{/* 7. Platform Core Features & Tools */}
 			<FeaturesSection />

@@ -31,8 +31,8 @@ export function TrustSection() {
 		<section className='py-14 sm:py-18 bg-[#F5F3EA] border-b border-gray-200/80 text-[#172033]'>
 			<div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
 				{/* Section Heading */}
-				<div className='text-center max-w-3xl mx-auto mb-10'>
-					<h2 className='text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#172033] tracking-tight'>
+				<div className='text-left max-w-3xl mb-10'>
+					<h2 className='text-3xl md:text-4xl lg:text-4xl font-extrabold text-[#172033] tracking-tight leading-tight'>
 						কোনো মধ্যস্বত্বভোগী নেই
 					</h2>
 					<p className='text-[#64748B] text-sm sm:text-base lg:text-lg mt-2 font-medium leading-relaxed'>
