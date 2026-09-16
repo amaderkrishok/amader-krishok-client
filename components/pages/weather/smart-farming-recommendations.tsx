@@ -5,12 +5,16 @@ import { motion } from 'framer-motion';
 import { Sprout, CloudRain, Sun, AlertTriangle, ShieldCheck, Droplets, Scissors } from 'lucide-react';
 
 interface SmartFarmingProps {
-	data: any;
+	data?: any;
 }
 
 export function SmartFarmingRecommendations({ data }: SmartFarmingProps) {
-	const current = data?.list?.[0];
-	if (!current) return null;
+	// Fallback data if weather api data is missing or loading
+	const current = data?.list?.[0] || {
+		main: { temp: 299.15, humidity: 55 },
+		pop: 0.1,
+		wind: { speed: 2.5 },
+	};
 
 	const temp = Math.round(current.main.temp - 273.15);
 	const pop = current.pop || 0; // Rain probability 0-1
@@ -43,10 +47,10 @@ export function SmartFarmingRecommendations({ data }: SmartFarmingProps) {
 		recommendations.push({
 			icon: Sprout,
 			badge: '🌱 স্বাভাবিক সেচ',
-			badgeBg: 'bg-emerald-100 text-emerald-800 border-emerald-200',
+			badgeBg: 'bg-[#DCFCE7] text-[#15803D] border-[#BBF7D0]',
 			title: 'পরিমিত সেচ প্রদান করুন',
-			desc: 'আবহাওয়া অনুকূল রয়েছে। ফসলের চাহিদা অনুযায়ী স্বাভাবিক সেচ কার্যক্রম বজায় রাখতে পারেন।',
-			action: 'নিয়মিত মাটির আর্দ্রতা যাচাই করুন',
+			desc: 'আবহাওয়া অনুকূল রয়েছে। ফসলের চাহিদা অনুযায়ী স্বাভাবিক সেচ কার্যক্রম বজায় রাখতে পারেন।',
+			action: 'নিয়মিত মাটির আর্দ্রতা যাচাই করুন',
 		});
 	}
 
@@ -64,8 +68,8 @@ export function SmartFarmingRecommendations({ data }: SmartFarmingProps) {
 		recommendations.push({
 			icon: ShieldCheck,
 			badge: '✅ স্প্রে করার উপযুক্ত সময়',
-			badgeBg: 'bg-emerald-100 text-emerald-800 border-emerald-200',
-			title: 'কীটনাশক ও সার প্রয়োগের উপযুক্ত আবহাওয়া',
+			badgeBg: 'bg-[#DCFCE7] text-[#15803D] border-[#BBF7D0]',
+			title: 'কীটনাশক ও সার প্রয়োগের উপযুক্ত আবহাওয়া',
 			desc: 'বাতাসের গতি পরিমিত ও বৃষ্টির সম্ভাবনা কম থাকায় আজকে জমিতে সুষম সার বা প্রয়োজনীয় কীটনাশক প্রয়োগ করা যেতে পারে।',
 			action: 'সকাল ৮-১০ টার মধ্যে স্প্রে সম্পন্ন করুন',
 		});
@@ -76,7 +80,7 @@ export function SmartFarmingRecommendations({ data }: SmartFarmingProps) {
 		recommendations.push({
 			icon: Sun,
 			badge: '🌾 ফসল মাড়াই ও শুকানো',
-			badgeBg: 'bg-amber-100 text-amber-800 border-amber-200',
+			badgeBg: 'bg-[#FEF9C3] text-[#A16207] border-[#FEF08A]',
 			title: 'ফসল কাটা ও রোদ পোহানোর জন্য সেরা দিন',
 			desc: 'আকাশ পরিষ্কার থাকায় আজ পাকা ফসল কাটা, মাড়াই করা এবং রোদে শুকানোর কাজ নিরাপদে সম্পন্ন করা সম্ভব।',
 			action: 'শুকানো দানা নিরাপদে সংরক্ষণ করুন',
@@ -98,16 +102,17 @@ export function SmartFarmingRecommendations({ data }: SmartFarmingProps) {
 			whileInView={{ opacity: 1, y: 0 }}
 			viewport={{ once: true }}
 			transition={{ duration: 0.5 }}
-			className='w-full max-w-6xl mx-auto mt-10'
+			className='w-full max-w-7xl mx-auto'
 		>
 			{/* Section Header */}
 			<div className='flex items-center gap-3 mb-6'>
-				<div className='w-10 h-10 rounded-xl bg-[#4CAF50]/15 text-[#2E7D32] flex items-center justify-center shadow-xs'>
-					<Sprout className='w-5 h-5' />
+				<div className='w-10 h-10 rounded-full bg-[#E8F5E9] text-[#2E7D32] flex items-center justify-center shadow-xs shrink-0'>
+					<Sprout className='w-5 h-5 text-[#2E7D32]' />
 				</div>
 				<div>
-					<h3 className='text-xl md:text-2xl font-bold text-[#2A351F] tracking-tight'>
-						স্মার্ট কৃষি পরামর্শ (Smart Farming Advisory)
+					<h3 className='text-xl md:text-2xl font-bold text-[#172033] tracking-tight flex items-center gap-2 flex-wrap'>
+						<span>স্মার্ট কৃষি পরামর্শ</span>
+						<span className='text-sm sm:text-base font-semibold text-gray-500'>(Smart Farming Advisory)</span>
 					</h3>
 					<p className='text-xs sm:text-sm text-gray-500 font-medium'>
 						বর্তমান আবহাওয়ার ভিত্তিতে স্বয়ংক্রিয়ভাবে প্রণীত কৃষিকাজের উপযোগী নির্দেশিকা
@@ -126,15 +131,15 @@ export function SmartFarmingRecommendations({ data }: SmartFarmingProps) {
 							whileInView={{ opacity: 1, y: 0 }}
 							viewport={{ once: true }}
 							transition={{ duration: 0.4, delay: index * 0.1 }}
-							className='bg-white rounded-[24px] p-6 border border-gray-100 shadow-[0_10px_30px_rgba(0,0,0,0.05)] hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between relative overflow-hidden group'
+							className='bg-white rounded-[24px] p-6 border border-gray-100 shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between relative overflow-hidden group'
 						>
 							{/* Top Accent Line */}
-							<div className='absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#4CAF50] via-[#FBBF24] to-[#2E7D32]' />
+							<div className='absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#4CAF50] via-[#FBBF24] to-[#2E7D32]' />
 
 							<div>
 								<div className='flex items-center justify-between mb-4'>
-									<div className='w-12 h-12 rounded-2xl bg-[#2A351F]/10 text-[#2A351F] flex items-center justify-center group-hover:scale-110 transition-transform'>
-										<IconComponent className='w-6 h-6 text-[#2E7D32]' />
+									<div className='w-11 h-11 rounded-2xl bg-gray-100 text-[#2A351F] flex items-center justify-center group-hover:scale-105 transition-transform'>
+										<IconComponent className='w-5 h-5 text-[#2E7D32]' />
 									</div>
 									<span
 										className={`px-3 py-1 rounded-full text-xs font-extrabold border ${rec.badgeBg}`}
@@ -143,7 +148,7 @@ export function SmartFarmingRecommendations({ data }: SmartFarmingProps) {
 									</span>
 								</div>
 
-								<h4 className='text-lg font-bold text-[#2A351F] mb-2 leading-snug'>
+								<h4 className='text-lg font-bold text-[#172033] mb-2 leading-snug'>
 									{rec.title}
 								</h4>
 								<p className='text-xs sm:text-sm text-gray-600 font-medium leading-relaxed mb-4'>
@@ -151,8 +156,8 @@ export function SmartFarmingRecommendations({ data }: SmartFarmingProps) {
 								</p>
 							</div>
 
-							<div className='pt-3 border-t border-gray-100 flex items-center gap-2 text-xs font-bold text-[#2E7D32]'>
-								<span className='w-2 h-2 rounded-full bg-[#4CAF50]' />
+							<div className='pt-3 border-t border-gray-100 flex items-center gap-2 text-xs font-bold text-[#16A34A]'>
+								<span className='w-2 h-2 rounded-full bg-[#16A34A] shrink-0' />
 								<span>করণীয়: {rec.action}</span>
 							</div>
 						</motion.div>
@@ -162,3 +167,4 @@ export function SmartFarmingRecommendations({ data }: SmartFarmingProps) {
 		</motion.div>
 	);
 }
+

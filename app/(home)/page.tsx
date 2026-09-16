@@ -3,6 +3,7 @@ import { Hero } from '@/components/pages/home/hero';
 import { CategorySection } from '@/components/pages/home/CategorySection';
 import { OffersSection } from '@/components/pages/home/OffersSection';
 import { CropCultivationSection } from '@/components/pages/home/CropCultivationSection';
+import { HomeSmartFarmingSection } from '@/components/pages/home/HomeSmartFarmingSection';
 import { VendorsSection } from '@/components/pages/home/VendorsSection';
 import { TrustSection } from '@/components/pages/home/TrustSection';
 import { TextRotatorSection } from '@/components/pages/home/TextRotatorSection';
@@ -24,6 +25,9 @@ export default function Home() {
 
 			{/* 4. Crop Cultivation & Disease Prevention Section ("ফসল চাষ প্রক্রিয়া ও রোগবালাই") */}
 			<CropCultivationSection />
+
+			{/* 5. Smart Farming Advisory Section ("স্মার্ট কৃষি পরামর্শ") */}
+			<HomeSmartFarmingSection />
 
 			{/* 4. Trust Section ("কেন আমাদের কৃষকের বাজার?") */}
 			{/* <TrustSection /> */}
