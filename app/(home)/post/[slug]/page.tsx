@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { PostService } from '@/services/post-service';
 import { getPostJsonLd } from '@/lib/metadata';
 import PostPageClient from '@/components/pages/post/post-slug/single-post';

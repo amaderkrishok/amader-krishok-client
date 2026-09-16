@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { PostCategoryService } from '@/services/post-category-service';
 import { getCategoryJsonLd } from '@/lib/metadata';
 import CategoryPageClient from '@/components/pages/post/post-category/category-page-client';

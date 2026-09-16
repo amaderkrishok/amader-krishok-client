@@ -178,10 +178,10 @@ export function ProductCard({ product }: ProductCardProps) {
 							<Star className={`h-3.5 w-3.5 ${ratingSummary && ratingSummary.averageRating > 0 ? 'fill-[#F4B400] text-[#F4B400]' : 'text-gray-300'}`} />
 						</div>
 						<span className='text-[11px] font-bold text-[#172033]'>
-							{ratingSummary && ratingSummary.averageRating > 0 ? ratingSummary.averageRating : '৪.৮'}
+							{ratingSummary ? ratingSummary.averageRating.toFixed(1) : '০.০'}
 						</span>
 						<span className='text-[10px] text-[#667085] font-medium'>
-							({ratingSummary?.totalReviews || 24} রিভিউ)
+							({ratingSummary?.totalReviews ?? 0} রিভিউ)
 						</span>
 					</div>
 

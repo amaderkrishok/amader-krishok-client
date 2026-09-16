@@ -119,19 +119,17 @@ export default function FeaturesSection() {
                     initial={{ opacity: 0, y: 30 }}
                     animate={isVisible ? { opacity: 1, y: 0 } : {}}
                     transition={{ duration: 0.6 }}
-                    className="text-center mb-16"
+                    className="text-left mb-10"
                 >
-                    <div className="inline-flex items-center gap-2 bg-[#2D331F]/10 border border-[#2D331F]/15 backdrop-blur-sm px-4 py-2 rounded-full mb-4 shadow-sm">
-                        <span className="text-lg">🌱</span>
-                        <span className="text-sm font-bold text-[#2D331F] tracking-wide uppercase">আমাদের বিশ্বাস</span>
+                    <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#3F6212]/10 border border-[#3F6212]/20 mb-3 text-[#3F6212] text-xs font-bold uppercase tracking-wider">
+                        <Leaf className="w-4 h-4 text-[#F5B800]" />
+                        <span>আমাদের বিশ্বাস</span>
                     </div>
-                    <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-[#2D331F] mb-4 tracking-tight">
+                    <h2 className="text-3xl md:text-4xl lg:text-4xl font-extrabold text-[#172033] tracking-tight leading-tight">
                         আমাদের কাজের ক্ষেত্র
                     </h2>
-                    <div className="h-1 w-20 bg-gradient-to-r from-[#2D331F] to-[#EAB308] mx-auto rounded-full mb-6"></div>
-                    <p className="text-gray-600 max-w-2xl mx-auto text-lg leading-relaxed font-medium">
-                        আমরা বিশ্বাস করি যে একটি ছোট কিন্তু প্রতিজ্ঞাবদ্ধ ও লক্ষ্যনিষ্ঠ দল
-                        টেকসই কৃষিতে দীর্ঘস্থায়ী প্রভাব রাখতে পারে।
+                    <p className="text-[#64748B] text-sm sm:text-base mt-2 max-w-2xl font-medium">
+                        আমরা বিশ্বাস করি যে একটি ছোট কিন্তু প্রতিজ্ঞাবদ্ধ ও লক্ষ্যনিষ্ঠ দল টেকসই কৃষিতে দীর্ঘস্থায়ী প্রভাব রাখতে পারে।
                     </p>
                 </motion.div>
 

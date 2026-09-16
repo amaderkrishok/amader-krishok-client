@@ -64,7 +64,7 @@ export function CategorySection() {
 				{/* Section Header */}
 				<div className='flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8 sm:mb-10'>
 					<div>
-						<h2 className='text-2xl sm:text-3xl lg:text-3xl font-extrabold text-[#172033] tracking-tight'>
+						<h2 className='text-3xl md:text-4xl lg:text-4xl font-extrabold text-[#172033] tracking-tight leading-tight'>
 							কী খুঁজছেন আজ?
 						</h2>
 						<p className='text-[#64748B] text-sm sm:text-base mt-1 font-medium'>

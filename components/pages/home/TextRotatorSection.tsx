@@ -57,14 +57,14 @@ export function TextRotatorSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
         {/* --- MAIN SECTION HEADER --- */}
-        <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
+        <div className="text-left mb-10">
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#2D331F]/10 border border-[#2D331F]/15 text-[#2D331F] text-xs font-black uppercase tracking-wider shadow-xs"
+            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#3F6212]/10 border border-[#3F6212]/20 mb-3 text-[#3F6212] text-xs font-bold uppercase tracking-wider"
           >
-            <Leaf className="w-3.5 h-3.5 text-[#2D331F]" />
+            <Leaf className="w-4 h-4 text-[#F5B800]" />
             <span>কেন আমাদের বিশ্বাস করবেন?</span>
           </motion.div>
 
@@ -73,11 +73,11 @@ export function TextRotatorSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-3xl sm:text-4xl md:text-5xl font-black text-[#2D331F] tracking-tight leading-tight"
+            className="text-3xl md:text-4xl lg:text-4xl font-extrabold text-[#172033] tracking-tight leading-tight"
           >
             মাঠ থেকে সোজা আপনার ঘরে, <br className="hidden sm:block" />
             <span className="bg-gradient-to-r from-[#2D331F] via-[#4F5938] to-[#EAB308] bg-clip-text text-transparent">
-              ন্যায্য মূল্যে  খাঁটি ফসল
+              ন্যায্য মূল্যে খাঁটি ফসল
             </span>
           </motion.h2>
 
@@ -86,7 +86,7 @@ export function TextRotatorSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.15 }}
-            className="text-gray-600 text-base sm:text-lg font-medium leading-relaxed"
+            className="text-[#64748B] text-sm sm:text-base mt-2 max-w-2xl font-medium"
           >
             আমাদের প্ল্যাটফর্মের প্রতিটি ধাপ কৃষক এবং গ্রাহকের স্বার্থ রক্ষায় নিবেদিত।
           </motion.p>

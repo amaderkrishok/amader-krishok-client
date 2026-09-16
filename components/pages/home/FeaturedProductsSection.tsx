@@ -41,10 +41,10 @@ const fallbackItems: FallbackItem[] = [
   },
   {
     id: 302,
-    name: 'পদ্মার তাজা নদীর রুই মাছ',
+    name: 'তাজা নদীর পাঙ্গাস মাছ',
     categoryTag: 'মাছ',
-    price: '৪৫০',
-    originalPrice: '৫০০',
+    price: '৫৫০০',
+    originalPrice: '৬০০০',
     unit: 'কেজি',
     rating: 4.9,
     reviewsCount: 188,
@@ -70,7 +70,7 @@ const fallbackItems: FallbackItem[] = [
     name: 'মিষ্টি ল্যাংড়া ও হিমসাগর আম',
     categoryTag: 'ফল',
     price: '৩০০',
-    originalPrice: '৩৫০০',
+    originalPrice: '৩৫০',
     unit: 'কেজি',
     rating: 5.0,
     reviewsCount: 230,
@@ -307,6 +307,11 @@ export function FeaturedProductsSection() {
                       <span className="text-3xl font-black text-[#2D331F]">
                         ৳{('simpleProduct' in spotlightProduct && spotlightProduct.simpleProduct?.price) || (spotlightProduct as any).price}
                       </span>
+                      {'originalPrice' in spotlightProduct && (spotlightProduct as any).originalPrice && (
+                        <span className="text-lg text-gray-400 font-semibold line-through">
+                          ৳{(spotlightProduct as any).originalPrice}
+                        </span>
+                      )}
                       <span className="text-sm text-gray-400 font-bold">
                         / {spotlightProduct.unit || 'কেজি'}
                       </span>
@@ -404,6 +409,11 @@ export function FeaturedProductsSection() {
                         <span className="text-xl font-black text-[#2D331F]">
                           ৳{price}
                         </span>
+                        {'originalPrice' in product && (product as any).originalPrice && (
+                          <span className="text-xs text-gray-400 font-medium line-through">
+                            ৳{(product as any).originalPrice}
+                          </span>
+                        )}
                         <span className="text-xs text-gray-400 font-medium">
                           / {product.unit || 'কেজি'}
                         </span>

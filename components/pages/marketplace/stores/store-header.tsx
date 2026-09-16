@@ -176,9 +176,9 @@ export function StoreHeader({ store, productsCount = 0 }: StoreHeaderProps) {
 
                   <span className='inline-flex items-center gap-1.5 bg-[#FFF9E8] text-[#28321A] px-3 py-1 rounded-lg border border-[#F4B400]/30 font-bold'>
                     <Star className='w-4 h-4 fill-[#F4B400] text-[#F4B400]' />
-                    {summary.averageRating > 0 ? summary.averageRating : '৪.৮'}
+                    {summary.averageRating > 0 ? summary.averageRating.toFixed(1) : '০.০'}
                     <span className='text-xs text-[#667085] font-normal'>
-                      ({summary.totalReviews || 125} রিভিউ)
+                      ({summary.totalReviews ?? 0} রিভিউ)
                     </span>
                   </span>
                 </div>
@@ -297,7 +297,7 @@ export function StoreHeader({ store, productsCount = 0 }: StoreHeaderProps) {
 
         <div className='flex flex-col items-center justify-center p-3 text-center bg-white/90 rounded-xl border border-[#F4B400]/20 shadow-xs'>
           <span className='text-2xl sm:text-3xl font-extrabold text-[#F4B400] tracking-tight mb-0.5'>
-            {summary.averageRating > 0 ? summary.averageRating : '৪.৮'}
+            {summary.averageRating > 0 ? summary.averageRating.toFixed(1) : '০.০'}
           </span>
           <span className='text-xs sm:text-sm font-bold text-[#667085]'>গড় রেটিং</span>
         </div>

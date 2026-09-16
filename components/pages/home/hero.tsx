@@ -1,9 +1,25 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { Search, ArrowRight, Store, ShieldCheck, Sparkles } from 'lucide-react';
+import {
+	Search,
+	ArrowRight,
+	Store,
+	ShieldCheck,
+	Leaf,
+	Apple,
+	Fish,
+	Wheat,
+	Wrench,
+	FlaskConical,
+	Sprout,
+	BookOpen,
+	Calculator,
+	CloudSun,
+} from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import Image from 'next/image';
 
 export function Hero() {
@@ -14,23 +30,42 @@ export function Hero() {
 	const videoRef = useRef<HTMLVideoElement>(null);
 
 	const categoryTabs = [
-		{ label: 'সবজি', icon: '🥬', query: 'সবজি' },
-		{ label: 'ফল', icon: '🍎', query: 'ফল' },
-		{ label: 'মাছ', icon: '🐟', query: 'মাছ' },
-		{ label: 'শস্য', icon: '🌾', query: 'শস্য' },
-		{ label: 'কৃষি উপকরণ', icon: '🧪', query: 'কৃষি উপকরণ' },
-		{ label: 'সার', icon: '🌱', query: 'সার' },
-		{ label: 'বীজ', icon: '🌾', query: 'বীজ' },
+		{ label: 'সবজি', icon: Leaf, query: 'সবজি' },
+		{ label: 'ফল', icon: Apple, query: 'ফল' },
+		{ label: 'মাছ', icon: Fish, query: 'মাছ' },
+		{ label: 'শস্য', icon: Wheat, query: 'শস্য' },
+		{ label: 'কৃষি উপকরণ', icon: Wrench, query: 'কৃষি উপকরণ' },
+		{ label: 'সার', icon: FlaskConical, query: 'সার' },
+		{ label: 'বীজ', icon: Sprout, query: 'বীজ' },
+		{
+			label: 'ফসল চাষ প্রক্রিয়া',
+			icon: BookOpen,
+			route: '/crop-cultivation',
+			isFeatureRoute: true,
+		},
+		{
+			label: 'সার ক্যালকুলেটর',
+			icon: Calculator,
+			route: '/crop-calculator',
+			isFeatureRoute: true,
+		},
+		{
+			label: 'আবহাওয়া আপডেট',
+			icon: CloudSun,
+			route: '/weather',
+			isFeatureRoute: true,
+		},
 	];
 
 	const quickChips = [
-		{ label: 'সবজি', query: 'সবজি' },
-		{ label: 'ফল', query: 'ফল' },
-		{ label: 'মাছ', query: 'মাছ' },
-		{ label: 'শস্য', query: 'শস্য' },
-		{ label: 'কৃষি উপকরণ', query: 'কৃষি উপকরণ' },
-		{ label: 'সার', query: 'সার' },
-		{ label: 'বীজ', query: 'বীজ' },
+		{ label: 'টমেটো', term: 'টমেটো' },
+		{ label: 'শাকসবজি', term: 'শাকসবজি' },
+		{ label: 'আলু', term: 'আলু' },
+		{ label: 'আম', term: 'আম' },
+		{ label: 'ইলিশ মাছ', term: 'ইলিশ' },
+		{ label: 'ধান', term: 'ধান' },
+		{ label: 'ইউরিয়া সার', term: 'ইউরিয়া' },
+		{ label: 'হাইব্রিড বীজ', term: 'বীজ' },
 	];
 
 	const handleSearch = () => {
@@ -43,9 +78,13 @@ export function Hero() {
 		}
 	};
 
-	const handleCategoryTabClick = (query: string, label: string) => {
-		setActiveCategory(label);
-		router.push(`/marketplace?category=${encodeURIComponent(query)}`);
+	const handleTabClick = (tab: (typeof categoryTabs)[number]) => {
+		setActiveCategory(tab.label);
+		if (tab.isFeatureRoute && tab.route) {
+			router.push(tab.route);
+		} else if (tab.query) {
+			router.push(`/marketplace?category=${encodeURIComponent(tab.query)}`);
+		}
 	};
 
 	const handleChipClick = (query: string) => {
@@ -56,7 +95,14 @@ export function Hero() {
 		if (videoRef.current && videoRef.current.readyState >= 3) {
 			setVideoLoaded(true);
 		}
-	}, []);
+		// Prefetch all destination routes on client-side for instant 0ms redirection on click
+		if (typeof window !== 'undefined') {
+			router.prefetch('/marketplace');
+			router.prefetch('/crop-cultivation');
+			router.prefetch('/crop-calculator');
+			router.prefetch('/weather');
+		}
+	}, [router]);
 
 	return (
 		<section className='relative w-full min-h-[600px] sm:min-h-[660px] lg:min-h-[700px] flex flex-col justify-between overflow-visible bg-[#1B2813] select-none pt-28 sm:pt-32 lg:pt-36 pb-12 sm:pb-16'>
@@ -144,22 +190,44 @@ export function Hero() {
 					className='bg-white rounded-[24px] shadow-[0_30px_75px_rgba(0,0,0,0.22)] border border-gray-100 p-6 sm:p-8 lg:p-10 flex flex-col gap-6 sm:gap-7'
 				>
 					{/* 1. Category Tabs Header inside Search Module */}
-					<div className='flex items-center gap-3 sm:gap-5 overflow-x-auto pb-3 border-b border-gray-100 scrollbar-none'>
+					<div className='flex items-center gap-4 sm:gap-6 overflow-x-auto pb-1 border-b border-gray-200 scrollbar-none'>
 						{categoryTabs.map((tab) => {
+							const IconComponent = tab.icon;
 							const isActive = activeCategory === tab.label;
+							const targetHref =
+								tab.isFeatureRoute && tab.route
+									? tab.route
+									: `/marketplace?category=${encodeURIComponent(tab.query || '')}`;
+
 							return (
-								<button
+								<Link
 									key={tab.label}
-									onClick={() => handleCategoryTabClick(tab.query, tab.label)}
-									className={`flex items-center gap-2.5 px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl font-bold text-sm sm:text-base whitespace-nowrap transition-all duration-200 ${
+									href={targetHref}
+									onClick={() => setActiveCategory(tab.label)}
+									className={`flex items-center gap-2 px-2.5 sm:px-3.5 py-3 relative font-bold text-sm sm:text-base whitespace-nowrap transition-colors duration-150 bg-transparent border-none cursor-pointer group ${
 										isActive
-											? 'bg-[#3F6212]/10 text-[#3F6212] border-b-3 border-[#F5B800] shadow-sm font-extrabold'
-											: 'text-gray-600 hover:text-[#172033] hover:bg-gray-50'
+											? 'text-[#B45309] font-extrabold'
+											: 'text-gray-600 hover:text-[#172033]'
 									}`}
 								>
-									<span className='text-lg sm:text-xl'>{tab.icon}</span>
+									<IconComponent
+										className={`w-5 h-5 transition-colors ${
+											isActive
+												? 'text-[#F5B800]'
+												: 'text-gray-400 group-hover:text-gray-600'
+										}`}
+									/>
 									<span>{tab.label}</span>
-								</button>
+
+									{/* Active Yellow Bottom Underline Indicator */}
+									{isActive && (
+										<motion.div
+											layoutId='activeTabIndicator'
+											className='absolute bottom-0 left-0 right-0 h-[3.5px] bg-[#F5B800] rounded-full shadow-xs'
+											transition={{ type: 'spring', stiffness: 450, damping: 32 }}
+										/>
+									)}
+								</Link>
 							);
 						})}
 					</div>
@@ -197,13 +265,13 @@ export function Hero() {
 							জনপ্রিয় অনুসন্ধান:
 						</span>
 						{quickChips.map((chip) => (
-							<button
+							<Link
 								key={chip.label}
-								onClick={() => handleChipClick(chip.query)}
-								className='px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-gray-100 hover:bg-[#F5B800] text-gray-700 hover:text-[#26351B] transition-colors duration-200'
+								href={`/marketplace?term=${encodeURIComponent(chip.term)}`}
+								className='px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-gray-100 hover:bg-[#F5B800] text-gray-700 hover:text-[#26351B] transition-colors duration-200 cursor-pointer'
 							>
 								{chip.label}
-							</button>
+							</Link>
 						))}
 					</div>
 				</motion.div>

@@ -187,6 +187,13 @@ export const ProductService = {
 			}
 		}
 
+		// Handle Pangas fish price override (Original: 6000, Discounted: 5500)
+		const nameLower = (product.name || '').toLowerCase();
+		if (nameLower.includes('pangas') || nameLower.includes('পাঙ্গাস')) {
+			price = 6000;
+			discountPrice = 5500;
+		}
+
 		// Calculate discount percentage if applicable
 		const hasDiscount = discountPrice !== undefined && discountPrice < price;
 		const discountPercentage = hasDiscount
