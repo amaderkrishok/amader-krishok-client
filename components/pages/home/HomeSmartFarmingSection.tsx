@@ -55,8 +55,8 @@ export function HomeSmartFarmingSection() {
 	}, []);
 
 	return (
-		<section className='py-12 sm:py-16 bg-[#FAF9F3] border-b border-gray-200/60'>
-			<div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+		<section className='w-full px-4 sm:px-6 lg:px-8 xl:px-20 2xl:px-12 py-12 sm:py-16 bg-[#FAF9F3] border-b border-gray-200/60'>
+			<div className='max-w-7xl mx-auto'>
 				<SmartFarmingRecommendations data={weatherData} />
 			</div>
 		</section>

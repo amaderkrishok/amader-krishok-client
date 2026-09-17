@@ -185,8 +185,8 @@ export function OffersSection() {
     .slice(0, 8);
 
   return (
-    <section className="py-16 sm:py-20 bg-[#FAF9F3] text-[#172033] relative overflow-hidden border-b border-gray-200/60">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <section className="w-full px-4 sm:px-6 lg:px-8 xl:px-20 2xl:px-12 py-16 sm:py-20 bg-[#FAF9F3] text-[#172033] relative overflow-hidden border-b border-gray-200/60">
+      <div className="max-w-7xl mx-auto relative z-10">
         
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">

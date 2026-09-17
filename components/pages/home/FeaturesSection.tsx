@@ -107,7 +107,7 @@ export default function FeaturesSection() {
     };
 
     return (
-        <section ref={sectionRef} className="py-24 px-4 md:px-8 lg:px-24 xl:px-40 2xl:px-12 bg-[#FDFBF7] text-[#2D331F] relative overflow-hidden selection:bg-[#EAB308] selection:text-[#2D331F] border-t border-gray-200/60">
+        <section ref={sectionRef} className="w-full px-4 sm:px-6 lg:px-8 xl:px-20 2xl:px-12 py-24 bg-[#FDFBF7] text-[#2D331F] relative overflow-hidden selection:bg-[#EAB308] selection:text-[#2D331F] border-t border-gray-200/60">
             
             {/* Background Lighting Elements */}
             <div className="absolute top-1/3 left-0 w-96 h-96 bg-[#2D331F]/5 rounded-full blur-3xl pointer-events-none" />
