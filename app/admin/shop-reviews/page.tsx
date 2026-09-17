@@ -11,6 +11,8 @@ import { StoreReviewService } from '@/services/store-review-service';
 import type { StoreReview } from '@/types/store-review';
 import Link from 'next/link';
 
+export const dynamic = 'force-dynamic';
+
 export default function AdminShopReviewsPage() {
   const [reviews, setReviews] = useState<StoreReview[]>([]);
   const [loading, setLoading] = useState(true);

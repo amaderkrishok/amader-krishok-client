@@ -85,7 +85,7 @@ export function FilterSidebar({
 				{/* Search */}
 				<div className='bg-white/60 p-4 rounded-xl shadow-sm border border-gray-100/60 hover:shadow-md transition-shadow duration-300 relative overflow-hidden'>
 					<h3 className='text-md font-bold text-gray-800 mb-3 flex items-center gap-2'>
-						<span className='w-1.5 h-4 bg-[#2D331F] rounded-full inline-block'></span>
+						<span className='w-1.5 h-4 bg-[#EAB308] rounded-full inline-block'></span>
 						অনুসন্ধান
 					</h3>
 					<div className='relative group'>
@@ -93,7 +93,7 @@ export function FilterSidebar({
 							placeholder='পণ্য খুঁজুন...'
 							value={localSearchTerm}
 							onChange={handleSearchChange}
-							className='w-full pr-9 bg-white/80 border-gray-200 focus:ring-2 focus:ring-[#2D331F]/20 focus:border-[#2D331F] transition-all rounded-xl shadow-inner'
+							className='w-full pr-9 bg-white/80 border-gray-200 focus:ring-2 focus:ring-[#EAB308]/30 focus:border-[#EAB308] transition-all rounded-xl shadow-inner'
 						/>
 						{localSearchTerm && (
 							<button
@@ -143,15 +143,15 @@ export function FilterSidebar({
 				{/* Price Range */}
 				<div className='bg-white/60 p-4 rounded-xl shadow-sm border border-gray-100/60 hover:shadow-md transition-shadow duration-300 relative overflow-hidden'>
 					<h3 className='text-md font-bold text-gray-800 mb-4 flex items-center gap-2'>
-						<span className='w-1.5 h-4 bg-[#2D331F] rounded-full inline-block'></span>
+						<span className='w-1.5 h-4 bg-[#EAB308] rounded-full inline-block'></span>
 						মূল্য সীমা
 					</h3>
 					<div className='flex items-center justify-between mb-4 bg-white p-2 rounded-lg border border-gray-100'>
-						<span className='text-sm font-semibold text-[#2D331F] bg-[#2D331F]/10 px-2 py-1 rounded'>
+						<span className='text-sm font-extrabold text-[#172033] bg-[#EAB308]/20 border border-[#EAB308]/30 px-2.5 py-1 rounded-md'>
 							{localPriceRange[0]} ৳
 						</span>
 						<span className='text-gray-300'>-</span>
-						<span className='text-sm font-semibold text-[#2D331F] bg-[#2D331F]/10 px-2 py-1 rounded'>
+						<span className='text-sm font-extrabold text-[#172033] bg-[#EAB308]/20 border border-[#EAB308]/30 px-2.5 py-1 rounded-md'>
 							{localPriceRange[1]} ৳
 						</span>
 					</div>
@@ -280,10 +280,10 @@ function CategoryTree({
 									type='button'
 									onClick={() => onCategoryClick(category.id)}
 									className={cn(
-										'w-full text-left px-3 py-1.5 rounded-lg text-sm transition-all duration-300 border border-transparent flex items-center justify-between group/cat',
+										'w-full text-left px-3 py-1.5 rounded-lg text-sm transition-all duration-300 flex items-center justify-between group/cat',
 										selectedCategoryId === category.id
-											? 'font-bold text-[#2D331F] bg-[#2D331F]/10 shadow-[inset_0_0_0_1px_rgba(45,51,31,0.2)]'
-											: 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 hover:border-gray-200/50'
+											? 'font-bold text-[#172033] bg-[#EAB308]/20 border border-[#EAB308]/40 shadow-xs'
+											: 'text-gray-600 border border-transparent hover:bg-[#EAB308]/10 hover:text-[#172033] hover:border-[#EAB308]/20'
 									)}
 								>
 									<span>{category.name}</span>

@@ -10,6 +10,8 @@ import { Input } from '@/components/ui/input';
 import { Search, Leaf, MapPin, AlertCircle, RefreshCw } from 'lucide-react';
 import { motion } from 'framer-motion';
 
+export const dynamic = 'force-dynamic';
+
 export default function WeatherPage() {
 	const [error, setError] = useState('');
 	const [weatherdata, setWeatherdata] = useState<any>(null);
