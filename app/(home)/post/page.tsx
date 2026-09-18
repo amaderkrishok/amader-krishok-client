@@ -249,33 +249,49 @@ const PostsPageContent = () => {
 			/>
 
 			{/* MAIN CONTAINER */}
-			<div className='max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12'>
-				{/* PAGE INTRO SECTION */}
-				<div className='mb-8 sm:mb-10 border-b border-gray-200/80 pb-6'>
-					<div className='flex items-center gap-2 mb-2'>
-						<div className='w-2 h-6 bg-[#2E7D32] rounded-full' />
-						<h1 className='text-3xl sm:text-4xl font-extrabold text-[#172018] tracking-tight'>
-							আমাদের পোস্টগুলো
-						</h1>
+			<div className='w-full px-4 sm:px-6 lg:px-8 xl:px-20 2xl:px-12 py-8 sm:py-12'>
+				<div className='max-w-7xl mx-auto'>
+					{/* PAGE INTRO SECTION */}
+					<div className='mb-8 sm:mb-10 border-b border-gray-200/80 pb-6'>
+						<div className='flex items-center gap-2 mb-2'>
+							<div className='w-2 h-6 bg-[#2E7D32] rounded-full' />
+							<h1 className='text-3xl sm:text-4xl font-extrabold text-[#172018] tracking-tight'>
+								আমাদের পোস্টগুলো
+							</h1>
+						</div>
+						<p className='text-base sm:text-lg text-[#6B7280] font-normal max-w-2xl leading-relaxed pl-4'>
+							কৃষি ও কৃষি উদ্ভাবনের গুরুত্বপূর্ণ তথ্য, টিপস ও পরামর্শ পড়ুন।
+						</p>
 					</div>
-					<p className='text-base sm:text-lg text-[#6B7280] font-normal max-w-2xl leading-relaxed pl-4'>
-						কৃষি ও কৃষি উদ্ভাবনের গুরুত্বপূর্ণ তথ্য, টিপস ও পরামর্শ পড়ুন।
-					</p>
-				</div>
 
-				{/* CATEGORY NAVIGATION PILLS */}
-				<CategoryNav
-					categories={categories}
-					selectedCategories={selectedCategories}
-					onSelectCategory={handleSelectCategory}
-					onAllClick={clearAllFilters}
-				/>
+					{/* CATEGORY NAVIGATION PILLS */}
+					<CategoryNav
+						categories={categories}
+						selectedCategories={selectedCategories}
+						onSelectCategory={handleSelectCategory}
+						onAllClick={clearAllFilters}
+					/>
 
-				{/* TWO COLUMN MAIN CONTENT LAYOUT */}
-				<div className='flex flex-col md:flex-row gap-8 items-start'>
-					{/* Desktop Sidebar (280px width) */}
-					<aside className='w-[280px] flex-shrink-0 hidden md:block sticky top-6'>
-						<FilterSidebar
+					{/* TWO COLUMN MAIN CONTENT LAYOUT */}
+					<div className='flex flex-col md:flex-row gap-8 items-start'>
+						{/* Desktop Sidebar (280px width) */}
+						<aside className='w-[280px] flex-shrink-0 hidden md:block sticky top-6'>
+							<FilterSidebar
+								searchTerm={searchTerm}
+								setSearchTerm={setSearchTerm}
+								selectedCategories={selectedCategories}
+								toggleCategorySelection={toggleCategorySelection}
+								categories={categories}
+								handleFilterSubmit={handleFilterSubmit}
+								clearAllFilters={clearAllFilters}
+								formatDate={formatDate}
+								recentPosts={posts}
+							/>
+						</aside>
+
+						{/* Mobile Filter Sheet */}
+						<MobileFilterButton
+							activeFiltersCount={activeFiltersCount}
 							searchTerm={searchTerm}
 							setSearchTerm={setSearchTerm}
 							selectedCategories={selectedCategories}
@@ -286,67 +302,55 @@ const PostsPageContent = () => {
 							formatDate={formatDate}
 							recentPosts={posts}
 						/>
-					</aside>
 
-					{/* Mobile Filter Sheet */}
-					<MobileFilterButton
-						activeFiltersCount={activeFiltersCount}
-						searchTerm={searchTerm}
-						setSearchTerm={setSearchTerm}
-						selectedCategories={selectedCategories}
-						toggleCategorySelection={toggleCategorySelection}
-						categories={categories}
-						handleFilterSubmit={handleFilterSubmit}
-						clearAllFilters={clearAllFilters}
-						formatDate={formatDate}
-						recentPosts={posts}
-					/>
-
-					{/* Main Content Area */}
-					<main className='flex-1 min-w-0 w-full'>
-						<PostsGrid
-							loading={loading}
-							posts={posts}
-							formatTimeAgo={formatTimeAgo}
-							clearAllFilters={clearAllFilters}
-							meta={meta}
-							onPageChange={handlePageChange}
-						/>
-					</main>
+						{/* Main Content Area */}
+						<main className='flex-1 min-w-0 w-full'>
+							<PostsGrid
+								loading={loading}
+								posts={posts}
+								formatTimeAgo={formatTimeAgo}
+								clearAllFilters={clearAllFilters}
+								meta={meta}
+								onPageChange={handlePageChange}
+							/>
+						</main>
+					</div>
 				</div>
 			</div>
 
 			{/* BOTTOM ECOSYSTEM CTA SECTION */}
-			<section className='max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-12'>
-				<div className='bg-gradient-to-r from-[#4A5E3A] via-[#3D4F2E] to-[#4A5E3A] rounded-3xl p-8 sm:p-12 text-white shadow-2xl relative overflow-hidden border border-white/15 flex flex-col sm:flex-row items-center justify-between gap-8'>
-					<div className='space-y-3 max-w-xl text-center sm:text-left'>
-						<div className='inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FBBF24]/20 border border-[#FBBF24]/30 text-[#FBBF24] text-xs font-bold'>
-							<ShieldCheck className='w-4 h-4' />
-							<span>আমাদের প্ল্যাটফর্ম</span>
+			<section className='w-full px-4 sm:px-6 lg:px-8 xl:px-20 2xl:px-12 py-12'>
+				<div className='max-w-7xl mx-auto'>
+					<div className='bg-gradient-to-r from-[#4A5E3A] via-[#3D4F2E] to-[#4A5E3A] rounded-3xl p-8 sm:p-12 text-white shadow-2xl relative overflow-hidden border border-white/15 flex flex-col sm:flex-row items-center justify-between gap-8'>
+						<div className='space-y-3 max-w-xl text-center sm:text-left'>
+							<div className='inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FBBF24]/20 border border-[#FBBF24]/30 text-[#FBBF24] text-xs font-bold'>
+								<ShieldCheck className='w-4 h-4' />
+								<span>আমাদের প্ল্যাটফর্ম</span>
+							</div>
+							<h3 className='text-2xl sm:text-3xl font-extrabold text-white tracking-tight'>
+								ফসল চাষের নির্দেশিকা ও মার্কেটপ্লেসে যুক্ত হতে চান?
+							</h3>
+							<p className='text-gray-300 text-sm sm:text-base font-normal'>
+								আমাদের কৃষক বাজার ও ফসল চাষ নির্দেশিকা থেকে সরাসরি বিশেষজ্ঞ তথ্য ও কৃষি উপাদান সংগ্রহ করুন।
+							</p>
 						</div>
-						<h3 className='text-2xl sm:text-3xl font-extrabold text-white tracking-tight'>
-							ফসল চাষের নির্দেশিকা ও মার্কেটপ্লেসে যুক্ত হতে চান?
-						</h3>
-						<p className='text-gray-300 text-sm sm:text-base font-normal'>
-							আমাদের কৃষক বাজার ও ফসল চাষ নির্দেশিকা থেকে সরাসরি বিশেষজ্ঞ তথ্য ও কৃষি উপাদান সংগ্রহ করুন।
-						</p>
-					</div>
 
-					<div className='flex flex-wrap items-center justify-center gap-3 shrink-0'>
-						<Link
-							href='/crop-cultivation'
-							className='px-6 py-3.5 bg-white/10 hover:bg-white/20 text-white rounded-2xl font-bold text-sm transition-all border border-white/20 flex items-center gap-2'
-						>
-							<Sprout className='w-4 h-4 text-[#FBBF24]' />
-							<span>ফসল চাষ তথ্য</span>
-						</Link>
-						<Link
-							href='/marketplace'
-							className='px-7 py-3.5 bg-[#FBBF24] hover:bg-[#f5b316] text-[#1E2817] rounded-2xl font-extrabold text-sm transition-all shadow-lg flex items-center gap-2'
-						>
-							<span>কৃষকের বাজার</span>
-							<ArrowRight className='w-4 h-4' />
-						</Link>
+						<div className='flex flex-wrap items-center justify-center gap-3 shrink-0'>
+							<Link
+								href='/crop-cultivation'
+								className='px-6 py-3.5 bg-white/10 hover:bg-white/20 text-white rounded-2xl font-bold text-sm transition-all border border-white/20 flex items-center gap-2'
+							>
+								<Sprout className='w-4 h-4 text-[#FBBF24]' />
+								<span>ফসল চাষ তথ্য</span>
+							</Link>
+							<Link
+								href='/marketplace'
+								className='px-7 py-3.5 bg-[#FBBF24] hover:bg-[#f5b316] text-[#1E2817] rounded-2xl font-extrabold text-sm transition-all shadow-lg flex items-center gap-2'
+							>
+								<span>কৃষকের বাজার</span>
+								<ArrowRight className='w-4 h-4' />
+							</Link>
+						</div>
 					</div>
 				</div>
 			</section>

@@ -25,7 +25,7 @@ export function AboutHero() {
 	];
 
 	return (
-		<section className='relative bg-gradient-to-b from-[#37462A] via-[#2F3C23] to-[#37462A] text-white pt-28 sm:pt-36 pb-20 md:pb-24 px-4 sm:px-6 lg:px-8 overflow-hidden'>
+		<section className='relative bg-gradient-to-b from-[#37462A] via-[#2F3C23] to-[#37462A] text-white pt-28 sm:pt-36 pb-20 md:pb-24 w-full px-4 sm:px-6 lg:px-8 xl:px-20 2xl:px-12 overflow-hidden'>
 			
 			{/* Background Glows & Floating Leaves (Matching other hero banners) */}
 			<div className='absolute inset-0 pointer-events-none z-0'>
@@ -55,7 +55,8 @@ export function AboutHero() {
 			</div>
 
 			{/* Hero Content */}
-			<div className='relative z-10 max-w-[800px] mx-auto text-center space-y-6'>
+			<div className='relative z-10 max-w-7xl mx-auto'>
+				<div className='max-w-[800px] mx-auto text-center space-y-6'>
 				
 				{/* Top Eyebrow Badge */}
 				<motion.div
@@ -138,6 +139,7 @@ export function AboutHero() {
 					</Button>
 				</motion.div>
 
+				</div>
 			</div>
 		</section>
 	);

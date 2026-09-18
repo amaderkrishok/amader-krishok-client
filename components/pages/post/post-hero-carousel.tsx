@@ -150,24 +150,26 @@ export function PostHeroCarousel({
 								'linear-gradient(90deg, rgba(35,50,25,0.85) 0%, rgba(45,65,32,0.50) 55%, rgba(45,65,32,0.15) 100%)',
 						}}
 					/>
-					<div className='absolute inset-0 pt-28 sm:pt-36 pb-8 z-20 container mx-auto px-4 sm:px-6 lg:px-8 flex items-center'>
-						<div className='max-w-2xl text-white space-y-4'>
-							<div className='inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-[#FBBF24] text-xs sm:text-sm font-semibold shadow-sm'>
-								<Sprout className='w-4 h-4 text-[#FBBF24]' />
-								<span>🌱 কৃষি জ্ঞান ও পরামর্শ</span>
-							</div>
-							<h1 className='text-2xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight leading-tight'>
-								আধুনিক কৃষির <span className='text-[#FBBF24]'>সহজ সমাধান</span>
-							</h1>
-							<p className='text-gray-200 text-sm sm:text-base md:text-lg font-normal max-w-xl leading-relaxed'>
-								কৃষি, ফসল চাষ, রোগবালাই ও কৃষি প্রযুক্তি সম্পর্কে প্রয়োজনীয় তথ্য ও পরামর্শ এক জায়গায়।
-							</p>
-							<div className='flex items-center gap-3 text-xs sm:text-sm text-gray-300 font-medium pt-2'>
-								<span className='inline-flex items-center gap-1.5 bg-[#37462A]/80 px-2.5 py-1 rounded-md border border-white/10'>
-									নতুন পোস্ট
-								</span>
-								<span>•</span>
-								<span>৫ মিনিট পড়ার সময়</span>
+					<div className='absolute inset-0 pt-28 sm:pt-36 pb-8 z-20 w-full px-4 sm:px-6 lg:px-8 xl:px-20 2xl:px-12 flex items-center'>
+						<div className='max-w-7xl mx-auto w-full'>
+							<div className='max-w-2xl text-white space-y-4'>
+								<div className='inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-[#FBBF24] text-xs sm:text-sm font-semibold shadow-sm'>
+									<Sprout className='w-4 h-4 text-[#FBBF24]' />
+									<span>🌱 কৃষি জ্ঞান ও পরামর্শ</span>
+								</div>
+								<h1 className='text-2xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight leading-tight'>
+									আধুনিক কৃষির <span className='text-[#FBBF24]'>সহজ সমাধান</span>
+								</h1>
+								<p className='text-gray-200 text-sm sm:text-base md:text-lg font-normal max-w-xl leading-relaxed'>
+									কৃষি, ফসল চাষ, রোগবালাই ও কৃষি প্রযুক্তি সম্পর্কে প্রয়োজনীয় তথ্য ও পরামর্শ এক জায়গায়।
+								</p>
+								<div className='flex items-center gap-3 text-xs sm:text-sm text-gray-300 font-medium pt-2'>
+									<span className='inline-flex items-center gap-1.5 bg-[#37462A]/80 px-2.5 py-1 rounded-md border border-white/10'>
+										নতুন পোস্ট
+									</span>
+									<span>•</span>
+									<span>৫ মিনিট পড়ার সময়</span>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -208,8 +210,9 @@ export function PostHeroCarousel({
 						</div>
 
 						{/* Hero Content aligned Left */}
-						<div className='absolute inset-0 pt-28 sm:pt-36 pb-8 z-20 container mx-auto px-4 sm:px-6 lg:px-8 flex items-center'>
-							<div className='max-w-2xl text-white space-y-3 sm:space-y-4'>
+						<div className='absolute inset-0 pt-28 sm:pt-36 pb-8 z-20 w-full px-4 sm:px-6 lg:px-8 xl:px-20 2xl:px-12 flex items-center'>
+							<div className='max-w-7xl mx-auto w-full'>
+								<div className='max-w-2xl text-white space-y-3 sm:space-y-4'>
 								<motion.div
 									initial={{ y: 15, opacity: 0 }}
 									animate={{ y: 0, opacity: 1 }}
@@ -275,9 +278,10 @@ export function PostHeroCarousel({
 								</motion.div>
 							</div>
 						</div>
-					</motion.div>
-				</AnimatePresence>
-			)}
+					</div>
+				</motion.div>
+			</AnimatePresence>
+		)}
 
 			{/* Slide Indicators */}
 			{slides.length > 1 && (

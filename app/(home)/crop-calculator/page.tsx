@@ -55,7 +55,7 @@ export default function CropCalculatorPage() {
 			{/* ==================================================== */}
 			{/* HERO SECTION                                         */}
 			{/* ==================================================== */}
-			<section className='relative bg-gradient-to-b from-[#37462A] via-[#2F3C23] to-[#37462A] text-white pt-28 sm:pt-36 pb-20 md:pb-24 px-4 sm:px-6 lg:px-8 overflow-hidden'>
+			<section className='relative bg-gradient-to-b from-[#37462A] via-[#2F3C23] to-[#37462A] text-white pt-28 sm:pt-36 pb-20 md:pb-24 w-full px-4 sm:px-6 lg:px-8 xl:px-20 2xl:px-12 overflow-hidden'>
 				
 				{/* Background Decorations & Soft Glows */}
 				<div className='absolute inset-0 pointer-events-none z-0'>
@@ -89,7 +89,8 @@ export default function CropCalculatorPage() {
 				</div>
 
 				{/* Hero Content */}
-				<div className='relative z-10 max-w-[720px] mx-auto text-center space-y-6'>
+				<div className='relative z-10 max-w-7xl mx-auto'>
+					<div className='max-w-[720px] mx-auto text-center space-y-6'>
 					
 					{/* Top Badge */}
 					<motion.div
@@ -141,90 +142,97 @@ export default function CropCalculatorPage() {
 							</div>
 						))}
 					</motion.div>
+					</div>
 				</div>
 			</section>
 
 			{/* ==================================================== */}
 			{/* CALCULATOR CARD                                      */}
 			{/* ==================================================== */}
-			<section className='relative z-20 -mt-10 md:-mt-14 px-4 max-w-[900px] mx-auto'>
-				<motion.div
-					initial={{ opacity: 0, y: 30 }}
-					animate={{ opacity: 1, y: 0 }}
-					transition={{ duration: 0.6, delay: 0.2 }}
-					className='bg-white rounded-[28px] shadow-[0_25px_60px_rgba(0,0,0,0.18)] border border-gray-100 p-6 md:p-8 lg:p-[48px]'
-				>
-					<FertilizerCalculator language={language} />
-				</motion.div>
+			<section className='w-full px-4 sm:px-6 lg:px-8 xl:px-20 2xl:px-12 relative z-20 -mt-10 md:-mt-14'>
+				<div className='max-w-7xl mx-auto'>
+					<motion.div
+						initial={{ opacity: 0, y: 30 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ duration: 0.6, delay: 0.2 }}
+						className='max-w-4xl mx-auto bg-white rounded-[28px] shadow-[0_25px_60px_rgba(0,0,0,0.18)] border border-gray-100 p-6 md:p-8 lg:p-[48px]'
+					>
+						<FertilizerCalculator language={language} />
+					</motion.div>
+				</div>
 			</section>
 
 			{/* ==================================================== */}
 			{/* INFO CARDS SECTION                                   */}
 			{/* ==================================================== */}
-			<section className='max-w-[900px] mx-auto px-4 mt-16 mb-16'>
-				<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6'>
-					{infoCards.map((card, idx) => {
-						const IconComponent = card.icon;
-						return (
-							<motion.div
-								key={idx}
-								initial={{ opacity: 0, y: 20 }}
-								whileInView={{ opacity: 1, y: 0 }}
-								viewport={{ once: true }}
-								transition={{ duration: 0.4, delay: idx * 0.1 }}
-								className='bg-white rounded-[20px] p-6 shadow-[0_10px_30px_rgba(0,0,0,0.05)] border border-gray-100/90 flex flex-col items-start hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group'
-							>
-								<div className='w-12 h-12 rounded-2xl bg-[#4CAF50]/10 text-[#2E7D32] flex items-center justify-center mb-4 text-xl group-hover:scale-110 transition-transform'>
-									<IconComponent className='w-6 h-6 text-[#2E7D32]' />
-								</div>
-								<h4 className='text-base font-bold text-[#2A351F] mb-1.5'>
-									{card.title}
-								</h4>
-								<p className='text-xs sm:text-sm text-gray-500 font-medium leading-relaxed'>
-									{card.desc}
-								</p>
-							</motion.div>
-						);
-					})}
+			<section className='w-full px-4 sm:px-6 lg:px-8 xl:px-20 2xl:px-12 mt-16 mb-16'>
+				<div className='max-w-7xl mx-auto'>
+					<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6'>
+						{infoCards.map((card, idx) => {
+							const IconComponent = card.icon;
+							return (
+								<motion.div
+									key={idx}
+									initial={{ opacity: 0, y: 20 }}
+									whileInView={{ opacity: 1, y: 0 }}
+									viewport={{ once: true }}
+									transition={{ duration: 0.4, delay: idx * 0.1 }}
+									className='bg-white rounded-[20px] p-6 shadow-[0_10px_30px_rgba(0,0,0,0.05)] border border-gray-100/90 flex flex-col items-start hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group'
+								>
+									<div className='w-12 h-12 rounded-2xl bg-[#4CAF50]/10 text-[#2E7D32] flex items-center justify-center mb-4 text-xl group-hover:scale-110 transition-transform'>
+										<IconComponent className='w-6 h-6 text-[#2E7D32]' />
+									</div>
+									<h4 className='text-base font-bold text-[#2A351F] mb-1.5'>
+										{card.title}
+									</h4>
+									<p className='text-xs sm:text-sm text-gray-500 font-medium leading-relaxed'>
+										{card.desc}
+									</p>
+								</motion.div>
+							);
+						})}
+					</div>
 				</div>
 			</section>
 
 			{/* ==================================================== */}
 			{/* HELP SECTION                                         */}
 			{/* ==================================================== */}
-			<section className='max-w-[900px] mx-auto px-4 mb-20'>
-				<motion.div
-					initial={{ opacity: 0, y: 30 }}
-					whileInView={{ opacity: 1, y: 0 }}
-					viewport={{ once: true }}
-					transition={{ duration: 0.5 }}
-					className='bg-gradient-to-r from-[#4A5E3A] via-[#3D4F2E] to-[#4A5E3A] rounded-[28px] p-8 md:p-10 text-white shadow-xl border border-white/15 flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden'
-				>
-					{/* Subtle Background Glow inside help card */}
-					<div className='absolute right-0 bottom-0 w-64 h-64 bg-[#4CAF50]/10 rounded-full blur-3xl pointer-events-none' />
-
-					<div className='space-y-2 text-center md:text-left z-10'>
-						<div className='inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FBBF24]/15 border border-[#FBBF24]/30 text-[#FBBF24] text-xs font-bold'>
-							<span>Need Help?</span>
-						</div>
-						<h3 className='text-2xl md:text-3xl font-extrabold text-white tracking-tight'>
-							বিশেষজ্ঞের সঙ্গে যোগাযোগ করুন
-						</h3>
-						<p className='text-white/75 text-sm md:text-base font-medium max-w-md'>
-							সার প্রয়োগ সংক্রান্ত যেকোনো পরামর্শের জন্য আমাদের কৃষি সহায়কের সাথে যুক্ত হন।
-						</p>
-					</div>
-
-					<a
-						href='https://wa.me/?text=Hello%20Agricultural%20Expert'
-						target='_blank'
-						rel='noopener noreferrer'
-						className='z-10 shrink-0 border-2 border-[#4CAF50] bg-[#4CAF50]/15 hover:bg-[#4CAF50] text-white font-extrabold py-3.5 px-6 rounded-2xl transition-all duration-300 flex items-center gap-3 shadow-md hover:shadow-lg hover:scale-105 active:scale-95 cursor-pointer'
+			<section className='w-full px-4 sm:px-6 lg:px-8 xl:px-20 2xl:px-12 mb-20'>
+				<div className='max-w-7xl mx-auto'>
+					<motion.div
+						initial={{ opacity: 0, y: 30 }}
+						whileInView={{ opacity: 1, y: 0 }}
+						viewport={{ once: true }}
+						transition={{ duration: 0.5 }}
+						className='bg-gradient-to-r from-[#4A5E3A] via-[#3D4F2E] to-[#4A5E3A] rounded-[28px] p-8 md:p-10 text-white shadow-xl border border-white/15 flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden'
 					>
-						<MessageCircle className='w-5 h-5 text-[#FBBF24]' />
-						<span>হোয়াটসঅ্যাপে যোগাযোগ</span>
-					</a>
-				</motion.div>
+						{/* Subtle Background Glow inside help card */}
+						<div className='absolute right-0 bottom-0 w-64 h-64 bg-[#4CAF50]/10 rounded-full blur-3xl pointer-events-none' />
+
+						<div className='space-y-2 text-center md:text-left z-10'>
+							<div className='inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FBBF24]/15 border border-[#FBBF24]/30 text-[#FBBF24] text-xs font-bold'>
+								<span>Need Help?</span>
+							</div>
+							<h3 className='text-2xl md:text-3xl font-extrabold text-white tracking-tight'>
+								বিশেষজ্ঞের সঙ্গে যোগাযোগ করুন
+							</h3>
+							<p className='text-white/75 text-sm md:text-base font-medium max-w-md'>
+								সার প্রয়োগ সংক্রান্ত যেকোনো পরামর্শের জন্য আমাদের কৃষি সহায়কের সাথে যুক্ত হন।
+							</p>
+						</div>
+
+						<a
+							href='https://wa.me/?text=Hello%20Agricultural%20Expert'
+							target='_blank'
+							rel='noopener noreferrer'
+							className='z-10 shrink-0 border-2 border-[#4CAF50] bg-[#4CAF50]/15 hover:bg-[#4CAF50] text-[#FBBF24] hover:text-white font-extrabold py-3.5 px-6 rounded-2xl transition-all duration-300 flex items-center gap-3 shadow-md hover:shadow-lg hover:scale-105 active:scale-95 cursor-pointer'
+						>
+							<MessageCircle className='w-5 h-5 text-[#FBBF24]' />
+							<span>হোয়াটসঅ্যাপে যোগাযোগ</span>
+						</a>
+					</motion.div>
+				</div>
 			</section>
 
 		</div>

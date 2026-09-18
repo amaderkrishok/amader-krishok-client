@@ -40,8 +40,8 @@ const testimonials = [
 
 export function AboutTestimonials() {
 	return (
-		<section className='bg-[#F7F9F4] py-16 md:py-24 border-t border-[#2D331F]/10'>
-			<div className='max-w-7xl mx-auto px-6 lg:px-12'>
+		<section className='w-full px-4 sm:px-6 lg:px-8 xl:px-20 2xl:px-12 bg-[#F7F9F4] py-16 md:py-24 border-t border-[#2D331F]/10'>
+			<div className='max-w-7xl mx-auto'>
 				
 				{/* Section Header */}
 				<div className='text-center max-w-2xl mx-auto mb-16'>
