@@ -75,8 +75,8 @@ export default async function StorePage({
 
       return (
         <ChatProviderWrapper>
-          <div className='min-h-screen bg-[#F7F6F0] pt-28 sm:pt-36 pb-16 selection:bg-[#F4B400] selection:text-[#172033]'>
-            <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-[10%] xl:px-[14%] 2xl:px-12 space-y-8'>
+          <div className='min-h-screen bg-[#F7F6F0] w-full px-4 sm:px-6 lg:px-[10%] xl:px-[14%] 2xl:px-12 pt-28 sm:pt-36 pb-16 selection:bg-[#F4B400] selection:text-[#172033]'>
+            <div className='max-w-7xl mx-auto space-y-8'>
               <StoreHeader store={store} productsCount={meta.totalItems || products.length} />
 
               <StoreProducts
@@ -94,8 +94,8 @@ export default async function StorePage({
       
       return (
         <ChatProviderWrapper>
-          <div className='min-h-screen bg-[#F7F6F0] pt-28 sm:pt-36 pb-16 selection:bg-[#F4B400] selection:text-[#172033]'>
-            <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-[10%] xl:px-[14%] 2xl:px-12 space-y-8'>
+          <div className='min-h-screen bg-[#F7F6F0] w-full px-4 sm:px-6 lg:px-[10%] xl:px-[14%] 2xl:px-12 pt-28 sm:pt-36 pb-16 selection:bg-[#F4B400] selection:text-[#172033]'>
+            <div className='max-w-7xl mx-auto space-y-8'>
               <StoreHeader store={store} productsCount={0} />
 
               <div className='text-center py-16 px-6 bg-white rounded-2xl border border-[#E5E7EB] shadow-xs max-w-lg mx-auto'>

@@ -94,7 +94,7 @@ export default function Goal() {
             const duration = 2000;
             const interval = 20;
             const steps = duration / interval;
-            let current = [0, 0, 0, 0];
+            const current = [0, 0, 0, 0];
 
             const timer = setInterval(() => {
                 let allComplete = true;

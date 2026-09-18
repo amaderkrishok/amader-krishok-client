@@ -183,98 +183,100 @@ export function Hero() {
 			</div>
 
 			{/* --- SHARETRIP-INSPIRED LARGE & WIDE FLOATING SEARCH MODULE CARD OVERLAPPING HERO BOUNDARY --- */}
-			<div className='relative z-30 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-[10%] xl:px-[14%] 2xl:px-12 translate-y-1/2 -mt-16 sm:-mt-20 lg:-mt-24 mb-16 sm:mb-20'>
-				<motion.div
-					initial={{ opacity: 1, y: 0 }}
-					animate={{ opacity: 1, y: 0 }}
-					className='bg-white rounded-[24px] shadow-[0_30px_75px_rgba(0,0,0,0.22)] border border-gray-100 p-6 sm:p-8 lg:p-10 flex flex-col gap-6 sm:gap-7'
-				>
-					{/* 1. Category Tabs Header inside Search Module */}
-					<div className='flex items-center gap-4 sm:gap-6 overflow-x-auto pb-1 border-b border-gray-200 scrollbar-none'>
-						{categoryTabs.map((tab) => {
-							const IconComponent = tab.icon;
-							const isActive = activeCategory === tab.label;
-							const targetHref =
-								tab.isFeatureRoute && tab.route
-									? tab.route
-									: `/marketplace?category=${encodeURIComponent(tab.query || '')}`;
+			<div className='relative z-30 w-full px-4 sm:px-6 lg:px-[10%] xl:px-[14%] 2xl:px-12 translate-y-1/2 -mt-16 sm:-mt-20 lg:-mt-24 mb-16 sm:mb-20'>
+				<div className='max-w-7xl mx-auto'>
+					<motion.div
+						initial={{ opacity: 1, y: 0 }}
+						animate={{ opacity: 1, y: 0 }}
+						className='bg-white rounded-[24px] shadow-[0_30px_75px_rgba(0,0,0,0.22)] border border-gray-100 p-6 sm:p-8 lg:p-10 flex flex-col gap-6 sm:gap-7'
+					>
+						{/* 1. Category Tabs Header inside Search Module */}
+						<div className='flex items-center gap-4 sm:gap-6 overflow-x-auto pb-1 border-b border-gray-200 scrollbar-none'>
+							{categoryTabs.map((tab) => {
+								const IconComponent = tab.icon;
+								const isActive = activeCategory === tab.label;
+								const targetHref =
+									tab.isFeatureRoute && tab.route
+										? tab.route
+										: `/marketplace?category=${encodeURIComponent(tab.query || '')}`;
 
-							return (
-								<Link
-									key={tab.label}
-									href={targetHref}
-									onClick={() => setActiveCategory(tab.label)}
-									className={`flex items-center gap-2 px-2.5 sm:px-3.5 py-3 relative font-bold text-sm sm:text-base whitespace-nowrap transition-colors duration-150 bg-transparent border-none cursor-pointer group ${
-										isActive
-											? 'text-[#B45309] font-extrabold'
-											: 'text-gray-600 hover:text-[#172033]'
-									}`}
-								>
-									<IconComponent
-										className={`w-5 h-5 transition-colors ${
+								return (
+									<Link
+										key={tab.label}
+										href={targetHref}
+										onClick={() => setActiveCategory(tab.label)}
+										className={`flex items-center gap-2 px-2.5 sm:px-3.5 py-3 relative font-bold text-sm sm:text-base whitespace-nowrap transition-colors duration-150 bg-transparent border-none cursor-pointer group ${
 											isActive
-												? 'text-[#F5B800]'
-												: 'text-gray-400 group-hover:text-gray-600'
+												? 'text-[#B45309] font-extrabold'
+												: 'text-gray-600 hover:text-[#172033]'
 										}`}
-									/>
-									<span>{tab.label}</span>
-
-									{/* Active Yellow Bottom Underline Indicator */}
-									{isActive && (
-										<motion.div
-											layoutId='activeTabIndicator'
-											className='absolute bottom-0 left-0 right-0 h-[3.5px] bg-[#F5B800] rounded-full shadow-xs'
-											transition={{ type: 'spring', stiffness: 450, damping: 32 }}
+									>
+										<IconComponent
+											className={`w-5 h-5 transition-colors ${
+												isActive
+													? 'text-[#F5B800]'
+													: 'text-gray-400 group-hover:text-gray-600'
+											}`}
 										/>
-									)}
-								</Link>
-							);
-						})}
-					</div>
+										<span>{tab.label}</span>
 
-					{/* 2. Main Search Input & Submit Button Row */}
-					<div className='flex flex-col sm:flex-row items-center gap-3 bg-gray-50/80 border border-gray-200/80 rounded-[18px] p-2.5 sm:p-3 transition-all focus-within:bg-white focus-within:border-[#F5B800] focus-within:ring-4 focus-within:ring-[#F5B800]/20 shadow-inner min-h-[64px] sm:min-h-[72px]'>
-						{/* Input */}
-						<div className='flex-1 w-full flex items-center px-4 sm:px-5 py-2 sm:py-0 gap-3.5 bg-transparent'>
-							<Search className='w-6 h-6 sm:w-7 sm:h-7 text-[#64748B] flex-shrink-0' />
-							<input
-								type='text'
-								value={searchInput}
-								onChange={(e) => setSearchInput(e.target.value)}
-								onKeyDown={(e) => {
-									if (e.key === 'Enter') handleSearch();
-								}}
-								placeholder='সবজি, ফল, মাছ, শস্য খুঁজুন...'
-								className='w-full text-[#172033] placeholder-[#64748B] text-base sm:text-lg lg:text-xl font-semibold outline-none bg-transparent border-none'
-							/>
+										{/* Active Yellow Bottom Underline Indicator */}
+										{isActive && (
+											<motion.div
+												layoutId='activeTabIndicator'
+												className='absolute bottom-0 left-0 right-0 h-[3.5px] bg-[#F5B800] rounded-full shadow-xs'
+												transition={{ type: 'spring', stiffness: 450, damping: 32 }}
+											/>
+										)}
+									</Link>
+								);
+							})}
 						</div>
 
-						{/* Search Button */}
-						<button
-							onClick={handleSearch}
-							className='w-full sm:w-auto h-[56px] sm:h-[62px] px-9 sm:px-12 bg-[#F5B800] hover:bg-[#e0a800] text-[#26351B] font-extrabold text-base sm:text-lg rounded-[15px] transition-all duration-200 shadow-md flex items-center justify-center gap-2.5 flex-shrink-0 hover:scale-[1.01] active:scale-[0.99]'
-						>
-							<span>খুঁজুন</span>
-							<ArrowRight className='w-5 h-5 sm:w-6 sm:h-6' />
-						</button>
-					</div>
+						{/* 2. Main Search Input & Submit Button Row */}
+						<div className='flex flex-col sm:flex-row items-center gap-3 bg-gray-50/80 border border-gray-200/80 rounded-[18px] p-2.5 sm:p-3 transition-all focus-within:bg-white focus-within:border-[#F5B800] focus-within:ring-4 focus-within:ring-[#F5B800]/20 shadow-inner min-h-[64px] sm:min-h-[72px]'>
+							{/* Input */}
+							<div className='flex-1 w-full flex items-center px-4 sm:px-5 py-2 sm:py-0 gap-3.5 bg-transparent'>
+								<Search className='w-6 h-6 sm:w-7 sm:h-7 text-[#64748B] flex-shrink-0' />
+								<input
+									type='text'
+									value={searchInput}
+									onChange={(e) => setSearchInput(e.target.value)}
+									onKeyDown={(e) => {
+										if (e.key === 'Enter') handleSearch();
+									}}
+									placeholder='সবজি, ফল, মাছ, শস্য খুঁজুন...'
+									className='w-full text-[#172033] placeholder-[#64748B] text-base sm:text-lg lg:text-xl font-semibold outline-none bg-transparent border-none'
+								/>
+							</div>
 
-					{/* 3. Bottom Popular Search Chips inside Module */}
-					<div className='flex flex-wrap items-center gap-2.5 pt-1'>
-						<span className='text-xs sm:text-sm font-semibold text-gray-500 mr-1'>
-							জনপ্রিয় অনুসন্ধান:
-						</span>
-						{quickChips.map((chip) => (
-							<Link
-								key={chip.label}
-								href={`/marketplace?term=${encodeURIComponent(chip.term)}`}
-								className='px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-gray-100 hover:bg-[#F5B800] text-gray-700 hover:text-[#26351B] transition-colors duration-200 cursor-pointer'
+							{/* Search Button */}
+							<button
+								onClick={handleSearch}
+								className='w-full sm:w-auto h-[56px] sm:h-[62px] px-9 sm:px-12 bg-[#F5B800] hover:bg-[#e0a800] text-[#26351B] font-extrabold text-base sm:text-lg rounded-[15px] transition-all duration-200 shadow-md flex items-center justify-center gap-2.5 flex-shrink-0 hover:scale-[1.01] active:scale-[0.99]'
 							>
-								{chip.label}
-							</Link>
-						))}
-					</div>
-				</motion.div>
+								<span>খুঁজুন</span>
+								<ArrowRight className='w-5 h-5 sm:w-6 sm:h-6' />
+							</button>
+						</div>
+
+						{/* 3. Bottom Popular Search Chips inside Module */}
+						<div className='flex flex-wrap items-center gap-2.5 pt-1'>
+							<span className='text-xs sm:text-sm font-semibold text-gray-500 mr-1'>
+								জনপ্রিয় অনুসন্ধান:
+							</span>
+							{quickChips.map((chip) => (
+								<Link
+									key={chip.label}
+									href={`/marketplace?term=${encodeURIComponent(chip.term)}`}
+									className='px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-gray-100 hover:bg-[#F5B800] text-gray-700 hover:text-[#26351B] transition-colors duration-200 cursor-pointer'
+								>
+									{chip.label}
+								</Link>
+							))}
+						</div>
+					</motion.div>
+				</div>
 			</div>
 		</section>
 	);

@@ -27,7 +27,7 @@ const defaultFilters: ProductFilters = {
 	storeId: undefined,
 	productType: undefined,
 	page: 1,
-	limit: 9,
+	limit: 12,
 };
 
 export function MarketplaceContainer() {
@@ -51,7 +51,7 @@ export function MarketplaceContainer() {
 
 	// Pagination state
 	const [paginationMeta, setPaginationMeta] = useState<PaginationMeta>({
-		itemsPerPage: 9,
+		itemsPerPage: 12,
 		totalItems: 0,
 		currentPage: 1,
 		totalPages: 1,
@@ -294,7 +294,7 @@ export function MarketplaceContainer() {
 			<div className='max-w-7xl mx-auto py-4 md:py-6'>
 				{!isAuthenticated && <VendorBanner />}
 
-				<div className='flex flex-col md:flex-row gap-8 mt-8'>
+				<div className='flex flex-col md:flex-row gap-5 lg:gap-5 xl:gap-6 2xl:gap-8 mt-8'>
 					{/* Mobile filter button */}
 					{isMobile && (
 						<div className='flex justify-between items-center mb-6 pb-2 border-b border-gray-200/50'>
@@ -316,7 +316,7 @@ export function MarketplaceContainer() {
 									? 'fixed inset-0 z-50 bg-black/50'
 									: 'hidden'
 								: 'block'
-						} md:w-1/4`}
+						} w-full md:w-56 lg:w-56 xl:w-60 2xl:w-64 shrink-0`}
 					>
 						<div
 							className={`${
@@ -349,7 +349,7 @@ export function MarketplaceContainer() {
 					</div>
 
 					{/* Main content */}
-					<div className='w-full md:w-3/4'>
+					<div className='flex-1 min-w-0'>
 						{!isMobile && (
 							<div className="relative mb-8 group">
 								<h1 className='text-4xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[#2D331F] to-gray-500 hover:to-[#EAB308] transition-all duration-500'>
