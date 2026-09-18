@@ -117,7 +117,7 @@ export default function WeatherPage() {
 			{/* ==================================================== */}
 			{/* HERO SECTION                                         */}
 			{/* ==================================================== */}
-			<section className='relative bg-gradient-to-b from-[#37462A] via-[#2F3C23] to-[#37462A] text-white pt-28 sm:pt-36 pb-20 md:pb-24 w-full px-4 sm:px-6 lg:px-8 xl:px-20 2xl:px-12 overflow-hidden'>
+			<section className='relative bg-gradient-to-b from-[#37462A] via-[#2F3C23] to-[#37462A] text-white pt-28 sm:pt-36 pb-20 md:pb-24 w-full px-4 sm:px-6 lg:px-[10%] xl:px-[14%] 2xl:px-12 overflow-hidden'>
 				
 				{/* Background Glows & Floating Leaves */}
 				<div className='absolute inset-0 pointer-events-none z-0'>
@@ -247,7 +247,7 @@ export default function WeatherPage() {
 			{/* ==================================================== */}
 			{/* MAIN WEATHER DASHBOARD CONTAINER                      */}
 			{/* ==================================================== */}
-			<section className='w-full px-4 sm:px-6 lg:px-8 xl:px-20 2xl:px-12 relative z-20 -mt-10 md:-mt-14 space-y-8'>
+			<section className='w-full px-4 sm:px-6 lg:px-[10%] xl:px-[14%] 2xl:px-12 relative z-20 -mt-10 md:-mt-14 space-y-8'>
 				<div className='max-w-7xl mx-auto space-y-8'>
 					{/* Display Error Message if any */}
 					{error && (

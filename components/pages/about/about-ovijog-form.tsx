@@ -87,7 +87,7 @@ export function AboutOvijogForm() {
 	};
 
 	return (
-		<section className='w-full px-4 sm:px-6 lg:px-8 xl:px-20 2xl:px-12 py-16' id='ovijog-section'>
+		<section className='w-full px-4 sm:px-6 lg:px-[10%] xl:px-[14%] 2xl:px-12 py-16' id='ovijog-section'>
 			<div className='max-w-7xl mx-auto'>
 				{/* Section Header */}
 			<div className='text-center max-w-2xl mx-auto mb-12 space-y-3'>

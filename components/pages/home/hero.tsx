@@ -183,7 +183,7 @@ export function Hero() {
 			</div>
 
 			{/* --- SHARETRIP-INSPIRED LARGE & WIDE FLOATING SEARCH MODULE CARD OVERLAPPING HERO BOUNDARY --- */}
-			<div className='relative z-30 w-full max-w-[1240px] xl:max-w-[1300px] 2xl:max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 translate-y-1/2 -mt-16 sm:-mt-20 lg:-mt-24 mb-16 sm:mb-20'>
+			<div className='relative z-30 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-[10%] xl:px-[14%] 2xl:px-12 translate-y-1/2 -mt-16 sm:-mt-20 lg:-mt-24 mb-16 sm:mb-20'>
 				<motion.div
 					initial={{ opacity: 1, y: 0 }}
 					animate={{ opacity: 1, y: 0 }}

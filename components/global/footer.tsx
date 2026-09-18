@@ -52,7 +52,7 @@ export function Footer() {
 
     return (
         <>
-            <footer ref={footerRef} className="w-full px-4 sm:px-6 lg:px-8 xl:px-20 2xl:px-12 relative bg-[#37462A] text-white border-t border-white/10 overflow-hidden selection:bg-[#EAB308] selection:text-[#37462A]">
+            <footer ref={footerRef} className="w-full px-4 sm:px-6 lg:px-[10%] xl:px-[14%] 2xl:px-12 relative bg-[#37462A] text-white border-t border-white/10 overflow-hidden selection:bg-[#EAB308] selection:text-[#37462A]">
                 
                 {/* Background Decorations (Matching Banner Pattern) */}
                 <div className="absolute inset-0 pointer-events-none">

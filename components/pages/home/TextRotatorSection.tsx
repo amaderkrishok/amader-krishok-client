@@ -48,7 +48,7 @@ const valuePillars = [
 
 export function TextRotatorSection() {
   return (
-    <section className="w-full px-4 sm:px-6 lg:px-8 xl:px-20 2xl:px-12 bg-[#FDFBF7] py-16 sm:py-20 lg:py-24 border-y border-gray-200/80 relative overflow-hidden selection:bg-[#EAB308] selection:text-[#2D331F]">
+    <section className="w-full px-4 sm:px-6 lg:px-[10%] xl:px-[14%] 2xl:px-12 bg-[#FDFBF7] py-16 sm:py-20 lg:py-24 border-y border-gray-200/80 relative overflow-hidden selection:bg-[#EAB308] selection:text-[#2D331F]">
 
       {/* Background Soft Lighting Elements */}
       <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#EAB308]/5 rounded-full blur-3xl pointer-events-none" />

@@ -93,7 +93,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 			}
 
 			return (
-				<div className='container mx-auto px-4 py-8'>
+				<div className='w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-[10%] xl:px-[14%] 2xl:px-12 py-8 pt-28 md:pt-36'>
 					<SingleProductView product={product} />
 				</div>
 			);

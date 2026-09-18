@@ -6,7 +6,7 @@ import { Target, Compass } from 'lucide-react';
 
 export function AboutMission() {
 	return (
-		<section id='mission' className='w-full px-4 sm:px-6 lg:px-8 xl:px-20 2xl:px-12 bg-[#F7F9F4] py-16 md:py-24 scroll-mt-20'>
+		<section id='mission' className='w-full px-4 sm:px-6 lg:px-[10%] xl:px-[14%] 2xl:px-12 bg-[#F7F9F4] py-16 md:py-24 scroll-mt-20'>
 			<div className='max-w-7xl mx-auto'>
 				<div className='text-center max-w-2xl mx-auto mb-14'>
 					<h2 className='text-3xl sm:text-4xl font-extrabold text-[#1C2415] mb-4'>

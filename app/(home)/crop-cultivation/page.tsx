@@ -100,7 +100,7 @@ function CropCultivationContent() {
 		<div className='min-h-screen bg-[#FDFBF7] text-[#2D331F] selection:bg-[#EAB308] selection:text-[#2D331F]'>
 			
 			{/* --- HERO SECTION --- */}
-			<section className='relative bg-[#37462A] text-white pt-28 sm:pt-36 pb-16 sm:pb-20 w-full px-4 sm:px-6 lg:px-8 xl:px-20 2xl:px-12 overflow-hidden'>
+			<section className='relative bg-[#37462A] text-white pt-28 sm:pt-36 pb-16 sm:pb-20 w-full px-4 sm:px-6 lg:px-[10%] xl:px-[14%] 2xl:px-12 overflow-hidden'>
 				{/* Background Decorations */}
 				<div className='absolute inset-0 z-0 pointer-events-none'>
 					<div className='absolute top-[-20%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-[radial-gradient(circle,rgba(234,179,8,0.15)_0%,transparent_60%)]'></div>
@@ -184,7 +184,7 @@ function CropCultivationContent() {
 			</section>
 
 			{/* --- MAIN CONTENT WORKSPACE --- */}
-			<div className='w-full px-4 sm:px-6 lg:px-8 xl:px-20 2xl:px-12 -mt-6 relative z-20'>
+			<div className='w-full px-4 sm:px-6 lg:px-[10%] xl:px-[14%] 2xl:px-12 -mt-6 relative z-20'>
 				<div className='max-w-7xl mx-auto py-4 md:py-6 lg:py-8'>
 					<div className='flex flex-col lg:flex-row gap-6 lg:gap-8 items-start'>
 						
@@ -227,7 +227,7 @@ function CropCultivationContent() {
 			</div>
 
 			{/* --- BOTTOM CTA SECTION --- */}
-			<section className='w-full px-4 sm:px-6 lg:px-8 xl:px-20 2xl:px-12 py-16'>
+			<section className='w-full px-4 sm:px-6 lg:px-[10%] xl:px-[14%] 2xl:px-12 py-16'>
 				<div className='max-w-7xl mx-auto'>
 					<div className='bg-gradient-to-r from-[#4A5E3A] via-[#3D4F2E] to-[#4A5E3A] rounded-3xl p-8 sm:p-12 text-white shadow-2xl relative overflow-hidden border border-white/15 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-8'>
 						

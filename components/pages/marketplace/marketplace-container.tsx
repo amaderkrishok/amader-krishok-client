@@ -290,7 +290,7 @@ export function MarketplaceContainer() {
 	};
 
 	return (
-		<div className='min-h-screen w-full px-4 sm:px-6 lg:px-8 xl:px-20 2xl:px-12 pt-28 md:pt-36 pb-8 bg-gradient-to-br from-slate-50 via-white to-[#2D331F]/5'>
+		<div className='min-h-screen w-full px-4 sm:px-6 lg:px-[10%] xl:px-[14%] 2xl:px-12 pt-28 md:pt-36 pb-8 bg-gradient-to-br from-slate-50 via-white to-[#2D331F]/5'>
 			<div className='max-w-7xl mx-auto py-4 md:py-6'>
 				{!isAuthenticated && <VendorBanner />}
 

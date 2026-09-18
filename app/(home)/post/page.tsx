@@ -249,7 +249,7 @@ const PostsPageContent = () => {
 			/>
 
 			{/* MAIN CONTAINER */}
-			<div className='w-full px-4 sm:px-6 lg:px-8 xl:px-20 2xl:px-12 py-8 sm:py-12'>
+			<div className='w-full px-4 sm:px-6 lg:px-[10%] xl:px-[14%] 2xl:px-12 py-8 sm:py-12'>
 				<div className='max-w-7xl mx-auto'>
 					{/* PAGE INTRO SECTION */}
 					<div className='mb-8 sm:mb-10 border-b border-gray-200/80 pb-6'>
@@ -319,7 +319,7 @@ const PostsPageContent = () => {
 			</div>
 
 			{/* BOTTOM ECOSYSTEM CTA SECTION */}
-			<section className='w-full px-4 sm:px-6 lg:px-8 xl:px-20 2xl:px-12 py-12'>
+			<section className='w-full px-4 sm:px-6 lg:px-[10%] xl:px-[14%] 2xl:px-12 py-12'>
 				<div className='max-w-7xl mx-auto'>
 					<div className='bg-gradient-to-r from-[#4A5E3A] via-[#3D4F2E] to-[#4A5E3A] rounded-3xl p-8 sm:p-12 text-white shadow-2xl relative overflow-hidden border border-white/15 flex flex-col sm:flex-row items-center justify-between gap-8'>
 						<div className='space-y-3 max-w-xl text-center sm:text-left'>
