@@ -18,10 +18,10 @@ export function AboutHero() {
 
 	// Feature chips in hero
 	const featureChips = [
-		{ icon: '🌾', text: 'স্বচ্ছ বাজারব্যবস্থা' },
-		{ icon: '👨‍🌾', text: 'যাচাইকৃত কৃষক' },
-		{ icon: '🚚', text: 'সরাসরি সরবরাহ' },
-		{ icon: '🤝', text: 'মধ্যস্বত্বভোগীমুক্ত' },
+		{ text: 'স্বচ্ছ বাজারব্যবস্থা' },
+		{ text: 'যাচাইকৃত কৃষক' },
+		{ text: 'সরাসরি সরবরাহ' },
+		{ text: 'মধ্যস্বত্বভোগীমুক্ত' },
 	];
 
 	return (
@@ -67,7 +67,7 @@ export function AboutHero() {
 				>
 					<Sprout className='w-4 h-4 text-[#EAB308]' />
 					<span className='text-xs sm:text-sm font-semibold text-white/90'>
-						আমাদের কৃষক — কৃষকের সাথে, কৃষির পাশে
+						আমাদের কৃষক - কৃষকের সাথে, কৃষির পাশে
 					</span>
 				</motion.div>
 
@@ -99,12 +99,12 @@ export function AboutHero() {
 					className='flex flex-wrap items-center justify-center gap-2.5 pt-2'
 				>
 					{featureChips.map((chip, idx) => (
-						<span
+						<div
 							key={idx}
-							className='px-3.5 py-1.5 rounded-full bg-white/[0.08] border border-white/[0.12] backdrop-blur-md text-white/90 text-xs sm:text-sm font-medium shadow-xs'
+							className='inline-flex items-center px-4 py-1.5 rounded-full bg-white/[0.06] border border-white/10 backdrop-blur-md text-xs sm:text-sm font-medium text-gray-200'
 						>
-							{chip.icon} {chip.text}
-						</span>
+							<span>{chip.text}</span>
+						</div>
 					))}
 				</motion.div>
 

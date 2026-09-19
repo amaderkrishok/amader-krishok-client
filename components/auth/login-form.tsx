@@ -194,17 +194,17 @@ function LoginFormContent({
 		<div className={`min-h-screen w-full flex flex-col lg:flex-row overflow-x-hidden ${className}`} {...props}>
 			{/* LEFT PANEL: Hero Banner & Branding (Desktop Only / Stacked on Large Devices) */}
 			<div className='relative hidden lg:flex lg:w-1/2 bg-[#26331B] text-white flex-col justify-between p-8 xl:p-12 overflow-hidden min-h-screen'>
-				{/* Background Image with Subtle Scale Animation & Dark Overlay */}
+				{/* Background Image with Subtle Scale Animation & Enhanced Contrast Overlay */}
 				<div className='absolute inset-0 z-0 overflow-hidden'>
 					<Image
-						src='/images/hero_farmer_fresh_produce.jpg'
-						alt='Amader Krishok Banner'
+						src='https://images.unsplash.com/photo-1625246333195-78d9c38ad449?q=80&w=1400&auto=format&fit=crop'
+						alt='Amader Krishok Smart Farming'
 						fill
 						priority
-						className='object-cover object-center scale-105 transition-transform duration-10000 hover:scale-110 opacity-40'
+						className='object-cover object-center scale-105 transition-transform duration-10000 hover:scale-110 opacity-75'
 					/>
-					{/* Rich dark green gradient overlay */}
-					<div className='absolute inset-0 bg-gradient-to-t from-[#26331B] via-[#26331B]/85 to-[#26331B]/70 backdrop-blur-[1px]' />
+					{/* Rich green gradient overlay for high contrast and readability */}
+					<div className='absolute inset-0 bg-gradient-to-t from-[#152010] via-[#1B2813]/80 to-[#1B2813]/40' />
 				</div>
 
 				{/* Top Branding Section */}
@@ -218,6 +218,11 @@ function LoginFormContent({
 							className='h-auto w-[140px] xl:w-[160px] drop-shadow-md'
 						/>
 					</Link>
+
+					<div className='inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-xs font-semibold text-emerald-200 backdrop-blur-md'>
+						<span className='w-2 h-2 rounded-full bg-[#F5B800] animate-pulse' />
+						<span>যাচাইকৃত নিরাপদ প্ল্যাটফর্ম</span>
+					</div>
 				</div>
 
 				{/* Middle Hero Content */}
@@ -228,11 +233,11 @@ function LoginFormContent({
 						transition={{ duration: 0.6 }}
 						className='space-y-4'
 					>
-						<div className='inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 text-xs xl:text-sm font-medium backdrop-blur-sm'>
-							<Sprout className='w-4 h-4 text-[#FACC15]' />
-							<span>ডিজিটাল কৃষি প্ল্যাটফর্ম</span>
+						<div className='inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#F5B800]/20 border border-[#F5B800]/40 text-[#F5B800] text-xs xl:text-sm font-bold backdrop-blur-md shadow-xs'>
+							<Sprout className='w-4 h-4 text-[#F5B800]' />
+							<span>বাংলাদেশের ১ম স্মার্ট ডিজিটাল কৃষকের বাজার</span>
 						</div>
-						<h1 className='text-3xl xl:text-5xl font-black tracking-tight text-white leading-tight'>
+						<h1 className='text-3xl xl:text-5xl font-extrabold tracking-tight text-white leading-tight drop-shadow-sm'>
 							কৃষকের ডিজিটাল সঙ্গী
 						</h1>
 						<p className='text-emerald-100/90 text-sm xl:text-base leading-relaxed font-normal'>
@@ -247,29 +252,29 @@ function LoginFormContent({
 						transition={{ duration: 0.6, delay: 0.2 }}
 						className='grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2'
 					>
-						<div className='flex items-center gap-2.5 p-3 rounded-2xl bg-white/10 border border-white/15 backdrop-blur-md hover:bg-white/15 transition-all'>
-							<div className='p-2 rounded-xl bg-[#22C55E]/20 text-[#FACC15] shrink-0'>
+						<div className='flex items-center gap-2.5 p-3 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-md hover:bg-white/20 transition-all'>
+							<div className='p-2 rounded-xl bg-[#F5B800]/20 text-[#F5B800] shrink-0'>
 								<Sprout className='w-5 h-5' />
 							</div>
-							<div className='text-xs xl:text-sm font-semibold text-white leading-snug'>
+							<div className='text-xs xl:text-sm font-bold text-white leading-snug'>
 								কৃষি তথ্য ও পরামর্শ
 							</div>
 						</div>
 
-						<div className='flex items-center gap-2.5 p-3 rounded-2xl bg-white/10 border border-white/15 backdrop-blur-md hover:bg-white/15 transition-all'>
-							<div className='p-2 rounded-xl bg-[#22C55E]/20 text-[#FACC15] shrink-0'>
+						<div className='flex items-center gap-2.5 p-3 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-md hover:bg-white/20 transition-all'>
+							<div className='p-2 rounded-xl bg-[#F5B800]/20 text-[#F5B800] shrink-0'>
 								<CloudSun className='w-5 h-5' />
 							</div>
-							<div className='text-xs xl:text-sm font-semibold text-white leading-snug'>
+							<div className='text-xs xl:text-sm font-bold text-white leading-snug'>
 								আবহাওয়া আপডেট
 							</div>
 						</div>
 
-						<div className='flex items-center gap-2.5 p-3 rounded-2xl bg-white/10 border border-white/15 backdrop-blur-md hover:bg-white/15 transition-all'>
-							<div className='p-2 rounded-xl bg-[#22C55E]/20 text-[#FACC15] shrink-0'>
+						<div className='flex items-center gap-2.5 p-3 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-md hover:bg-white/20 transition-all'>
+							<div className='p-2 rounded-xl bg-[#F5B800]/20 text-[#F5B800] shrink-0'>
 								<UserCheck className='w-5 h-5' />
 							</div>
-							<div className='text-xs xl:text-sm font-semibold text-white leading-snug'>
+							<div className='text-xs xl:text-sm font-bold text-white leading-snug'>
 								কৃষক সেবা
 							</div>
 						</div>
@@ -277,10 +282,10 @@ function LoginFormContent({
 				</div>
 
 				{/* Bottom Motto */}
-				<div className='relative z-10 pt-4 border-t border-white/10 flex items-center justify-between text-xs xl:text-sm text-emerald-200/80 font-medium'>
-					<span>স্মার্ট কৃষি, উন্নত ভবিষ্যৎ</span>
+				<div className='relative z-10 pt-4 border-t border-white/15 flex items-center justify-between text-xs xl:text-sm text-emerald-200/90 font-medium'>
+					<span>স্মার্ট কৃষি • উন্নত ভবিষ্যৎ</span>
 					<span className='text-white/40'>•</span>
-					<span className='text-emerald-300/90'>আমাদের কৃষক</span>
+					<span className='text-[#F5B800] font-semibold'>আমাদের কৃষক</span>
 				</div>
 			</div>
 

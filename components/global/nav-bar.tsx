@@ -62,7 +62,7 @@ export function NavBar() {
 								key={item.href}
 								href={item.href}
 								className={`
-                text-white px-1.5 lg:px-1.5 xl:px-2 2xl:px-3 py-1 lg:py-1.5 2xl:py-2 rounded-md text-xs lg:text-[11px] xl:text-xs 2xl:text-base font-medium whitespace-nowrap
+                text-white px-1.5 lg:px-1.5 xl:px-2 2xl:px-3 py-1 lg:py-1.5 2xl:py-2 rounded-md text-xs lg:text-[13px] xl:text-[14.5px] 2xl:text-base font-medium lg:font-semibold xl:font-semibold 2xl:font-medium whitespace-nowrap
                 transition-colors duration-200
                 ${
 									pathname === item.href

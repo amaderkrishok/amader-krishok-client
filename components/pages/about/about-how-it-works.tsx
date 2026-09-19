@@ -43,7 +43,7 @@ export function AboutHowItWorks() {
 					</h2>
 					<div className='w-20 h-1 bg-[#EAB308] mx-auto rounded-full mb-4' />
 					<p className='text-slate-600 text-base sm:text-lg font-medium leading-relaxed'>
-						কৃষক থেকে আপনার ঘর পর্যন্ত — সহজ, স্বচ্ছ ও নির্ভরযোগ্য একটি প্রক্রিয়া।
+						কৃষক থেকে আপনার ঘর পর্যন্ত - সহজ, স্বচ্ছ ও নির্ভরযোগ্য একটি প্রক্রিয়া।
 					</p>
 				</div>
 

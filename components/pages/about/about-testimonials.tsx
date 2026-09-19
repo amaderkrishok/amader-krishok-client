@@ -11,8 +11,8 @@ const testimonials = [
 		name: 'মোঃ রফিকুল ইসলাম',
 		role: 'কৃষক',
 		location: 'বগুড়া',
-		avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop',
-		fallback: 'রি',
+		avatar: 'https://images.unsplash.com/photo-1595152772835-219674b2a8a6?auto=format&fit=crop&q=80&w=200',
+		fallback: 'র',
 		rating: 5,
 		quote: 'আমাদের কৃষক প্ল্যাটফর্মের মাধ্যমে সরাসরি ক্রেতার কাছে ভালো দামে ধান ও সবজি বিক্রি করতে পারছি। মধ্যস্বত্বভোগীদের ঝামেলা থেকে মুক্তি পেয়েছি।',
 	},
@@ -21,20 +21,20 @@ const testimonials = [
 		name: 'আনোয়ার হোসেন',
 		role: 'খামারি',
 		location: 'রংপুর',
-		avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=200&auto=format&fit=crop',
-		fallback: 'আন',
-		rating: 5,
+		avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200',
+		fallback: 'আ',
+		rating: 4,
 		quote: 'ফসল চাষের তথ্য জানা এবং ভালো মানের কৃষিপণ্য সংগ্রহ করা এখন অনেক সহজ হয়ে গেছে। সার ক্যালকুলেটর আমাদের অনেক কাজে দেয়।',
 	},
 	{
 		id: 3,
-		name: 'নুসরাত জাহান',
+		name: 'তানভীর আহমেদ',
 		role: 'ক্রেতা',
 		location: 'ঢাকা',
-		avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200&auto=format&fit=crop',
-		fallback: 'নু',
-		rating: 5,
-		quote: 'সতেজ ও কেমিক্যাল-মুক্ত শাকসবজি সরাসরি কৃষকের কাছ থেকে ঘরে বসে অর্ডার করতে পারি। পণ্যের কোয়ালিটি সত্যিই প্রশংসনীয়।',
+		avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=200',
+		fallback: 'তা',
+		rating: 3,
+		quote: 'সতেজ ও কেমিক্যাল-মুক্ত শাকসবজি সরাসরি কৃষকের কাছ থেকে ঘরে বসে অর্ডার করতে পারি। পণ্যের মান ভালো, তবে ডেলিভারি আরও দ্রুত প্রত্যাশা করি।',
 	},
 ];
 
@@ -74,8 +74,15 @@ export function AboutTestimonials() {
 							<div>
 								{/* Rating Stars */}
 								<div className='flex items-center gap-1 mb-4'>
-									{Array.from({ length: item.rating }).map((_, i) => (
-										<Star key={i} className='w-4 h-4 fill-[#EAB308] text-[#EAB308]' />
+									{Array.from({ length: 5 }).map((_, i) => (
+										<Star
+											key={i}
+											className={`w-4 h-4 ${
+												i < item.rating
+													? 'fill-[#EAB308] text-[#EAB308]'
+													: 'text-gray-200 fill-gray-200'
+											}`}
+										/>
 									))}
 								</div>
 

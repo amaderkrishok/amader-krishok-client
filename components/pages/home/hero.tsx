@@ -105,7 +105,7 @@ export function Hero() {
 	}, [router]);
 
 	return (
-		<section className='relative w-full min-h-[600px] sm:min-h-[660px] lg:min-h-[700px] flex flex-col justify-between overflow-visible bg-[#1B2813] select-none pt-28 sm:pt-32 lg:pt-36 pb-12 sm:pb-16'>
+		<section className='relative w-full min-h-[600px] sm:min-h-[660px] lg:min-h-[560px] xl:min-h-[580px] 2xl:min-h-[700px] flex flex-col justify-between overflow-visible bg-[#1B2813] select-none pt-28 sm:pt-32 lg:pt-28 xl:pt-32 2xl:pt-36 pb-12 sm:pb-16'>
 			{/* --- Real Agriculture Background Video --- */}
 			<div className='absolute inset-0 z-0 w-full h-full overflow-hidden bg-[#1B2813]'>
 				<video
@@ -148,11 +148,11 @@ export function Hero() {
 					transition={{ duration: 0.5, delay: 0.1, ease: 'easeOut' }}
 					className='space-y-3 max-w-4xl'
 				>
-					<h1 className='text-[36px] lg:mt-20 sm:text-[52px] md:text-[60px] lg:text-[64px] font-extrabold text-white leading-[1.10] tracking-tight drop-shadow-sm'>
+					<h1 className='text-[36px] sm:text-[52px] md:text-[60px] lg:text-[44px] xl:text-[48px] 2xl:text-[64px] lg:mt-6 xl:mt-8 2xl:mt-20 font-extrabold text-white leading-[1.12] tracking-tight drop-shadow-sm'>
 						কোনো মধ্যস্বত্বভোগী নেই
 					</h1>
 
-					<p className='text-white/90 text-[15px] sm:text-[18px] md:text-[19px] font-normal leading-relaxed max-w-[800px] mx-auto drop-shadow-sm'>
+					<p className='text-white/90 text-[15px] sm:text-[18px] md:text-[19px] lg:text-[16px] xl:text-[17px] 2xl:text-[19px] font-normal leading-relaxed max-w-[800px] mx-auto drop-shadow-sm'>
 						বাংলাদেশের ৪২টি জেলার যাচাইকৃত কৃষকদের প্রোফাইল ঘুরে দেখুন, সরাসরি কথা বলুন এবং নিজেই দরদাম করে কিনুন।
 					</p>
 				</motion.div>
