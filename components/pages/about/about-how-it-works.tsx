@@ -33,7 +33,7 @@ const steps = [
 
 export function AboutHowItWorks() {
 	return (
-		<section className='w-full px-4 sm:px-6 lg:px-8 xl:px-20 2xl:px-12 bg-white py-16 md:py-24 border-t border-[#2D331F]/10 relative overflow-hidden'>
+		<section className='w-full px-4 sm:px-6 lg:px-[10%] xl:px-[14%] 2xl:px-12 bg-white py-16 md:py-24 border-t border-[#2D331F]/10 relative overflow-hidden'>
 			<div className='max-w-7xl mx-auto'>
 				
 				{/* Section Header */}
@@ -43,7 +43,7 @@ export function AboutHowItWorks() {
 					</h2>
 					<div className='w-20 h-1 bg-[#EAB308] mx-auto rounded-full mb-4' />
 					<p className='text-slate-600 text-base sm:text-lg font-medium leading-relaxed'>
-						কৃষক থেকে আপনার ঘর পর্যন্ত — সহজ, স্বচ্ছ ও নির্ভরযোগ্য একটি প্রক্রিয়া।
+						কৃষক থেকে আপনার ঘর পর্যন্ত - সহজ, স্বচ্ছ ও নির্ভরযোগ্য একটি প্রক্রিয়া।
 					</p>
 				</div>
 

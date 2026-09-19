@@ -19,53 +19,49 @@ export default function CropCalculatorPage() {
 
 	// Feature chips in hero
 	const featureChips = [
-		{ icon: '🌾', text: 'সরকারি নির্দেশিকা' },
-		{ icon: '📍', text: 'নির্ভুল হিসাব' },
-		{ icon: '⚡', text: 'দ্রুত ফলাফল' },
-		{ icon: '🌱', text: 'সহজ ব্যবহার' },
+		{ text: 'সরকারি নির্দেশিকা' },
+		{ text: 'নির্ভুল হিসাব' },
+		{ text: 'দ্রুত ফলাফল' },
+		{ text: 'সহজ ব্যবহার' },
 	];
 
 	// Info cards below calculator
 	const infoCards = [
 		{
 			icon: ShieldCheck,
-			title: '🌾 সরকারি সুপারিশ',
+			title: 'সরকারি সুপারিশ',
 			desc: 'কৃষি সম্প্রসারণ অধিদপ্তর অনুমোদিত আধুনিক নির্দেশিকা।',
 		},
 		{
 			icon: Target,
-			title: '📍 নির্ভুল হিসাব',
+			title: 'নির্ভুল হিসাব',
 			desc: 'জমির শতাংশ ও বিঘা অনুযায়ী নিখুঁত সারের পরিমাণ।',
 		},
 		{
 			icon: Zap,
-			title: '⚡ দ্রুত ফলাফল',
+			title: 'দ্রুত ফলাফল',
 			desc: 'এক নিমেষেই পেয়ে যান প্রয়োজনীয় সারের সম্পূর্ণ তালিকা।',
 		},
 		{
 			icon: Sprout,
-			title: '🌱 উন্নত ফলন',
+			title: 'উন্নত ফলন',
 			desc: 'সঠিক সার ব্যবহারে ফসলের সর্বোচ্চ উৎপাদন নিশ্চিত হয়।',
 		},
 	];
 
 	return (
-		<div className='min-h-screen bg-[#F8F8F8] text-[#2A351F] selection:bg-[#FBBF24] selection:text-[#1E2817] font-sans overflow-x-hidden'>
+		<div className='min-h-screen bg-[#FDFBF7] text-[#2D331F] selection:bg-[#FBBF24] selection:text-[#2D331F] font-sans'>
 			
 			{/* ==================================================== */}
 			{/* HERO SECTION                                         */}
 			{/* ==================================================== */}
-			<section className='relative bg-gradient-to-b from-[#37462A] via-[#2F3C23] to-[#37462A] text-white pt-28 sm:pt-36 pb-20 md:pb-24 w-full px-4 sm:px-6 lg:px-8 xl:px-20 2xl:px-12 overflow-hidden'>
+			<section className='relative bg-gradient-to-b from-[#37462A] via-[#2F3C23] to-[#37462A] text-white pt-28 sm:pt-36 pb-20 md:pb-24 w-full px-4 sm:px-6 lg:px-[10%] xl:px-[14%] 2xl:px-12 overflow-hidden'>
 				
-				{/* Background Decorations & Soft Glows */}
+				{/* Background Glows & Floating Leaves */}
 				<div className='absolute inset-0 pointer-events-none z-0'>
-					{/* Radial Glow Top Left */}
 					<div className='absolute top-[-10%] left-[-5%] w-[45vw] h-[45vw] rounded-full bg-[radial-gradient(circle,rgba(251,191,36,0.12)_0%,transparent_60%)] blur-2xl' />
-					
-					{/* Radial Glow Bottom Right */}
 					<div className='absolute bottom-[-10%] right-[-5%] w-[45vw] h-[45vw] rounded-full bg-[radial-gradient(circle,rgba(76,175,80,0.12)_0%,transparent_60%)] blur-2xl' />
 
-					{/* Low Opacity Floating Leaves */}
 					{floatingLeaves.map((leaf, i) => (
 						<motion.div
 							key={i}
@@ -99,7 +95,7 @@ export default function CropCalculatorPage() {
 						transition={{ duration: 0.4 }}
 						className='inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.08] border border-white/[0.12] backdrop-blur-md shadow-xs'
 					>
-						<span className='text-sm sm:text-base'>🌱</span>
+						<Sprout className='w-4 h-4 text-[#FBBF24]' />
 						<span className='text-xs sm:text-sm font-semibold text-[#FBBF24] tracking-wide'>
 							কৃষি সহায়ক টুল
 						</span>
@@ -135,9 +131,8 @@ export default function CropCalculatorPage() {
 						{featureChips.map((chip, index) => (
 							<div
 								key={index}
-								className='px-4 py-2 rounded-full bg-white/[0.08] border border-white/[0.12] backdrop-blur-md text-white/90 text-xs sm:text-sm font-medium hover:bg-white/[0.15] hover:border-white/[0.25] hover:scale-105 transition-all duration-300 cursor-default shadow-xs flex items-center gap-1.5'
+								className='px-4 py-2 rounded-full bg-white/[0.08] border border-white/[0.12] backdrop-blur-md text-white/90 text-xs sm:text-sm font-medium hover:bg-white/[0.15] hover:border-white/[0.25] hover:scale-105 transition-all duration-300 cursor-default shadow-xs flex items-center'
 							>
-								<span>{chip.icon}</span>
 								<span>{chip.text}</span>
 							</div>
 						))}
@@ -149,7 +144,7 @@ export default function CropCalculatorPage() {
 			{/* ==================================================== */}
 			{/* CALCULATOR CARD                                      */}
 			{/* ==================================================== */}
-			<section className='w-full px-4 sm:px-6 lg:px-8 xl:px-20 2xl:px-12 relative z-20 -mt-10 md:-mt-14'>
+			<section className='w-full px-4 sm:px-6 lg:px-[10%] xl:px-[14%] 2xl:px-12 relative z-20 -mt-10 md:-mt-14'>
 				<div className='max-w-7xl mx-auto'>
 					<motion.div
 						initial={{ opacity: 0, y: 30 }}
@@ -165,7 +160,7 @@ export default function CropCalculatorPage() {
 			{/* ==================================================== */}
 			{/* INFO CARDS SECTION                                   */}
 			{/* ==================================================== */}
-			<section className='w-full px-4 sm:px-6 lg:px-8 xl:px-20 2xl:px-12 mt-16 mb-16'>
+			<section className='w-full px-4 sm:px-6 lg:px-[10%] xl:px-[14%] 2xl:px-12 mt-16 mb-16'>
 				<div className='max-w-7xl mx-auto'>
 					<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6'>
 						{infoCards.map((card, idx) => {
@@ -198,7 +193,7 @@ export default function CropCalculatorPage() {
 			{/* ==================================================== */}
 			{/* HELP SECTION                                         */}
 			{/* ==================================================== */}
-			<section className='w-full px-4 sm:px-6 lg:px-8 xl:px-20 2xl:px-12 mb-20'>
+			<section className='w-full px-4 sm:px-6 lg:px-[10%] xl:px-[14%] 2xl:px-12 mb-20'>
 				<div className='max-w-7xl mx-auto'>
 					<motion.div
 						initial={{ opacity: 0, y: 30 }}

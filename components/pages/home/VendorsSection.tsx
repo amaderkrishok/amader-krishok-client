@@ -95,7 +95,7 @@ export function VendorsSection() {
   const activeVendorList = stores.length > 0 ? stores : fallbackVendors;
 
   return (
-    <section className="w-full px-4 sm:px-6 lg:px-8 xl:px-20 2xl:px-12 py-16 sm:py-20 bg-[#F5F3EA] text-[#172033] relative overflow-hidden border-b border-gray-200/80">
+    <section className="w-full px-4 sm:px-6 lg:px-[10%] xl:px-[14%] 2xl:px-12 py-16 sm:py-20 bg-[#F5F3EA] text-[#172033] relative overflow-hidden border-b border-gray-200/80">
       <div className="max-w-7xl mx-auto relative z-10">
         
         {/* Section Header */}

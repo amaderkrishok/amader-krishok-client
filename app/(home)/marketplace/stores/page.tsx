@@ -26,17 +26,19 @@ export default async function StoresPage() {
 		};
 
 		return (
-			<div className='container mx-auto px-4 py-8'>
-				<div className='mb-8'>
-					<h1 className='text-3xl font-bold mb-2'>কৃষকের বাজারের দোকানসমূহ</h1>
-					<p className='text-gray-600'>
-						আমাদের কৃষকের বাজারে যোগদান করা সকল দোকানের তালিকা দেখুন এবং সরাসরি
-						কৃষকদের কাছ থেকে তাজা পণ্য কিনুন।
-					</p>
-				</div>
+			<div className='w-full px-4 sm:px-6 lg:px-[10%] xl:px-[14%] 2xl:px-12 py-8 pt-28 md:pt-36'>
+				<div className='max-w-7xl mx-auto'>
+					<div className='mb-8'>
+						<h1 className='text-3xl font-bold mb-2'>কৃষকের বাজারের দোকানসমূহ</h1>
+						<p className='text-gray-600'>
+							আমাদের কৃষকের বাজারে যোগদান করা সকল দোকানের তালিকা দেখুন এবং সরাসরি
+							কৃষকদের কাছ থেকে তাজা পণ্য কিনুন।
+						</p>
+					</div>
 
-				{/* StoresContainer will handle pagination and displaying the stores */}
-				<StoresContainer initialStores={stores} initialMeta={meta} />
+					{/* StoresContainer will handle pagination and displaying the stores */}
+					<StoresContainer initialStores={stores} initialMeta={meta} />
+				</div>
 			</div>
 		);
 	} catch (error) {
