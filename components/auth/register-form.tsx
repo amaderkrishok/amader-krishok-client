@@ -203,7 +203,7 @@ export function RegisterForm({
 				{/* Background Image with Subtle Scale Animation & Contrast Overlay */}
 				<div className='absolute inset-0 z-0 overflow-hidden'>
 					<Image
-						src='https://images.unsplash.com/photo-1597916829826-02e5bb4a54e0?q=80&w=1400&auto=format&fit=crop'
+						src='https://images.unsplash.com/photo-1589923188651-268a9765e432?q=80&w=1400&auto=format&fit=crop'
 						alt='Amader Krishok Registration Banner'
 						fill
 						priority

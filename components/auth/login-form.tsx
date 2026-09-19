@@ -197,7 +197,7 @@ function LoginFormContent({
 				{/* Background Image with Subtle Scale Animation & Enhanced Contrast Overlay */}
 				<div className='absolute inset-0 z-0 overflow-hidden'>
 					<Image
-						src='https://images.unsplash.com/photo-1625246333195-78d9c38ad449?q=80&w=1400&auto=format&fit=crop'
+						src='https://images.unsplash.com/photo-1574943320219-553eb213f72d?q=80&w=1400&auto=format&fit=crop'
 						alt='Amader Krishok Smart Farming'
 						fill
 						priority
