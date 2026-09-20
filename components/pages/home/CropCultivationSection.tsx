@@ -18,6 +18,28 @@ interface CropCardItem {
   badge: string;
 }
 
+const getCropImage = (name: string, index: number): string => {
+  const lower = name.toLowerCase();
+  if (lower.includes('ধান') || lower.includes('চাল') || lower.includes('rice') || lower.includes('paddy')) {
+    return '/images/Dhan.avif';
+  }
+  if (lower.includes('আলু') || lower.includes('potato')) {
+    return 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&q=80&w=800';
+  }
+  if (lower.includes('টমেটো') || lower.includes('tomato')) {
+    return 'https://images.unsplash.com/photo-1592924357228-91a4daadcfea?auto=format&fit=crop&q=80&w=800';
+  }
+  if (lower.includes('গম') || lower.includes('wheat')) {
+    return 'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&q=80&w=800';
+  }
+  const fallbacks = [
+    'https://images.unsplash.com/photo-1592924357228-91a4daadcfea?auto=format&fit=crop&q=80&w=800',
+    '/images/Dhan.avif',
+    'https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&q=80&w=800',
+  ];
+  return fallbacks[index % fallbacks.length];
+};
+
 const defaultFallbackCrops: CropCardItem[] = [
   {
     id: '1',
@@ -26,7 +48,7 @@ const defaultFallbackCrops: CropCardItem[] = [
     stagesCount: 4,
     diseaseCount: 3,
     description: 'উন্নত প্রযুক্তিতে টমেটো চাষ, জমি প্রস্তুতি, সুষম সার প্রয়োগ ও নাবি ধসা রোগ দমন।',
-    image: 'https://images.unsplash.com/photo-1592924357228-91a4daadcfea?auto=format&fit=crop&q=80&w=600',
+    image: 'https://images.unsplash.com/photo-1592924357228-91a4daadcfea?auto=format&fit=crop&q=80&w=800',
     badge: 'জনপ্রিয় ফসল',
   },
   {
@@ -36,7 +58,7 @@ const defaultFallbackCrops: CropCardItem[] = [
     stagesCount: 5,
     diseaseCount: 4,
     description: 'বীজ শোধন, চারা রোপণ, সেচ ব্যবস্থাপনা ও মাজরা পোকা দমনের বৈজ্ঞানিক উপায়।',
-    image: 'https://images.unsplash.com/photo-1536304993881-ff6e9eefa2a6?auto=format&fit=crop&q=80&w=600',
+    image: '/images/Dhan.avif',
     badge: 'প্রধান খাদ্যশস্য',
   },
   {
@@ -46,7 +68,7 @@ const defaultFallbackCrops: CropCardItem[] = [
     stagesCount: 4,
     diseaseCount: 3,
     description: 'উচ্চ ফলনশীল জাত নির্বাচন, সুষম সার এবং লেইট ব্লাইট মড়ক রোগ প্রতিরোধ।',
-    image: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&q=80&w=600',
+    image: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&q=80&w=800',
     badge: 'উচ্চ ফলনশীল',
   },
 ];
@@ -72,12 +94,7 @@ export function CropCultivationSection() {
           stagesCount: c.cultivations?.length || 4,
           diseaseCount: c.diseases?.length || 3,
           description: `${c.name} চাষের উন্নত প্রযুক্তি, পর্যায়ক্রমিক জমি প্রস্তুত, সার প্রয়োগ ও রোগ-বালাই প্রতিরোধ নির্দেশিকা।`,
-          image:
-            i === 0
-              ? 'https://images.unsplash.com/photo-1592924357228-91a4daadcfea?auto=format&fit=crop&q=80&w=600'
-              : i === 1
-              ? 'https://images.unsplash.com/photo-1536304993881-ff6e9eefa2a6?auto=format&fit=crop&q=80&w=600'
-              : 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&q=80&w=600',
+          image: getCropImage(c.name, i),
           badge: i === 0 ? 'জনপ্রিয় ফসল' : i === 1 ? 'প্রধান খাদ্যশস্য' : 'উচ্চ ফলনশীল',
         }));
         setCrops(formatted);
