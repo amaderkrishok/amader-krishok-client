@@ -200,17 +200,17 @@ export function RegisterForm({
 		<div className='min-h-screen w-full flex flex-col lg:flex-row overflow-x-hidden'>
 			{/* LEFT PANEL: Agricultural Hero Banner & Branding (Desktop Only) */}
 			<div className='relative hidden lg:flex lg:w-1/2 bg-[#26331B] text-white flex-col justify-between p-8 xl:p-12 overflow-hidden min-h-screen'>
-				{/* Background Image with Subtle Scale Animation & Overlay */}
+				{/* Background Image with Subtle Scale Animation & Contrast Overlay */}
 				<div className='absolute inset-0 z-0 overflow-hidden'>
 					<Image
-						src='/images/hero_farmer_fresh_produce.jpg'
+						src='https://images.unsplash.com/photo-1589923188651-268a9765e432?q=80&w=1400&auto=format&fit=crop'
 						alt='Amader Krishok Registration Banner'
 						fill
 						priority
-						className='object-cover object-center scale-105 transition-transform duration-10000 hover:scale-110 opacity-40'
+						className='object-cover object-center scale-105 transition-transform duration-10000 hover:scale-110 opacity-75'
 					/>
-					{/* Dark green gradient overlay */}
-					<div className='absolute inset-0 bg-gradient-to-t from-[#26331B] via-[#26331B]/85 to-[#26331B]/70 backdrop-blur-[1px]' />
+					{/* Rich green gradient overlay */}
+					<div className='absolute inset-0 bg-gradient-to-t from-[#152010] via-[#1B2813]/80 to-[#1B2813]/40' />
 				</div>
 
 				{/* Top Branding Section */}
@@ -224,6 +224,11 @@ export function RegisterForm({
 							className='h-auto w-[140px] xl:w-[160px] drop-shadow-md'
 						/>
 					</Link>
+
+					<div className='inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-xs font-semibold text-emerald-200 backdrop-blur-md'>
+						<span className='w-2 h-2 rounded-full bg-[#F5B800] animate-pulse' />
+						<span>সরাসরি কৃষক ও ক্রেতার মিলনমেলা</span>
+					</div>
 				</div>
 
 				{/* Middle Hero Content */}
@@ -234,15 +239,15 @@ export function RegisterForm({
 						transition={{ duration: 0.6 }}
 						className='space-y-4'
 					>
-						<div className='inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 text-xs xl:text-sm font-medium backdrop-blur-sm'>
-							<Sprout className='w-4 h-4 text-[#FACC15]' />
-							<span>ডিজিটাল কৃষি প্ল্যাটফর্ম</span>
+						<div className='inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#F5B800]/20 border border-[#F5B800]/40 text-[#F5B800] text-xs xl:text-sm font-bold backdrop-blur-md shadow-xs'>
+							<Sprout className='w-4 h-4 text-[#F5B800]' />
+							<span>নতুন অ্যাকাউন্টে স্বাগতম</span>
 						</div>
-						<h1 className='text-3xl xl:text-5xl font-black tracking-tight text-white leading-tight'>
+						<h1 className='text-3xl xl:text-5xl font-extrabold tracking-tight text-white leading-tight drop-shadow-sm'>
 							কৃষির নতুন সম্ভাবনার সাথে যুক্ত হোন
 						</h1>
 						<p className='text-emerald-100/90 text-sm xl:text-base leading-relaxed font-normal'>
-							আধুনিক প্রযুক্তি, কৃষি তথ্য ও প্রয়োজনীয় সেবার মাধ্যমে আপনার কৃষিকাজকে আরও সহজ ও স্মার্ট করুন।
+							আধুনিক প্রযুক্তি, সঠিক কৃষি তথ্য ও প্রয়োজনীয় সেবার মাধ্যমে আপনার কেনাবেচা এবং কৃষিকাজকে আরও সহজ ও লাভজনক করুন।
 						</p>
 					</motion.div>
 
@@ -253,40 +258,40 @@ export function RegisterForm({
 						transition={{ duration: 0.6, delay: 0.2 }}
 						className='grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2'
 					>
-						<div className='flex items-center gap-2.5 p-3 rounded-2xl bg-white/10 border border-white/15 backdrop-blur-md hover:bg-white/15 transition-all'>
-							<div className='p-2 rounded-xl bg-[#22C55E]/20 text-[#FACC15] shrink-0'>
+						<div className='flex items-center gap-2.5 p-3 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-md hover:bg-white/20 transition-all'>
+							<div className='p-2 rounded-xl bg-[#F5B800]/20 text-[#F5B800] shrink-0'>
 								<Sprout className='w-5 h-5' />
 							</div>
-							<div className='text-xs xl:text-sm font-semibold text-white leading-snug'>
-								কৃষি তথ্য ও পরামর্শ
+							<div className='text-xs xl:text-sm font-bold text-white leading-snug'>
+								সরাসরি কৃষিপণ্য
 							</div>
 						</div>
 
-						<div className='flex items-center gap-2.5 p-3 rounded-2xl bg-white/10 border border-white/15 backdrop-blur-md hover:bg-white/15 transition-all'>
-							<div className='p-2 rounded-xl bg-[#22C55E]/20 text-[#FACC15] shrink-0'>
+						<div className='flex items-center gap-2.5 p-3 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-md hover:bg-white/20 transition-all'>
+							<div className='p-2 rounded-xl bg-[#F5B800]/20 text-[#F5B800] shrink-0'>
 								<CloudSun className='w-5 h-5' />
 							</div>
-							<div className='text-xs xl:text-sm font-semibold text-white leading-snug'>
-								আবহাওয়া ও পূর্বাভাস
+							<div className='text-xs xl:text-sm font-bold text-white leading-snug'>
+								স্মার্ট ক্যালকুলেটর
 							</div>
 						</div>
 
-						<div className='flex items-center gap-2.5 p-3 rounded-2xl bg-white/10 border border-white/15 backdrop-blur-md hover:bg-white/15 transition-all'>
-							<div className='p-2 rounded-xl bg-[#22C55E]/20 text-[#FACC15] shrink-0'>
+						<div className='flex items-center gap-2.5 p-3 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-md hover:bg-white/20 transition-all'>
+							<div className='p-2 rounded-xl bg-[#F5B800]/20 text-[#F5B800] shrink-0'>
 								<UserCheck className='w-5 h-5' />
 							</div>
-							<div className='text-xs xl:text-sm font-semibold text-white leading-snug'>
-								কৃষকের প্রয়োজনীয় সেবা
+							<div className='text-xs xl:text-sm font-bold text-white leading-snug'>
+								নিরাপদ লেনদেন
 							</div>
 						</div>
 					</motion.div>
 				</div>
 
 				{/* Bottom Motto */}
-				<div className='relative z-10 pt-4 border-t border-white/10 flex items-center justify-between text-xs xl:text-sm text-emerald-200/80 font-medium'>
+				<div className='relative z-10 pt-4 border-t border-white/15 flex items-center justify-between text-xs xl:text-sm text-emerald-200/90 font-medium'>
 					<span>স্মার্ট কৃষি • উন্নত ভবিষ্যৎ</span>
 					<span className='text-white/40'>•</span>
-					<span className='text-emerald-300/90'>আমাদের কৃষক</span>
+					<span className='text-[#F5B800] font-semibold'>আমাদের কৃষক</span>
 				</div>
 			</div>
 
@@ -324,35 +329,61 @@ export function RegisterForm({
 						initial={{ opacity: 0, y: 15 }}
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ duration: 0.5 }}
-						className='w-full max-w-[500px] bg-white rounded-[20px] border border-[#E2E8F0] shadow-xl shadow-emerald-950/[0.04] p-6 sm:p-8 xl:p-9 space-y-6'
+						className='w-full max-w-[500px] bg-white rounded-[24px] border border-[#E2E8F0] shadow-xl shadow-emerald-950/[0.05] p-6 sm:p-8 xl:p-9 space-y-5'
 					>
+						{/* Role Selection Tabs (For general users/vendors) */}
+						{(role === 'user' || role === 'vendor') && (
+							<div className='flex p-1 bg-gray-100/90 rounded-2xl border border-gray-200/80 mb-1'>
+								<Link
+									href='/auth/register'
+									className={`flex-1 py-2 text-center text-xs sm:text-sm font-bold rounded-xl transition-all duration-200 ${
+										role === 'user'
+											? 'bg-white text-[#26331B] shadow-sm'
+											: 'text-gray-500 hover:text-gray-800'
+									}`}
+								>
+									ক্রেতা / সাধারণ সদস্য
+								</Link>
+								<Link
+									href='/auth/register/vendor'
+									className={`flex-1 py-2 text-center text-xs sm:text-sm font-bold rounded-xl transition-all duration-200 ${
+										role === 'vendor'
+											? 'bg-[#26331B] text-[#F5B800] shadow-sm'
+											: 'text-gray-500 hover:text-gray-800'
+									}`}
+								>
+									খামারি / বিক্রেতা
+								</Link>
+							</div>
+						)}
+
 						{/* Top Card Icon & Heading */}
-						<div className='text-center space-y-2'>
+						<div className='text-center space-y-1.5'>
 							<div className='mx-auto w-12 h-12 rounded-2xl bg-[#DCFCE7] flex items-center justify-center text-[#22C55E] shadow-xs border border-emerald-200/50'>
 								<UserPlus className='w-6 h-6' />
 							</div>
 							<h2 className='text-2xl sm:text-3xl font-extrabold text-[#172033] tracking-tight'>
 								{role === 'admin'
-									? 'এডমিন অ্যাকাউন্ট তৈরি করুন'
+									? 'এডমিন অ্যাকাউন্ট তৈরি'
 									: role === 'vendor'
-									? 'বিক্রেতা অ্যাকাউন্ট তৈরি করুন'
+									? 'সেলার / খামারি অ্যাকাউন্ট'
 									: role === 'modreator'
-									? 'মডারেটর অ্যাকাউন্ট তৈরি করুন'
-									: 'অ্যাকাউন্ট তৈরি করুন'}
+									? 'মডারেটর অ্যাকাউন্ট তৈরি'
+									: 'নতুন অ্যাকাউন্ট তৈরি করুন'}
 							</h2>
 							<p className='text-xs sm:text-sm text-[#64748B] font-normal leading-relaxed'>
 								{role === 'admin'
 									? 'এডমিন হিসেবে যুক্ত হতে নিচের তথ্যগুলো পূরণ করুন।'
 									: role === 'vendor'
-									? 'আমাদের কৃষক প্ল্যাটফর্মে পণ্য বিক্রি করতে তথ্য প্রদান করুন।'
+									? 'আমাদের প্ল্যাটফর্মে পণ্য বিক্রি করতে তথ্য প্রদান করুন।'
 									: role === 'modreator'
 									? 'মডারেটর হিসেবে যুক্ত হতে নিচের তথ্যগুলো পূরণ করুন।'
-									: 'Amader Krishok-এ যুক্ত হতে নিচের তথ্যগুলো পূরণ করুন।'}
+									: 'নিচের তথ্য দিয়ে সহজে অ্যাকাউন্ট তৈরি করুন।'}
 							</p>
 						</div>
 
 						{/* Form */}
-						<form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4 sm:space-y-5'>
+						<form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4 sm:space-y-4.5'>
 							{/* Name Input */}
 							<div className='space-y-1.5 text-left'>
 								<Label htmlFor='name' className='text-xs sm:text-sm font-semibold text-[#172033]'>

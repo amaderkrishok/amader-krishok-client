@@ -31,8 +31,8 @@ const farmerFeatures = [
 
 export function AboutFarmers() {
 	return (
-		<section className='bg-[#F7F9F4] py-16 md:py-24 border-t border-[#2D331F]/10'>
-			<div className='max-w-7xl mx-auto px-6 lg:px-12'>
+		<section className='w-full px-4 sm:px-6 lg:px-[10%] xl:px-[14%] 2xl:px-12 bg-[#F7F9F4] py-16 md:py-24 border-t border-[#2D331F]/10'>
+			<div className='max-w-7xl mx-auto'>
 				<div className='grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center'>
 					
 					{/* Left Column - Text Content */}

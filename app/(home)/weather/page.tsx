@@ -10,6 +10,8 @@ import { Input } from '@/components/ui/input';
 import { Search, Leaf, MapPin, AlertCircle, RefreshCw } from 'lucide-react';
 import { motion } from 'framer-motion';
 
+export const dynamic = 'force-dynamic';
+
 export default function WeatherPage() {
 	const [error, setError] = useState('');
 	const [weatherdata, setWeatherdata] = useState<any>(null);
@@ -115,7 +117,7 @@ export default function WeatherPage() {
 			{/* ==================================================== */}
 			{/* HERO SECTION                                         */}
 			{/* ==================================================== */}
-			<section className='relative bg-gradient-to-b from-[#37462A] via-[#2F3C23] to-[#37462A] text-white pt-28 sm:pt-36 pb-20 md:pb-24 px-4 sm:px-6 lg:px-8 overflow-hidden'>
+			<section className='relative bg-gradient-to-b from-[#37462A] via-[#2F3C23] to-[#37462A] text-white pt-28 sm:pt-36 pb-20 md:pb-24 w-full px-4 sm:px-6 lg:px-[10%] xl:px-[14%] 2xl:px-12 overflow-hidden'>
 				
 				{/* Background Glows & Floating Leaves */}
 				<div className='absolute inset-0 pointer-events-none z-0'>
@@ -144,7 +146,8 @@ export default function WeatherPage() {
 					))}
 				</div>
 
-				<div className='relative z-10 max-w-[760px] mx-auto text-center space-y-6'>
+				<div className='relative z-10 max-w-7xl mx-auto'>
+					<div className='max-w-[760px] mx-auto text-center space-y-6'>
 					
 					{/* Top Glass Badge */}
 					<motion.div
@@ -237,58 +240,60 @@ export default function WeatherPage() {
 							</button>
 						))}
 					</motion.div>
+					</div>
 				</div>
 			</section>
 
 			{/* ==================================================== */}
 			{/* MAIN WEATHER DASHBOARD CONTAINER                      */}
 			{/* ==================================================== */}
-			<section className='relative z-20 -mt-10 md:-mt-14 px-4 max-w-6xl mx-auto space-y-8'>
-				
-				{/* Display Error Message if any */}
-				{error && (
-					<motion.div
-						initial={{ opacity: 0, y: -10 }}
-						animate={{ opacity: 1, y: 0 }}
-						className='max-w-2xl mx-auto bg-red-50 text-red-700 p-4 rounded-2xl text-center border border-red-200 shadow-sm flex items-center justify-center gap-2 font-semibold text-sm'
-					>
-						<AlertCircle className='w-5 h-5 text-red-500' />
-						<span>{error}</span>
-					</motion.div>
-				)}
+			<section className='w-full px-4 sm:px-6 lg:px-[10%] xl:px-[14%] 2xl:px-12 relative z-20 -mt-10 md:-mt-14 space-y-8'>
+				<div className='max-w-7xl mx-auto space-y-8'>
+					{/* Display Error Message if any */}
+					{error && (
+						<motion.div
+							initial={{ opacity: 0, y: -10 }}
+							animate={{ opacity: 1, y: 0 }}
+							className='max-w-2xl mx-auto bg-red-50 text-red-700 p-4 rounded-2xl text-center border border-red-200 shadow-sm flex items-center justify-center gap-2 font-semibold text-sm'
+						>
+							<AlertCircle className='w-5 h-5 text-red-500' />
+							<span>{error}</span>
+						</motion.div>
+					)}
 
-				{/* Loading State */}
-				{initialLoading && (
-					<div className='bg-white rounded-[28px] p-12 text-center border border-gray-100 shadow-xl max-w-2xl mx-auto space-y-4'>
-						<div className='w-12 h-12 border-4 border-[#4CAF50] border-t-transparent rounded-full animate-spin mx-auto' />
-						<p className='text-gray-600 font-bold text-base'>
-							আবহাওয়ার তথ্য লোড করা হচ্ছে...
-						</p>
-					</div>
-				)}
-
-				{/* Weather Dashboard Workspace */}
-				{weatherdata && !initialLoading && (
-					<div className='space-y-8 min-w-0'>
-						{/* Top Grid: Current Weather (2 cols) & Right Column (1 col) */}
-						<div className='grid grid-cols-1 xl:grid-cols-3 gap-8 items-start min-w-0'>
-							{/* Main Left Block */}
-							<div className='xl:col-span-2 space-y-8 min-w-0'>
-								<CurrentWeather data={weatherdata} />
-								<WeatherOverview data={weatherdata} />
-							</div>
-
-							{/* Right Sidebar Block */}
-							<div className='space-y-8 min-w-0'>
-								<AirQualityCard data={weatherdata} />
-								<WeatherForecast data={weatherdata} />
-							</div>
+					{/* Loading State */}
+					{initialLoading && (
+						<div className='bg-white rounded-[28px] p-12 text-center border border-gray-100 shadow-xl max-w-2xl mx-auto space-y-4'>
+							<div className='w-12 h-12 border-4 border-[#4CAF50] border-t-transparent rounded-full animate-spin mx-auto' />
+							<p className='text-gray-600 font-bold text-base'>
+								আবহাওয়ার তথ্য লোড করা হচ্ছে...
+							</p>
 						</div>
+					)}
 
-						{/* Bottom Dedicated Smart Farming Recommendations Section */}
-						<SmartFarmingRecommendations data={weatherdata} />
-					</div>
-				)}
+					{/* Weather Dashboard Workspace */}
+					{weatherdata && !initialLoading && (
+						<div className='space-y-8 min-w-0'>
+							{/* Top Grid: Current Weather (2 cols) & Right Column (1 col) */}
+							<div className='grid grid-cols-1 xl:grid-cols-3 gap-8 items-start min-w-0'>
+								{/* Main Left Block */}
+								<div className='xl:col-span-2 space-y-8 min-w-0'>
+									<CurrentWeather data={weatherdata} />
+									<WeatherOverview data={weatherdata} />
+								</div>
+
+								{/* Right Sidebar Block */}
+								<div className='space-y-8 min-w-0'>
+									<AirQualityCard data={weatherdata} />
+									<WeatherForecast data={weatherdata} />
+								</div>
+							</div>
+
+							{/* Bottom Dedicated Smart Farming Recommendations Section */}
+							<SmartFarmingRecommendations data={weatherdata} />
+						</div>
+					)}
+				</div>
 			</section>
 
 		</div>

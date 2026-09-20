@@ -107,9 +107,9 @@ export function ProductCard({ product }: ProductCardProps) {
 
 				{/* Discount Badge - Requirement #7: Gold/Cream instead of Red */}
 				{priceInfo.hasDiscount && (
-					<div className='absolute top-2.5 left-2.5 z-10'>
-						<span className='inline-flex items-center gap-1 px-2.5 py-1 bg-[#FFF4CC] text-[#B45309] border border-[#FDE68A] text-[10px] font-extrabold rounded-full shadow-xs backdrop-blur-xs'>
-							<Clock className='h-3 w-3 text-[#B45309]' />
+					<div className='absolute top-2 left-2 sm:top-2.5 sm:left-2.5 z-10'>
+						<span className='inline-flex items-center gap-0.5 sm:gap-1 px-1.5 sm:px-2.5 py-0.5 sm:py-1 bg-[#FFF4CC] text-[#B45309] border border-[#FDE68A] text-[9px] sm:text-[10px] font-extrabold rounded-full shadow-xs backdrop-blur-xs'>
+							<Clock className='h-2.5 w-2.5 sm:h-3 sm:w-3 text-[#B45309]' />
 							{Math.round(((priceInfo.price - (priceInfo.discountPrice || 0)) / priceInfo.price) * 100)}% ছাড়
 						</span>
 					</div>
@@ -126,14 +126,14 @@ export function ProductCard({ product }: ProductCardProps) {
 						}
 						toggleSaveProduct(product);
 					}}
-					className={`absolute top-2.5 right-2.5 p-2 rounded-full backdrop-blur-md transition-all duration-300 z-20 hover:scale-110 shadow-xs ${
+					className={`absolute top-2 right-2 sm:top-2.5 sm:right-2.5 p-1.5 sm:p-2 rounded-full backdrop-blur-md transition-all duration-300 z-20 hover:scale-110 shadow-xs ${
 						isSaved 
 							? 'bg-[#28321A]/10 text-[#28321A] border border-[#28321A]/20' 
 							: 'bg-white/90 text-gray-400 hover:text-[#28321A] hover:bg-white border border-gray-200/60'
 					}`}
 					aria-label={isSaved ? 'Remove from saved' : 'Save product'}
 				>
-					<Bookmark className={`h-4 w-4 ${isSaved ? 'fill-[#28321A] text-[#28321A]' : ''}`} />
+					<Bookmark className={`h-3.5 w-3.5 sm:h-4 sm:w-4 ${isSaved ? 'fill-[#28321A] text-[#28321A]' : ''}`} />
 				</button>
 
 				{/* Carousel Controls */}
@@ -144,55 +144,55 @@ export function ProductCard({ product }: ProductCardProps) {
 								e.preventDefault();
 								prevImage();
 							}}
-							className='absolute left-2 top-1/2 -translate-y-1/2 bg-white/90 backdrop-blur-xs text-gray-800 p-1.5 rounded-full hover:bg-white hover:text-[#F4B400] shadow-sm opacity-0 group-hover/card:opacity-100 transition-all duration-300 z-20 hover:scale-105'
+							className='absolute left-1.5 top-1/2 -translate-y-1/2 bg-white/90 backdrop-blur-xs text-gray-800 p-1 sm:p-1.5 rounded-full hover:bg-white hover:text-[#F4B400] shadow-sm opacity-0 group-hover/card:opacity-100 transition-all duration-300 z-20 hover:scale-105'
 							aria-label='আগের ছবি'
 						>
-							<ChevronLeft className='h-4 w-4' />
+							<ChevronLeft className='h-3.5 w-3.5 sm:h-4 sm:w-4' />
 						</button>
 						<button
 							onClick={(e) => {
 								e.preventDefault();
 								nextImage();
 							}}
-							className='absolute right-2 top-1/2 -translate-y-1/2 bg-white/90 backdrop-blur-xs text-gray-800 p-1.5 rounded-full hover:bg-white hover:text-[#F4B400] shadow-sm opacity-0 group-hover/card:opacity-100 transition-all duration-300 z-20 hover:scale-105'
+							className='absolute right-1.5 top-1/2 -translate-y-1/2 bg-white/90 backdrop-blur-xs text-gray-800 p-1 sm:p-1.5 rounded-full hover:bg-white hover:text-[#F4B400] shadow-sm opacity-0 group-hover/card:opacity-100 transition-all duration-300 z-20 hover:scale-105'
 							aria-label='পরের ছবি'
 						>
-							<ChevronRight className='h-4 w-4' />
+							<ChevronRight className='h-3.5 w-3.5 sm:h-4 sm:w-4' />
 						</button>
 					</>
 				)}
 			</div>
 
 			{/* Product Info */}
-			<CardContent className='flex-grow p-3.5 pb-2 flex flex-col justify-between space-y-2'>
+			<CardContent className='flex-grow p-3 xl:p-2.5 2xl:p-3 pb-2 flex flex-col justify-between space-y-1.5 xl:space-y-1 2xl:space-y-2'>
 				<div>
 					<Link href={`/marketplace/product/${product.id}`} className='block group/title'>
-						<h3 className='font-bold text-sm text-[#172033] group-hover/title:text-[#28321A] transition-colors line-clamp-1 leading-snug'>
+						<h3 className='font-bold text-xs sm:text-sm text-[#172033] group-hover/title:text-[#28321A] transition-colors line-clamp-1 leading-snug'>
 							{product.name}
 						</h3>
 					</Link>
 
 					{/* Rating Stars & Reviews */}
-					<div className='flex items-center gap-1.5 mt-1.5 mb-2'>
+					<div className='flex items-center gap-1 sm:gap-1.5 mt-1 mb-1.5'>
 						<div className='flex items-center text-amber-500'>
-							<Star className={`h-3.5 w-3.5 ${ratingSummary && ratingSummary.averageRating > 0 ? 'fill-[#F4B400] text-[#F4B400]' : 'text-gray-300'}`} />
+							<Star className={`h-3 w-3 sm:h-3.5 sm:w-3.5 ${ratingSummary && ratingSummary.averageRating > 0 ? 'fill-[#F4B400] text-[#F4B400]' : 'text-gray-300'}`} />
 						</div>
-						<span className='text-[11px] font-bold text-[#172033]'>
+						<span className='text-[10px] sm:text-[11px] font-bold text-[#172033]'>
 							{ratingSummary ? ratingSummary.averageRating.toFixed(1) : '০.০'}
 						</span>
-						<span className='text-[10px] text-[#667085] font-medium'>
+						<span className='text-[9px] sm:text-[10px] text-[#667085] font-medium'>
 							({ratingSummary?.totalReviews ?? 0} রিভিউ)
 						</span>
 					</div>
 
 					{/* Trust & Availability Badges */}
-					<div className='flex flex-wrap items-center gap-1.5 mb-2'>
-						<span className='inline-flex items-center gap-0.5 text-[10px] font-bold text-[#16A34A] bg-[#16A34A]/10 px-2 py-0.5 rounded border border-[#16A34A]/20'>
-							<CheckCircle2 className='w-3 h-3' />
+					<div className='flex flex-wrap items-center gap-1 sm:gap-1.5 mb-1.5'>
+						<span className='inline-flex items-center gap-0.5 text-[9px] sm:text-[10px] font-bold text-[#16A34A] bg-[#16A34A]/10 px-1.5 sm:px-2 py-0.5 rounded border border-[#16A34A]/20'>
+							<CheckCircle2 className='w-2.5 h-2.5 sm:w-3 sm:h-3' />
 							যাচাইকৃত পণ্য
 						</span>
-						<span className='inline-flex items-center gap-0.5 text-[10px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-100'>
-							<Package className='w-3 h-3' />
+						<span className='inline-flex items-center gap-0.5 text-[9px] sm:text-[10px] font-bold text-blue-700 bg-blue-50 px-1.5 sm:px-2 py-0.5 rounded border border-blue-100'>
+							<Package className='w-2.5 h-2.5 sm:w-3 sm:h-3' />
 							Available
 						</span>
 					</div>
@@ -202,15 +202,15 @@ export function ProductCard({ product }: ProductCardProps) {
 				<div className='pt-1 border-t border-gray-100 flex items-baseline gap-2'>
 					{priceInfo.hasDiscount ? (
 						<div className='flex items-baseline gap-1.5 flex-wrap'>
-							<span className='font-extrabold text-lg text-[#172033] leading-none'>
+							<span className='font-extrabold text-base sm:text-lg text-[#172033] leading-none'>
 								{priceInfo.formattedDiscountPrice}
 							</span>
-							<span className='text-gray-400 line-through text-xs font-medium leading-none'>
+							<span className='text-gray-400 line-through text-[11px] sm:text-xs font-medium leading-none'>
 								{priceInfo.formattedPrice}
 							</span>
 						</div>
 					) : (
-						<span className='font-extrabold text-lg text-[#172033] leading-none'>
+						<span className='font-extrabold text-base sm:text-lg text-[#172033] leading-none'>
 							{priceInfo.formattedPrice}
 						</span>
 					)}
@@ -218,23 +218,23 @@ export function ProductCard({ product }: ProductCardProps) {
 			</CardContent>
 
 			{/* 9. ADD TO CART BUTTON (Full Width Warm Gold #F4B400 with Dark Olive #28321A Text) */}
-			<CardFooter className='p-3.5 pt-0 mt-auto bg-transparent'>
+			<CardFooter className='p-3 xl:p-2.5 2xl:p-3 pt-0 mt-auto bg-transparent'>
 				<Button 
 					size='sm' 
 					onClick={handleAddToCart} 
 					disabled={!canPurchase}
-					className={`w-full h-10 px-3 rounded-xl transition-all duration-200 font-bold text-xs shadow-xs hover:shadow-md active:scale-98 group/btn border-0 ${
+					className={`w-full h-8 sm:h-9 xl:h-8.5 2xl:h-9 px-2 rounded-xl transition-all duration-200 font-bold text-xs shadow-xs hover:shadow-md active:scale-98 group/btn border-0 ${
 						!canPurchase 
 							? 'bg-gray-100 text-gray-400 cursor-not-allowed' 
 							: 'bg-[#F4B400] hover:bg-[#E5A700] text-[#28321A] hover:-translate-y-0.5'
 					}`}
 				>
-					<ShoppingCart className='h-4 w-4 mr-1.5 group-hover/btn:rotate-12 transition-transform text-[#28321A]' />
+					<ShoppingCart className='h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1.5 group-hover/btn:rotate-12 transition-transform text-[#28321A]' />
 					{!canPurchase
 						? 'অননুমোদিত'
 						: product.productType === 'VARIABLE'
 						? 'বিকল্প দেখুন'
-						: '🛒 কার্টে যোগ করুন'}
+						: 'কার্টে যোগ করুন'}
 				</Button>
 			</CardFooter>
 		</Card>

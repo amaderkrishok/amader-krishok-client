@@ -18,6 +18,28 @@ interface CropCardItem {
   badge: string;
 }
 
+const getCropImage = (name: string, index: number): string => {
+  const lower = name.toLowerCase();
+  if (lower.includes('ধান') || lower.includes('চাল') || lower.includes('rice') || lower.includes('paddy')) {
+    return '/images/Dhan.avif';
+  }
+  if (lower.includes('আলু') || lower.includes('potato')) {
+    return 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&q=80&w=800';
+  }
+  if (lower.includes('টমেটো') || lower.includes('tomato')) {
+    return 'https://images.unsplash.com/photo-1592924357228-91a4daadcfea?auto=format&fit=crop&q=80&w=800';
+  }
+  if (lower.includes('গম') || lower.includes('wheat')) {
+    return 'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&q=80&w=800';
+  }
+  const fallbacks = [
+    'https://images.unsplash.com/photo-1592924357228-91a4daadcfea?auto=format&fit=crop&q=80&w=800',
+    '/images/Dhan.avif',
+    'https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&q=80&w=800',
+  ];
+  return fallbacks[index % fallbacks.length];
+};
+
 const defaultFallbackCrops: CropCardItem[] = [
   {
     id: '1',
@@ -26,7 +48,7 @@ const defaultFallbackCrops: CropCardItem[] = [
     stagesCount: 4,
     diseaseCount: 3,
     description: 'উন্নত প্রযুক্তিতে টমেটো চাষ, জমি প্রস্তুতি, সুষম সার প্রয়োগ ও নাবি ধসা রোগ দমন।',
-    image: 'https://images.unsplash.com/photo-1592924357228-91a4daadcfea?auto=format&fit=crop&q=80&w=600',
+    image: 'https://images.unsplash.com/photo-1592924357228-91a4daadcfea?auto=format&fit=crop&q=80&w=800',
     badge: 'জনপ্রিয় ফসল',
   },
   {
@@ -36,7 +58,7 @@ const defaultFallbackCrops: CropCardItem[] = [
     stagesCount: 5,
     diseaseCount: 4,
     description: 'বীজ শোধন, চারা রোপণ, সেচ ব্যবস্থাপনা ও মাজরা পোকা দমনের বৈজ্ঞানিক উপায়।',
-    image: 'https://images.unsplash.com/photo-1536304993881-ff6e9eefa2a6?auto=format&fit=crop&q=80&w=600',
+    image: '/images/Dhan.avif',
     badge: 'প্রধান খাদ্যশস্য',
   },
   {
@@ -46,7 +68,7 @@ const defaultFallbackCrops: CropCardItem[] = [
     stagesCount: 4,
     diseaseCount: 3,
     description: 'উচ্চ ফলনশীল জাত নির্বাচন, সুষম সার এবং লেইট ব্লাইট মড়ক রোগ প্রতিরোধ।',
-    image: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&q=80&w=600',
+    image: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&q=80&w=800',
     badge: 'উচ্চ ফলনশীল',
   },
 ];
@@ -72,12 +94,7 @@ export function CropCultivationSection() {
           stagesCount: c.cultivations?.length || 4,
           diseaseCount: c.diseases?.length || 3,
           description: `${c.name} চাষের উন্নত প্রযুক্তি, পর্যায়ক্রমিক জমি প্রস্তুত, সার প্রয়োগ ও রোগ-বালাই প্রতিরোধ নির্দেশিকা।`,
-          image:
-            i === 0
-              ? 'https://images.unsplash.com/photo-1592924357228-91a4daadcfea?auto=format&fit=crop&q=80&w=600'
-              : i === 1
-              ? 'https://images.unsplash.com/photo-1536304993881-ff6e9eefa2a6?auto=format&fit=crop&q=80&w=600'
-              : 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&q=80&w=600',
+          image: getCropImage(c.name, i),
           badge: i === 0 ? 'জনপ্রিয় ফসল' : i === 1 ? 'প্রধান খাদ্যশস্য' : 'উচ্চ ফলনশীল',
         }));
         setCrops(formatted);
@@ -94,12 +111,12 @@ export function CropCultivationSection() {
   }, [fetchDynamicCrops]);
 
   return (
-    <section className="py-16 sm:py-24 bg-gradient-to-b from-[#FAF9F3] via-white to-[#FAF9F3] text-[#172033] relative overflow-hidden border-b border-gray-200/60">
+    <section className="w-full px-4 sm:px-6 lg:px-[10%] xl:px-[14%] 2xl:px-12 py-16 sm:py-24 bg-gradient-to-b from-[#FAF9F3] via-white to-[#FAF9F3] text-[#172033] relative overflow-hidden border-b border-gray-200/60">
       {/* Soft Background Accents */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-[#F5B800]/10 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#3F6212]/10 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-7xl mx-auto relative z-10">
         
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
