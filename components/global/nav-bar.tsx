@@ -40,7 +40,7 @@ export function NavBar() {
 	const dashboardPath = user ? getRedirectPathByRole(user.role) : '/auth/login';
 
 	return (
-		<nav className='w-full px-4 sm:px-6 lg:px-[10%] xl:px-[14%] 2xl:px-12 py-3.5 2xl:py-4 bg-[#37462A] fixed top-0 left-0 z-50 shadow-lg border-b border-white/10 transition-colors duration-300'>
+		<nav className='w-full px-4 sm:px-6 lg:px-[10%] xl:px-[14%] 2xl:px-12 py-1 lg:py-1.5 2xl:py-2 bg-[#37462A] fixed top-0 left-0 z-50 shadow-md border-b border-white/10 transition-colors duration-300'>
 			<div className='max-w-7xl mx-auto flex items-center justify-between'>
 				{/* Logo */}
 				<Link href='/' className='flex items-center space-x-2 shrink-0'>
@@ -49,7 +49,7 @@ export function NavBar() {
 						width={130}
 						height={60}
 						alt='Logo'
-						className='transition-transform duration-300 hover:scale-105 w-[100px] lg:w-[110px] 2xl:w-[130px] h-auto'
+						className='transition-transform duration-300 hover:scale-105 w-[80px] lg:w-[88px] 2xl:w-[105px] h-auto'
 					/>
 				</Link>
 
@@ -62,7 +62,7 @@ export function NavBar() {
 								key={item.href}
 								href={item.href}
 								className={`
-                text-white px-1.5 lg:px-1.5 xl:px-2 2xl:px-3 py-1 lg:py-1.5 2xl:py-2 rounded-md text-xs lg:text-[13px] xl:text-[14.5px] 2xl:text-base font-medium lg:font-semibold xl:font-semibold 2xl:font-medium whitespace-nowrap
+                text-white px-1.5 lg:px-1.5 xl:px-2 2xl:px-3 py-1 2xl:py-1.5 rounded-md text-xs lg:text-[13px] xl:text-[14px] 2xl:text-base font-medium lg:font-semibold xl:font-semibold 2xl:font-medium whitespace-nowrap
                 transition-colors duration-200
                 ${
 									pathname === item.href
@@ -79,12 +79,12 @@ export function NavBar() {
 					{/* Cart Icon Button */}
 					<button
 						onClick={toggleCart}
-						className='relative text-white hover:text-[#EAB308] p-1.5 2xl:p-2 rounded-full hover:bg-white/10 transition-all focus:outline-none'
+						className='relative text-white hover:text-[#EAB308] p-1 2xl:p-1.5 rounded-full hover:bg-white/10 transition-all focus:outline-none'
 						aria-label='কার্ট দেখুন'
 					>
-						<ShoppingCart className='h-5 w-5 2xl:h-6 2xl:w-6' />
+						<ShoppingCart className='h-4.5 w-4.5 2xl:h-5.5 2xl:w-5.5' />
 						{itemCount > 0 && (
-							<span className='absolute -top-1 -right-1 bg-rose-500 text-white text-[10px] 2xl:text-[11px] font-black rounded-full h-4.5 w-4.5 2xl:h-5 2xl:w-5 flex items-center justify-center border-2 border-[#2D331F]'>
+							<span className='absolute -top-1 -right-1 bg-rose-500 text-white text-[10px] 2xl:text-[11px] font-black rounded-full h-4 w-4 2xl:h-4.5 2xl:w-4.5 flex items-center justify-center border-2 border-[#2D331F]'>
 								{itemCount}
 							</span>
 						)}
@@ -94,7 +94,7 @@ export function NavBar() {
 					<Button
 						asChild
 						variant='outline'
-						className='bg-white/10 hover:bg-white/20 text-white border-white/20 hover:text-white text-xs 2xl:text-sm px-2.5 2xl:px-4 py-1.5 2xl:py-2 h-auto'
+						className='bg-white/10 hover:bg-white/20 text-white border-white/20 hover:text-white text-xs 2xl:text-sm px-2.5 2xl:px-3.5 py-1 2xl:py-1.5 h-auto'
 					>
 						<Link href={dashboardPath} className='flex items-center gap-1.5'>
 							{isAuthenticated ? (
