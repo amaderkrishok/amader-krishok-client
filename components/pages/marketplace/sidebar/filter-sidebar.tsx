@@ -70,8 +70,8 @@ export function FilterSidebar({
 	};
 
 	return (
-		<div className='bg-white/90 backdrop-blur-xl p-4 sm:p-5 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 border border-[#F5B800]/40 h-full flex flex-col gap-5 relative overflow-hidden group/sidebar'>
-			<div className="absolute top-0 right-0 w-32 h-32 bg-[#2D331F]/5 rounded-full blur-3xl -z-10 group-hover/sidebar:bg-[#EAB308]/5 transition-colors duration-700"></div>
+		<div className='bg-white/95 backdrop-blur-xl p-4 sm:p-5 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-500 border border-gray-200/80 h-full flex flex-col gap-5 relative overflow-hidden group/sidebar'>
+			<div className="absolute top-0 right-0 w-32 h-32 bg-[#2D331F]/5 rounded-full blur-3xl -z-10 group-hover/sidebar:bg-emerald-500/5 transition-colors duration-700"></div>
 			{onClose && (
 				<div className='flex justify-between items-center mb-2'>
 					<h2 className='text-xl font-bold text-gray-900'>ফিল্টার</h2>
@@ -83,9 +83,9 @@ export function FilterSidebar({
 
 			<div className='space-y-4 sm:space-y-5'>
 				{/* Search */}
-				<div className='bg-white p-4 rounded-xl shadow-xs border-2 border-[#F5B800]/50 hover:border-[#F5B800] transition-all duration-300 relative overflow-hidden'>
+				<div className='bg-white p-4 rounded-xl shadow-xs border border-gray-200/80 hover:border-gray-300 transition-all duration-300 relative overflow-hidden'>
 					<h3 className='text-md font-bold text-gray-800 mb-3 flex items-center gap-2'>
-						<span className='w-1.5 h-4 bg-[#F5B800] rounded-full inline-block'></span>
+						<span className='w-1.5 h-4 bg-[#26351B] rounded-full inline-block'></span>
 						অনুসন্ধান
 					</h3>
 					<div className='relative group'>
@@ -93,7 +93,7 @@ export function FilterSidebar({
 							placeholder='পণ্য খুঁজুন...'
 							value={localSearchTerm}
 							onChange={handleSearchChange}
-							className='w-full pr-9 bg-white border border-[#F5B800]/50 focus:ring-2 focus:ring-[#F5B800]/30 focus:border-[#F5B800] transition-all rounded-xl shadow-inner'
+							className='w-full pr-9 bg-gray-50/50 border border-gray-200/90 focus:bg-white focus:ring-2 focus:ring-[#22C55E]/20 focus:border-[#22C55E] transition-all rounded-xl shadow-inner'
 						/>
 						{localSearchTerm && (
 							<button
@@ -118,9 +118,9 @@ export function FilterSidebar({
 				</div>
 
 				{/* Categories */}
-				<div className='bg-white p-4 rounded-xl shadow-xs border-2 border-[#F5B800]/50 hover:border-[#F5B800] transition-all duration-300 relative overflow-hidden'>
+				<div className='bg-white p-4 rounded-xl shadow-xs border border-gray-200/80 hover:border-gray-300 transition-all duration-300 relative overflow-hidden'>
 					<h3 className='text-md font-bold text-gray-800 mb-3 flex items-center gap-2'>
-						<span className='w-1.5 h-4 bg-[#F5B800] rounded-full inline-block'></span>
+						<span className='w-1.5 h-4 bg-[#26351B] rounded-full inline-block'></span>
 						বিভাগসমূহ
 					</h3>
 					{isLoading ? (
@@ -141,17 +141,17 @@ export function FilterSidebar({
 				</div>
 
 				{/* Price Range */}
-				<div className='bg-white p-4 rounded-xl shadow-xs border-2 border-[#F5B800]/50 hover:border-[#F5B800] transition-all duration-300 relative overflow-hidden'>
+				<div className='bg-white p-4 rounded-xl shadow-xs border border-gray-200/80 hover:border-gray-300 transition-all duration-300 relative overflow-hidden'>
 					<h3 className='text-md font-bold text-gray-800 mb-4 flex items-center gap-2'>
-						<span className='w-1.5 h-4 bg-[#F5B800] rounded-full inline-block'></span>
+						<span className='w-1.5 h-4 bg-[#26351B] rounded-full inline-block'></span>
 						মূল্য সীমা
 					</h3>
-					<div className='flex items-center justify-between mb-4 bg-white p-2 rounded-lg border border-[#F5B800]/40'>
-						<span className='text-sm font-extrabold text-[#172033] bg-[#F5B800]/20 border border-[#F5B800]/40 px-2.5 py-1 rounded-md'>
+					<div className='flex items-center justify-between mb-4 bg-gray-50/70 p-2 rounded-lg border border-gray-200/80'>
+						<span className='text-sm font-bold text-[#172033] bg-white border border-gray-200/90 shadow-2xs px-2.5 py-1 rounded-md'>
 							{localPriceRange[0]} ৳
 						</span>
-						<span className='text-gray-300'>-</span>
-						<span className='text-sm font-extrabold text-[#172033] bg-[#F5B800]/20 border border-[#F5B800]/40 px-2.5 py-1 rounded-md'>
+						<span className='text-gray-400'>-</span>
+						<span className='text-sm font-bold text-[#172033] bg-white border border-gray-200/90 shadow-2xs px-2.5 py-1 rounded-md'>
 							{localPriceRange[1]} ৳
 						</span>
 					</div>
