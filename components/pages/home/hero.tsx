@@ -16,6 +16,8 @@ import {
 	BookOpen,
 	Calculator,
 	CloudSun,
+	ChevronLeft,
+	ChevronRight,
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
@@ -28,6 +30,40 @@ export function Hero() {
 	const [activeCategory, setActiveCategory] = useState('সবজি');
 	const [videoLoaded, setVideoLoaded] = useState(false);
 	const videoRef = useRef<HTMLVideoElement>(null);
+	const tabsRef = useRef<HTMLDivElement>(null);
+	const [canScrollLeft, setCanScrollLeft] = useState(false);
+	const [canScrollRight, setCanScrollRight] = useState(true);
+
+	const updateScrollButtons = () => {
+		if (tabsRef.current) {
+			const { scrollLeft, scrollWidth, clientWidth } = tabsRef.current;
+			setCanScrollLeft(scrollLeft > 4);
+			setCanScrollRight(scrollLeft + clientWidth < scrollWidth - 4);
+		}
+	};
+
+	useEffect(() => {
+		updateScrollButtons();
+		const container = tabsRef.current;
+		if (container) {
+			container.addEventListener('scroll', updateScrollButtons);
+			window.addEventListener('resize', updateScrollButtons);
+			return () => {
+				container.removeEventListener('scroll', updateScrollButtons);
+				window.removeEventListener('resize', updateScrollButtons);
+			};
+		}
+	}, []);
+
+	const scrollTabs = (direction: 'left' | 'right') => {
+		if (tabsRef.current) {
+			const scrollAmount = 260;
+			tabsRef.current.scrollBy({
+				left: direction === 'left' ? -scrollAmount : scrollAmount,
+				behavior: 'smooth',
+			});
+		}
+	};
 
 	const categoryTabs = [
 		{ label: 'সবজি', icon: Leaf, query: 'সবজি' },
@@ -191,46 +227,76 @@ export function Hero() {
 						className='bg-white rounded-[24px] shadow-[0_30px_75px_rgba(0,0,0,0.22)] border border-gray-100 p-6 sm:p-8 lg:p-10 flex flex-col gap-6 sm:gap-7'
 					>
 						{/* 1. Category Tabs Header inside Search Module */}
-						<div className='flex items-center gap-4 sm:gap-6 overflow-x-auto pb-1 border-b border-gray-200 scrollbar-none'>
-							{categoryTabs.map((tab) => {
-								const IconComponent = tab.icon;
-								const isActive = activeCategory === tab.label;
-								const targetHref =
-									tab.isFeatureRoute && tab.route
-										? tab.route
-										: `/marketplace?category=${encodeURIComponent(tab.query || '')}`;
+						<div className='flex items-center gap-1.5 sm:gap-2 border-b border-gray-200'>
+							{/* Left Scroll Chevron Button */}
+							{canScrollLeft && (
+								<button
+									type='button'
+									onClick={() => scrollTabs('left')}
+									className='shrink-0 w-8 h-8 rounded-full bg-white shadow-sm border border-gray-200 text-gray-700 hover:text-[#26351B] hover:bg-[#F5B800] flex items-center justify-center transition-all duration-200 cursor-pointer active:scale-95 mr-1'
+									aria-label='Previous tabs'
+								>
+									<ChevronLeft className='w-4 h-4' />
+								</button>
+							)}
 
-								return (
-									<Link
-										key={tab.label}
-										href={targetHref}
-										onClick={() => setActiveCategory(tab.label)}
-										className={`flex items-center gap-2 px-2.5 sm:px-3.5 py-3 relative font-bold text-sm sm:text-base whitespace-nowrap transition-colors duration-150 bg-transparent border-none cursor-pointer group ${
-											isActive
-												? 'text-[#B45309] font-extrabold'
-												: 'text-gray-600 hover:text-[#172033]'
-										}`}
-									>
-										<IconComponent
-											className={`w-5 h-5 transition-colors ${
+							{/* Category Tabs Scroll Container (Scrollbar completely hidden, zero overlap) */}
+							<div
+								ref={tabsRef}
+								className='flex-1 flex items-center gap-4 sm:gap-6 overflow-x-auto pb-1 scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] no-scrollbar scrollbar-none'
+							>
+								{categoryTabs.map((tab) => {
+									const IconComponent = tab.icon;
+									const isActive = activeCategory === tab.label;
+									const targetHref =
+										tab.isFeatureRoute && tab.route
+											? tab.route
+											: `/marketplace?category=${encodeURIComponent(tab.query || '')}`;
+
+									return (
+										<Link
+											key={tab.label}
+											href={targetHref}
+											onClick={() => setActiveCategory(tab.label)}
+											className={`flex items-center gap-2 px-2.5 sm:px-3.5 py-3 relative font-bold text-sm sm:text-base whitespace-nowrap transition-colors duration-150 bg-transparent border-none cursor-pointer group shrink-0 ${
 												isActive
-													? 'text-[#F5B800]'
-													: 'text-gray-400 group-hover:text-gray-600'
+													? 'text-[#B45309] font-extrabold'
+													: 'text-gray-600 hover:text-[#172033]'
 											}`}
-										/>
-										<span>{tab.label}</span>
-
-										{/* Active Yellow Bottom Underline Indicator */}
-										{isActive && (
-											<motion.div
-												layoutId='activeTabIndicator'
-												className='absolute bottom-0 left-0 right-0 h-[3.5px] bg-[#F5B800] rounded-full shadow-xs'
-												transition={{ type: 'spring', stiffness: 450, damping: 32 }}
+										>
+											<IconComponent
+												className={`w-5 h-5 transition-colors ${
+													isActive
+														? 'text-[#F5B800]'
+														: 'text-gray-400 group-hover:text-gray-600'
+												}`}
 											/>
-										)}
-									</Link>
-								);
-							})}
+											<span>{tab.label}</span>
+
+											{/* Active Yellow Bottom Underline Indicator */}
+											{isActive && (
+												<motion.div
+													layoutId='activeTabIndicator'
+													className='absolute bottom-0 left-0 right-0 h-[3.5px] bg-[#F5B800] rounded-full shadow-xs'
+													transition={{ type: 'spring', stiffness: 450, damping: 32 }}
+												/>
+											)}
+										</Link>
+									);
+								})}
+							</div>
+
+							{/* Right Scroll Chevron Button */}
+							{canScrollRight && (
+								<button
+									type='button'
+									onClick={() => scrollTabs('right')}
+									className='shrink-0 w-8 h-8 rounded-full bg-white shadow-sm border border-gray-200 text-gray-700 hover:text-[#26351B] hover:bg-[#F5B800] flex items-center justify-center transition-all duration-200 cursor-pointer active:scale-95 ml-1'
+									aria-label='Next tabs'
+								>
+									<ChevronRight className='w-4 h-4' />
+								</button>
+							)}
 						</div>
 
 						{/* 2. Main Search Input & Submit Button Row */}
