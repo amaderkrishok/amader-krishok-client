@@ -25,7 +25,7 @@ export function AboutHero() {
 	];
 
 	return (
-		<section className='relative bg-gradient-to-b from-[#37462A] via-[#2F3C23] to-[#37462A] text-white pt-28 sm:pt-36 pb-20 md:pb-24 w-full px-4 sm:px-6 lg:px-[10%] xl:px-[14%] 2xl:px-12 overflow-hidden'>
+		<section className='relative bg-gradient-to-b from-[#37462A] via-[#2F3C23] to-[#37462A] text-white pt-28 sm:pt-36 pb-12 sm:pb-16 w-full px-4 sm:px-6 lg:px-[10%] xl:px-[18.5%] 2xl:px-12 overflow-hidden'>
 			
 			{/* Background Glows & Floating Leaves (Matching other hero banners) */}
 			<div className='absolute inset-0 pointer-events-none z-0'>
@@ -56,14 +56,14 @@ export function AboutHero() {
 
 			{/* Hero Content */}
 			<div className='relative z-10 max-w-7xl mx-auto'>
-				<div className='max-w-[800px] mx-auto text-center space-y-6'>
+				<div className='max-w-[800px] mx-auto text-center space-y-3.5 sm:space-y-4'>
 				
 				{/* Top Eyebrow Badge */}
 				<motion.div
 					initial={{ opacity: 0, y: 15 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.4 }}
-					className='inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.08] border border-white/[0.12] backdrop-blur-md shadow-xs'
+					className='inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/[0.08] border border-white/[0.12] backdrop-blur-md shadow-xs'
 				>
 					<Sprout className='w-4 h-4 text-[#EAB308]' />
 					<span className='text-xs sm:text-sm font-semibold text-white/90'>
@@ -76,7 +76,7 @@ export function AboutHero() {
 					initial={{ opacity: 0, y: 20 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.5, delay: 0.1 }}
-					className='text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.2] shadow-xs'
+					className='text-3xl sm:text-4xl md:text-5xl lg:text-[48px] font-extrabold text-white tracking-tight leading-[1.2] shadow-xs'
 				>
 					প্রযুক্তিতে সমৃদ্ধ <span className='text-[#EAB308]'>স্মার্ট কৃষি</span> ও সরাসরি বাজার
 				</motion.h1>
@@ -86,7 +86,7 @@ export function AboutHero() {
 					initial={{ opacity: 0, y: 20 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.5, delay: 0.2 }}
-					className='text-gray-200 text-base sm:text-lg md:text-xl font-normal leading-relaxed max-w-2xl mx-auto'
+					className='text-gray-200 text-sm sm:text-base font-normal leading-relaxed max-w-xl mx-auto'
 				>
 					আমরা প্রযুক্তির মাধ্যমে দেশের কৃষকদের ক্ষমতায়ন এবং ক্রেতা-কৃষকের মধ্যে সহজ, স্বচ্ছ ও সরাসরি সংযোগ নিশ্চিত করতে নিবেদিত।
 				</motion.p>
@@ -96,12 +96,12 @@ export function AboutHero() {
 					initial={{ opacity: 0, y: 15 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.5, delay: 0.3 }}
-					className='flex flex-wrap items-center justify-center gap-2.5 pt-2'
+					className='flex flex-wrap items-center justify-center gap-2 pt-1'
 				>
 					{featureChips.map((chip, idx) => (
 						<div
 							key={idx}
-							className='inline-flex items-center px-4 py-1.5 rounded-full bg-white/[0.06] border border-white/10 backdrop-blur-md text-xs sm:text-sm font-medium text-gray-200'
+							className='inline-flex items-center px-3.5 py-1 rounded-full bg-white/[0.06] border border-white/10 backdrop-blur-md text-xs sm:text-sm font-medium text-gray-200'
 						>
 							<span>{chip.text}</span>
 						</div>
@@ -113,25 +113,23 @@ export function AboutHero() {
 					initial={{ opacity: 0, y: 15 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.5, delay: 0.4 }}
-					className='flex flex-wrap items-center justify-center gap-4 pt-4'
+					className='flex flex-wrap items-center justify-center gap-3 pt-2'
 				>
 					<Button
 						asChild
-						size='lg'
-						className='bg-[#EAB308] hover:bg-[#FCD34D] text-[#1C2415] font-extrabold px-8 py-6 text-base rounded-2xl shadow-xl hover:scale-105 transition-all duration-300 group cursor-pointer border-none'
+						className='bg-[#EAB308] hover:bg-[#FCD34D] text-[#1C2415] font-extrabold px-6 h-10 sm:h-11 text-xs sm:text-sm rounded-xl shadow-lg hover:scale-105 transition-all duration-300 group cursor-pointer border-none'
 					>
 						<Link href='/marketplace' className='flex items-center gap-2'>
-							<ShoppingBag className='w-5 h-5' />
+							<ShoppingBag className='w-4 h-4' />
 							<span>কৃষকের বাজার দেখুন</span>
-							<ArrowRight className='w-4 h-4 transition-transform duration-300 group-hover:translate-x-1' />
+							<ArrowRight className='w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1' />
 						</Link>
 					</Button>
 
 					<Button
 						asChild
 						variant='outline'
-						size='lg'
-						className='bg-white/10 hover:bg-white/20 text-white border-white/20 hover:border-white font-semibold px-8 py-6 text-base rounded-2xl transition-all duration-300 cursor-pointer backdrop-blur-sm'
+						className='bg-white/10 hover:bg-white/20 text-white border-white/20 hover:border-white font-semibold px-6 h-10 sm:h-11 text-xs sm:text-sm rounded-xl transition-all duration-300 cursor-pointer backdrop-blur-sm'
 					>
 						<a href='#mission' className='flex items-center gap-2'>
 							<span>আমাদের লক্ষ্য জানুন</span>

@@ -5,14 +5,24 @@ import * as SliderPrimitive from "@radix-ui/react-slider"
 
 import { cn } from "@/lib/utils"
 
+interface SliderProps
+  extends React.ComponentProps<typeof SliderPrimitive.Root> {
+  trackClassName?: string
+  rangeClassName?: string
+  thumbClassName?: string
+}
+
 function Slider({
   className,
   defaultValue,
   value,
   min = 0,
   max = 100,
+  trackClassName,
+  rangeClassName,
+  thumbClassName,
   ...props
-}: React.ComponentProps<typeof SliderPrimitive.Root>) {
+}: SliderProps) {
   const _values = React.useMemo(
     () =>
       Array.isArray(value)
@@ -39,13 +49,15 @@ function Slider({
       <SliderPrimitive.Track
         data-slot="slider-track"
         className={cn(
-          "bg-gray-200 relative grow overflow-hidden rounded-full data-[orientation=horizontal]:h-2 data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full data-[orientation=vertical]:w-2"
+          "bg-gray-100 relative grow overflow-hidden rounded-full data-[orientation=horizontal]:h-2 data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full data-[orientation=vertical]:w-2 border border-gray-200/80",
+          trackClassName
         )}
       >
         <SliderPrimitive.Range
           data-slot="slider-range"
           className={cn(
-            "bg-[#EAB308] absolute data-[orientation=horizontal]:h-full data-[orientation=vertical]:w-full"
+            "bg-gray-500 absolute data-[orientation=horizontal]:h-full data-[orientation=vertical]:w-full",
+            rangeClassName
           )}
         />
       </SliderPrimitive.Track>
@@ -53,7 +65,10 @@ function Slider({
         <SliderPrimitive.Thumb
           data-slot="slider-thumb"
           key={index}
-          className="border-2 border-[#EAB308] bg-white ring-[#EAB308]/40 block size-5 shrink-0 rounded-full border shadow-md transition-[color,box-shadow] hover:ring-4 focus-visible:ring-4 focus-visible:outline-hidden cursor-pointer disabled:pointer-events-none disabled:opacity-50"
+          className={cn(
+            "border-2 border-gray-300 bg-white ring-gray-200/50 block size-5 shrink-0 rounded-full shadow-md transition-[color,box-shadow] hover:ring-4 hover:border-gray-400 focus-visible:ring-4 focus-visible:outline-hidden cursor-pointer disabled:pointer-events-none disabled:opacity-50",
+            thumbClassName
+          )}
         />
       ))}
     </SliderPrimitive.Root>

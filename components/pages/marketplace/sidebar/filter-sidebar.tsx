@@ -38,12 +38,16 @@ export function FilterSidebar({
 		priceRange.min,
 		priceRange.max,
 	]);
+	const [minPriceInput, setMinPriceInput] = useState<string>(String(priceRange.min));
+	const [maxPriceInput, setMaxPriceInput] = useState<string>(String(priceRange.max));
 
 	const [localSearchTerm, setLocalSearchTerm] = useState(searchTerm);
 
 	// Update local price range when props change
 	useEffect(() => {
 		setLocalPriceRange([priceRange.min, priceRange.max]);
+		setMinPriceInput(String(priceRange.min));
+		setMaxPriceInput(String(priceRange.max));
 	}, [priceRange.min, priceRange.max]);
 
 	// Update local search term when prop changes
@@ -52,9 +56,75 @@ export function FilterSidebar({
 	}, [searchTerm]);
 
 	const handleSliderChange = (value: number[]) => {
-		setLocalPriceRange([value[0], value[1]]);
+		const min = value[0];
+		const max = value[1];
+		setLocalPriceRange([min, max]);
+		setMinPriceInput(String(min));
+		setMaxPriceInput(String(max));
 		// The actual API call is debounced in the parent component
-		onPriceRangeChange(value[0], value[1]);
+		onPriceRangeChange(min, max);
+	};
+
+	const handleMinInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const val = e.target.value;
+		setMinPriceInput(val);
+		if (val === '') return;
+		const num = Number(val);
+		if (!isNaN(num) && num >= 0) {
+			const clamped = Math.min(Math.max(0, num), 100000);
+			const currentMax = localPriceRange[1];
+			const newMin = Math.min(clamped, currentMax);
+			setLocalPriceRange([newMin, currentMax]);
+			onPriceRangeChange(newMin, currentMax);
+		}
+	};
+
+	const handleMinInputBlur = () => {
+		let num = Number(minPriceInput);
+		if (isNaN(num) || minPriceInput.trim() === '' || num < 0) {
+			num = 0;
+		}
+		num = Math.max(0, Math.min(100000, num));
+		if (num > localPriceRange[1]) {
+			num = localPriceRange[1];
+		}
+		setMinPriceInput(String(num));
+		setLocalPriceRange([num, localPriceRange[1]]);
+		onPriceRangeChange(num, localPriceRange[1]);
+	};
+
+	const handleMaxInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const val = e.target.value;
+		setMaxPriceInput(val);
+		if (val === '') return;
+		const num = Number(val);
+		if (!isNaN(num) && num >= 0) {
+			const clamped = Math.min(Math.max(0, num), 100000);
+			const currentMin = localPriceRange[0];
+			const newMax = Math.max(clamped, currentMin);
+			setLocalPriceRange([currentMin, newMax]);
+			onPriceRangeChange(currentMin, newMax);
+		}
+	};
+
+	const handleMaxInputBlur = () => {
+		let num = Number(maxPriceInput);
+		if (isNaN(num) || maxPriceInput.trim() === '' || num < 0) {
+			num = 100000;
+		}
+		num = Math.max(0, Math.min(100000, num));
+		if (num < localPriceRange[0]) {
+			num = localPriceRange[0];
+		}
+		setMaxPriceInput(String(num));
+		setLocalPriceRange([localPriceRange[0], num]);
+		onPriceRangeChange(localPriceRange[0], num);
+	};
+
+	const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+		if (e.key === 'Enter') {
+			(e.target as HTMLInputElement).blur();
+		}
 	};
 
 	const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -70,8 +140,8 @@ export function FilterSidebar({
 	};
 
 	return (
-		<div className='bg-white/90 backdrop-blur-xl p-4 sm:p-5 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 border border-[#F5B800]/40 h-full flex flex-col gap-5 relative overflow-hidden group/sidebar'>
-			<div className="absolute top-0 right-0 w-32 h-32 bg-[#2D331F]/5 rounded-full blur-3xl -z-10 group-hover/sidebar:bg-[#EAB308]/5 transition-colors duration-700"></div>
+		<div className='bg-white/95 backdrop-blur-xl p-4 sm:p-5 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-500 border border-gray-200/80 h-full flex flex-col gap-5 relative overflow-hidden group/sidebar'>
+			<div className="absolute top-0 right-0 w-32 h-32 bg-[#2D331F]/5 rounded-full blur-3xl -z-10 group-hover/sidebar:bg-emerald-500/5 transition-colors duration-700"></div>
 			{onClose && (
 				<div className='flex justify-between items-center mb-2'>
 					<h2 className='text-xl font-bold text-gray-900'>ফিল্টার</h2>
@@ -83,9 +153,9 @@ export function FilterSidebar({
 
 			<div className='space-y-4 sm:space-y-5'>
 				{/* Search */}
-				<div className='bg-white p-4 rounded-xl shadow-xs border-2 border-[#F5B800]/50 hover:border-[#F5B800] transition-all duration-300 relative overflow-hidden'>
+				<div className='bg-white p-4 rounded-xl shadow-xs border border-gray-200/80 hover:border-gray-300 transition-all duration-300 relative overflow-hidden'>
 					<h3 className='text-md font-bold text-gray-800 mb-3 flex items-center gap-2'>
-						<span className='w-1.5 h-4 bg-[#F5B800] rounded-full inline-block'></span>
+						<span className='w-1.5 h-4 bg-[#26351B] rounded-full inline-block'></span>
 						অনুসন্ধান
 					</h3>
 					<div className='relative group'>
@@ -93,7 +163,7 @@ export function FilterSidebar({
 							placeholder='পণ্য খুঁজুন...'
 							value={localSearchTerm}
 							onChange={handleSearchChange}
-							className='w-full pr-9 bg-white border border-[#F5B800]/50 focus:ring-2 focus:ring-[#F5B800]/30 focus:border-[#F5B800] transition-all rounded-xl shadow-inner'
+							className='w-full pr-9 bg-gray-50/50 border border-gray-200/90 focus:bg-white focus:ring-2 focus:ring-[#22C55E]/20 focus:border-[#22C55E] transition-all rounded-xl shadow-inner'
 						/>
 						{localSearchTerm && (
 							<button
@@ -118,9 +188,9 @@ export function FilterSidebar({
 				</div>
 
 				{/* Categories */}
-				<div className='bg-white p-4 rounded-xl shadow-xs border-2 border-[#F5B800]/50 hover:border-[#F5B800] transition-all duration-300 relative overflow-hidden'>
+				<div className='bg-white p-4 rounded-xl shadow-xs border border-gray-200/80 hover:border-gray-300 transition-all duration-300 relative overflow-hidden'>
 					<h3 className='text-md font-bold text-gray-800 mb-3 flex items-center gap-2'>
-						<span className='w-1.5 h-4 bg-[#F5B800] rounded-full inline-block'></span>
+						<span className='w-1.5 h-4 bg-[#26351B] rounded-full inline-block'></span>
 						বিভাগসমূহ
 					</h3>
 					{isLoading ? (
@@ -141,19 +211,47 @@ export function FilterSidebar({
 				</div>
 
 				{/* Price Range */}
-				<div className='bg-white p-4 rounded-xl shadow-xs border-2 border-[#F5B800]/50 hover:border-[#F5B800] transition-all duration-300 relative overflow-hidden'>
+				<div className='bg-white p-4 rounded-xl shadow-xs border border-gray-200/80 hover:border-gray-300 transition-all duration-300 relative overflow-hidden'>
 					<h3 className='text-md font-bold text-gray-800 mb-4 flex items-center gap-2'>
-						<span className='w-1.5 h-4 bg-[#F5B800] rounded-full inline-block'></span>
+						<span className='w-1.5 h-4 bg-[#26351B] rounded-full inline-block'></span>
 						মূল্য সীমা
 					</h3>
-					<div className='flex items-center justify-between mb-4 bg-white p-2 rounded-lg border border-[#F5B800]/40'>
-						<span className='text-sm font-extrabold text-[#172033] bg-[#F5B800]/20 border border-[#F5B800]/40 px-2.5 py-1 rounded-md'>
-							{localPriceRange[0]} ৳
-						</span>
-						<span className='text-gray-300'>-</span>
-						<span className='text-sm font-extrabold text-[#172033] bg-[#F5B800]/20 border border-[#F5B800]/40 px-2.5 py-1 rounded-md'>
-							{localPriceRange[1]} ৳
-						</span>
+					<div className='flex items-center justify-between gap-2 mb-4 bg-gray-50/80 p-2 rounded-lg border border-gray-200/80'>
+						<div className='flex items-center bg-white border border-gray-200/90 rounded-md shadow-2xs px-2.5 py-1 flex-1 min-w-0 focus-within:ring-2 focus-within:ring-gray-300 focus-within:border-gray-400 transition-all'>
+							<input
+								type='number'
+								min={0}
+								max={100000}
+								value={minPriceInput}
+								onChange={handleMinInputChange}
+								onBlur={handleMinInputBlur}
+								onKeyDown={handleInputKeyDown}
+								aria-label='সর্বনিম্ন মূল্য'
+								className='w-full text-sm font-bold text-[#172033] bg-transparent outline-none border-none p-0 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none'
+								placeholder='0'
+							/>
+							<span className='text-xs font-semibold text-gray-500 ml-1 select-none pointer-events-none'>
+								৳
+							</span>
+						</div>
+						<span className='text-gray-400 select-none font-medium'>-</span>
+						<div className='flex items-center bg-white border border-gray-200/90 rounded-md shadow-2xs px-2.5 py-1 flex-1 min-w-0 focus-within:ring-2 focus-within:ring-gray-300 focus-within:border-gray-400 transition-all'>
+							<input
+								type='number'
+								min={0}
+								max={100000}
+								value={maxPriceInput}
+								onChange={handleMaxInputChange}
+								onBlur={handleMaxInputBlur}
+								onKeyDown={handleInputKeyDown}
+								aria-label='সর্বোচ্চ মূল্য'
+								className='w-full text-sm font-bold text-[#172033] bg-transparent outline-none border-none p-0 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none text-right'
+								placeholder='100000'
+							/>
+							<span className='text-xs font-semibold text-gray-500 ml-1 select-none pointer-events-none'>
+								৳
+							</span>
+						</div>
 					</div>
 					<Slider
 						value={[localPriceRange[0], localPriceRange[1]]}

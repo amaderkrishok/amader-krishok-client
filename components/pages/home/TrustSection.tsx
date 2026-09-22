@@ -28,7 +28,7 @@ const trustFeatures = [
 
 export function TrustSection() {
 	return (
-		<section className='w-full px-4 sm:px-6 lg:px-[10%] xl:px-[14%] 2xl:px-12 py-14 sm:py-18 bg-[#F5F3EA] border-b border-gray-200/80 text-[#172033]'>
+		<section className='w-full px-4 sm:px-6 lg:px-[10%] xl:px-[18.5%] 2xl:px-12 py-14 sm:py-18 bg-[#F5F3EA] border-b border-gray-200/80 text-[#172033]'>
 			<div className='max-w-7xl mx-auto'>
 				{/* Section Heading */}
 				<div className='text-left max-w-3xl mb-10'>

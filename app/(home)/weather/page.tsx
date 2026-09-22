@@ -117,7 +117,7 @@ export default function WeatherPage() {
 			{/* ==================================================== */}
 			{/* HERO SECTION                                         */}
 			{/* ==================================================== */}
-			<section className='relative bg-gradient-to-b from-[#37462A] via-[#2F3C23] to-[#37462A] text-white pt-28 sm:pt-36 pb-20 md:pb-24 w-full px-4 sm:px-6 lg:px-[10%] xl:px-[14%] 2xl:px-12 overflow-hidden'>
+			<section className='relative bg-gradient-to-b from-[#37462A] via-[#2F3C23] to-[#37462A] text-white pt-28 sm:pt-36 pb-12 sm:pb-16 w-full px-4 sm:px-6 lg:px-[10%] xl:px-[18.5%] 2xl:px-12 overflow-hidden'>
 				
 				{/* Background Glows & Floating Leaves */}
 				<div className='absolute inset-0 pointer-events-none z-0'>
@@ -147,14 +147,14 @@ export default function WeatherPage() {
 				</div>
 
 				<div className='relative z-10 max-w-7xl mx-auto'>
-					<div className='max-w-[760px] mx-auto text-center space-y-6'>
+					<div className='max-w-[760px] mx-auto text-center space-y-3.5 sm:space-y-4'>
 					
 					{/* Top Glass Badge */}
 					<motion.div
 						initial={{ opacity: 0, y: 15 }}
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ duration: 0.4 }}
-						className='inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.08] border border-white/[0.12] backdrop-blur-md shadow-xs'
+						className='inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/[0.08] border border-white/[0.12] backdrop-blur-md shadow-xs'
 					>
 						<span className='text-sm sm:text-base'>🌤️</span>
 						<span className='text-xs sm:text-sm font-semibold text-[#FBBF24] tracking-wide uppercase'>
@@ -167,7 +167,7 @@ export default function WeatherPage() {
 						initial={{ opacity: 0, y: 20 }}
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ duration: 0.5, delay: 0.1 }}
-						className='text-[34px] sm:text-[46px] lg:text-[58px] font-extrabold text-[#FBBF24] leading-[1.1] tracking-tight drop-shadow-xs'
+						className='text-[30px] sm:text-[42px] lg:text-[48px] font-extrabold text-[#FBBF24] leading-[1.15] tracking-tight drop-shadow-xs'
 					>
 						আবহাওয়া পূর্বাভাস
 					</motion.h1>
@@ -177,7 +177,7 @@ export default function WeatherPage() {
 						initial={{ opacity: 0, y: 20 }}
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ duration: 0.5, delay: 0.2 }}
-						className='text-white/80 text-base sm:text-lg md:text-xl font-normal leading-relaxed max-w-[720px] mx-auto'
+						className='text-white/80 text-sm sm:text-base font-normal leading-relaxed max-w-[640px] mx-auto'
 					>
 						বাংলাদেশের যেকোনো এলাকার বর্তমান আবহাওয়া, আগামী ৭ দিনের পূর্বাভাস এবং কৃষিকাজের উপযোগী পরামর্শ এক জায়গায়।
 					</motion.p>
@@ -187,14 +187,14 @@ export default function WeatherPage() {
 						initial={{ opacity: 0, y: 20 }}
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ duration: 0.5, delay: 0.3 }}
-						className='pt-2 max-w-[680px] mx-auto'
+						className='pt-1 max-w-[620px] mx-auto'
 					>
-						<div className='relative flex items-center bg-white rounded-full p-2 shadow-[0_20px_50px_rgba(0,0,0,0.25)] border border-white/20 focus-within:ring-4 focus-within:ring-[#4CAF50]/20 transition-all'>
-							<MapPin className='w-5 h-5 text-[#4CAF50] absolute left-5 pointer-events-none' />
+						<div className='relative flex items-center bg-white rounded-full p-1.5 shadow-[0_15px_40px_rgba(0,0,0,0.2)] border border-white/20 focus-within:ring-4 focus-within:ring-[#4CAF50]/20 transition-all'>
+							<MapPin className='w-4.5 h-4.5 text-[#4CAF50] absolute left-4 pointer-events-none' />
 							<Input
 								type='text'
 								placeholder='শহরের নাম লিখুন (যেমন: ঢাকা, বগুড়া)...'
-								className='w-full pl-12 pr-32 h-[52px] md:h-[58px] border-none shadow-none focus-visible:ring-0 text-gray-900 text-base font-medium placeholder:text-gray-400 bg-transparent'
+								className='w-full pl-11 pr-28 h-[42px] md:h-[46px] border-none shadow-none focus-visible:ring-0 text-gray-900 text-sm font-medium placeholder:text-gray-400 bg-transparent'
 								value={location}
 								onChange={handleSearchChange}
 								onKeyDown={(e) => {
@@ -207,12 +207,12 @@ export default function WeatherPage() {
 								type='button'
 								onClick={handleSearch}
 								disabled={isSearching}
-								className='absolute right-2 px-6 h-[44px] md:h-[50px] rounded-full bg-[#37462A] hover:bg-[#4A5E3A] text-white font-bold text-sm md:text-base flex items-center gap-2 shadow-md hover:scale-[1.02] active:scale-95 transition-all cursor-pointer disabled:opacity-60 shrink-0'
+								className='absolute right-1.5 px-5 h-[34px] md:h-[38px] rounded-full bg-[#37462A] hover:bg-[#4A5E3A] text-white font-bold text-xs sm:text-sm flex items-center gap-1.5 shadow-md hover:scale-[1.02] active:scale-95 transition-all cursor-pointer disabled:opacity-60 shrink-0'
 							>
 								{isSearching ? (
-									<RefreshCw className='w-4 h-4 animate-spin text-[#FBBF24]' />
+									<RefreshCw className='w-3.5 h-3.5 animate-spin text-[#FBBF24]' />
 								) : (
-									<Search className='w-4 h-4 text-[#FBBF24]' />
+									<Search className='w-3.5 h-3.5 text-[#FBBF24]' />
 								)}
 								<span>অনুসন্ধান</span>
 							</button>
@@ -224,7 +224,7 @@ export default function WeatherPage() {
 						initial={{ opacity: 0, y: 15 }}
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ duration: 0.5, delay: 0.4 }}
-						className='flex flex-wrap items-center justify-center gap-2 pt-2'
+						className='flex flex-wrap items-center justify-center gap-1.5 pt-1'
 					>
 						<span className='text-xs text-white/60 font-bold tracking-wide mr-1 uppercase'>
 							জনপ্রিয় শহর:
@@ -234,7 +234,7 @@ export default function WeatherPage() {
 								key={city}
 								type='button'
 								onClick={() => handlePopularClick(city)}
-								className='px-4 py-1.5 rounded-full bg-white/[0.08] border border-white/[0.12] backdrop-blur-md text-white/90 text-xs sm:text-sm font-medium hover:bg-[#FBBF24] hover:text-[#1E2817] hover:border-[#FBBF24] hover:scale-105 transition-all duration-200 cursor-pointer shadow-xs'
+								className='px-3 py-1 rounded-full bg-white/[0.08] border border-white/[0.12] backdrop-blur-md text-white/90 text-xs font-medium hover:bg-[#FBBF24] hover:text-[#1E2817] hover:border-[#FBBF24] hover:scale-105 transition-all duration-200 cursor-pointer shadow-xs'
 							>
 								{city}
 							</button>
@@ -247,7 +247,7 @@ export default function WeatherPage() {
 			{/* ==================================================== */}
 			{/* MAIN WEATHER DASHBOARD CONTAINER                      */}
 			{/* ==================================================== */}
-			<section className='w-full px-4 sm:px-6 lg:px-[10%] xl:px-[14%] 2xl:px-12 relative z-20 -mt-10 md:-mt-14 space-y-8'>
+			<section className='w-full px-4 sm:px-6 lg:px-[10%] xl:px-[18.5%] 2xl:px-12 relative z-20 -mt-8 md:-mt-10 space-y-8'>
 				<div className='max-w-7xl mx-auto space-y-8'>
 					{/* Display Error Message if any */}
 					{error && (
