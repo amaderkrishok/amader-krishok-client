@@ -100,7 +100,7 @@ export function PostHeroCarousel({
 
 	return (
 		<section
-			className='relative w-full pt-28 md:pt-36 pb-8 min-h-[420px] md:min-h-[500px] overflow-hidden bg-[#37462A] shadow-xl'
+			className='relative w-full pt-28 md:pt-36 pb-8 min-h-[420px] sm:min-h-[460px] md:min-h-[475px] md:h-[475px] overflow-hidden bg-[#37462A] shadow-xl'
 			onMouseEnter={() => setIsHovering(true)}
 			onMouseLeave={() => setIsHovering(false)}
 		>
