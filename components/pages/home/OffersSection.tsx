@@ -185,19 +185,19 @@ export function OffersSection() {
     .slice(0, 8);
 
   return (
-    <section className="w-full px-4 sm:px-6 lg:px-[10%] xl:px-[14%] 2xl:px-12 py-16 sm:py-20 bg-[#FAF9F3] text-[#172033] relative overflow-hidden border-b border-gray-200/60">
+    <section className="w-full px-4 sm:px-6 lg:px-[10%] xl:px-[18.5%] 2xl:px-12 pt-4 sm:pt-6 lg:pt-8 pb-12 sm:pb-16 bg-[#FAF9F3] text-[#172033] relative overflow-hidden border-b border-gray-200/60">
       <div className="max-w-7xl mx-auto relative z-10">
         
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 sm:mb-8 gap-4">
           <div>
             <motion.div
               initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#3F6212]/10 border border-[#3F6212]/20 mb-3 text-[#3F6212] text-xs font-bold uppercase tracking-wider"
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#3F6212]/10 border border-[#3F6212]/20 mb-2 text-[#3F6212] text-xs font-bold uppercase tracking-wider"
             >
-              <Store className="w-4 h-4 text-[#F5B800]" />
+              <Store className="w-3.5 h-3.5 text-[#F5B800]" />
               <span>আজকের সেরা রেটিংপ্রাপ্ত কৃষিপণ্য</span>
             </motion.div>
 
@@ -206,11 +206,11 @@ export function OffersSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="text-3xl md:text-4xl lg:text-4xl font-extrabold text-[#172033] tracking-tight leading-tight"
+              className="text-2xl md:text-3xl lg:text-3xl font-extrabold text-[#172033] tracking-tight leading-tight"
             >
               কৃষকের বাজার থেকে সরাসরি
             </motion.h2>
-            <p className="text-[#64748B] text-sm sm:text-base mt-2 max-w-xl font-medium">
+            <p className="text-[#64748B] text-xs sm:text-sm mt-1 max-w-xl font-medium">
               সেরা কাস্টমার রেটিংপ্রাপ্ত তাজা কৃষিপণ্য সরাসরি কৃষকের খামার থেকে আপনার দোরগোড়ায়।
             </p>
           </div>
@@ -223,10 +223,10 @@ export function OffersSection() {
           >
             <Link
               href="/marketplace"
-              className="group inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#F5B800] hover:bg-[#e0a800] text-[#172033] font-bold text-sm transition-all shadow-md hover:scale-105"
+              className="group inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-[#F5B800] hover:bg-[#e0a800] text-[#172033] font-bold text-xs sm:text-sm transition-all shadow-sm hover:scale-105"
             >
               <span>সকল পণ্য দেখুন</span>
-              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+              <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
             </Link>
           </motion.div>
         </div>

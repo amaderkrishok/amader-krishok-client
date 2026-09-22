@@ -100,7 +100,7 @@ export function PostHeroCarousel({
 
 	return (
 		<section
-			className='relative w-full pt-28 md:pt-36 pb-8 min-h-[420px] md:min-h-[500px] overflow-hidden bg-[#37462A] shadow-xl'
+			className='relative w-full pt-28 md:pt-36 pb-8 min-h-[420px] sm:min-h-[460px] md:min-h-[475px] md:h-[475px] overflow-hidden bg-[#37462A] shadow-xl'
 			onMouseEnter={() => setIsHovering(true)}
 			onMouseLeave={() => setIsHovering(false)}
 		>
@@ -150,7 +150,7 @@ export function PostHeroCarousel({
 								'linear-gradient(90deg, rgba(35,50,25,0.85) 0%, rgba(45,65,32,0.50) 55%, rgba(45,65,32,0.15) 100%)',
 						}}
 					/>
-					<div className='absolute inset-0 pt-28 sm:pt-36 pb-8 z-20 w-full px-4 sm:px-6 lg:px-[10%] xl:px-[14%] 2xl:px-12 flex items-center'>
+					<div className='absolute inset-0 pt-28 sm:pt-36 pb-8 z-20 w-full px-4 sm:px-6 lg:px-[10%] xl:px-[18.5%] 2xl:px-12 flex items-center'>
 						<div className='max-w-7xl mx-auto w-full'>
 							<div className='max-w-2xl text-white space-y-4'>
 								<div className='inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-[#FBBF24] text-xs sm:text-sm font-semibold shadow-sm'>
@@ -210,7 +210,7 @@ export function PostHeroCarousel({
 						</div>
 
 						{/* Hero Content aligned Left */}
-						<div className='absolute inset-0 pt-28 sm:pt-36 pb-8 z-20 w-full px-4 sm:px-6 lg:px-[10%] xl:px-[14%] 2xl:px-12 flex items-center'>
+						<div className='absolute inset-0 pt-28 sm:pt-36 pb-8 z-20 w-full px-4 sm:px-6 lg:px-[10%] xl:px-[18.5%] 2xl:px-12 flex items-center'>
 							<div className='max-w-7xl mx-auto w-full'>
 								<div className='max-w-2xl text-white space-y-3 sm:space-y-4'>
 								<motion.div

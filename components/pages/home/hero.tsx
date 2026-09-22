@@ -16,6 +16,8 @@ import {
 	BookOpen,
 	Calculator,
 	CloudSun,
+	ChevronLeft,
+	ChevronRight,
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
@@ -28,6 +30,40 @@ export function Hero() {
 	const [activeCategory, setActiveCategory] = useState('সবজি');
 	const [videoLoaded, setVideoLoaded] = useState(false);
 	const videoRef = useRef<HTMLVideoElement>(null);
+	const tabsRef = useRef<HTMLDivElement>(null);
+	const [canScrollLeft, setCanScrollLeft] = useState(false);
+	const [canScrollRight, setCanScrollRight] = useState(true);
+
+	const updateScrollButtons = () => {
+		if (tabsRef.current) {
+			const { scrollLeft, scrollWidth, clientWidth } = tabsRef.current;
+			setCanScrollLeft(scrollLeft > 4);
+			setCanScrollRight(scrollLeft + clientWidth < scrollWidth - 4);
+		}
+	};
+
+	useEffect(() => {
+		updateScrollButtons();
+		const container = tabsRef.current;
+		if (container) {
+			container.addEventListener('scroll', updateScrollButtons);
+			window.addEventListener('resize', updateScrollButtons);
+			return () => {
+				container.removeEventListener('scroll', updateScrollButtons);
+				window.removeEventListener('resize', updateScrollButtons);
+			};
+		}
+	}, []);
+
+	const scrollTabs = (direction: 'left' | 'right') => {
+		if (tabsRef.current) {
+			const scrollAmount = 260;
+			tabsRef.current.scrollBy({
+				left: direction === 'left' ? -scrollAmount : scrollAmount,
+				behavior: 'smooth',
+			});
+		}
+	};
 
 	const categoryTabs = [
 		{ label: 'সবজি', icon: Leaf, query: 'সবজি' },
@@ -105,139 +141,128 @@ export function Hero() {
 	}, [router]);
 
 	return (
-		<section className='relative w-full min-h-[600px] sm:min-h-[660px] lg:min-h-[560px] xl:min-h-[580px] 2xl:min-h-[700px] flex flex-col justify-between overflow-visible bg-[#1B2813] select-none pt-28 sm:pt-32 lg:pt-28 xl:pt-32 2xl:pt-36 pb-12 sm:pb-16'>
-			{/* --- Real Agriculture Background Video --- */}
-			<div className='absolute inset-0 z-0 w-full h-full overflow-hidden bg-[#1B2813]'>
+		<div className='relative w-full select-none'>
+			{/* --- 1. Compact Video Banner (ShareTrip-inspired compact style) --- */}
+			<div className='relative w-full h-[250px] sm:h-[250px] md:h-[220px] lg:h-[230px] xl:h-[260px] 2xl:h-[350px] overflow-hidden '>
+				{/* Real Agriculture Background Video */}
 				<video
 					ref={videoRef}
 					autoPlay
 					muted
-				  	loop
+					loop
 					playsInline
-					className='absolute inset-0 w-full h-full object-cover pointer-events-none'
+					className='absolute inset-0 w-full h-full object-cover object-center pointer-events-none shadow-2xl transition-opacity duration-1000'
 				>
 					<source src='/videos/banner-10.mp4' type='video/mp4' />
 				</video>
+
+				{/* HERO TEXT CONTENT AREA — sits inside banner, above the search card */}
+				<div className='relative z-20 w-full h-full px-4 sm:px-6 lg:px-[10%] xl:px-[18.5%] 2xl:px-12 flex items-end pb-14 sm:pb-16 md:pb-18 lg:pb-20 xl:pb-12 2xl:pb-22'>
+					<div className='max-w-7xl mx-auto w-full'>
+					<motion.div
+						initial={{ opacity: 0, y: 10 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ duration: 0.3, ease: 'easeOut' }}
+						className='space-y-0.5 sm:space-y-1 max-w-2xl text-left'
+					>
+						<h1 className='text-[18px] sm:text-[22px] md:text-[24px] lg:text-[26px] xl:text-[23px] 2xl:text-[35px] font-extrabold text-white leading-tight tracking-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)] text-left'>
+							কোনো মধ্যস্বত্বভোগী নেই
+						</h1>
+
+						<p className='text-white/90 text-[11px] sm:text-xs lg:text-[14px] xl:text-[13px] 2xl:text-[16px] font-medium leading-relaxed max-w-lg text-left drop-shadow-[0_2px_10px_rgba(0,0,0,0.85)]'>
+							বাংলাদেশের ৪২টি জেলার যাচাইকৃত কৃষকদের প্রোফাইল ঘুরে দেখুন, সরাসরি কথা বলুন এবং নিজেই দরদাম করে কিনুন।
+						</p>
+					</motion.div>
+					</div>
+				</div>
 			</div>
 
-			{/* --- Hero Dark Overlay rgba(20, 32, 12, 0.35) --- */}
-			<div
-				className='absolute inset-0 z-10 pointer-events-none'
-				style={{
-					backgroundColor: 'rgba(20, 32, 12, 0.35)',
-				}}
-			/>
-
-			{/* --- HERO TEXT CONTENT AREA --- */}
-			<div className='relative z-20 w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center justify-center gap-4 sm:gap-5 flex-1 mb-6 sm:mb-8'>
-				{/* 1. Small Badge */}
-				{/* <motion.div
-					initial={{ opacity: 0, y: 15 }}
-					animate={{ opacity: 1, y: 0 }}
-					transition={{ duration: 0.5, ease: 'easeOut' }}
-					className='inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/12 backdrop-blur-md border border-white/20 text-xs sm:text-sm font-semibold text-white shadow-sm'
-				>
-					<Sparkles className='w-4 h-4 text-[#F5B800]' />
-					<span>বাংলাদেশের ১ম আধুনিক ডিজিটাল কৃষকের বাজার</span>
-				</motion.div> */}
-
-				{/* 2. Main Headline & 3. Subtitle (Updated as requested) */}
-				<motion.div
-					initial={{ opacity: 0, y: 20 }}
-					animate={{ opacity: 1, y: 0 }}
-					transition={{ duration: 0.5, delay: 0.1, ease: 'easeOut' }}
-					className='space-y-3 max-w-4xl'
-				>
-					<h1 className='text-[36px] sm:text-[52px] md:text-[60px] lg:text-[44px] xl:text-[48px] 2xl:text-[64px] lg:mt-6 xl:mt-8 2xl:mt-20 font-extrabold text-white leading-[1.12] tracking-tight drop-shadow-sm'>
-						কোনো মধ্যস্বত্বভোগী নেই
-					</h1>
-
-					<p className='text-white/90 text-[15px] sm:text-[18px] md:text-[19px] lg:text-[16px] xl:text-[17px] 2xl:text-[19px] font-normal leading-relaxed max-w-[800px] mx-auto drop-shadow-sm'>
-						বাংলাদেশের ৪২টি জেলার যাচাইকৃত কৃষকদের প্রোফাইল ঘুরে দেখুন, সরাসরি কথা বলুন এবং নিজেই দরদাম করে কিনুন।
-					</p>
-				</motion.div>
-
-				{/* Hero Secondary CTA Action Buttons */}
-				<motion.div
-					initial={{ opacity: 0, y: 15 }}
-					animate={{ opacity: 1, y: 0 }}
-					transition={{ duration: 0.5, delay: 0.2, ease: 'easeOut' }}
-					className='flex flex-wrap items-center justify-center gap-3 pt-1'
-				>
-					<button
-						onClick={() => router.push('/marketplace')}
-						className='h-[46px] px-5 rounded-[12px] bg-[#F5B800] hover:bg-[#e0a800] text-[#26351B] font-bold text-sm sm:text-base transition-all duration-200 shadow-md flex items-center gap-2 hover:scale-[1.02] active:scale-[0.98]'
-					>
-						<Store className='w-4 h-4' />
-						<span>কৃষকের বাজার দেখুন</span>
-					</button>
-
-					<button
-						onClick={() => router.push('/about')}
-						className='h-[46px] px-5 rounded-[12px] bg-white/10 hover:bg-white/20 border border-white/35 text-white font-bold text-sm sm:text-base transition-all duration-200 backdrop-blur-sm flex items-center gap-2 hover:scale-[1.02] active:scale-[0.98]'
-					>
-						<ShieldCheck className='w-4 h-4' />
-						<span>কৃষকদের সম্পর্কে জানুন</span>
-					</button>
-				</motion.div>
-			</div>
-
-			{/* --- SHARETRIP-INSPIRED LARGE & WIDE FLOATING SEARCH MODULE CARD OVERLAPPING HERO BOUNDARY --- */}
-			<div className='relative z-30 w-full px-4 sm:px-6 lg:px-[10%] xl:px-[14%] 2xl:px-12 translate-y-1/2 -mt-16 sm:-mt-20 lg:-mt-24 mb-16 sm:mb-20'>
+			{/* --- 2. FLOATING OVERLAPPING SEARCH CARD STRADDLING THE VIDEO BANNER SEAM --- */}
+			<div className='relative z-30 w-full px-4 sm:px-6 lg:px-[10%] xl:px-[18.5%] 2xl:px-12 -mt-10 sm:-mt-12 md:-mt-13 lg:-mt-14 xl:-mt-10 2xl:-mt-16 mb-3 sm:mb-4'>
 				<div className='max-w-7xl mx-auto'>
 					<motion.div
 						initial={{ opacity: 1, y: 0 }}
 						animate={{ opacity: 1, y: 0 }}
-						className='bg-white rounded-[24px] shadow-[0_30px_75px_rgba(0,0,0,0.22)] border border-gray-100 p-6 sm:p-8 lg:p-10 flex flex-col gap-6 sm:gap-7'
+						className='bg-white rounded-[20px] shadow-[0_15px_40px_rgba(0,0,0,0.12)] border border-gray-100/90 p-3.5 sm:p-4.5 lg:p-5 xl:p-3 2xl:p-5 flex flex-col gap-3 sm:gap-3.5 xl:gap-2 2xl:gap-3.5'
 					>
 						{/* 1. Category Tabs Header inside Search Module */}
-						<div className='flex items-center gap-4 sm:gap-6 overflow-x-auto pb-1 border-b border-gray-200 scrollbar-none'>
-							{categoryTabs.map((tab) => {
-								const IconComponent = tab.icon;
-								const isActive = activeCategory === tab.label;
-								const targetHref =
-									tab.isFeatureRoute && tab.route
-										? tab.route
-										: `/marketplace?category=${encodeURIComponent(tab.query || '')}`;
+						<div className='flex items-center gap-1.5 sm:gap-2 border-b border-gray-200'>
+							{/* Left Scroll Chevron Button */}
+							{canScrollLeft && (
+								<button
+									type='button'
+									onClick={() => scrollTabs('left')}
+									className='shrink-0 w-8 h-8 xl:w-7 xl:h-7 2xl:w-8 2xl:h-8 rounded-full bg-white shadow-sm border border-gray-200 text-gray-700 hover:text-[#26351B] hover:bg-[#F5B800] flex items-center justify-center transition-all duration-200 cursor-pointer active:scale-95 mr-1'
+									aria-label='Previous tabs'
+								>
+									<ChevronLeft className='w-4 h-4 xl:w-3.5 xl:h-3.5 2xl:w-4 2xl:h-4' />
+								</button>
+							)}
 
-								return (
-									<Link
-										key={tab.label}
-										href={targetHref}
-										onClick={() => setActiveCategory(tab.label)}
-										className={`flex items-center gap-2 px-2.5 sm:px-3.5 py-3 relative font-bold text-sm sm:text-base whitespace-nowrap transition-colors duration-150 bg-transparent border-none cursor-pointer group ${
-											isActive
-												? 'text-[#B45309] font-extrabold'
-												: 'text-gray-600 hover:text-[#172033]'
-										}`}
-									>
-										<IconComponent
-											className={`w-5 h-5 transition-colors ${
+							{/* Category Tabs Scroll Container (Scrollbar completely hidden, zero overlap) */}
+							<div
+								ref={tabsRef}
+								className='flex-1 flex items-center gap-4 sm:gap-6 xl:gap-4 2xl:gap-6 overflow-x-auto pb-1 scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] no-scrollbar scrollbar-none'
+							>
+								{categoryTabs.map((tab) => {
+									const IconComponent = tab.icon;
+									const isActive = activeCategory === tab.label;
+									const targetHref =
+										tab.isFeatureRoute && tab.route
+											? tab.route
+											: `/marketplace?category=${encodeURIComponent(tab.query || '')}`;
+
+									return (
+										<Link
+											key={tab.label}
+											href={targetHref}
+											onClick={() => setActiveCategory(tab.label)}
+											className={`flex items-center gap-2 px-2.5 sm:px-3.5 py-2.5 xl:py-2 2xl:py-2.5 relative font-bold text-xs sm:text-sm xl:text-xs 2xl:text-sm whitespace-nowrap transition-colors duration-150 bg-transparent border-none cursor-pointer group shrink-0 ${
 												isActive
-													? 'text-[#F5B800]'
-													: 'text-gray-400 group-hover:text-gray-600'
+													? 'text-[#B45309] font-extrabold'
+													: 'text-gray-600 hover:text-[#172033]'
 											}`}
-										/>
-										<span>{tab.label}</span>
-
-										{/* Active Yellow Bottom Underline Indicator */}
-										{isActive && (
-											<motion.div
-												layoutId='activeTabIndicator'
-												className='absolute bottom-0 left-0 right-0 h-[3.5px] bg-[#F5B800] rounded-full shadow-xs'
-												transition={{ type: 'spring', stiffness: 450, damping: 32 }}
+										>
+											<IconComponent
+												className={`w-4 h-4 sm:w-4.5 sm:h-4.5 xl:w-4 xl:h-4 2xl:w-4.5 2xl:h-4.5 transition-colors ${
+													isActive
+														? 'text-[#F5B800]'
+														: 'text-gray-400 group-hover:text-gray-600'
+												}`}
 											/>
-										)}
-									</Link>
-								);
-							})}
+											<span>{tab.label}</span>
+
+											{/* Active Yellow Bottom Underline Indicator */}
+											{isActive && (
+												<motion.div
+													layoutId='activeTabIndicator'
+													className='absolute bottom-0 left-0 right-0 h-[3.5px] bg-[#F5B800] rounded-full shadow-xs'
+													transition={{ type: 'spring', stiffness: 450, damping: 32 }}
+												/>
+											)}
+										</Link>
+									);
+								})}
+							</div>
+
+							{/* Right Scroll Chevron Button */}
+							{canScrollRight && (
+								<button
+									type='button'
+									onClick={() => scrollTabs('right')}
+									className='shrink-0 w-8 h-8 xl:w-7 xl:h-7 2xl:w-8 2xl:h-8 rounded-full bg-white shadow-sm border border-gray-200 text-gray-700 hover:text-[#26351B] hover:bg-[#F5B800] flex items-center justify-center transition-all duration-200 cursor-pointer active:scale-95 ml-1'
+									aria-label='Next tabs'
+								>
+									<ChevronRight className='w-4 h-4 xl:w-3.5 xl:h-3.5 2xl:w-4 2xl:h-4' />
+								</button>
+							)}
 						</div>
 
 						{/* 2. Main Search Input & Submit Button Row */}
-						<div className='flex flex-col sm:flex-row items-center gap-3 bg-gray-50/80 border border-gray-200/80 rounded-[18px] p-2.5 sm:p-3 transition-all focus-within:bg-white focus-within:border-[#F5B800] focus-within:ring-4 focus-within:ring-[#F5B800]/20 shadow-inner min-h-[64px] sm:min-h-[72px]'>
+						<div className='flex flex-col sm:flex-row items-center gap-2.5 xl:gap-2 2xl:gap-2.5 bg-gray-50/80 border border-gray-200/80 rounded-[14px] xl:rounded-[12px] 2xl:rounded-[14px] p-2 sm:p-2.5 xl:p-1.5 2xl:p-2.5 transition-all focus-within:bg-white focus-within:border-[#F5B800] focus-within:ring-4 focus-within:ring-[#F5B800]/20 shadow-inner min-h-[52px] sm:min-h-[58px] xl:min-h-[44px] 2xl:min-h-[58px]'>
 							{/* Input */}
-							<div className='flex-1 w-full flex items-center px-4 sm:px-5 py-2 sm:py-0 gap-3.5 bg-transparent'>
-								<Search className='w-6 h-6 sm:w-7 sm:h-7 text-[#64748B] flex-shrink-0' />
+							<div className='flex-1 w-full flex items-center px-3 sm:px-4 xl:px-3 2xl:px-4 py-1.5 sm:py-0 gap-3 xl:gap-2.5 2xl:gap-3 bg-transparent'>
+								<Search className='w-5 h-5 sm:w-6 sm:h-6 xl:w-4.5 xl:h-4.5 2xl:w-6 2xl:h-6 text-[#64748B] flex-shrink-0' />
 								<input
 									type='text'
 									value={searchInput}
@@ -246,30 +271,30 @@ export function Hero() {
 										if (e.key === 'Enter') handleSearch();
 									}}
 									placeholder='সবজি, ফল, মাছ, শস্য খুঁজুন...'
-									className='w-full text-[#172033] placeholder-[#64748B] text-base sm:text-lg lg:text-xl font-semibold outline-none bg-transparent border-none'
+									className='w-full text-[#172033] placeholder-[#64748B] text-sm sm:text-base lg:text-lg xl:text-xs 2xl:text-lg font-semibold outline-none bg-transparent border-none'
 								/>
 							</div>
 
 							{/* Search Button */}
 							<button
 								onClick={handleSearch}
-								className='w-full sm:w-auto h-[56px] sm:h-[62px] px-9 sm:px-12 bg-[#F5B800] hover:bg-[#e0a800] text-[#26351B] font-extrabold text-base sm:text-lg rounded-[15px] transition-all duration-200 shadow-md flex items-center justify-center gap-2.5 flex-shrink-0 hover:scale-[1.01] active:scale-[0.99]'
+								className='w-full sm:w-auto h-[44px] sm:h-[48px] xl:h-[36px] 2xl:h-[48px] px-7 sm:px-9 xl:px-6 2xl:px-9 bg-[#F5B800] hover:bg-[#e0a800] text-[#26351B] font-extrabold text-sm sm:text-base xl:text-xs 2xl:text-base rounded-[12px] xl:rounded-[10px] 2xl:rounded-[12px] transition-all duration-200 shadow-sm flex items-center justify-center gap-2 xl:gap-1.5 2xl:gap-2 flex-shrink-0 hover:scale-[1.01] active:scale-[0.99]'
 							>
 								<span>খুঁজুন</span>
-								<ArrowRight className='w-5 h-5 sm:w-6 sm:h-6' />
+								<ArrowRight className='w-4 h-4 sm:w-5 sm:h-5 xl:w-3.5 xl:h-3.5 2xl:w-5 2xl:h-5' />
 							</button>
 						</div>
 
 						{/* 3. Bottom Popular Search Chips inside Module */}
-						<div className='flex flex-wrap items-center gap-2.5 pt-1'>
-							<span className='text-xs sm:text-sm font-semibold text-gray-500 mr-1'>
+						<div className='flex flex-wrap items-center gap-2 xl:gap-1.5 2xl:gap-2 pt-0.5'>
+							<span className='text-xs xl:text-[11px] 2xl:text-xs font-semibold text-gray-500 mr-1'>
 								জনপ্রিয় অনুসন্ধান:
 							</span>
 							{quickChips.map((chip) => (
 								<Link
 									key={chip.label}
 									href={`/marketplace?term=${encodeURIComponent(chip.term)}`}
-									className='px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-gray-100 hover:bg-[#F5B800] text-gray-700 hover:text-[#26351B] transition-colors duration-200 cursor-pointer'
+									className='px-3 py-1 xl:px-2.5 xl:py-0.5 2xl:px-3 2xl:py-1 rounded-lg text-xs xl:text-[11px] 2xl:text-xs font-semibold bg-gray-100 hover:bg-[#F5B800] text-gray-700 hover:text-[#26351B] transition-colors duration-200 cursor-pointer'
 								>
 									{chip.label}
 								</Link>
@@ -278,6 +303,6 @@ export function Hero() {
 					</motion.div>
 				</div>
 			</div>
-		</section>
+		</div>
 	);
 }
