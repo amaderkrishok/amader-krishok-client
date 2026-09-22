@@ -40,7 +40,7 @@ export function NavBar() {
 	const dashboardPath = user ? getRedirectPathByRole(user.role) : '/auth/login';
 
 	return (
-		<nav className='w-full px-4 sm:px-6 lg:px-[10%] xl:px-[14%] 2xl:px-12 py-1 lg:py-1.5 2xl:py-2 bg-[#37462A] fixed top-0 left-0 z-50 shadow-md border-b border-white/10 transition-colors duration-300'>
+		<nav className='w-full px-4 sm:px-6 lg:px-[10%] xl:px-[18.5%] 2xl:px-12 py-1 lg:py-1.5 2xl:py-2 bg-[#37462A] fixed top-0 left-0 z-50 shadow-md border-b border-white/10 transition-colors duration-300'>
 			<div className='max-w-7xl mx-auto flex items-center justify-between'>
 				{/* Logo */}
 				<Link href='/' className='flex items-center space-x-2 shrink-0'>
@@ -54,15 +54,15 @@ export function NavBar() {
 				</Link>
 
 				{/* Right side container for navigation, cart, and auth button */}
-				<div className='hidden lg:flex items-center gap-1.5 xl:gap-2.5 2xl:gap-6'>
+				<div className='hidden lg:flex items-center gap-1.5 xl:gap-1.5 2xl:gap-6'>
 					{/* Navigation Items */}
-					<div className='flex items-center space-x-0.5 xl:space-x-1 2xl:space-x-1'>
+					<div className='flex items-center space-x-0.5 xl:space-x-0.5 2xl:space-x-1'>
 						{menuItems.map((item) => (
 							<Link
 								key={item.href}
 								href={item.href}
 								className={`
-                text-white px-1.5 lg:px-1.5 xl:px-2 2xl:px-3 py-1 2xl:py-1.5 rounded-md text-xs lg:text-[13px] xl:text-[14px] 2xl:text-base font-medium lg:font-semibold xl:font-semibold 2xl:font-medium whitespace-nowrap
+                text-white px-1.5 lg:px-1.5 xl:px-1.5 2xl:px-3 py-1 2xl:py-1.5 rounded-md text-xs lg:text-[13px] xl:text-[13px] 2xl:text-base font-medium lg:font-semibold xl:font-semibold 2xl:font-medium whitespace-nowrap
                 transition-colors duration-200
                 ${
 									pathname === item.href

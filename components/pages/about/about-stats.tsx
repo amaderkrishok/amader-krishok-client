@@ -41,7 +41,7 @@ const statsData = [
 
 export function AboutStats() {
 	return (
-		<section className='w-full px-4 sm:px-6 lg:px-[10%] xl:px-[14%] 2xl:px-12 bg-white py-12 md:py-16 border-y border-[#2D331F]/10 relative z-20'>
+		<section className='w-full px-4 sm:px-6 lg:px-[10%] xl:px-[18.5%] 2xl:px-12 bg-white py-12 md:py-16 border-y border-[#2D331F]/10 relative z-20'>
 			<div className='max-w-7xl mx-auto'>
 				<div className='grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8'>
 					{statsData.map((stat, index) => {

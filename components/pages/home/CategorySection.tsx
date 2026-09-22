@@ -59,7 +59,7 @@ const quickCategories: QuickCategoryItem[] = [
 
 export function CategorySection() {
 	return (
-		<section className='w-full px-4 sm:px-6 lg:px-[10%] xl:px-[14%] 2xl:px-12 pt-28 sm:pt-36 lg:pt-40 pb-14 sm:pb-16 bg-[#FAF9F3] border-b border-gray-200/60 selection:bg-[#F5B800] selection:text-[#172033]'>
+		<section className='w-full px-4 sm:px-6 lg:px-[10%] xl:px-[18.5%] 2xl:px-12 pt-28 sm:pt-36 lg:pt-40 pb-14 sm:pb-16 bg-[#FAF9F3] border-b border-gray-200/60 selection:bg-[#F5B800] selection:text-[#172033]'>
 			<div className='max-w-7xl mx-auto'>
 				{/* Section Header */}
 				<div className='flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8 sm:mb-10'>

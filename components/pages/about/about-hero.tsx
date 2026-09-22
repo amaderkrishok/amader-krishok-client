@@ -25,7 +25,7 @@ export function AboutHero() {
 	];
 
 	return (
-		<section className='relative bg-gradient-to-b from-[#37462A] via-[#2F3C23] to-[#37462A] text-white pt-28 sm:pt-36 pb-20 md:pb-24 w-full px-4 sm:px-6 lg:px-[10%] xl:px-[14%] 2xl:px-12 overflow-hidden'>
+		<section className='relative bg-gradient-to-b from-[#37462A] via-[#2F3C23] to-[#37462A] text-white pt-28 sm:pt-36 pb-20 md:pb-24 w-full px-4 sm:px-6 lg:px-[10%] xl:px-[18.5%] 2xl:px-12 overflow-hidden'>
 			
 			{/* Background Glows & Floating Leaves (Matching other hero banners) */}
 			<div className='absolute inset-0 pointer-events-none z-0'>

@@ -55,7 +55,7 @@ export default function CropCalculatorPage() {
 			{/* ==================================================== */}
 			{/* HERO SECTION                                         */}
 			{/* ==================================================== */}
-			<section className='relative bg-gradient-to-b from-[#37462A] via-[#2F3C23] to-[#37462A] text-white pt-28 sm:pt-36 pb-20 md:pb-24 w-full px-4 sm:px-6 lg:px-[10%] xl:px-[14%] 2xl:px-12 overflow-hidden'>
+			<section className='relative bg-gradient-to-b from-[#37462A] via-[#2F3C23] to-[#37462A] text-white pt-28 sm:pt-36 pb-20 md:pb-24 w-full px-4 sm:px-6 lg:px-[10%] xl:px-[18.5%] 2xl:px-12 overflow-hidden'>
 				
 				{/* Background Glows & Floating Leaves */}
 				<div className='absolute inset-0 pointer-events-none z-0'>
@@ -144,7 +144,7 @@ export default function CropCalculatorPage() {
 			{/* ==================================================== */}
 			{/* CALCULATOR CARD                                      */}
 			{/* ==================================================== */}
-			<section className='w-full px-4 sm:px-6 lg:px-[10%] xl:px-[14%] 2xl:px-12 relative z-20 -mt-10 md:-mt-14'>
+			<section className='w-full px-4 sm:px-6 lg:px-[10%] xl:px-[18.5%] 2xl:px-12 relative z-20 -mt-10 md:-mt-14'>
 				<div className='max-w-7xl mx-auto'>
 					<motion.div
 						initial={{ opacity: 0, y: 30 }}
@@ -160,7 +160,7 @@ export default function CropCalculatorPage() {
 			{/* ==================================================== */}
 			{/* INFO CARDS SECTION                                   */}
 			{/* ==================================================== */}
-			<section className='w-full px-4 sm:px-6 lg:px-[10%] xl:px-[14%] 2xl:px-12 mt-16 mb-16'>
+			<section className='w-full px-4 sm:px-6 lg:px-[10%] xl:px-[18.5%] 2xl:px-12 mt-16 mb-16'>
 				<div className='max-w-7xl mx-auto'>
 					<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6'>
 						{infoCards.map((card, idx) => {
@@ -193,7 +193,7 @@ export default function CropCalculatorPage() {
 			{/* ==================================================== */}
 			{/* HELP SECTION                                         */}
 			{/* ==================================================== */}
-			<section className='w-full px-4 sm:px-6 lg:px-[10%] xl:px-[14%] 2xl:px-12 mb-20'>
+			<section className='w-full px-4 sm:px-6 lg:px-[10%] xl:px-[18.5%] 2xl:px-12 mb-20'>
 				<div className='max-w-7xl mx-auto'>
 					<motion.div
 						initial={{ opacity: 0, y: 30 }}

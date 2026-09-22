@@ -143,7 +143,7 @@ export function Hero() {
 	return (
 		<div className='relative w-full select-none'>
 			{/* --- 1. Compact Video Banner (ShareTrip-inspired compact style) --- */}
-			<div className='relative w-full h-[250px] sm:h-[250px] md:h-[220px] lg:h-[230px] xl:h-[350px] overflow-hidden '>
+			<div className='relative w-full h-[250px] sm:h-[250px] md:h-[220px] lg:h-[230px] xl:h-[260px] 2xl:h-[350px] overflow-hidden '>
 				{/* Real Agriculture Background Video */}
 				<video
 					ref={videoRef}
@@ -157,7 +157,7 @@ export function Hero() {
 				</video>
 
 				{/* HERO TEXT CONTENT AREA — sits inside banner, above the search card */}
-				<div className='relative z-20 w-full h-full px-4 sm:px-6 lg:px-[10%] xl:px-[14%] 2xl:px-12 flex items-end pb-14 sm:pb-16 md:pb-18 lg:pb-20 xl:pb-22'>
+				<div className='relative z-20 w-full h-full px-4 sm:px-6 lg:px-[10%] xl:px-[18.5%] 2xl:px-12 flex items-end pb-14 sm:pb-16 md:pb-18 lg:pb-20 xl:pb-12 2xl:pb-22'>
 					<div className='max-w-7xl mx-auto w-full'>
 					<motion.div
 						initial={{ opacity: 0, y: 10 }}
@@ -165,11 +165,11 @@ export function Hero() {
 						transition={{ duration: 0.3, ease: 'easeOut' }}
 						className='space-y-0.5 sm:space-y-1 max-w-2xl text-left'
 					>
-						<h1 className='text-[18px] sm:text-[22px] md:text-[24px] lg:text-[26px] xl:text-[35px] font-extrabold text-white leading-tight tracking-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)] text-left'>
+						<h1 className='text-[18px] sm:text-[22px] md:text-[24px] lg:text-[26px] xl:text-[23px] 2xl:text-[35px] font-extrabold text-white leading-tight tracking-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)] text-left'>
 							কোনো মধ্যস্বত্বভোগী নেই
 						</h1>
 
-						<p className='text-white/90 text-[11px] sm:text-xs lg:text-[16px] font-medium leading-relaxed max-w-lg text-left drop-shadow-[0_2px_10px_rgba(0,0,0,0.85)]'>
+						<p className='text-white/90 text-[11px] sm:text-xs lg:text-[14px] xl:text-[13px] 2xl:text-[16px] font-medium leading-relaxed max-w-lg text-left drop-shadow-[0_2px_10px_rgba(0,0,0,0.85)]'>
 							বাংলাদেশের ৪২টি জেলার যাচাইকৃত কৃষকদের প্রোফাইল ঘুরে দেখুন, সরাসরি কথা বলুন এবং নিজেই দরদাম করে কিনুন।
 						</p>
 					</motion.div>
@@ -178,12 +178,12 @@ export function Hero() {
 			</div>
 
 			{/* --- 2. FLOATING OVERLAPPING SEARCH CARD STRADDLING THE VIDEO BANNER SEAM --- */}
-			<div className='relative z-30 w-full px-4 sm:px-6 lg:px-[10%] xl:px-[14%] 2xl:px-12 -mt-10 sm:-mt-12 md:-mt-13 lg:-mt-14 xl:-mt-16 mb-3 sm:mb-4'>
+			<div className='relative z-30 w-full px-4 sm:px-6 lg:px-[10%] xl:px-[18.5%] 2xl:px-12 -mt-10 sm:-mt-12 md:-mt-13 lg:-mt-14 xl:-mt-10 2xl:-mt-16 mb-3 sm:mb-4'>
 				<div className='max-w-7xl mx-auto'>
 					<motion.div
 						initial={{ opacity: 1, y: 0 }}
 						animate={{ opacity: 1, y: 0 }}
-						className='bg-white rounded-[20px] shadow-[0_15px_40px_rgba(0,0,0,0.12)] border border-gray-100/90 p-3.5 sm:p-4.5 lg:p-5 flex flex-col gap-3 sm:gap-3.5'
+						className='bg-white rounded-[20px] shadow-[0_15px_40px_rgba(0,0,0,0.12)] border border-gray-100/90 p-3.5 sm:p-4.5 lg:p-5 xl:p-3 2xl:p-5 flex flex-col gap-3 sm:gap-3.5 xl:gap-2 2xl:gap-3.5'
 					>
 						{/* 1. Category Tabs Header inside Search Module */}
 						<div className='flex items-center gap-1.5 sm:gap-2 border-b border-gray-200'>
@@ -192,17 +192,17 @@ export function Hero() {
 								<button
 									type='button'
 									onClick={() => scrollTabs('left')}
-									className='shrink-0 w-8 h-8 rounded-full bg-white shadow-sm border border-gray-200 text-gray-700 hover:text-[#26351B] hover:bg-[#F5B800] flex items-center justify-center transition-all duration-200 cursor-pointer active:scale-95 mr-1'
+									className='shrink-0 w-8 h-8 xl:w-7 xl:h-7 2xl:w-8 2xl:h-8 rounded-full bg-white shadow-sm border border-gray-200 text-gray-700 hover:text-[#26351B] hover:bg-[#F5B800] flex items-center justify-center transition-all duration-200 cursor-pointer active:scale-95 mr-1'
 									aria-label='Previous tabs'
 								>
-									<ChevronLeft className='w-4 h-4' />
+									<ChevronLeft className='w-4 h-4 xl:w-3.5 xl:h-3.5 2xl:w-4 2xl:h-4' />
 								</button>
 							)}
 
 							{/* Category Tabs Scroll Container (Scrollbar completely hidden, zero overlap) */}
 							<div
 								ref={tabsRef}
-								className='flex-1 flex items-center gap-4 sm:gap-6 overflow-x-auto pb-1 scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] no-scrollbar scrollbar-none'
+								className='flex-1 flex items-center gap-4 sm:gap-6 xl:gap-4 2xl:gap-6 overflow-x-auto pb-1 scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] no-scrollbar scrollbar-none'
 							>
 								{categoryTabs.map((tab) => {
 									const IconComponent = tab.icon;
@@ -217,14 +217,14 @@ export function Hero() {
 											key={tab.label}
 											href={targetHref}
 											onClick={() => setActiveCategory(tab.label)}
-											className={`flex items-center gap-2 px-2.5 sm:px-3.5 py-2.5 relative font-bold text-xs sm:text-sm whitespace-nowrap transition-colors duration-150 bg-transparent border-none cursor-pointer group shrink-0 ${
+											className={`flex items-center gap-2 px-2.5 sm:px-3.5 py-2.5 xl:py-2 2xl:py-2.5 relative font-bold text-xs sm:text-sm xl:text-xs 2xl:text-sm whitespace-nowrap transition-colors duration-150 bg-transparent border-none cursor-pointer group shrink-0 ${
 												isActive
 													? 'text-[#B45309] font-extrabold'
 													: 'text-gray-600 hover:text-[#172033]'
 											}`}
 										>
 											<IconComponent
-												className={`w-4 h-4 sm:w-4.5 sm:h-4.5 transition-colors ${
+												className={`w-4 h-4 sm:w-4.5 sm:h-4.5 xl:w-4 xl:h-4 2xl:w-4.5 2xl:h-4.5 transition-colors ${
 													isActive
 														? 'text-[#F5B800]'
 														: 'text-gray-400 group-hover:text-gray-600'
@@ -250,19 +250,19 @@ export function Hero() {
 								<button
 									type='button'
 									onClick={() => scrollTabs('right')}
-									className='shrink-0 w-8 h-8 rounded-full bg-white shadow-sm border border-gray-200 text-gray-700 hover:text-[#26351B] hover:bg-[#F5B800] flex items-center justify-center transition-all duration-200 cursor-pointer active:scale-95 ml-1'
+									className='shrink-0 w-8 h-8 xl:w-7 xl:h-7 2xl:w-8 2xl:h-8 rounded-full bg-white shadow-sm border border-gray-200 text-gray-700 hover:text-[#26351B] hover:bg-[#F5B800] flex items-center justify-center transition-all duration-200 cursor-pointer active:scale-95 ml-1'
 									aria-label='Next tabs'
 								>
-									<ChevronRight className='w-4 h-4' />
+									<ChevronRight className='w-4 h-4 xl:w-3.5 xl:h-3.5 2xl:w-4 2xl:h-4' />
 								</button>
 							)}
 						</div>
 
 						{/* 2. Main Search Input & Submit Button Row */}
-						<div className='flex flex-col sm:flex-row items-center gap-2.5 bg-gray-50/80 border border-gray-200/80 rounded-[14px] p-2 sm:p-2.5 transition-all focus-within:bg-white focus-within:border-[#F5B800] focus-within:ring-4 focus-within:ring-[#F5B800]/20 shadow-inner min-h-[52px] sm:min-h-[58px]'>
+						<div className='flex flex-col sm:flex-row items-center gap-2.5 xl:gap-2 2xl:gap-2.5 bg-gray-50/80 border border-gray-200/80 rounded-[14px] xl:rounded-[12px] 2xl:rounded-[14px] p-2 sm:p-2.5 xl:p-1.5 2xl:p-2.5 transition-all focus-within:bg-white focus-within:border-[#F5B800] focus-within:ring-4 focus-within:ring-[#F5B800]/20 shadow-inner min-h-[52px] sm:min-h-[58px] xl:min-h-[44px] 2xl:min-h-[58px]'>
 							{/* Input */}
-							<div className='flex-1 w-full flex items-center px-3 sm:px-4 py-1.5 sm:py-0 gap-3 bg-transparent'>
-								<Search className='w-5 h-5 sm:w-6 sm:h-6 text-[#64748B] flex-shrink-0' />
+							<div className='flex-1 w-full flex items-center px-3 sm:px-4 xl:px-3 2xl:px-4 py-1.5 sm:py-0 gap-3 xl:gap-2.5 2xl:gap-3 bg-transparent'>
+								<Search className='w-5 h-5 sm:w-6 sm:h-6 xl:w-4.5 xl:h-4.5 2xl:w-6 2xl:h-6 text-[#64748B] flex-shrink-0' />
 								<input
 									type='text'
 									value={searchInput}
@@ -271,30 +271,30 @@ export function Hero() {
 										if (e.key === 'Enter') handleSearch();
 									}}
 									placeholder='সবজি, ফল, মাছ, শস্য খুঁজুন...'
-									className='w-full text-[#172033] placeholder-[#64748B] text-sm sm:text-base lg:text-lg font-semibold outline-none bg-transparent border-none'
+									className='w-full text-[#172033] placeholder-[#64748B] text-sm sm:text-base lg:text-lg xl:text-xs 2xl:text-lg font-semibold outline-none bg-transparent border-none'
 								/>
 							</div>
 
 							{/* Search Button */}
 							<button
 								onClick={handleSearch}
-								className='w-full sm:w-auto h-[44px] sm:h-[48px] px-7 sm:px-9 bg-[#F5B800] hover:bg-[#e0a800] text-[#26351B] font-extrabold text-sm sm:text-base rounded-[12px] transition-all duration-200 shadow-sm flex items-center justify-center gap-2 flex-shrink-0 hover:scale-[1.01] active:scale-[0.99]'
+								className='w-full sm:w-auto h-[44px] sm:h-[48px] xl:h-[36px] 2xl:h-[48px] px-7 sm:px-9 xl:px-6 2xl:px-9 bg-[#F5B800] hover:bg-[#e0a800] text-[#26351B] font-extrabold text-sm sm:text-base xl:text-xs 2xl:text-base rounded-[12px] xl:rounded-[10px] 2xl:rounded-[12px] transition-all duration-200 shadow-sm flex items-center justify-center gap-2 xl:gap-1.5 2xl:gap-2 flex-shrink-0 hover:scale-[1.01] active:scale-[0.99]'
 							>
 								<span>খুঁজুন</span>
-								<ArrowRight className='w-4 h-4 sm:w-5 sm:h-5' />
+								<ArrowRight className='w-4 h-4 sm:w-5 sm:h-5 xl:w-3.5 xl:h-3.5 2xl:w-5 2xl:h-5' />
 							</button>
 						</div>
 
 						{/* 3. Bottom Popular Search Chips inside Module */}
-						<div className='flex flex-wrap items-center gap-2 pt-0.5'>
-							<span className='text-xs font-semibold text-gray-500 mr-1'>
+						<div className='flex flex-wrap items-center gap-2 xl:gap-1.5 2xl:gap-2 pt-0.5'>
+							<span className='text-xs xl:text-[11px] 2xl:text-xs font-semibold text-gray-500 mr-1'>
 								জনপ্রিয় অনুসন্ধান:
 							</span>
 							{quickChips.map((chip) => (
 								<Link
 									key={chip.label}
 									href={`/marketplace?term=${encodeURIComponent(chip.term)}`}
-									className='px-3 py-1 rounded-lg text-xs font-semibold bg-gray-100 hover:bg-[#F5B800] text-gray-700 hover:text-[#26351B] transition-colors duration-200 cursor-pointer'
+									className='px-3 py-1 xl:px-2.5 xl:py-0.5 2xl:px-3 2xl:py-1 rounded-lg text-xs xl:text-[11px] 2xl:text-xs font-semibold bg-gray-100 hover:bg-[#F5B800] text-gray-700 hover:text-[#26351B] transition-colors duration-200 cursor-pointer'
 								>
 									{chip.label}
 								</Link>

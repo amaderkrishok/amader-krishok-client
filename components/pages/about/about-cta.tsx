@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 
 export function AboutCta() {
 	return (
-		<section className='w-full px-4 sm:px-6 lg:px-[10%] xl:px-[14%] 2xl:px-12 py-16'>
+		<section className='w-full px-4 sm:px-6 lg:px-[10%] xl:px-[18.5%] 2xl:px-12 py-16'>
 			<div className='max-w-7xl mx-auto'>
 				<motion.div
 				initial={{ opacity: 0, y: 30 }}

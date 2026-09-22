@@ -33,7 +33,7 @@ const whyUsFeatures = [
 
 export function AboutWhyUs() {
 	return (
-		<section className='w-full px-4 sm:px-6 lg:px-[10%] xl:px-[14%] 2xl:px-12 bg-white py-16 md:py-24 border-t border-[#2D331F]/10'>
+		<section className='w-full px-4 sm:px-6 lg:px-[10%] xl:px-[18.5%] 2xl:px-12 bg-white py-16 md:py-24 border-t border-[#2D331F]/10'>
 			<div className='max-w-7xl mx-auto'>
 				
 				{/* Section Header */}

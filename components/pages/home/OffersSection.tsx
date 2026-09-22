@@ -185,7 +185,7 @@ export function OffersSection() {
     .slice(0, 8);
 
   return (
-    <section className="w-full px-4 sm:px-6 lg:px-[10%] xl:px-[14%] 2xl:px-12 pt-4 sm:pt-6 lg:pt-8 pb-12 sm:pb-16 bg-[#FAF9F3] text-[#172033] relative overflow-hidden border-b border-gray-200/60">
+    <section className="w-full px-4 sm:px-6 lg:px-[10%] xl:px-[18.5%] 2xl:px-12 pt-4 sm:pt-6 lg:pt-8 pb-12 sm:pb-16 bg-[#FAF9F3] text-[#172033] relative overflow-hidden border-b border-gray-200/60">
       <div className="max-w-7xl mx-auto relative z-10">
         
         {/* Section Header */}
